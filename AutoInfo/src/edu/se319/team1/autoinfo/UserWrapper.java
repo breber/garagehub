@@ -41,8 +41,8 @@ public class UserWrapper {
 
 		toRet.isLoggedIn = service.isUserLoggedIn();
 		toRet.isAdmin = toRet.isLoggedIn && service.isUserAdmin();
-		toRet.nickname = user.getNickname();
-		toRet.md5 = MD5Util.md5Hex(user.getEmail());
+		toRet.nickname = (toRet.isLoggedIn) ? user.getNickname() : "";
+		toRet.md5 = (toRet.isLoggedIn) ? MD5Util.md5Hex(user.getEmail()) : "00000000000000000000000000000000";
 
 		return toRet;
 	}

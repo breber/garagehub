@@ -1,4 +1,4 @@
-package edu.se319.team1.autoinfo;
+package edu.se319.team1.autoinfo.servlets;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,12 +28,14 @@ import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
+import edu.se319.team1.autoinfo.PMF;
+import edu.se319.team1.autoinfo.Utilities;
 import edu.se319.team1.autoinfo.data.Vehicle;
 
 /**
  * Fetch list of make/model/years from cars.com
  * 
- * TODO: this could be optimized so that it doesn'
+ * TODO: this could be optimized so that it doesn't
  * use so much quota (read for each record)
  */
 @SuppressWarnings("serial")
@@ -85,8 +87,8 @@ public class RetrieveVehicleTypes extends HttpServlet {
 				}
 			}
 		} catch (JSONException e) {
-			log.log(Level.WARNING, e.getMessage());
-			log.log(Level.WARNING, Arrays.toString(e.getStackTrace()));
+			log.log(Level.SEVERE, e.getMessage());
+			log.log(Level.SEVERE, Arrays.toString(e.getStackTrace()));
 			e.printStackTrace();
 		}
 
@@ -127,8 +129,8 @@ public class RetrieveVehicleTypes extends HttpServlet {
 						numAdded++;
 					}
 				} catch (TooManyResultsException ex) {
-					log.log(Level.WARNING, "More than one result...");
-					log.log(Level.WARNING, v.toString());
+					log.log(Level.SEVERE, "More than one result...");
+					log.log(Level.SEVERE, v.toString());
 				} finally {
 					if (txn.isActive()) {
 						txn.commit();
@@ -136,9 +138,9 @@ public class RetrieveVehicleTypes extends HttpServlet {
 				}
 			}
 		} catch (Exception e) {
-			log.log(Level.WARNING, "Error modifiying database");
-			log.log(Level.WARNING, e.getMessage());
-			log.log(Level.WARNING, Arrays.toString(e.getStackTrace()));
+			log.log(Level.SEVERE, "Error modifiying database");
+			log.log(Level.SEVERE, e.getMessage());
+			log.log(Level.SEVERE, Arrays.toString(e.getStackTrace()));
 		} finally {
 			pm.close();
 		}

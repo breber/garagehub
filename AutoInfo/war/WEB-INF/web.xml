@@ -17,7 +17,7 @@
 	<!-- Retrieve Vehicle (make, model, year) data -->
 	<servlet>
 		<servlet-name>RetrieveVehicleTypes</servlet-name>
-		<servlet-class>edu.se319.team1.autoinfo.RetrieveVehicleTypes</servlet-class>
+		<servlet-class>edu.se319.team1.autoinfo.servlets.RetrieveVehicleTypes</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>RetrieveVehicleTypes</servlet-name>
@@ -25,10 +25,22 @@
 	</servlet-mapping>
 
 
+	<!-- Delete all vehicles -->
+	<servlet>
+		<servlet-name>DeleteAllVehicles</servlet-name>
+		<servlet-class>edu.se319.team1.autoinfo.servlets.DeleteAllVehicles</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DeleteAllVehicles</servlet-name>
+		<url-pattern>/admin/deletevehicles</url-pattern>
+	</servlet-mapping>
+
+
 	<!-- Require an admin for certain endpoints -->
 	<security-constraint>
 		<web-resource-collection>
 			<url-pattern>/cron/*</url-pattern>
+			<url-pattern>/admin/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>

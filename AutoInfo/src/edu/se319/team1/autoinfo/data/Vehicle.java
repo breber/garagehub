@@ -18,7 +18,7 @@ public class Vehicle implements Comparable<Vehicle> {
 		public static final String LAST_MODIFIED = "dateLastModified";
 		public static final String MAKE = "make";
 		public static final String MODEL = "model";
-		public static final String YEAR = "year";
+		public static final String YEARS = "years";
 	}
 
 	/**
@@ -46,17 +46,17 @@ public class Vehicle implements Comparable<Vehicle> {
 	/**
 	 * The year of the vehicle
 	 */
-	private String year;
+	private String years;
 
 	/**
 	 * @param make
 	 * @param model
-	 * @param year
+	 * @param years
 	 */
-	public Vehicle(String make, String model, String year) {
+	public Vehicle(String make, String model, String years) {
 		this.make = make;
 		this.model = model;
-		this.year = year;
+		this.years = years;
 		this.dateLastModified = new Date();
 	}
 
@@ -92,7 +92,7 @@ public class Vehicle implements Comparable<Vehicle> {
 	 * @return the year
 	 */
 	public String getYear() {
-		return year;
+		return years;
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class Vehicle implements Comparable<Vehicle> {
 		if (make.compareTo(arg0.make) == 0) {
 			// If the models are the same, return the year comparison
 			if (model.compareTo(arg0.model) == 0) {
-				return year.compareTo(arg0.year);
+				return years.compareTo(arg0.years);
 			} else {
 				// Otherwise return the modle comparison
 				return model.compareTo(arg0.model);
@@ -127,7 +127,7 @@ public class Vehicle implements Comparable<Vehicle> {
 		builder.append(", model=");
 		builder.append(model);
 		builder.append(", year=");
-		builder.append(year);
+		builder.append(years);
 		builder.append("]");
 		return builder.toString();
 	}

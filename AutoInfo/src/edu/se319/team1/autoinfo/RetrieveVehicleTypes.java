@@ -30,6 +30,12 @@ import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 import edu.se319.team1.autoinfo.data.Vehicle;
 
+/**
+ * Fetch list of make/model/years from cars.com
+ * 
+ * TODO: this could be optimized so that it doesn'
+ * use so much quota (read for each record)
+ */
 @SuppressWarnings("serial")
 public class RetrieveVehicleTypes extends HttpServlet {
 
@@ -72,15 +78,10 @@ public class RetrieveVehicleTypes extends HttpServlet {
 					String years = obj1.getString("yrs");
 
 					// Years is a comma-delimited string of years
-					String[] yearList = years.split(",");
+					Vehicle vehicle = new Vehicle(makeString, model, years);
+					vehicleList.add(vehicle);
 
-					// Create a new Vehicle for each model year
-					for (String year : yearList) {
-						Vehicle vehicle = new Vehicle(makeString, model, year);
-						vehicleList.add(vehicle);
-
-						log.log(Level.FINE, vehicle.toString());
-					}
+					log.log(Level.FINE, vehicle.toString());
 				}
 			}
 		} catch (JSONException e) {
@@ -104,9 +105,8 @@ public class RetrieveVehicleTypes extends HttpServlet {
 				Query q = new Query(Vehicle.class.getSimpleName());
 				FilterPredicate make = new FilterPredicate(Vehicle.VehicleColumns.MAKE, Query.FilterOperator.EQUAL, v.getMake());
 				FilterPredicate model = new FilterPredicate(Vehicle.VehicleColumns.MODEL, Query.FilterOperator.EQUAL, v.getModel());
-				FilterPredicate year = new FilterPredicate(Vehicle.VehicleColumns.YEAR, Query.FilterOperator.EQUAL, v.getYear());
 
-				q.setFilter(CompositeFilterOperator.and(make, model, year));
+				q.setFilter(CompositeFilterOperator.and(make, model));
 
 				Transaction txn = datastore.beginTransaction();
 				try {
@@ -120,6 +120,7 @@ public class RetrieveVehicleTypes extends HttpServlet {
 					if (result != null) {
 						numUpdated++;
 						result.setProperty(Vehicle.VehicleColumns.LAST_MODIFIED, currentTime);
+						result.setProperty(Vehicle.VehicleColumns.YEARS, v.getYear());
 					} else {
 						// If the result is null, we want to add the vehicle to the database
 						pm.makePersistent(v);
@@ -145,8 +146,8 @@ public class RetrieveVehicleTypes extends HttpServlet {
 		// TODO: query database for records with old lastmodified times and possibly delete them...
 
 		// Print out status report
-		log.log(Level.FINE, "Finished " + RetrieveVehicleTypes.class.getSimpleName());
-		log.log(Level.FINE, "Num Updated:  " + numUpdated);
-		log.log(Level.FINE, "Num Added:  " + numAdded);
+		log.log(Level.WARNING, "Finished " + RetrieveVehicleTypes.class.getSimpleName());
+		log.log(Level.WARNING, "Num Updated:  " + numUpdated);
+		log.log(Level.WARNING, "Num Added:  " + numAdded);
 	}
 }

@@ -1,10 +1,10 @@
 <%@page import="com.google.appengine.api.users.UserServiceFactory"%>
 <%@page import="com.google.appengine.api.users.UserService"%>
+<%@page import="edu.se319.team1.autoinfo.UserWrapper"%>
 <%@page language="java" contentType="text/html"%>
 
 <%
-	UserService service = UserServiceFactory.getUserService();
-	boolean isAdmin = service.isUserLoggedIn() && service.isUserAdmin();
+	UserWrapper user = UserWrapper.getInstance();
 %>
 <!DOCTYPE html>
 <html>
@@ -17,9 +17,25 @@
 	<title>Automotive Info</title>
 </head>
 <body>
-	<jsp:include page="header.jsp">
-		<jsp:param value="<%= isAdmin %>" name="showAdminLink"/>
-	</jsp:include>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="/">Automotive Info</a>
+				<ul class="nav">
+					<li><a href="/">Home</a></li>
+					<li class="divider-vertical"></li>
+					<% if (user.isAdmin()) { %>
+					<li><a href="/admin/admin.jsp">Admin</a></li>
+					<% } %>
+				</ul>
+				
+				
+				<ul class="nav pull-right">
+					<jsp:include page="/username.jsp" />
+				</ul>
+			</div>
+		</div>
+	</div>
 
 	<div class="container">
 		<h2>Welcome...</h2>

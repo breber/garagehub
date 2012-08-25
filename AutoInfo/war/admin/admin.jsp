@@ -22,9 +22,20 @@
 	<title>Administrative Functions</title>
 </head>
 <body>
-	<jsp:include page="/header.jsp">
-		<jsp:param value="false" name="showAdminLink"/>
-	</jsp:include>
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a class="brand" href="/">Automotive Info</a>
+				<ul class="nav">
+					<li><a href="/">Home</a></li>
+				</ul>
+				
+				<ul class="nav pull-right">
+					<jsp:include page="/username.jsp" />
+				</ul>
+			</div>
+		</div>
+	</div>
 
 	<div class="container">
 		<button id="deleteAllVehicles" class="btn btn-danger">Delete All Vehicles</button>

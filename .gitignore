@@ -1,0 +1,4 @@
+lib/
+*.class
+classes/
+WEB-INF/appengine-generated/

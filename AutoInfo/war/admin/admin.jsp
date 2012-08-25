@@ -3,6 +3,7 @@
 <html>
 <head>
 	<link type="text/css" href="/css/bootstrap.min.css" rel="stylesheet" />
+	<link type="text/css" href="/css/auto.css" rel="stylesheet" />
 	<script type="text/javascript" src="/js/jquery.min.js"></script>
 	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 	
@@ -21,8 +22,12 @@
 	<title>Administrative Functions</title>
 </head>
 <body>
+	<jsp:include page="/header.jsp">
+		<jsp:param value="false" name="showAdminLink"/>
+	</jsp:include>
 
-	<button id="deleteAllVehicles">Delete All Vehicles</button>
-
+	<div class="container">
+		<button id="deleteAllVehicles" class="btn btn-danger">Delete All Vehicles</button>
+	</div>
 </body>
 </html>

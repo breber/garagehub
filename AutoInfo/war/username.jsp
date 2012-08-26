@@ -12,8 +12,16 @@
 		<img src="http://www.gravatar.com/avatar/<%=user.getMd5() %>?s=40" />
 	</a>
 </li>
-<li>
-	<a href="javascript:void(0);"><%=user.getNickname() %></a>
+<li class="dropdown">
+	<a href="#" class="dropdown-toggle" data-toggle="dropdown"><%=user.getNickname() %> <b class="caret"></b></a>
+	<ul class="dropdown-menu">
+		<% if (user.isAdmin()) { %>
+		<li><a href="/admin/admin.jsp">Admin</a></li>
+		<% } %>
+		<li><a href="#">Settings</a></li>
+		<li class="divider"></li>
+		<li><a href="<%= UserServiceFactory.getUserService().createLogoutURL("/") %>">Logout</a></li>
+	</ul>
 </li>
 <% } else { %>
 <li>

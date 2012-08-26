@@ -17,18 +17,13 @@
 	<title>Automotive Info</title>
 </head>
 <body>
-	<div class="navbar navbar-fixed-top">
+	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
 				<a class="brand" href="/">Automotive Info</a>
 				<ul class="nav">
 					<li><a href="/">Home</a></li>
-					<li class="divider-vertical"></li>
-					<% if (user.isAdmin()) { %>
-					<li><a href="/admin/admin.jsp">Admin</a></li>
-					<% } %>
 				</ul>
-				
 				
 				<ul class="nav pull-right">
 					<jsp:include page="/username.jsp" />

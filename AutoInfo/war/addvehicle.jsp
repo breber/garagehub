@@ -1,16 +1,5 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
-<%@page import="com.google.appengine.api.datastore.PropertyProjection"%>
-<%@page import="com.google.appengine.api.datastore.Projection"%>
-<%@page import="com.google.appengine.api.datastore.Entity"%>
-<%@page import="edu.se319.team1.autoinfo.data.Vehicle"%>
-<%@page import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
-<%@page import="com.google.appengine.api.datastore.PreparedQuery"%>
-<%@page import="com.google.appengine.api.datastore.Query"%>
-<%@page import="com.google.appengine.api.datastore.DatastoreService"%>
 <%@page import="edu.se319.team1.autoinfo.data.DatastoreUtils"%>
-<%@page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@page import="com.google.appengine.api.users.UserService"%>
 <%@page import="edu.se319.team1.autoinfo.UserWrapper"%>
 <%@page language="java" contentType="text/html"%>
 
@@ -45,13 +34,18 @@
 
 	<div class="container">
 		<div class="well well-small">
-			<h2>Welcome...</h2>
-			<p>Nothing exciting to see yet...</p>
-			
+			<h2>Add Vehicle</h2>
+
+			<p>Make</p>
 			<select>
 				<% for (String s : DatastoreUtils.getListOfMakes()) { %>
 					<option><%= s %></option>
 				<% } %>
+			</select>
+
+			<p>Model</p>
+			<select>
+				<option>Select a model</option>
 			</select>
 		</div>
 	</div>

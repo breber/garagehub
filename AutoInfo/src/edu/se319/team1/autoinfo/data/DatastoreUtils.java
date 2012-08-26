@@ -26,18 +26,25 @@ public class DatastoreUtils {
 	private static final Logger log = Logger.getLogger(DatastoreUtils.class.getSimpleName());
 
 	/**
+	 * String used to separate list items in a memcache string
+	 */
+	public static final String SEPARATOR = "~~";
+
+	/**
+	 * Memcache key containing Vehicle Make information
+	 */
+	public static final String KEY_VEHICLE_MAKE = "vehicleMakeList";
+
+	/**
 	 * Get a list of Vehicle Makes
 	 * 
 	 * @return a list of Vehicle Makes
 	 */
 	public static List<String> getListOfMakes() {
-		final String MEMCACHE_KEY = "vehicleMakeList";
-		final String SEPARATOR = "~~";
-
 		// Using the synchronous cache
 		MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
 		List<String> toRet = new ArrayList<String>();
-		Object memcacheResult = syncCache.get(MEMCACHE_KEY);
+		Object memcacheResult = syncCache.get(KEY_VEHICLE_MAKE);
 
 		// If the value is in memcache, parse it
 		if (memcacheResult != null) {
@@ -65,7 +72,7 @@ public class DatastoreUtils {
 			}
 
 			// Put string into memcache
-			syncCache.put(MEMCACHE_KEY, memcachedResult.toString());
+			syncCache.put(KEY_VEHICLE_MAKE, memcachedResult.toString());
 		}
 
 		return toRet;

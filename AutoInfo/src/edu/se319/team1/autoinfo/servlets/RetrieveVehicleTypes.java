@@ -24,12 +24,15 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Transaction;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 import edu.se319.team1.autoinfo.PMF;
 import edu.se319.team1.autoinfo.Utilities;
+import edu.se319.team1.autoinfo.data.DatastoreUtils;
 import edu.se319.team1.autoinfo.data.Vehicle;
 
 /**
@@ -96,6 +99,8 @@ public class RetrieveVehicleTypes extends HttpServlet {
 		// many were updated
 		int numAdded = 0;
 		int numUpdated = 0;
+		MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+		StringBuilder toMemcache = new StringBuilder();
 
 		// Go through the list and add new entries, and update times
 		// of pre-exisiting entries
@@ -104,6 +109,9 @@ public class RetrieveVehicleTypes extends HttpServlet {
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
 			for (Vehicle v : vehicleList) {
+				// Append necessary information to the memcache string
+				toMemcache.append(v.getMake()).append(DatastoreUtils.SEPARATOR);
+
 				Query q = new Query(Vehicle.class.getSimpleName());
 				FilterPredicate make = new FilterPredicate(Vehicle.VehicleColumns.MAKE, Query.FilterOperator.EQUAL, v.getMake());
 				FilterPredicate model = new FilterPredicate(Vehicle.VehicleColumns.MODEL, Query.FilterOperator.EQUAL, v.getModel());
@@ -118,6 +126,7 @@ public class RetrieveVehicleTypes extends HttpServlet {
 					PreparedQuery pq = datastore.prepare(q);
 					Entity result = pq.asSingleEntity();
 
+					// TODO: this query uses a lot of quota...is there a way to remove it? (memcache?)
 					// If result isn't null, update the last modified time to the current time
 					if (result != null) {
 						numUpdated++;
@@ -144,6 +153,9 @@ public class RetrieveVehicleTypes extends HttpServlet {
 		} finally {
 			pm.close();
 		}
+
+		// Put string into memcache
+		syncCache.put(DatastoreUtils.KEY_VEHICLE_MAKE, toMemcache.toString());
 
 		// TODO: query database for records with old lastmodified times and possibly delete them...
 

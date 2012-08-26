@@ -2,7 +2,7 @@
 <cronentries>
 	<cron>
 		<url>/cron/fetchvehicleinfo</url>
-		<description>Fetch Vehicle info (Make, model, year, etc) data every 15 days at midnight</description>
+		<description>Fetch Vehicle info (Make, model, year, etc) data</description>
 		<schedule>every monday 00:00</schedule>
 		<timezone>America/Chicago</timezone>
 	</cron>

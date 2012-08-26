@@ -38,7 +38,9 @@
 	</div>
 
 	<div class="container">
-		<button id="deleteAllVehicles" class="btn btn-danger">Delete All Vehicles</button>
+		<div class="well well-small">
+			<button id="deleteAllVehicles" class="btn btn-danger">Delete All Vehicles</button>
+		</div>
 	</div>
 </body>
 </html>

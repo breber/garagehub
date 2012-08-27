@@ -37,6 +37,7 @@ public class GetModels extends HttpServlet {
 			List<String> models = DatastoreUtils.getListOfModels(pathInfo);
 			JSONArray values = new JSONArray(models);
 
+			resp.addHeader("Cache-Control", "max-age=600");
 			resp.setContentType("application/json");
 			resp.getWriter().print(values.toString());
 		}

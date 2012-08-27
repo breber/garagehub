@@ -3,7 +3,7 @@
 	<cron>
 		<url>/cron/fetchvehicleinfo</url>
 		<description>Fetch Vehicle info (Make, model, year, etc) data</description>
-		<schedule>every monday 00:00</schedule>
+		<schedule>every day 00:00</schedule>
 		<timezone>America/Chicago</timezone>
 	</cron>
 </cronentries>

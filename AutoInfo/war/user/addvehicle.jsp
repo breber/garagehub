@@ -33,6 +33,8 @@
 						
 						$("#models").html(optionString.join(""));
 					});
+				} else {
+					$("#models").html("<option>Select a model</option>");
 				}
 			});
 		});

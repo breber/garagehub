@@ -43,6 +43,22 @@
 		<servlet-name>DeleteAllVehicles</servlet-name>
 		<url-pattern>/admin/deletevehicles</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>DeleteAllCarResponseString</servlet-name>
+		<servlet-class>edu.se319.team1.autoinfo.servlets.DeleteAllCarResponseString</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DeleteAllCarResponseString</servlet-name>
+		<url-pattern>/admin/deletecarresponsestring</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>ClearMemcache</servlet-name>
+		<servlet-class>edu.se319.team1.autoinfo.servlets.ClearMemcache</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ClearMemcache</servlet-name>
+		<url-pattern>/admin/clearmemcache</url-pattern>
+	</servlet-mapping>
 
 
 	<!-- Require an admin for certain endpoints -->

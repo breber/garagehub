@@ -128,6 +128,28 @@ public class DatastoreUtils {
 		return toRet;
 	}
 
+
+	/**
+	 * Delete all CarResponseString
+	 */
+	public static void deleteAllCarResponseStrings() {
+		// Get the Datastore Service
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Query q = new Query(CarResponseString.class.getSimpleName());
+
+		while (true) {
+			PreparedQuery pq = datastore.prepare(q);
+			List<Entity> resultList = pq.asList(FetchOptions.Builder.withDefaults());
+			if (resultList != null && !resultList.isEmpty()) {
+				for (Entity entity : resultList) {
+					datastore.delete(entity.getKey());
+				}
+			} else {
+				break;
+			}
+		}
+	}
+
 	/**
 	 * Delete all vehicles
 	 */

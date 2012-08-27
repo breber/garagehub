@@ -6,17 +6,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.se319.team1.autoinfo.data.DatastoreUtils;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
 /**
- * Delete all Vehicles
+ * Clear all of Memcache
  */
 @SuppressWarnings("serial")
-public class DeleteAllVehicles extends HttpServlet {
+public class ClearMemcache extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		DatastoreUtils.deleteAllVehicles();
+		MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+		syncCache.clearAll();
 
 		resp.sendRedirect("/admin/admin.jsp");
 	}

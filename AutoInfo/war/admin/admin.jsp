@@ -2,23 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link type="text/css" href="/css/bootstrap.min.css" rel="stylesheet" />
-	<link type="text/css" href="/css/auto.css" rel="stylesheet" />
-	<script type="text/javascript" src="/js/jquery.min.js"></script>
-	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-	
-	<script type="text/javascript">
-		
-		$().ready(function() {
-			$("#deleteAllVehicles").click(function() {
-				$.post('/admin/deletevehicles', function(data) {
-					console.log(data);
-				});
-			});
-		});
-	
-	</script>
+	<jsp:include page="/includes.jsp" />
 
 	<title>Administrative Functions</title>
 </head>
@@ -40,7 +24,17 @@
 
 	<div class="container">
 		<div class="well well-small">
-			<button id="deleteAllVehicles" class="btn btn-danger">Delete All Vehicles</button>
+			<form action="/admin/deletevehicles" method="POST">
+				<button type="submit" class="btn btn-danger">Delete All Vehicles</button>
+			</form>
+			
+			<form action="/admin/deletecarresponsestring" method="POST">
+				<button type="submit" class="btn btn-danger">Delete All CarResponseString</button>
+			</form>
+			
+			<form action="/admin/clearmemcache" method="POST">
+				<button type="submit" class="btn btn-danger">Clear Server Cache</button>
+			</form>
 		</div>
 	</div>
 </body>

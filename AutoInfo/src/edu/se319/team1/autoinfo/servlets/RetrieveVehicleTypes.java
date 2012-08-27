@@ -99,8 +99,8 @@ public class RetrieveVehicleTypes extends HttpServlet {
 				}
 			} catch (TooManyResultsException ex) {
 				carResponseStringEntity = null;
+				DatastoreUtils.deleteAllCarResponseStrings();
 				log.log(Level.WARNING, "more than one previous car response entity");
-				// TODO: delete all CarResponseString.class
 			}
 
 			// For each entry in the JSONArray (each make is an entry)

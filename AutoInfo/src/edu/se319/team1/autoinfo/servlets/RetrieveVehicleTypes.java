@@ -32,6 +32,7 @@ import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
+import edu.se319.team1.autoinfo.Email;
 import edu.se319.team1.autoinfo.PMF;
 import edu.se319.team1.autoinfo.Utilities;
 import edu.se319.team1.autoinfo.data.CarResponseString;
@@ -49,17 +50,43 @@ public class RetrieveVehicleTypes extends HttpServlet {
 	 */
 	private static final Logger log = Logger.getLogger(RetrieveVehicleTypes.class.getSimpleName());
 
+	/**
+	 * The list of Vehicles to add to the database
+	 */
+	private List<Vehicle> vehicleList = new ArrayList<Vehicle>();
+
+	/**
+	 * The instance used to access the memcache service
+	 */
+	private MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+
+	/**
+	 * Get the Datastore Service
+	 */
+	private DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+	/**
+	 * The PersistenceManager used to write to the database
+	 */
+	private PersistenceManager pm = PMF.get().getPersistenceManager();
+
+	/**
+	 * Represents the number of records added to the database
+	 */
+	private int numAdded = 0;
+
+	/**
+	 * Represents the number of records that were updated
+	 */
+	private int numUpdated = 0;
+
+	/**
+	 * The number that were skipped
+	 */
+	private int numSkipped = 0;
+
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		PersistenceManager pm = PMF.get().getPersistenceManager();
-		Date currentTime = new Date();
-		List<Vehicle> vehicleList = new ArrayList<Vehicle>();
-		Entity carResponseStringEntity = null;
-		boolean skip = false;
-
-		// Get the Datastore Service
-		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
 		// Grab the data from cars.com
 		URL url = new URL("http://www.cars.com/js/mmyCrp.js");
 		InputStream stream = url.openStream();
@@ -69,6 +96,44 @@ public class RetrieveVehicleTypes extends HttpServlet {
 
 		// Just get the data part (the JSONArray)
 		serverResponse = serverResponse.substring(serverResponse.indexOf('['), serverResponse.lastIndexOf(']') + 1);
+
+		// Figure out which records have been updated/added
+		getUpdatedRecords(serverResponse);
+
+		// Perform the update in the database
+		updateDatabase();
+
+		// Close the persistence manager
+		pm.close();
+
+		// Invalidate the current memcache string if we updated anything
+		if (!vehicleList.isEmpty()) {
+			syncCache.delete(DatastoreUtils.KEY_VEHICLE_MAKE);
+		}
+
+		// Print out status report
+		log.log(Level.INFO, "Finished " + RetrieveVehicleTypes.class.getSimpleName());
+		log.log(Level.INFO, "Num Updated:  " + numUpdated);
+		log.log(Level.INFO, "Num Added:  " + numAdded);
+		log.log(Level.INFO, "Num Skipped:  " + numSkipped);
+
+		Email.sendEmailToBrian("RetrieveVehicleTypes Update: " + new Date(), "Updated at " + new Date() + "<br /><br />Updated: " + numUpdated
+				+ "<br />Added: " + numAdded + "<br />Skipped: " + numSkipped);
+
+		// Send the user to the admin page
+		resp.sendRedirect("/admin/admin.jsp");
+	}
+
+	/**
+	 * Take the data from the remote server and compare it against
+	 * what we received previously. Update the vehicleList with records
+	 * that need to be added/modified.
+	 * 
+	 * @param serverResponse the string from the server
+	 */
+	private void getUpdatedRecords(String serverResponse) {
+		Entity carResponseStringEntity = null;
+		boolean skip = false;
 
 		try {
 			// Get the wrapping JSONArray
@@ -114,29 +179,84 @@ public class RetrieveVehicleTypes extends HttpServlet {
 				for (int j = 0; j < models.length(); j++) {
 					JSONObject obj1 = (JSONObject) models.get(j);
 					String model = obj1.getString("dn");
-					String years = obj1.getString("yrs");
+					String years = obj1.getString("yrs"); // Years is a comma-delimited string of years
 
-					// TODO: check to see if prevArray contains this make, model and year combination
-					if (prevArray == null) {
+					// Get the list of years we previously knew about
+					String prevYears = getYears(prevArray, makeString, model);
 
+					// If we couldn't find the previous years, or what we
+					// previously had doesn't match what we have now, add
+					// it to the list to update
+					if (prevYears == null || !prevYears.equals(years)) {
+						Vehicle vehicle = new Vehicle(makeString, model, years);
+						vehicleList.add(vehicle);
+					} else {
+						numSkipped++;
+						log.log(Level.WARNING, "the years match, so no need to update (" + makeString + " " + model + ")");
 					}
-
-					// Years is a comma-delimited string of years
-					Vehicle vehicle = new Vehicle(makeString, model, years);
-					vehicleList.add(vehicle);
 				}
+			}
+
+			// Update the car response string
+			if (carResponseStringEntity != null) {
+				carResponseStringEntity.setProperty(CarResponseString.Columns.RESPONSE, new Text(serverResponse));
+			} else {
+				pm.makePersistent(new CarResponseString(serverResponse));
 			}
 		} catch (JSONException e) {
 			log.log(Level.SEVERE, e.getMessage());
 			log.log(Level.SEVERE, Arrays.toString(e.getStackTrace()));
 			e.printStackTrace();
 		}
+	}
 
-		// Keep track of how many entities were added, and how
-		// many were updated
-		int numAdded = 0;
-		int numUpdated = 0;
-		MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+	/**
+	 * Get the years available for the given make and model
+	 * 
+	 * @param prevArray the JSONArray to search
+	 * @param make the make of the vehicle to search for
+	 * @param model the model of the vehicle to search for
+	 * 
+	 * @return the years of the vehicle in the JSONArray
+	 */
+	private String getYears(JSONArray prevArray, String make, String model) {
+		if (prevArray == null) {
+			return null;
+		}
+
+		try {
+			// For each entry in the JSONArray (each make is an entry)
+			for (int i = 0; i < prevArray.length(); i++) {
+				JSONObject obj = (JSONObject) prevArray.get(i);
+				JSONObject makeObj = (JSONObject) obj.get("mk");
+				JSONArray models = (JSONArray) obj.get("mds");
+
+				String makeString = makeObj.getString("n");
+
+				if (make.equals(makeString)) {
+					for (int j = 0; j < models.length(); j++) {
+						JSONObject obj1 = (JSONObject) models.get(j);
+						String modelStr = obj1.getString("dn");
+
+						// We found a match for make and model
+						if (model.equals(modelStr)) {
+							return obj1.getString("yrs");
+						}
+					}
+				}
+			}
+		} catch (JSONException ex) {
+			log.log(Level.SEVERE, ex.getMessage());
+			log.log(Level.SEVERE, Arrays.toString(ex.getStackTrace()));
+		}
+		return null;
+	}
+
+	/**
+	 * Perform the update of the database using the records found in vehicleList
+	 */
+	private void updateDatabase() {
+		Date currentTime = new Date();
 
 		// Go through the list and add new entries, and update times
 		// of pre-exisiting entries
@@ -175,29 +295,10 @@ public class RetrieveVehicleTypes extends HttpServlet {
 					}
 				}
 			}
-
-			// Update the car response string
-			if (carResponseStringEntity != null) {
-				carResponseStringEntity.setProperty(CarResponseString.Columns.RESPONSE, new Text(serverResponse));
-			} else {
-				pm.makePersistent(new CarResponseString(serverResponse));
-			}
 		} catch (Exception e) {
 			log.log(Level.SEVERE, "Error modifiying database");
 			log.log(Level.SEVERE, e.getMessage());
 			log.log(Level.SEVERE, Arrays.toString(e.getStackTrace()));
-		} finally {
-			pm.close();
 		}
-
-		// Invalidate the current memcache string if we updated anything
-		if (!vehicleList.isEmpty()) {
-			syncCache.delete(DatastoreUtils.KEY_VEHICLE_MAKE);
-		}
-
-		// Print out status report
-		log.log(Level.INFO, "Finished " + RetrieveVehicleTypes.class.getSimpleName());
-		log.log(Level.INFO, "Num Updated:  " + numUpdated);
-		log.log(Level.INFO, "Num Added:  " + numAdded);
 	}
 }

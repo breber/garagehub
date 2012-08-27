@@ -24,7 +24,9 @@
 				<a class="brand" href="/">Automotive Info</a>
 				<ul class="nav">
 					<li><a href="/">Home</a></li>
-					<li><a href="/addvehicle.jsp">Add Vehicle</a></li>
+					<% if (user.isLoggedIn()) { %>
+					<li><a href="/user/addvehicle.jsp">Add Vehicle</a></li>
+					<% } %>
 				</ul>
 				
 				<ul class="nav pull-right">

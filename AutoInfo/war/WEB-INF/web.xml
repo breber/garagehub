@@ -13,6 +13,15 @@
 		<url-pattern>/_ah/spi/*</url-pattern>
 	</servlet-mapping>
 
+	<!-- Get Model info for a certain make -->
+	<servlet>
+		<servlet-name>GetModels</servlet-name>
+		<servlet-class>edu.se319.team1.autoinfo.servlets.GetModels</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>GetModels</servlet-name>
+		<url-pattern>/cars/models/*</url-pattern>
+	</servlet-mapping>
 
 	<!-- Retrieve Vehicle (make, model, year) data -->
 	<servlet>
@@ -44,6 +53,17 @@
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<!-- Require user to be logged in to access certain endpoints -->
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/cars/*</url-pattern>
+			<url-pattern>/user/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>*</role-name>
 		</auth-constraint>
 	</security-constraint>
 

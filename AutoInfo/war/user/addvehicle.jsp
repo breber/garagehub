@@ -14,7 +14,31 @@
 	<link type="text/css" href="/css/auto.css" rel="stylesheet" />
 	<script type="text/javascript" src="/js/jquery.min.js"></script>
 	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-
+	
+	<script type="text/javascript">
+		
+		$().ready(function() {
+			// When the user chooses a new make, get the models
+			// for the updated make
+			$("#makes").change(function() {
+				if ($("#makes").prop("selectedIndex") !== 0) {
+					$.get('/cars/models/' + $("#makes").val(), function(data) {
+						var optionString = [];
+						
+						optionString.push("<option>Select a model</option>");
+						
+						$.each(data, function(i) {
+							optionString.push("<option>" + data[i] + "</option>");
+						});
+						
+						$("#models").html(optionString.join(""));
+					});
+				}
+			});
+		});
+	
+	</script>
+	
 	<title>Automotive Info</title>
 </head>
 <body>
@@ -38,14 +62,15 @@
 			<h2>Add Vehicle</h2>
 
 			<p>Make</p>
-			<select>
+			<select id="makes">
+				<option>Select a make</option>
 				<% for (String s : DatastoreUtils.getListOfMakes()) { %>
 					<option><%= s %></option>
 				<% } %>
 			</select>
 
 			<p>Model</p>
-			<select>
+			<select id="models">
 				<option>Select a model</option>
 			</select>
 		</div>

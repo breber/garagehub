@@ -1,6 +1,6 @@
 <%@page language="java" contentType="text/html"%>
 
-<div class="container-fluid">
+<div class="container-fluid center-block">
 	<div class="row-fluid">
 		<div class="well span3" style="padding: 8px 0;">
 			<ul class="nav nav-list">

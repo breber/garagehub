@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid center-block">
 	<div class="well well-small">
 		<h2>Please log in...</h2>
 		

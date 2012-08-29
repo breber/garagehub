@@ -31,7 +31,7 @@
 		</div>
 	</div>
 
-	<div class="container">
+	<div class="container-fluid center-block">
 		<div class="well well-small">
 			<table class="table table-hover">
 				<tr>

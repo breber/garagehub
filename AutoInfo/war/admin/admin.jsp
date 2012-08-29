@@ -10,14 +10,23 @@
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+			
 				<a class="brand" href="/">Automotive Info</a>
-				<ul class="nav">
-					<li><a href="/">Home</a></li>
-				</ul>
 				
-				<ul class="nav pull-right">
-					<jsp:include page="/username.jsp" />
-				</ul>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li><a href="/">Home</a></li>
+					</ul>
+					
+					<div class="nav pull-right">
+						<jsp:include page="/username.jsp" />
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

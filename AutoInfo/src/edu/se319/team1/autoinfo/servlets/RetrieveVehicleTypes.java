@@ -190,9 +190,11 @@ public class RetrieveVehicleTypes extends HttpServlet {
 					if (prevYears == null || !prevYears.equals(years)) {
 						Vehicle vehicle = new Vehicle(makeString, model, years);
 						vehicleList.add(vehicle);
+
+						log.log(Level.INFO, "the years DO NOT match, so no need to update (" + makeString + " " + model + ")");
 					} else {
 						numSkipped++;
-						log.log(Level.WARNING, "the years match, so no need to update (" + makeString + " " + model + ")");
+						log.log(Level.INFO, "the years match, so no need to update (" + makeString + " " + model + ")");
 					}
 				}
 			}

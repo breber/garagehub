@@ -118,7 +118,7 @@ public class RetrieveVehicleTypes extends HttpServlet {
 		log.log(Level.INFO, "Num Skipped:  " + numSkipped);
 
 		Email.sendEmailToBrian("RetrieveVehicleTypes Update: " + new Date(), "Updated at " + new Date() + "<br /><br />Updated: " + numUpdated
-				+ "<br />Added: " + numAdded + "<br />Skipped: " + numSkipped);
+				+ "<br />Added: " + numAdded + "<br />Skipped: " + numSkipped + "<br /><br />" + vehicleList.toString());
 
 		// Send the user to the admin page
 		resp.sendRedirect("/admin/admin.jsp");

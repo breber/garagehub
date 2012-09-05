@@ -202,6 +202,7 @@ public class RetrieveVehicleTypes extends HttpServlet {
 			// Update the car response string
 			if (carResponseStringEntity != null) {
 				carResponseStringEntity.setProperty(CarResponseString.Columns.RESPONSE, new Text(serverResponse));
+				datastore.put(carResponseStringEntity);
 			} else {
 				pm.makePersistent(new CarResponseString(serverResponse));
 			}
@@ -283,16 +284,20 @@ public class RetrieveVehicleTypes extends HttpServlet {
 						numUpdated++;
 						result.setProperty(Vehicle.VehicleColumns.LAST_MODIFIED, currentTime);
 						result.setProperty(Vehicle.VehicleColumns.YEARS, v.getYear());
+						datastore.put(result);
 					} else {
 						// If the result is null, we want to add the vehicle to the database
 						pm.makePersistent(v);
+						// TODO: create entity instead of pm.makePersistent
 						numAdded++;
 					}
+
+					// TODO: remove the Vehicle Model list from cache if we updated it
 				} catch (TooManyResultsException ex) {
 					log.log(Level.SEVERE, "More than one result...");
 					log.log(Level.SEVERE, v.toString());
 				} finally {
-					if (txn.isActive()) {
+					if (txn != null) {
 						txn.commit();
 					}
 				}

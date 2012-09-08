@@ -34,7 +34,7 @@ public class GetModels extends HttpServlet {
 
 		// If there are no entries, return a list of Makes
 		// If there is one entry, treat is as a Make, so return the Models for that make
-		if (parsedPath.size() == 1) {
+		if (parsedPath.isEmpty()) {
 			List<String> makes = DatastoreUtils.getListOfMakes();
 			values = new JSONArray(makes);
 		}

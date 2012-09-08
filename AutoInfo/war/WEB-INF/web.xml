@@ -16,17 +16,17 @@
 	<!-- Get Model info for a certain make -->
 	<servlet>
 		<servlet-name>GetModels</servlet-name>
-		<servlet-class>edu.se319.team1.autoinfo.servlets.GetModels</servlet-class>
+		<servlet-class>edu.se319.team1.carhub.servlets.GetModels</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>GetModels</servlet-name>
-		<url-pattern>/cars/models/*</url-pattern>
+		<url-pattern>/cars/raw/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- Retrieve Vehicle (make, model, year) data -->
 	<servlet>
 		<servlet-name>RetrieveVehicleTypes</servlet-name>
-		<servlet-class>edu.se319.team1.autoinfo.servlets.RetrieveVehicleTypes</servlet-class>
+		<servlet-class>edu.se319.team1.carhub.servlets.RetrieveVehicleTypes</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>RetrieveVehicleTypes</servlet-name>
@@ -37,7 +37,7 @@
 	<!-- Delete all vehicles -->
 	<servlet>
 		<servlet-name>DeleteAllVehicles</servlet-name>
-		<servlet-class>edu.se319.team1.autoinfo.servlets.DeleteAllVehicles</servlet-class>
+		<servlet-class>edu.se319.team1.carhub.servlets.DeleteAllVehicles</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DeleteAllVehicles</servlet-name>
@@ -45,7 +45,7 @@
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>DeleteAllCarResponseString</servlet-name>
-		<servlet-class>edu.se319.team1.autoinfo.servlets.DeleteAllCarResponseString</servlet-class>
+		<servlet-class>edu.se319.team1.carhub.servlets.DeleteAllCarResponseString</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>DeleteAllCarResponseString</servlet-name>
@@ -53,7 +53,7 @@
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>ClearMemcache</servlet-name>
-		<servlet-class>edu.se319.team1.autoinfo.servlets.ClearMemcache</servlet-class>
+		<servlet-class>edu.se319.team1.carhub.servlets.ClearMemcache</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ClearMemcache</servlet-name>

@@ -1,4 +1,4 @@
-package edu.se319.team1.autoinfo.servlets;
+package edu.se319.team1.carhub.servlets;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,12 +32,12 @@ import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
-import edu.se319.team1.autoinfo.Email;
-import edu.se319.team1.autoinfo.PMF;
-import edu.se319.team1.autoinfo.Utilities;
-import edu.se319.team1.autoinfo.data.CarResponseString;
-import edu.se319.team1.autoinfo.data.DatastoreUtils;
-import edu.se319.team1.autoinfo.data.Vehicle;
+import edu.se319.team1.carhub.Email;
+import edu.se319.team1.carhub.PMF;
+import edu.se319.team1.carhub.Utilities;
+import edu.se319.team1.carhub.data.CarResponseString;
+import edu.se319.team1.carhub.data.DatastoreUtils;
+import edu.se319.team1.carhub.data.Vehicle;
 
 /**
  * Fetch list of make/model/years from cars.com

@@ -1,6 +1,6 @@
 <%@page import="java.util.ArrayList"%>
-<%@page import="edu.se319.team1.autoinfo.data.DatastoreUtils"%>
-<%@page import="edu.se319.team1.autoinfo.UserWrapper"%>
+<%@page import="edu.se319.team1.carhub.data.DatastoreUtils"%>
+<%@page import="edu.se319.team1.carhub.UserWrapper"%>
 <%@page language="java" contentType="text/html"%>
 
 <%
@@ -18,7 +18,7 @@
 			// for the updated make
 			$("#makes").change(function() {
 				if ($("#makes").prop("selectedIndex") !== 0) {
-					$.get('/cars/models/' + $("#makes").val(), function(data) {
+					$.get('/cars/raw/' + $("#makes").val(), function(data) {
 						var optionString = [];
 						
 						optionString.push("<option>Select a model</option>");
@@ -28,9 +28,29 @@
 						});
 						
 						$("#models").html(optionString.join(""));
+						$("#years").html("<option>Select a year</option>");
 					});
 				} else {
 					$("#models").html("<option>Select a model</option>");
+					$("#years").html("<option>Select a year</option>");
+				}
+			});
+			
+			$("#models").change(function() {
+				if ($("#models").prop("selectedIndex") !== 0) {
+					$.get('/cars/raw/' + $("#makes").val() + '/' + $("#models").val(), function(data) {
+						var optionString = [];
+						
+						optionString.push("<option>Select a year</option>");
+						
+						$.each(data, function(i) {
+							optionString.push("<option>" + data[i] + "</option>");
+						});
+						
+						$("#years").html(optionString.join(""));
+					});
+				} else {
+					$("#years").html("<option>Select a year</option>");
 				}
 			});
 		});
@@ -79,6 +99,11 @@
 			<p>Model</p>
 			<select id="models">
 				<option>Select a model</option>
+			</select>
+			
+			<p>Year</p>
+			<select id="years">
+				<option>Select a year</option>
 			</select>
 		</div>
 	</div>

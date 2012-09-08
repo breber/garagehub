@@ -1,4 +1,4 @@
-package edu.se319.team1.autoinfo.data;
+package edu.se319.team1.carhub.data;
 
 import java.util.Date;
 

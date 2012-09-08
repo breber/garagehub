@@ -1,6 +1,6 @@
 <%@page import="com.google.appengine.api.users.UserServiceFactory"%>
 <%@page import="com.google.appengine.api.users.UserService"%>
-<%@page import="edu.se319.team1.autoinfo.UserWrapper"%>
+<%@page import="edu.se319.team1.carhub.UserWrapper"%>
 <%@page language="java" contentType="text/html"%>
 
 <%

@@ -1,4 +1,4 @@
-package edu.se319.team1.autoinfo;
+package edu.se319.team1.carhub;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;

@@ -1,4 +1,4 @@
-package edu.se319.team1.autoinfo.data;
+package edu.se319.team1.carhub.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -123,6 +123,60 @@ public class DatastoreUtils {
 
 			// Put string into memcache
 			syncCache.put(KEY_VEHICLE_MODEL + "_" + make, memcachedResult.toString());
+		}
+
+		return toRet;
+	}
+
+	/**
+	 * Get a list of Years for the given make and model
+	 * 
+	 * @return a list of years
+	 */
+	public static List<String> getListOfYears(String make, String model) {
+		// Using the synchronous cache
+		MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+		List<String> toRet = new ArrayList<String>();
+		Object memcacheResult = syncCache.get(KEY_VEHICLE_MODEL + "_" + make + "_" + model);
+
+		// If the value is in memcache, parse it
+		if (memcacheResult != null) {
+			String stringified = String.valueOf(memcacheResult);
+			toRet.addAll(Arrays.asList(stringified.split(SEPARATOR)));
+		} else {
+			// The value isn't in memcache, so fall back to datastore,
+			// and add the result to memcache so we don't need to go back
+			// to the datastore for a while
+			log.log(Level.WARNING, "Retrieved year list from datastore");
+
+			// Get the Datastore Service
+			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+			Query q = new Query(Vehicle.class.getSimpleName());
+			q.setFilter(new FilterPredicate(Vehicle.VehicleColumns.MAKE, Query.FilterOperator.EQUAL, make));
+			q.setFilter(new FilterPredicate(Vehicle.VehicleColumns.MODEL, Query.FilterOperator.EQUAL, model));
+			q.addProjection(new PropertyProjection(Vehicle.VehicleColumns.YEARS, String.class));
+			PreparedQuery pq = datastore.prepare(q);
+			StringBuilder memcachedResult = new StringBuilder();
+
+			try {
+				Entity result = pq.asSingleEntity();
+
+				if (result != null) {
+					String years = String.valueOf(result.getProperty(Vehicle.VehicleColumns.YEARS));
+					String[] split = years.split(",");
+
+					for (String s : split) {
+						toRet.add(s);
+						memcachedResult.append(s).append(SEPARATOR);
+					}
+				}
+			} catch (Exception e) {
+				log.log(Level.SEVERE, e.getMessage());
+				log.log(Level.SEVERE, Arrays.toString(e.getStackTrace()));
+			}
+
+			// Put string into memcache
+			syncCache.put(KEY_VEHICLE_MODEL + "_" + make + "_" + model, memcachedResult.toString());
 		}
 
 		return toRet;

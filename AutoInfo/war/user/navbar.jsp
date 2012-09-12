@@ -12,7 +12,7 @@
 		<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Tools <b class="caret hidden-phone"></b></a>
 		<ul class="dropdown-menu">
 			<li><a href="/user/nearbyGasPrices.jsp">Nearby Gas Prices</a></li>
-			<li><a href="">Trip Planner</a></li>
+			<li><a href="tripPlanner.jsp">Trip Planner</a></li>
 		</ul>
 	</li>
 	<li class="dropdown">

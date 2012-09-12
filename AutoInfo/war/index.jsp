@@ -26,9 +26,7 @@
 				<a class="brand" href="/">CarHub</a>
 				
 				<div class="nav-collapse collapse">
-					<ul class="nav">
-						<li><a href="/">Home</a></li>
-					</ul>
+					<jsp:include page="/navbar.jsp" />
 					
 					<div class="nav pull-right">
 						<jsp:include page="/username.jsp" />
@@ -39,7 +37,8 @@
 	</div>
 
 	<% if (user.isLoggedIn()) { %>
-	<jsp:include page="/user/garage.jsp" />
+	<!-- TODO: include a separate page -->
+	<%-- <jsp:include page="/user/garage.jsp" /> --%>
 	<% } else { %>
 	<jsp:include page="welcome.jsp" />
 	<% } %>

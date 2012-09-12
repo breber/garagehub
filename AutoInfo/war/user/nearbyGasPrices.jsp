@@ -26,30 +26,7 @@
 				<a class="brand" href="/">CarHub</a>
 				
 				<div class="nav-collapse collapse">
-					<ul class="nav">
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Garage <b class="caret hidden-phone"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="">Car 1</a></li>
-								<li><a href="">Car 2</a></li>
-								<li class="divider"></li>
-								<li><a href="">Add Vehicle</a>
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Tools <b class="caret hidden-phone"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="">Nearby Gas Prices</a></li>
-								<li><a href="">Trip Planner</a></li>
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Notifications <b class="caret hidden-phone"></b></a>
-							<ul class="dropdown-menu">
-								<li><a href="">No new notifications</a></li>
-							</ul>
-						</li>
-					</ul>
+					<jsp:include page="/navbar.jsp" />
 					
 					<div class="nav pull-right">
 						<jsp:include page="/username.jsp" />

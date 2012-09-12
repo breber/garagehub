@@ -2,7 +2,7 @@
 	<li class="dropdown">
 		<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Garage <b class="caret hidden-phone"></b></a>
 		<ul class="dropdown-menu">
-			<li><a href="">Car 1</a></li>
+			<li><a href="/user/charts.jsp">Car 1</a></li>
 			<li><a href="">Car 2</a></li>
 			<li class="divider"></li>
 			<li><a href="/user/addvehicle.jsp">Add Vehicle</a>

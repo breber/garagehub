@@ -146,12 +146,41 @@
 					<div id="dir-container"></div>
 				</div>
 				<div id="map_canvas" style="width: 500px; height: 300px"></div>
+				<br/>
+				<div style="list-style-type: none;">
+					<form>
+						Number of Miles: <br/><input id="num-miles-input" type="text" name="num-miles-input" /><br /> 
+						Average MPG: <br/><input id="avg-mpg-input" type="text" name="avg-mpg-input" />
+						<br/> Estimated Price Per Gallon: <br/><input id="avg-ppg-input" type="text" name="avg-ppg-input" />
+					</form>
+					<div>
+						<input onclick="calculateTripPrice();" type=button value="Calculate Cost" style="float: left"/>
+					</div>
+					<br/>
+					<br/>
+					<form>
+						Estimated Cost: <br/><input id="est-cost-trip" type="text" name="est-cost-trip" /><br /> 
+					</form>
+				</div>
+
+
 			</div>
 			
 		</div>
 	</div>
 	
-	<script type="text/javascript">	    
+	<script type="text/javascript">	
+	    function calculateTripPrice() {
+	        var miles = document.getElementById('num-miles-input').value;
+	        var mpg = document.getElementById('avg-mpg-input').value;
+	        var fuelCost = document.getElementById('avg-ppg-input').value;
+	        
+	        var cost = miles / mpg * fuelCost;
+	        
+	        document.getElementById('est-cost-trip').value = '$' + cost.toFixed(2);
+	        
+	    }
+    
 	    var Demo = {
 // 	    		  // HTML Nodes
 	    		  dirContainer: document.getElementById('dir-container'),
@@ -164,6 +193,7 @@
 	    		  map: null,
 
 	    		  showDirections: function(dirResult, dirStatus) {
+	    			  
 	    		    if (dirStatus != google.maps.DirectionsStatus.OK) {
 	    		      alert('Directions failed: ' + dirStatus);
 	    		      return;
@@ -173,6 +203,8 @@
 	    		    Demo.dirRenderer.setMap(Demo.map);
 	    		    Demo.dirRenderer.setPanel(Demo.dirContainer);
 	    		    Demo.dirRenderer.setDirections(dirResult);
+	    		    document.getElementById('num-miles-input').value = Math.round(getTotalDistance(dirResult, Demo.dirRenderer.getRouteIndex())/1609.344);
+	    		    calculateTripPrice();
 	    		  },
 
 
@@ -203,7 +235,26 @@
 	    		  }
 	    		};
 	
+	    function getTotalDistance(result, index) {
+	        var meters = 0;
+	        var route = result.routes[index];
+	        for (i = 0; i < route.legs.length; i++) {
+	            //Get the distance in meters
+	            meters += route.legs[i].distance.value;
+	        }
+	        return meters;
+	    }
+	    	    
 	    google.maps.event.addDomListener(window, 'load', Demo.init);
+	    
+	    $(document).ready(function()
+   		{
+		    $('#dir-container').click(function() {
+		    	  // Handler for .ready() called.
+		    	document.getElementById('num-miles-input').value = Math.round(getTotalDistance(Demo.dirRenderer.getDirections(), Demo.dirRenderer.getRouteIndex())/1609.344);
+	    		calculateTripPrice();
+		    });
+   		});
 	</script>
 	
 	

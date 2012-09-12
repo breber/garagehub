@@ -43,6 +43,12 @@
 								<li><a href="">Trip Planner</a></li>
 							</ul>
 						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Notifications <b class="caret hidden-phone"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="">No new notifications</a></li>
+							</ul>
+						</li>
 					</ul>
 					
 					<div class="nav pull-right">

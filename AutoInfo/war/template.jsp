@@ -9,48 +9,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<jsp:include page="/includes.jsp" />
+<jsp:include page="/includes.jsp" />
 
-	<title>CarHub</title>
+<title>CarHub</title>
 </head>
 <body>
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</a>
-			
-				<a class="brand" href="/">CarHub</a>
-				
+				<a class="btn btn-navbar" data-toggle="collapse"
+					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span>
+				</a> <a class="brand" href="/">CarHub</a>
+
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Garage <b class="caret hidden-phone"></b></a>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown">Garage <b class="caret hidden-phone"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="">Car 1</a></li>
 								<li><a href="">Car 2</a></li>
 								<li class="divider"></li>
 								<li><a href="">Add Vehicle</a>
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Tools <b class="caret hidden-phone"></b></a>
+							</ul></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown">Tools <b class="caret hidden-phone"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="">Nearby Gas Prices</a></li>
 								<li><a href="">Trip Planner</a></li>
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Notifications <b class="caret hidden-phone"></b></a>
+							</ul></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown">Notifications <b
+								class="caret hidden-phone"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="">No new notifications</a></li>
-							</ul>
-						</li>
+							</ul></li>
 					</ul>
-					
+
 					<div class="nav pull-right">
 						<jsp:include page="/username.jsp" />
 					</div>
@@ -64,12 +59,16 @@
 			<div class="well span3" style="padding: 8px 0;">
 				<ul class="nav nav-list">
 					<li class="nav-header">Navigate</li>
-					<li><a href="">Garage</a></li>
-					<li><a href="/user/addvehicle.jsp">Add Vehicle</a></li>
-					<li class="active">Find Gas</li>
-					<li><a href="">Expense Manager</a></li>
-					<li><a href="">Maintenance Tracking</a></li>
-					<li><a href="">Trip Planner</a></li>
+					<li><a href="">Car Name</a></li>
+					<li>
+						<ul>
+							<li><a href="">Expense Manager</a></li>
+							<li><a href="">Maintenance Records</a></li>
+							<li><a href="">Gas Mileage Tracking</a></li>
+							<li><a href="">News</a></li>
+	
+						</ul>
+					</li>
 				</ul>
 			</div>
 

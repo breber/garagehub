@@ -11,7 +11,7 @@
 <head>
 	<jsp:include page="/includes.jsp" />
 
-	<title>Automotive Info</title>
+	<title>CarHub</title>
 </head>
 <body>
 	<div class="navbar navbar-inverse navbar-fixed-top">
@@ -23,7 +23,7 @@
 					<span class="icon-bar"></span>
 				</a>
 			
-				<a class="brand" href="/">Automotive Info</a>
+				<a class="brand" href="/">CarHub</a>
 				
 				<div class="nav-collapse collapse">
 					<ul class="nav">

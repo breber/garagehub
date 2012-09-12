@@ -1,92 +1,57 @@
+<%@page import="com.google.appengine.api.users.UserServiceFactory"%>
+<%@page import="com.google.appengine.api.users.UserService"%>
+<%@page import="edu.se319.team1.carhub.UserWrapper"%>
+<%@page language="java" contentType="text/html"%>
 
-
-
-
-
-
-
+<%
+	UserWrapper user = UserWrapper.getInstance();
+%>
 <!DOCTYPE html>
 <html>
 <head>
+	<jsp:include page="/includes.jsp" />
 
-
-<meta name="viewport"
-	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link type="text/css"
-	href="http://automotiverecords.appspot.com/css/bootstrap.min.css"
-	rel="stylesheet" />
-<link type="text/css"
-	href="http://automotiverecords.appspot.com/css/bootstrap-responsive.min.css"
-	rel="stylesheet" />
-<link type="text/css"
-	href="http://automotiverecords.appspot.com/css/auto.css"
-	rel="stylesheet" />
-<script type="text/javascript"
-	src="http://automotiverecords.appspot.com/js/jquery.min.js"></script>
-<script type="text/javascript"
-	src="http://automotiverecords.appspot.com/js/bootstrap.min.js"></script>
-
-<title>Automotive Info</title>
+	<title>CarHub</title>
 </head>
 <body>
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
-				<a class="btn btn-navbar" data-toggle="collapse"
-					data-target=".nav-collapse"> <span class="icon-bar"></span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span>
-				</a> <a class="brand" href="/">Automotive Info</a>
-
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+			
+				<a class="brand" href="/">CarHub</a>
+				
 				<div class="nav-collapse collapse">
 					<ul class="nav">
-						<li><a href="/">Garage</a></li>
-					</ul>
-					<ul class="nav">
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown">Tools <b class="caret hidden-phone"></b></a>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Garage <b class="caret hidden-phone"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="">Car 1</a></li>
+								<li><a href="">Car 2</a></li>
+								<li class="divider"></li>
+								<li><a href="">Add Vehicle</a>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Tools <b class="caret hidden-phone"></b></a>
 							<ul class="dropdown-menu">
 								<li><a href="">Nearby Gas Prices</a></li>
 								<li><a href="">Trip Planner</a></li>
-							</ul></li>
+							</ul>
+						</li>
 					</ul>
-
+					
 					<div class="nav pull-right">
-
-
-
-
-
-
-
-						<ul class="nav">
-							<li class="hidden-phone"><a
-								href="http://gravatar.com/emails" style="padding: 0 0 0;"
-								rel="tooltip" title="Change your avatar at gravatar.com"
-								data-placement="bottom"> <img
-									src="http://www.gravatar.com/avatar/ba9382294b60b3843d5fd1afd3da7962?s=40" />
-							</a></li>
-							<li class="dropdown"><a href="#" class="dropdown-toggle"
-								data-toggle="dropdown">user@google.com <b
-									class="caret hidden-phone"></b></a>
-								<ul class="dropdown-menu">
-
-									<li><a href="/admin/admin.jsp">Admin</a></li>
-
-									<li><a href="#">Settings</a></li>
-									<li class="divider"></li>
-									<li><a href="/_ah/logout?continue=%2F">Logout</a></li>
-								</ul></li>
-						</ul>
-
-
+						<jsp:include page="/username.jsp" />
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
-
-
 
 	<div class="container-fluid center-block">
 		<div class="row-fluid">
@@ -113,7 +78,5 @@
 			</div>
 		</div>
 	</div>
-
-
 </body>
 </html>

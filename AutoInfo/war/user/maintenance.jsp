@@ -52,7 +52,7 @@
 				<th>Service Provider</th>
 				<th>Suggested Miles</th>
 				<th>Suggested Date</th>
-				<th>Picture</th>
+				<th>Receipt</th>
 				</tr>
 				
 				<tr>
@@ -82,18 +82,21 @@
 				<th>Date</th>
 				<th>Price</th>
 				<th>Service Provider</th>
+				<th>Receipt</th>
 				</tr>
 				
 				<tr>
 				<td>3/12/2012</td>
 				<td>$9.99</td>
 				<td>Primp My Ride</td>
+				<td><a>Picture</a></td>
 				</tr>
 				
 				<tr>
 				<td>12/13/2011</td>
 				<td>$10.99</td>
 				<td>Greasy Joe's</td>
+				<td><a>Picture</a></td>
 				</tr>
 				
 				</table>
@@ -106,6 +109,7 @@
 				<th>Date</th>
 				<th>Price</th>
 				<th>Service Provider</th>
+				<th>Receipt</th>
 				</tr>
 				
 				<tr>
@@ -113,6 +117,7 @@
 				<td>7/11/2011</td>
 				<td>$5000.00</td>
 				<td>Airbag Fixer-Uppers, Inc.</td>
+				<td><a>Picture</a></td>
 				</tr>
 				
 				<tr>
@@ -120,6 +125,7 @@
 				<td>12/25/2010</td>
 				<td>$400.00</td>
 				<td>Stick 2 Auto Garage</td>
+				<td><a>Picture</a></td>
 				</tr>
 				
 				</table>

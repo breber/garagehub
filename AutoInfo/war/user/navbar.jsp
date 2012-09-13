@@ -1,3 +1,5 @@
+<link type="text/css" href="/css/individual.css" rel="stylesheet" />
+
 <ul class="nav">
 	<li class="dropdown">
 		<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Garage <b class="caret hidden-phone"></b></a>
@@ -16,7 +18,7 @@
 		</ul>
 	</li>
 	<li class="dropdown">
-		<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Notifications <img src="/img/notification.png"/> <b class="caret hidden-phone"></b></a>
+		<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Notifications <span id="notifNum">2</span> <b class="caret hidden-phone"></b></a>
 		<ul class="dropdown-menu">
 			<li><a href="">Car A: Oil change due in 100 miles</a></li>
 			<li><a href="">Car B: Has not been washed in 5 years</a></li>

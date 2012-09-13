@@ -1,0 +1,8 @@
+@CHARSET "UTF-8";
+
+#notifNum {
+	color: white;
+	background-color: red;
+	padding: 2px 5px;
+	margin-left: 5px;
+}

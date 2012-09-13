@@ -92,9 +92,7 @@
 
 	<div class="container-fluid center-block">
 		<div class="row-fluid">
-			<jsp:include page="/sideNav.jsp" />
-
-			<div class="well well-small span9">
+			<div class="well well-small">
 				<h2>Trip Planner</h2>
 
 				<div id="side-container">
@@ -105,7 +103,7 @@
 						<li><input id="to-input" type=text value="San Jose, CA" /></li>
 					</ul>
 					<div>
-						<input onclick="Demo.getDirections();" type=button value="Go!" style="float: left"/>
+						<input onclick="Demo.getDirections();" type="button" class="btn"value="Go!" style="float: left"/>
 					</div>
 					<div id="dir-container"></div>
 				</div>
@@ -118,7 +116,7 @@
 						<br/> Estimated Price Per Gallon: <br/><input id="avg-ppg-input" type="text" name="avg-ppg-input" />
 					</form>
 					<div>
-						<input onclick="calculateTripPrice();" type=button value="Calculate Cost" style="float: left"/>
+						<input onclick="calculateTripPrice();" type="button" class="btn" value="Calculate Cost" style="float: left"/>
 					</div>
 					<br/>
 					<br/>
@@ -126,10 +124,7 @@
 						Estimated Cost: <br/><input id="est-cost-trip" type="text" name="est-cost-trip" /><br /> 
 					</form>
 				</div>
-
-
 			</div>
-			
 		</div>
 	</div>
 	

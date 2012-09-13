@@ -38,15 +38,18 @@
 
 	<div class="container-fluid center-block">
 		<div class="row-fluid">
-			<jsp:include page="/sideNav.jsp" />
-
-			<div class="well well-small span9">
+			<div class="well well-small">
 				<h2>Nearby Gas Prices</h2>
 
-				<form action="form_action.asp" method="get">
+				<form onsubmit="return getGasPrices();">
 					<input type="checkbox" id="location" name="loaction" value="location" /> Detect my
-					location<br /> <br /> Zip Code: <input type="text" name="zip" id="zip" /><br />
-					<br /> <input type="button" onclick="getGasPrices();" value="Get Gas" />
+					location
+					<br /> <br /> 
+					
+					Zip Code: <input type="text" name="zip" id="zip" />
+					<br />
+					<br />
+					<input type="button" class="btn" onclick="getGasPrices();" value="Get Gas" />
 				</form>
 				
 				<table class="table" id="table">
@@ -61,8 +64,7 @@
 			</div>
 		</div>
 	</div>
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
-	<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6rEVLWJAAQ6p3IObKwkyGoAVQ_GQZnIg&sensor=false"></script>
  
 	<script type="text/javascript">
 	

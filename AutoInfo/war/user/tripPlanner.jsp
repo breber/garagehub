@@ -135,6 +135,7 @@
 	
 	<script type="text/javascript">	
 	    function calculateTripPrice() {
+	    	
 	        var miles = document.getElementById('num-miles-input').value;
 	        var mpg = document.getElementById('avg-mpg-input').value;
 	        var fuelCost = document.getElementById('avg-ppg-input').value;

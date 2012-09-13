@@ -1,5 +1,3 @@
-<%@page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@page import="com.google.appengine.api.users.UserService"%>
 <%@page import="edu.se319.team1.carhub.UserWrapper"%>
 <%@page language="java" contentType="text/html"%>
 
@@ -7,13 +5,12 @@
 	UserWrapper user = UserWrapper.getInstance();
 %>
 
-
 <!DOCTYPE html>
 <html>
 <head>
 	<jsp:include page="/includes.jsp" />
 	
-	<!-- 	Google maps api javascript -->
+	<!-- Google maps api javascript -->
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6rEVLWJAAQ6p3IObKwkyGoAVQ_GQZnIg&sensor=false"></script>
     
 	<title>CarHub</title>
@@ -68,27 +65,7 @@
 
 </head>
 <body>
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</a>
-			
-				<a class="brand" href="/">CarHub</a>
-				
-				<div class="nav-collapse collapse">
-					<jsp:include page="/user/navbar.jsp" />
-					
-					<div class="nav pull-right">
-						<jsp:include page="/username.jsp" />
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	<jsp:include page="/user/navbar.jsp" />
 
 	<div class="container-fluid center-block">
 		<div class="row-fluid">
@@ -216,8 +193,6 @@
 		    });
    		});
 	</script>
-	
-	
 </body>
 </html>
 

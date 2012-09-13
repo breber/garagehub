@@ -39,7 +39,7 @@
 
 	<% if (user.isLoggedIn()) { %>
 	<!-- TODO: include a separate page -->
-	<%-- <jsp:include page="/user/garage.jsp" /> --%>
+	<jsp:include page="/user/garage.jsp" />
 	<% } else { %>
 	<jsp:include page="welcome.jsp" />
 	<% } %>

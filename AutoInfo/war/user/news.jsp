@@ -46,9 +46,9 @@
       // Set searchComplete as the callback function when a search is 
       // complete.  The newsSearch object will have results in it.
       newsSearch.setSearchCompleteCallback(this, searchComplete, null);
-
+	  newsSearch.setResultSetSize(8);
       // Specify search quer(ies)
-      newsSearch.execute('Honda CRV');
+      newsSearch.execute('Honda CR-V');
 
       // Include the required Google branding
       google.search.Search.getBranding('branding');

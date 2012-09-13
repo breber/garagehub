@@ -42,12 +42,87 @@
 
 			<div class="well well-small span9">
 				<h2>Maintenance Records</h2>
-
-				<form action="form_action.asp" method="get">
-					<input type="checkbox" name="vehicle" value="Bike" /> Detect my
-					location<br /> <br /> Zip Code: <input type="text" name="fname" /><br />
-					<br /> <input type="submit" value="Get Gas" />
-				</form>
+				
+				<h3>Oil Changes</h3>
+				<table class="table">
+				
+				<tr>
+				<th>Date</th>
+				<th>Price</th>
+				<th>Service Provider</th>
+				<th>Suggested Miles</th>
+				<th>Suggested Date</th>
+				<th>Picture</th>
+				</tr>
+				
+				<tr>
+				<td>3/12/2012</td>
+				<td>$25.99</td>
+				<td>Honda Dealership</td>
+				<td>4000</td>
+				<td>7/12/2012</td>
+				<td><a>Picture</a>
+				</tr>
+				
+				<tr>
+				<td>12/13/2011</td>
+				<td>$21.99</td>
+				<td>Jiffy Lube</td>
+				<td>3000</td>
+				<td>3/13/2012</td>
+				<td><a>Picture</a>
+				</tr>
+				
+				</table>
+				
+				<h3>Car Washes</h3>
+				<table class="table">
+				
+				<tr>
+				<th>Date</th>
+				<th>Price</th>
+				<th>Service Provider</th>
+				</tr>
+				
+				<tr>
+				<td>3/12/2012</td>
+				<td>$9.99</td>
+				<td>Primp My Ride</td>
+				</tr>
+				
+				<tr>
+				<td>12/13/2011</td>
+				<td>$10.99</td>
+				<td>Greasy Joe's</td>
+				</tr>
+				
+				</table>
+				
+				<h3>Miscellaneous</h3>
+				<table class="table">
+				
+				<tr>
+				<th>Description</th>
+				<th>Date</th>
+				<th>Price</th>
+				<th>Service Provider</th>
+				</tr>
+				
+				<tr>
+				<td>Fix airbags</td>
+				<td>7/11/2011</td>
+				<td>$5000.00</td>
+				<td>Airbag Fixer-Uppers, Inc.</td>
+				</tr>
+				
+				<tr>
+				<td>Clutch removal</td>
+				<td>12/25/2010</td>
+				<td>$400.00</td>
+				<td>Stick 2 Auto Garage</td>
+				</tr>
+				
+				</table>
 			</div>
 		</div>
 	</div>

@@ -56,6 +56,7 @@
 		  float: left;
 		  overflow: auto;
 		  padding: 2px 0px 2px 0px;
+		  max-height: 500px;
 		}
 		#dir-container table {
 		  font-size: 1em;
@@ -69,7 +70,7 @@
 
 	<div class="container-fluid center-block">
 		<div class="row-fluid">
-			<div class="well well-small">
+			<div class="well well-small" style="overflow:auto;">
 				<h2>Trip Planner</h2>
 
 				<div id="side-container">
@@ -86,7 +87,7 @@
 				</div>
 				<div id="map_canvas" style="width: 500px; height: 300px"></div>
 				<br/>
-				<div style="list-style-type: none;">
+				<div style="list-style-type: none; float: left;">
 					<form>
 						Number of Miles: <br/><input id="num-miles-input" type="text" name="num-miles-input" /><br /> 
 						Average MPG: <br/><input id="avg-mpg-input" type="text" name="avg-mpg-input" />

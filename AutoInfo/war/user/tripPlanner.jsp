@@ -14,7 +14,7 @@
 	<jsp:include page="/includes.jsp" />
 	
 	<!-- 	Google maps api javascript -->
-	<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6rEVLWJAAQ6p3IObKwkyGoAVQ_GQZnIg&sensor=false"></script>
     
 	<title>CarHub</title>
 	

@@ -21,7 +21,7 @@
 			</tr>
 			<tr>
 				<td><a href="" title="LiveJournal"><img src="/img/livejournal.png"></img></a></td>
-				<td><a href="" title="MySpace"><img src="/img/myspace.gif"></img></a></td>
+				<td><a href="<%=user.createLoginURL("/index.jsp", null, "http://www.myspace.com/openid", null)%>" title="MySpace"><img src="/img/myspace.gif"></img></a></td>
 			</tr>
 			<tr>
 				<td colspan="2">

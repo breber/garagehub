@@ -82,6 +82,15 @@
 			<role-name>*</role-name>
 		</auth-constraint>
 	</security-constraint>
+	
+	<servlet>
+        <servlet-name>LoginRequiredServlet</servlet-name>
+        <servlet-class>edu.se319.team1.carhub.servlets.LoginRequiredServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginRequiredServlet</servlet-name>
+        <url-pattern>/_ah/login_required</url-pattern>
+    </servlet-mapping>
 
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

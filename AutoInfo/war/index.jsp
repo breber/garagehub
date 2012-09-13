@@ -26,8 +26,9 @@
 				<a class="brand" href="/">CarHub</a>
 				
 				<div class="nav-collapse collapse">
+					<% if (user.isLoggedIn()) { %>
 					<jsp:include page="/user/navbar.jsp" />
-					
+					<% } %>
 					<div class="nav pull-right">
 						<jsp:include page="/username.jsp" />
 					</div>

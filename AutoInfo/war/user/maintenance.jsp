@@ -20,9 +20,11 @@
 
 			<div class="well well-small span9">
 				<h2>Maintenance Records</h2>
+				<button class="btn btn-primary pull-right" type="button"
+					onclick="parent.location='/user/addrecord.jsp'">Add Record</button>
 				
 				<h3>Oil Changes</h3>
-				<table class="table">
+				<table class="table table-striped table-bordered">
 				
 				<tr>
 				<th>Date</th>
@@ -54,7 +56,7 @@
 				</table>
 				
 				<h3>Car Washes</h3>
-				<table class="table">
+				<table class="table table-striped table-bordered">
 				
 				<tr>
 				<th>Date</th>
@@ -80,7 +82,7 @@
 				</table>
 				
 				<h3>Miscellaneous</h3>
-				<table class="table">
+				<table class="table table-striped table-bordered">
 				
 				<tr>
 				<th>Description</th>

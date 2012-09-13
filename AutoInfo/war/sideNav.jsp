@@ -7,9 +7,9 @@
 		<li>
 			<ul>
 			<li><a href="">Expense Manager</a></li>
-			<li><a href="">Maintenance Records</a></li>
+			<li><a href="/user/maintenance.jsp">Maintenance Records</a></li>
 			<li><a href="">Gas Mileage Tracking</a></li>
-			<li><a href="/news.jsp">News</a></li>
+			<li><a href="/user/news.jsp">News</a></li>
 			</ul>
 		</li>
 	</ul>

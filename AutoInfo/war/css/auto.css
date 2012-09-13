@@ -12,3 +12,10 @@
 	margin-left: auto;
 	margin-right: auto;
 }
+
+#notifNum {
+	color: white;
+	background-color: red;
+	padding: 2px 5px;
+	margin-left: 5px;
+}

@@ -5,6 +5,7 @@
 
 <%
 	UserWrapper user = UserWrapper.getInstance();
+	String carName = request.getParameter("carName");
 %>
 <!DOCTYPE html>
 <html>
@@ -48,7 +49,7 @@
       newsSearch.setSearchCompleteCallback(this, searchComplete, null);
 	  newsSearch.setResultSetSize(8);
       // Specify search quer(ies)
-      newsSearch.execute('Honda CR-V');
+      newsSearch.execute('<%=carName%>');
 
       // Include the required Google branding
       google.search.Search.getBranding('branding');
@@ -90,9 +91,7 @@
 			<div class="well well-small span9">
 				<h2>News</h2>
 
-				<div class="well well-small">
-					<div id="searchresults"></div>
-				</div>
+				<div id="searchresults"></div>
 			</div>
 		</div>
 	</div>

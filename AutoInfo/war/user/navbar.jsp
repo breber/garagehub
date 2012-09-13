@@ -2,8 +2,9 @@
 	<li class="dropdown">
 		<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Garage <b class="caret hidden-phone"></b></a>
 		<ul class="dropdown-menu">
-			<li><a href="/user/car.jsp?carName=Car%201">Car 1</a></li>
-			<li><a href="/user/car.jsp?carName=Car%202">Car 2</a></li>
+			<li><a href="/user/car.jsp?carName=Ford%20Focus">Ford Focus</a></li>
+			<li><a href="/user/car.jsp?carName=Chevy%20Cruze">Chevy Cruze</a></li>
+			<li><a href="/user/car.jsp?carName=Honda%20CRV">Honda CRV</a></li>
 			<li class="divider"></li>
 			<li><a href="/user/addvehicle.jsp">Add Vehicle</a>
 		</ul>

@@ -23,7 +23,8 @@
 			<div class="well well-small span9">
 				<h2>Gas Mileage Tracker</h2>
 
-				<h3>MPG: 55.8</h3> <h3>Miles: 100,234</h3>
+				<h3>MPG: 55.8</h3>
+				<h3>Miles: 100,234</h3>
 
 				<div class="btn-group" data-toggle="buttons-radio">
 					<button type="button" class="btn">Most Recent Fuel Up</button>
@@ -33,7 +34,7 @@
 					<button type="button" class="btn">All</button>
 					<button type="button" class="btn">Custom</button>
 				</div>
-				
+
 				<table class="table">
 
 
@@ -54,8 +55,8 @@
 				</table>
 
 
-				<br />
-				<input type="submit" value="Add Fuel Transaction +" />
+				<br /> <input style="float: right" type="button" class="btn"
+					value="Add Fuel Transaction +" /> <br /> <br />
 
 				<table class="table">
 

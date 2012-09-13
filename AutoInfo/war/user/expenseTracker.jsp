@@ -10,6 +10,14 @@
 <html>
 <head>
 <jsp:include page="/includes.jsp" />
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+	function addCategory() {
+
+		alert("Trying to add category");
+
+	}
+</script>
 
 <title>CarHub</title>
 </head>
@@ -25,17 +33,22 @@
 
 				<h3>Total Money Spent: $1,003,304</h3>
 
-				<div class="btn-group" data-toggle="buttons-radio">
-					<button type="button" class="btn">Most Recent Purchase</button>
-					<button type="button" class="btn">1 M</button>
-					<button type="button" class="btn">3 M</button>
-					<button type="button" class="btn">1 Yr</button>
-					<button type="button" class="btn">All</button>
-					<button type="button" class="btn">Custom</button>
+				<div>
+					<div class="btn-group" style="float: left"
+						data-toggle="buttons-radio">
+						<button type="button" class="btn">Most Recent Purchase</button>
+						<button type="button" class="btn">1 M</button>
+						<button type="button" class="btn">3 M</button>
+						<button type="button" class="btn">1 Yr</button>
+						<button type="button" class="btn">All</button>
+						<button type="button" class="btn">Custom</button>
+					</div>
+					<div style="float: right">
+						<input type="button" class="btn" onclick="addCategory();"
+							value="Add Category +" />
+					</div>
 				</div>
-				<input type="submit" value="Add Category +" />
-
-				<table class="table">
+				<table class="table table-striped table-bordered">
 
 
 					<tr>
@@ -57,11 +70,14 @@
 
 				<br />
 
-				<button type="button" class="btn btn-primary" data-toggle="collapse"
-					data-target="#fuelExpenses">Show/Hide - Fuel Expenses</button>
+				<button style="float: left" type="button" class="btn btn-primary"
+					data-toggle="collapse" data-target="#fuelExpenses">Show/Hide
+					- Fuel Expenses</button>
+				<input style="float: right" type="button" class="btn"
+					value="Add Fuel Transaction +" /> <br /> <br />
 
 				<div id="fuelExpenses" class="collapse in">
-					<table class="table">
+					<table class="table table-striped table-bordered">
 
 						<tr>
 							<th>Date</th>
@@ -70,10 +86,6 @@
 							<th>$ / Gallon</th>
 							<th>Location</th>
 							<th>Odometer</th>
-						</tr>
-
-						<tr>
-							<td><input type="submit" value="Add Fuel Transaction +" /></td>
 						</tr>
 
 						<tr>
@@ -114,12 +126,15 @@
 
 					</table>
 				</div>
-				
-				<button type="button" class="btn btn-primary" data-toggle="collapse"
-					data-target="#RepairExpenses">Show/Hide - Repair Expenses</button>
 
+				<button style="float: left" type="button" class="btn btn-primary"
+					data-toggle="collapse" data-target="#RepairExpenses">Show/Hide
+					- Repair Expenses</button>
+
+				<input style="float: right" type="button" class="btn"
+					value="Add Repair Transaction +" /> <br /> <br />
 				<div id="RepairExpenses" class="collapse in">
-					<table class="table">
+					<table class="table table-striped table-bordered">
 
 						<tr>
 							<th>Date</th>
@@ -127,10 +142,6 @@
 							<th>Category</th>
 							<th>Location</th>
 							<th>Description</th>
-						</tr>
-
-						<tr>
-							<td><input type="submit" value="Add Repair Transaction +" /></td>
 						</tr>
 
 						<tr>
@@ -146,17 +157,20 @@
 							<td>$500.23</td>
 							<td>Repair</td>
 							<td>Tony's Shop</td>
-							<td>The transmission died in the middle of nowhere, got it fixed.</td>
+							<td>The transmission died in the middle of nowhere, got it
+								fixed.</td>
 						</tr>
 
 					</table>
 				</div>
-				
-				<button type="button" class="btn btn-primary" data-toggle="collapse"
-					data-target="#MaintenanceExpenses">Show/Hide - Maintenance Expenses</button>
 
+				<button style="float: left" type="button" class="btn btn-primary"
+					data-toggle="collapse" data-target="#MaintenanceExpenses">Show/Hide
+					- Maintenance Expenses</button>
+				<input style="float: right" type="button" class="btn"
+					value="Add Maintenance Transaction +" /> <br /> <br />
 				<div id="MaintenanceExpenses" class="collapse in">
-					<table class="table">
+					<table class="table table-striped table-bordered">
 
 						<tr>
 							<th>Date</th>
@@ -164,10 +178,6 @@
 							<th>Category</th>
 							<th>Location</th>
 							<th>Description</th>
-						</tr>
-
-						<tr>
-							<td><input type="submit" value="Add Maintenance Transaction +" /></td>
 						</tr>
 
 						<tr>
@@ -188,12 +198,14 @@
 
 					</table>
 				</div>
-				
-				<button type="button" class="btn btn-primary" data-toggle="collapse"
-					data-target="#VanityExpenses">Show/Hide - The Cost of Looking Good</button>
 
+				<button style="float: left" type="button" class="btn btn-primary"
+					data-toggle="collapse" data-target="#VanityExpenses">Show/Hide
+					- The Cost of Looking Good</button>
+				<input style="float: right" type="button" class="btn"
+					value="Add Looking Good Transaction +" /> <br /> <br />
 				<div id="VanityExpenses" class="collapse in">
-					<table class="table">
+					<table class="table table-striped table-bordered">
 
 						<tr>
 							<th>Date</th>
@@ -201,10 +213,6 @@
 							<th>Category</th>
 							<th>Location</th>
 							<th>Description</th>
-						</tr>
-
-						<tr>
-							<td><input type="submit" value="Add Looking Good Transaction +" /></td>
 						</tr>
 
 						<tr>
@@ -222,7 +230,7 @@
 							<td>Creepy Colors</td>
 							<td>Too hard to see car, changed color to Midnight Black</td>
 						</tr>
-						
+
 						<tr>
 							<td>2011-09-05 12:89:11</td>
 							<td>$10,000</td>
@@ -230,7 +238,7 @@
 							<td>Decent Painters</td>
 							<td>Painted car Camouflage, WIN!</td>
 						</tr>
-						
+
 						<tr>
 							<td>...</td>
 						</tr>

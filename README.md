@@ -59,3 +59,10 @@ Maps the path `http://website.com/admin/deletevehicles` to the Java class `edu.s
 			// Do stuff...
 		}
 	}
+
+## Helpful Links ##
+
+*	[Google AppEngine](https://appengine.google.com/)
+*	[Google API Console](https://code.google.com/apis/console/)
+*	[Twitter Bootstrap](http://twitter.github.com/bootstrap)
+*	[jQuery](http://jquery.com/)

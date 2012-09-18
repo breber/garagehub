@@ -29,7 +29,23 @@
 							<label for="zip">Zip Code:</label><input type="text" name="zip" id="zip" />
 						</div>
 						<div style = "float:left; margin-left:20px;">
-							<label for="radius">Search Radius:</label><input type="text" name="radius" id="radius" />
+							<label for="radius">Search Radius:</label>
+							<select name="radius" id="radius">
+								<option value="1">1 Mile</option>
+								<option value="2">2 Miles</option>
+								<option value="3">3 Miles</option>
+								<option value="4">4 Miles</option>
+								<option SELECTED value="5">5 Miles</option>
+								<option value="6">6 Miles</option>
+								<option value="7">7 Miles</option>
+								<option value="8">8 Miles</option>
+								<option value="9">9 Miles</option>
+								<option value="10">10 Miles</option>
+								<option value="15">15 Miles</option>
+								<option value="20">20 Miles</option>
+								<option value="25">25 Miles</option>
+								<option value="30">30 Miles</option>
+							</select>
 						</div>
 						<div style = "float:left; margin-left:20px;">
 							<label for="grade">Fuel Grade:</label>

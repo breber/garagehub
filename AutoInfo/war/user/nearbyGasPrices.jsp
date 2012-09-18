@@ -68,7 +68,7 @@
 					</tr>
 				</table>
 				<div>
-					Gas prices provided by www.myGasFeed.com.
+					Data Powered by www.myGasFeed.com.
 				</div>
 			</div>
 		</div>

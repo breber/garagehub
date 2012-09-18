@@ -19,7 +19,7 @@
 			<% if (user.isAdmin()) { %>
 			<li><a href="/admin/admin.jsp">Admin</a></li>
 			<% } %>
-			<li><a href="#">Settings</a></li>
+			<li><a href="/user/settings.jsp">Settings</a></li>
 			<li class="divider"></li>
 			<li><a href="<%= UserServiceFactory.getUserService().createLogoutURL("/") %>">Logout</a></li>
 		</ul>

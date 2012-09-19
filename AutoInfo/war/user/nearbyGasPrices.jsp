@@ -19,7 +19,7 @@
 			<div class="well well-small">
 				<h2>Nearby Gas Prices</h2>
 
-				<form onsubmit="return getGasPrices();">
+				<form>
 					<input onclick = "hideZipCode();" type="checkbox" id="location" name="loaction" value="location" checked/> Detect my
 					location
 					<br /> <br /> 
@@ -87,9 +87,7 @@
 	<script type="text/javascript">
 			
 	function getGasPrices(){
-		//$("#table").find("tr:gt(0)").remove();
 		$("#table").empty();
-		$("#table2").empty();
 		
 		var isChecked = $('#location').attr('checked')?true:false;
 		var JSONGasFeed;
@@ -171,7 +169,6 @@
 	}
 	
 	function stopLoading(){
-		//$("#table").find("tr:gt(0)").remove();
 		$("#table").empty();
 	}
 	
@@ -218,6 +215,7 @@
 		
 		});
 	}
+
 	</script>
 </body>
 </html>

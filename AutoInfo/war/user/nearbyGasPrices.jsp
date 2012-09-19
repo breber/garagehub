@@ -11,7 +11,7 @@
 
 	<title>CarHub</title>
 </head>
-<body>
+<body onload = "getGasPrices()">
 	<jsp:include page="/user/navbar.jsp" />
 
 	<div class="container-fluid center-block">
@@ -20,7 +20,7 @@
 				<h2>Nearby Gas Prices</h2>
 
 				<form onsubmit="return getGasPrices();">
-					<input onclick = "hideZipCode();" type="checkbox" id="location" name="loaction" value="location" /> Detect my
+					<input onclick = "hideZipCode();" type="checkbox" id="location" name="loaction" value="location" checked/> Detect my
 					location
 					<br /> <br /> 
 					
@@ -74,14 +74,7 @@
 				</form>
 				<br/>
 				<br/>
-				<table class="table" id="table">
-					<tr>
-						<th>Name</th>
-						<th>Location</th>
-						<th>Price</th>
-						<th>Distance</th>
-						<th>Last Updated</th>
-					</tr>
+				<table class="table pagination" id="table">
 				</table>
 				<div>
 					Data Powered by www.myGasFeed.com.
@@ -92,9 +85,11 @@
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6rEVLWJAAQ6p3IObKwkyGoAVQ_GQZnIg&sensor=false"></script>
  
 	<script type="text/javascript">
-	
+			
 	function getGasPrices(){
-		$("#table").find("tr:gt(0)").remove();
+		//$("#table").find("tr:gt(0)").remove();
+		$("#table").empty();
+		$("#table2").empty();
 		
 		var isChecked = $('#location').attr('checked')?true:false;
 		var JSONGasFeed;
@@ -170,11 +165,14 @@
 		}
 	
 	function showLoading(){
-		$('#table').append("<tr><td>Loading...</td><td></td><td></td><td></td><td></td></tr>");
+		$('#table').append("<center>Loading...</center><br/>");
+		$('#table').append('<center><img id="theImg"  src="ajax-loader.gif" /></center>');
+		
 	}
 	
 	function stopLoading(){
-		$("#table").find("tr:gt(0)").remove();
+		//$("#table").find("tr:gt(0)").remove();
+		$("#table").empty();
 	}
 	
 	function displayGasPrices(JSONGasFeed){
@@ -183,16 +181,41 @@
 			var grade = document.getElementById('grade').value;
 			stopLoading();
 			$.each(json.stations, function(i, item){
-				if(grade === 'reg')
-					$('#table').append("<tr><td>"+item.station+"</td><td>"+item.address+"</td><td>"+item.reg_price+"</td><td>"+item.distance+"</td><td>"+item.reg_date+"</td></tr>");
-				if(grade === 'mid')
-					$('#table').append("<tr><td>"+item.station+"</td><td>"+item.address+"</td><td>"+item.mid_price+"</td><td>"+item.distance+"</td><td>"+item.mid_date+"</td></tr>");
-				if(grade === 'pre')
-					$('#table').append("<tr><td>"+item.station+"</td><td>"+item.address+"</td><td>"+item.pre_price+"</td><td>"+item.distance+"</td><td>"+item.pre_date+"</td></tr>");
-				if(grade === 'diesel')
-					$('#table').append("<tr><td>"+item.station+"</td><td>"+item.address+"</td><td>"+item.diesel_price+"</td><td>"+item.distance+"</td><td>"+item.diesel_date+"</td></tr>");
-
+				var price;
+				if(grade === 'reg'){
+					price = item.reg_price
+				}else if(grade === 'mid'){
+					price = item.mid_price
+				}else if(grade === 'pre'){
+					price = item.pre_price
+				}else if(grade === 'diesel'){
+					price = item.diesel_price
+				}
+				
+				if(price !== 'N/A'){
+					$('#table').last().append("<tr><td>"+item.station+"</td><td>"+item.address+"</td><td>"+price+"</td><td>"+item.distance+"</td><td>"+item.diesel_date+"</td></tr>");
+				}
 		    });
+			
+			$.each(json.stations, function(i, item){
+				var price;
+				if(grade === 'reg'){
+					price = item.reg_price
+				}else if(grade === 'mid'){
+					price = item.mid_price
+				}else if(grade === 'pre'){
+					price = item.pre_price
+				}else if(grade === 'diesel'){
+					price = item.diesel_price
+				}
+				
+				if(price === 'N/A'){
+					$('#table').last().append("<tr><td>"+item.station+"</td><td>"+item.address+"</td><td>"+price+"</td><td>"+item.distance+"</td><td>"+item.diesel_date+"</td></tr>");
+				}
+		    });
+			
+			$('#table').prepend("<tr><th>Name</th><th>Location</th><th>Price</th><th>Distance</th><th>Last Updated</th></tr>");
+		
 		});
 	}
 	</script>

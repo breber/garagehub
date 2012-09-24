@@ -1,8 +1,6 @@
 package edu.se319.team1.carhub;
 
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import javax.servlet.http.HttpSession;
 
 /**
  * Wrapper for the Google User API
@@ -30,19 +28,42 @@ public class UserWrapper {
 	private String nickname;
 
 	/**
+	 * The user's profile picture URL
+	 */
+	private String profilePictureUrl;
+
+	//	/**
+	//	 * Get the UserWrapper for the current logged in user
+	//	 *
+	//	 * @return the UserWrapper for the current user
+	//	 */
+	//	public static UserWrapper getInstance() {
+	//		UserWrapper toRet = new UserWrapper();
+	//		UserService service = UserServiceFactory.getUserService();
+	//		User user = service.getCurrentUser();
+	//
+	//		toRet.isLoggedIn = service.isUserLoggedIn();
+	//		toRet.isAdmin = toRet.isLoggedIn && service.isUserAdmin();
+	//		toRet.nickname = (toRet.isLoggedIn) ? user.getNickname() : "";
+	//		toRet.md5 = (toRet.isLoggedIn) ? MD5Util.md5Hex(user.getEmail()) : "00000000000000000000000000000000";
+	//
+	//		return toRet;
+	//	}
+
+	/**
 	 * Get the UserWrapper for the current logged in user
 	 * 
 	 * @return the UserWrapper for the current user
 	 */
-	public static UserWrapper getInstance() {
+	public static UserWrapper getInstance(HttpSession session) {
 		UserWrapper toRet = new UserWrapper();
-		UserService service = UserServiceFactory.getUserService();
-		User user = service.getCurrentUser();
 
-		toRet.isLoggedIn = service.isUserLoggedIn();
-		toRet.isAdmin = toRet.isLoggedIn && service.isUserAdmin();
-		toRet.nickname = (toRet.isLoggedIn) ? user.getNickname() : "";
-		toRet.md5 = (toRet.isLoggedIn) ? MD5Util.md5Hex(user.getEmail()) : "00000000000000000000000000000000";
+		toRet.isLoggedIn = (session.getAttribute("logged_in") != null);
+		toRet.nickname = (toRet.isLoggedIn) ? (String) session.getAttribute("username") : "";
+		toRet.isAdmin = toRet.isLoggedIn &&
+				("breber".equals(toRet.nickname) || "josh.peters.33".equals(toRet.nickname) || "jgkujawa".equals(toRet.nickname) || "fantashley".equals(toRet.nickname));
+		toRet.md5 = (toRet.isLoggedIn) ? MD5Util.md5Hex(toRet.nickname) : "00000000000000000000000000000000";
+		toRet.profilePictureUrl = "https://graph.facebook.com/" + toRet.nickname + "/picture";
 
 		return toRet;
 	}
@@ -78,5 +99,12 @@ public class UserWrapper {
 	 */
 	public String getNickname() {
 		return nickname;
+	}
+
+	/**
+	 * @return the profilePictureUrl
+	 */
+	public String getProfilePictureUrl() {
+		return profilePictureUrl;
 	};
 }

@@ -2,7 +2,7 @@
 <%@page language="java" contentType="text/html"%>
 
 <%
-	UserWrapper user = UserWrapper.getInstance();
+	UserWrapper user = UserWrapper.getInstance(request.getSession(false));
 	String carName = request.getParameter("carName");
 %>
 <!DOCTYPE html>

@@ -3,7 +3,7 @@
 <%@page language="java" contentType="text/html"%>
 
 <%
-	UserWrapper user = UserWrapper.getInstance();
+	UserWrapper user = UserWrapper.getInstance(request.getSession(false));
 %>
 <!DOCTYPE html>
 <html>

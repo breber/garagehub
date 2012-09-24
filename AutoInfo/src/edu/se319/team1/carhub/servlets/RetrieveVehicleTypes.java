@@ -117,6 +117,7 @@ public class RetrieveVehicleTypes extends HttpServlet {
 		log.log(Level.INFO, "Num Added:  " + numAdded);
 		log.log(Level.INFO, "Num Skipped:  " + numSkipped);
 
+		// TODO: don't email this, but store results in datastore somewhere
 		Email.sendEmailToBrian("RetrieveVehicleTypes Update: " + new Date(), "Updated at " + new Date() + "<br /><br />Updated: " + numUpdated
 				+ "<br />Added: " + numAdded + "<br />Skipped: " + numSkipped + "<br /><br />" + vehicleList.toString());
 

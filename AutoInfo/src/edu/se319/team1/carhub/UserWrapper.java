@@ -56,16 +56,23 @@ public class UserWrapper {
 	 * @return the UserWrapper for the current user
 	 */
 	public static UserWrapper getInstance(HttpSession session) {
-		UserWrapper toRet = new UserWrapper();
+		if (session != null) {
+			UserWrapper toRet = new UserWrapper();
 
-		toRet.isLoggedIn = (session.getAttribute("logged_in") != null);
-		toRet.nickname = (toRet.isLoggedIn) ? (String) session.getAttribute("username") : "";
-		toRet.isAdmin = toRet.isLoggedIn &&
-				("breber".equals(toRet.nickname) || "josh.peters.33".equals(toRet.nickname) || "jgkujawa".equals(toRet.nickname) || "fantashley".equals(toRet.nickname));
-		toRet.md5 = (toRet.isLoggedIn) ? MD5Util.md5Hex(toRet.nickname) : "00000000000000000000000000000000";
-		toRet.profilePictureUrl = "https://graph.facebook.com/" + toRet.nickname + "/picture";
+			toRet.isLoggedIn = (session.getAttribute("logged_in") != null);
+			toRet.nickname = (toRet.isLoggedIn) ? (String) session.getAttribute("username") : "";
+			toRet.isAdmin = toRet.isLoggedIn &&
+					("breber".equals(toRet.nickname) ||
+							"josh.peters.33".equals(toRet.nickname) ||
+							"jgkujawa".equals(toRet.nickname) ||
+							"fantashley".equals(toRet.nickname));
+			toRet.md5 = (toRet.isLoggedIn) ? MD5Util.md5Hex(toRet.nickname) : "00000000000000000000000000000000";
+			toRet.profilePictureUrl = "https://graph.facebook.com/" + toRet.nickname + "/picture";
 
-		return toRet;
+			return toRet;
+		} else {
+			return null;
+		}
 	}
 
 	/**

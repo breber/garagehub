@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.se319.team1.carhub.UserWrapper;
 import edu.se319.team1.carhub.data.DatastoreUtils;
 
 /**
@@ -16,8 +17,14 @@ public class DeleteAllVehicles extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		DatastoreUtils.deleteAllVehicles();
+		UserWrapper user = UserWrapper.getInstance(req.getSession(false));
 
-		resp.sendRedirect("/admin/admin.jsp");
+		if (user != null && user.isAdmin()) {
+			DatastoreUtils.deleteAllVehicles();
+
+			resp.sendRedirect("/admin/admin.jsp");
+		} else {
+			resp.sendRedirect("/");
+		}
 	}
 }

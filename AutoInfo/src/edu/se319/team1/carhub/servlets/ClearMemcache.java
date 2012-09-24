@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
+import edu.se319.team1.carhub.UserWrapper;
+
 /**
  * Clear all of Memcache
  */
@@ -17,9 +19,15 @@ public class ClearMemcache extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
-		syncCache.clearAll();
+		UserWrapper user = UserWrapper.getInstance(req.getSession(false));
 
-		resp.sendRedirect("/admin/admin.jsp");
+		if (user != null && user.isAdmin()) {
+			MemcacheService syncCache = MemcacheServiceFactory.getMemcacheService();
+			syncCache.clearAll();
+
+			resp.sendRedirect("/admin/admin.jsp");
+		} else {
+			resp.sendRedirect("/");
+		}
 	}
 }

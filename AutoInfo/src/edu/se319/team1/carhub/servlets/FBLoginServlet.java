@@ -91,15 +91,12 @@ public class FBLoginServlet extends HttpServlet {
 			log.log(Level.SEVERE, Arrays.toString(e.getStackTrace()));
 		}
 
-		log.log(Level.WARNING, "Facebook ID: " + facebookId);
-		log.log(Level.WARNING, "Name: " + name);
-		log.log(Level.WARNING, "Email: " + email);
-
 		HttpSession session = req.getSession(true);
 		if (session != null) {
 			session.setAttribute("logged_in", facebookId);
 			session.setAttribute("username", username);
 			session.setAttribute("name", name);
+			session.setAttribute("email", email);
 		}
 
 		resp.sendRedirect("/");

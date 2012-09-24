@@ -30,7 +30,7 @@
 			<% } %>
 			<li><a href="/user/settings.jsp">Settings</a></li>
 			<li class="divider"></li>
-			<li><a href="<%= UserServiceFactory.getUserService().createLogoutURL("/") %>">Logout</a></li>
+			<li><a href="/logout_fb.do">Logout</a></li>
 		</ul>
 	</li>
 </ul>

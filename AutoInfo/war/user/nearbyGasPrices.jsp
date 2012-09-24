@@ -11,7 +11,7 @@
 
 	<title>CarHub</title>
 </head>
-<body onload = "getGasPrices()">
+<body onload="getGasPrices()">
 	<jsp:include page="/user/navbar.jsp" />
 
 	<div class="container-fluid center-block">
@@ -20,13 +20,13 @@
 				<h2>Nearby Gas Prices</h2>
 
 				<form>
-					<input onclick = "hideZipCode();" type="checkbox" id="location" name="loaction" value="location" checked/> Detect my
+					<input onclick="hideZipCode();" type="checkbox" id="location" name="loaction" value="location" checked/> Detect my
 					location
 					<br /> <br /> 
 					
 					<section>
-						<div style = "float:left;">
-							<label for="zip">Zip Code:</label><input type="text" name="zip" id="zip" />
+						<div style="float:left;">
+							<label for="zip">Zip Code:</label><input type="text" name="zip" id="zip" disabled/>
 						</div>
 						<div style = "float:left; margin-left:20px;">
 							<label for="radius">Search Radius:</label>
@@ -47,7 +47,7 @@
 								<option value="30">30 Miles</option>
 							</select>
 						</div>
-						<div style = "float:left; margin-left:20px;">
+						<div style="float:left; margin-left:20px;">
 							<label for="grade">Fuel Grade:</label>
 							<select name="grade" id="grade">
 								<option value="reg">Regular</option>
@@ -56,7 +56,7 @@
 								<option value="diesel">Diesel</option>
 							</select>
 						</div>
-						<div style = "float:left; margin-left:20px;">
+						<div style="float:left; margin-left:20px;">
 							<label for="sort">Sort By:</label>
 							<select name="sort" id="sort">
 								<option value="price">Price</option>
@@ -76,9 +76,7 @@
 				<br/>
 				<table class="table pagination" id="table">
 				</table>
-				<div>
-					Data Powered by www.myGasFeed.com.
-				</div>
+				<div>Data Powered by www.myGasFeed.com.</div>
 			</div>
 		</div>
 	</div>
@@ -86,28 +84,26 @@
  
 	<script type="text/javascript">
 			
-	function getGasPrices(){
+	function getGasPrices() {
 		$("#table").empty();
 		
 		var isChecked = $('#location').attr('checked')?true:false;
 		var JSONGasFeed;
-		if(isChecked){
+		if (isChecked) {
 			getLocation();
-		}else{
+		} else {
 			useZipCode();
 		}
-		
 	}
 	
-	function hideZipCode(){
+	function hideZipCode() {
 		document.getElementById('zip').disabled = document.getElementById('location').checked;
 	}
 	
-	function sendJSONRequest(lat, lon){
-		
+	function sendJSONRequest(lat, lon) {
 		var radius = document.getElementById('radius').value;
 		
-		if(!radius){
+		if (!radius) {
 			radius = 0;
 			document.getElementById('radius').value = radius;
 		}
@@ -118,104 +114,102 @@
 		displayGasPrices(JSONGasFeed);
 	}
 	
-	function useZipCode(){
+	function useZipCode() {
 		var geocoder = new google.maps.Geocoder();
 		var address = document.getElementById('zip').value;
-		if(address){
-	       geocoder.geocode( { 'address': address}, function(results, status) {
-	         if (status == google.maps.GeocoderStatus.OK) {
-	       	  var latLon = String(results[0].geometry.location);
-	       	  var word = latLon.split(",")
-	       	  var lat = word[0].substring(1);
-	       	  var lon = word[1].substring(1, word[1].length-1);
-	     			sendJSONRequest(lat, lon);
-	           }
-	       });
-		}else{
+		if (address) {
+			geocoder.geocode( { 'address': address}, function(results, status) {
+				if (status == google.maps.GeocoderStatus.OK) {
+					var latLon = String(results[0].geometry.location);
+					var word = latLon.split(",")
+					var lat = word[0].substring(1);
+					var lon = word[1].substring(1, word[1].length-1);
+					sendJSONRequest(lat, lon);
+				}
+			});
+		} else {
 			alert('Please enter a zip code or use the Detect My Location option');
 		}
 	}
 	
 	function useLocation(position) {
-	  	var lat = position.coords.latitude;
-	  	var lon = position.coords.longitude;
+		var lat = position.coords.latitude;
+		var lon = position.coords.longitude;
 		sendJSONRequest(lat, lon);
 	}
 	
 	function getLocation(){
-	   if(navigator.geolocation){
-		   //30 seconds
+	   if (navigator.geolocation) {
+		  // 30 seconds
 	      var options = {timeout:30000};
 	      navigator.geolocation.getCurrentPosition(useLocation, 
 	                                               errorHandler,
 	                                               options);
-	   }else{
+	   } else {
 	      alert("Sorry, your browser does not support geolocation.");
 	   }
 	}
 	
 	function errorHandler(err) {
-		  if(err.code == 1) {
-		    alert("Error: Access is denied!");
-		  }else if( err.code == 2) {
-		    alert("Error: Position is unavailable!");
-		  }
+		if (err.code == 1) {
+			alert("Error: Access is denied!");
+		} else if (err.code == 2) {
+			alert("Error: Position is unavailable!");
 		}
+	}
 	
 	function showLoading(){
 		$('#table').append("<center>Loading...</center><br/>");
-		$('#table').append('<center><img id="theImg"  src="ajax-loader.gif" /></center>');
-		
+		$('#table').append('<center><img id="theImg" src="/img/ajax-loader.gif" /></center>');
 	}
 	
 	function stopLoading(){
 		$("#table").empty();
 	}
-	
+
 	function displayGasPrices(JSONGasFeed){
 		showLoading();
 		$.getJSON(JSONGasFeed, function(json) {
 			var grade = document.getElementById('grade').value;
 			stopLoading();
-			$.each(json.stations, function(i, item){
-				var price;
-				if(grade === 'reg'){
-					price = item.reg_price
-				}else if(grade === 'mid'){
-					price = item.mid_price
-				}else if(grade === 'pre'){
-					price = item.pre_price
-				}else if(grade === 'diesel'){
-					price = item.diesel_price
-				}
-				
-				if(price !== 'N/A'){
-					$('#table').last().append("<tr><td>"+item.station+"</td><td>"+item.address+"</td><td>"+price+"</td><td>"+item.distance+"</td><td>"+item.diesel_date+"</td></tr>");
-				}
-		    });
 			
 			$.each(json.stations, function(i, item){
 				var price;
-				if(grade === 'reg'){
-					price = item.reg_price
-				}else if(grade === 'mid'){
-					price = item.mid_price
-				}else if(grade === 'pre'){
-					price = item.pre_price
-				}else if(grade === 'diesel'){
-					price = item.diesel_price
+				if (grade === 'reg') {
+					price = item.reg_price;
+				} else if (grade === 'mid') {
+					price = item.mid_price;
+				} else if (grade === 'pre') {
+					price = item.pre_price;
+				} else if (grade === 'diesel') {
+					price = item.diesel_price;
+				}
+	
+				if (price !== 'N/A') {
+					$('#table').last().append("<tr><td>"+item.station+"</td><td>"+item.address+"</td><td>"+price+"</td><td>"+item.distance+"</td><td>"+item.diesel_date+"</td></tr>");
+				}
+			});
+			
+			$.each(json.stations, function(i, item){
+				var price;
+				if (grade === 'reg') {
+					price = item.reg_price;
+				} else if (grade === 'mid') {
+					price = item.mid_price;
+				} else if (grade === 'pre') {
+					price = item.pre_price;
+				} else if (grade === 'diesel') {
+					price = item.diesel_price;
 				}
 				
-				if(price === 'N/A'){
+				if (price === 'N/A') {
 					$('#table').last().append("<tr><td>"+item.station+"</td><td>"+item.address+"</td><td>"+price+"</td><td>"+item.distance+"</td><td>"+item.diesel_date+"</td></tr>");
 				}
 		    });
 			
 			$('#table').prepend("<tr><th>Name</th><th>Location</th><th>Price</th><th>Distance</th><th>Last Updated</th></tr>");
-		
 		});
 	}
-
 	</script>
 </body>
 </html>

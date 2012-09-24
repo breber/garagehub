@@ -19,6 +19,9 @@ public class FBLogoutServlet extends HttpServlet {
 			session.removeAttribute("logged_in");
 			session.removeAttribute("username");
 			session.removeAttribute("name");
+			session.removeAttribute("email");
+
+			session.invalidate();
 		}
 
 		resp.sendRedirect("/");

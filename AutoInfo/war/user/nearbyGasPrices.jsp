@@ -16,7 +16,7 @@
 
 	<div class="container-fluid center-block">
 		<div class="row-fluid">
-			<div class="well well-small">
+			<div class="well">
 				<h2>Nearby Gas Prices</h2>
 
 				<form>

@@ -100,6 +100,6 @@ public class VehicleServlet extends HttpServlet {
 			}
 		}
 
-		resp.sendRedirect("/user/garage.jsp");
+		resp.sendRedirect("/");
 	}
 }

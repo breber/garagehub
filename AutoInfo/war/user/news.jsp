@@ -1,9 +1,16 @@
+<%@page import="edu.se319.team1.carhub.PathUtils"%>
+<%@page import="java.util.List"%>
+<%@page import="edu.se319.team1.carhub.data.DatastoreUtils"%>
+<%@page import="edu.se319.team1.carhub.data.UserVehicle"%>
 <%@page import="edu.se319.team1.carhub.UserWrapper"%>
 <%@page language="java" contentType="text/html"%>
 
 <%
+	List<String> parsedPath = PathUtils.parsePath(request.getPathInfo());
 	UserWrapper user = UserWrapper.getInstance(request.getSession(false));
-	String carName = request.getParameter("carName");
+	String carId = parsedPath.get(parsedPath.size() - 1);
+	UserVehicle vehicle = DatastoreUtils.getUserVehicle(user, carId);
+	String carName = vehicle.toString();
 %>
 <!DOCTYPE html>
 <html>
@@ -47,7 +54,7 @@
       newsSearch.setSearchCompleteCallback(this, searchComplete, null);
 	  newsSearch.setResultSetSize(8);
       // Specify search quer(ies)
-      newsSearch.execute('<%= carName %>');
+      newsSearch.execute('"<%= carName %>"');
 
       // Include the required Google branding
       google.search.Search.getBranding('branding');
@@ -64,7 +71,10 @@
 
 	<div class="container-fluid center-block">
 		<div class="row-fluid">
-			<jsp:include page="/sideNav.jsp" />
+			<jsp:include page="/sideNav.jsp">
+				<jsp:param value='<%=carName %>' name="carName"/>
+				<jsp:param value='<%=carId %>' name="carId"/>
+			</jsp:include>
 
 			<div class="well span9">
 				<h2>News</h2>

@@ -1,10 +1,18 @@
+<%@page import="edu.se319.team1.carhub.data.UserVehicle"%>
+<%@page import="edu.se319.team1.carhub.data.DatastoreUtils"%>
+<%@page import="edu.se319.team1.carhub.PathUtils"%>
+<%@page import="java.util.List"%>
 <%@page import="com.google.appengine.api.users.UserServiceFactory"%>
 <%@page import="com.google.appengine.api.users.UserService"%>
 <%@page import="edu.se319.team1.carhub.UserWrapper"%>
 <%@page language="java" contentType="text/html"%>
 
 <%
+	List<String> parsedPath = PathUtils.parsePath(request.getPathInfo());
 	UserWrapper user = UserWrapper.getInstance(request.getSession(false));
+	String carId = parsedPath.get(parsedPath.size() - 1);
+	UserVehicle vehicle = DatastoreUtils.getUserVehicle(user, carId);
+	String carName = vehicle.toString();
 %>
 <!DOCTYPE html>
 <html>
@@ -13,9 +21,7 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
 	function addCategory() {
-
 		alert("Trying to add category");
-
 	}
 </script>
 
@@ -26,7 +32,10 @@
 
 	<div class="container-fluid center-block">
 		<div class="row-fluid">
-			<jsp:include page="/sideNav.jsp" />
+			<jsp:include page="/sideNav.jsp">
+				<jsp:param value='<%=carName %>' name="carName"/>
+				<jsp:param value='<%=carId %>' name="carId"/>
+			</jsp:include>
 
 			<div class="well span9">
 				<h2>Expense Manager</h2>

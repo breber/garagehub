@@ -1,5 +1,17 @@
+<%@page import="edu.se319.team1.carhub.PathUtils"%>
+<%@page import="java.util.List"%>
+<%@page import="edu.se319.team1.carhub.data.DatastoreUtils"%>
+<%@page import="edu.se319.team1.carhub.data.UserVehicle"%>
+<%@page import="edu.se319.team1.carhub.UserWrapper"%>
 <%@page language="java" contentType="text/html"%>
 
+<%
+	List<String> parsedPath = PathUtils.parsePath(request.getPathInfo());
+	UserWrapper user = UserWrapper.getInstance(request.getSession(false));
+	String carId = parsedPath.get(parsedPath.size() - 1);
+	UserVehicle vehicle = DatastoreUtils.getUserVehicle(user, carId);
+	String carName = vehicle.toString();
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,10 +57,17 @@
 </head>
 <body>
 	<jsp:include page="/user/navbar.jsp" />
-
+	
 	<div class="container-fluid center-block">
-		<div class="well">
-			<div id="chart_div"></div>
+		<div class="row-fluid">
+			<jsp:include page="/sideNav.jsp">
+				<jsp:param value='<%=carName %>' name="carName"/>
+				<jsp:param value='<%=carId %>' name="carId"/>
+			</jsp:include>
+
+			<div class="well span9">
+				<div id="chart_div"></div>
+			</div>
 		</div>
 	</div>
 </body>

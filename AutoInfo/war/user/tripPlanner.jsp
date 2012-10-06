@@ -70,7 +70,7 @@
 
 	<div class="container-fluid center-block">
 		<div class="row-fluid">
-			<div class="well well-small" style="overflow:auto;">
+			<div class="well" style="overflow:auto;">
 				<h2>Trip Planner</h2>
 
 				<div id="side-container">

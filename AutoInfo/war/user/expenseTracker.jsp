@@ -28,7 +28,7 @@
 		<div class="row-fluid">
 			<jsp:include page="/sideNav.jsp" />
 
-			<div class="well well-small span9">
+			<div class="well span9">
 				<h2>Expense Manager</h2>
 
 				<h3>Total Money Spent: $1,003,304</h3>

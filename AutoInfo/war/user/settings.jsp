@@ -15,7 +15,7 @@
 	<jsp:include page="/user/navbar.jsp" />
 
 	<div class="container-fluid center-block">
-		<div class="well well-small">
+		<div class="well">
 			<h2>Settings</h2>
 
 			<div class="control-group">

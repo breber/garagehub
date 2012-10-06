@@ -47,7 +47,7 @@
 	<jsp:include page="/user/navbar.jsp" />
 
 	<div class="container-fluid center-block">
-		<div class="well well-small">
+		<div class="well">
 			<div id="chart_div"></div>
 		</div>
 	</div>

@@ -4,5 +4,5 @@
 <link type="text/css" href="/css/bootstrap.min.css" rel="stylesheet" />
 <link type="text/css" href="/css/bootstrap-responsive.min.css" rel="stylesheet" />
 <link type="text/css" href="/css/auto.css" rel="stylesheet" />
-<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="/js/bootstrap.min.js"></script>

@@ -1,10 +1,4 @@
-<%@page import="com.google.appengine.api.users.UserService"%>
-<%@page import="com.google.appengine.api.users.UserServiceFactory"%>
 <%@page language="java" contentType="text/html"%>
-
-<%
-	UserService user = UserServiceFactory.getUserService();
-%>
 
 <div class="container-fluid center-block">
 	<div class="hero-unit">

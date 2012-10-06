@@ -15,7 +15,7 @@
 				<jsp:param value='<%=request.getParameter("carName") %>' name="carName"/>
 			</jsp:include>
 
-			<div class="well well-small span9">
+			<div class="well span9">
 				<h2><%=request.getParameter("carName") %></h2>
 
 				<p>Some info about <%=request.getParameter("carName") %></p>

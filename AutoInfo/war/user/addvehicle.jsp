@@ -18,7 +18,7 @@
 	<jsp:include page="/user/navbar.jsp" />
 
 	<div class="container-fluid center-block">
-		<div class="well well-small">
+		<div class="well">
 			<h2>Add Vehicle</h2>
 
 			<form action="/user/addvehicle" method="post">
@@ -40,7 +40,7 @@
 					<option>Select a year</option>
 				</select>
 				<br>
-				<button type="submit" class="btn">Submit</button>
+				<button type="submit" class="btn btn-primary">Submit</button>
 			</form>
 		</div>
 	</div>

@@ -20,7 +20,7 @@
 		<div class="row-fluid">
 			<jsp:include page="/sideNav.jsp" />
 
-			<div class="well well-small span9">
+			<div class="well span9">
 				<h2>Gas Mileage Tracker</h2>
 
 				<h3>MPG: 55.8</h3>

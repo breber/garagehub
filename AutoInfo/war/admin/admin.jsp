@@ -10,7 +10,7 @@
 	<jsp:include page="/user/navbar.jsp" />
 
 	<div class="container-fluid center-block">
-		<div class="well well-small">
+		<div class="well">
 			<table class="table table-hover">
 				<tr>
 					<td>Reload Vehicles from Cars.com</td>

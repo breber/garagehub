@@ -11,7 +11,7 @@
 
 <div class="container-fluid center-block">
 	<div class="row-fluid">
-		<div class="well span3" style="padding: 8px 0;">
+		<div class="well span2" style="padding: 8px 0;">
 			<ul class="nav nav-list">
 				<li class="nav-header">Navigate</li>
 				<li class="active">Garage</li>
@@ -19,14 +19,14 @@
 			</ul>
 		</div>
 	
-		<div class="well well-small span9">
+		<div class="well span9">
 			<h2>Your Garage</h2>
 
 			<% if (vehicles.isEmpty()) { %>
 				<p>You don't have any vehicles registered.</p>
 				<p>Register one <a href="/user/addvehicle.jsp">here</a>!</p>
 			<% } else { %>
-				<table class="table">
+				<table class="table table-striped table-bordered">
 					<tr>
 						<th>Year</th>
 						<th>Make</th>

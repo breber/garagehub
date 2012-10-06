@@ -125,6 +125,25 @@ public class UserWrapper {
 	}
 
 	/**
+	 * Get the Logout URL for Google
+	 * 
+	 * @return the Google logout URL
+	 */
+	public static String getGoogleLogoutURL() {
+		UserService service = UserServiceFactory.getUserService();
+		return service.createLogoutURL("/");
+	}
+
+	/**
+	 * Get the Logout URL for Facebook
+	 * 
+	 * @return the Facebook logout URL
+	 */
+	public static String getFacebookLogoutURL() {
+		return "/logout_fb.do";
+	}
+
+	/**
 	 * Private constructor
 	 */
 	private UserWrapper() { }

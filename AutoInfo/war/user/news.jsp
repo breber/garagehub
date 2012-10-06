@@ -47,7 +47,7 @@
       newsSearch.setSearchCompleteCallback(this, searchComplete, null);
 	  newsSearch.setResultSetSize(8);
       // Specify search quer(ies)
-      newsSearch.execute('<%=carName%>');
+      newsSearch.execute('<%= carName %>');
 
       // Include the required Google branding
       google.search.Search.getBranding('branding');
@@ -66,7 +66,7 @@
 		<div class="row-fluid">
 			<jsp:include page="/sideNav.jsp" />
 
-			<div class="well well-small span9">
+			<div class="well span9">
 				<h2>News</h2>
 
 				<div id="searchresults"></div>

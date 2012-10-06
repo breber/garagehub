@@ -1,6 +1,5 @@
 <%@page import="java.net.URLEncoder"%>
 <%@page import="edu.se319.team1.carhub.UserWrapper"%>
-<%@page import="com.google.appengine.api.users.UserServiceFactory"%>
 <%@ page language="java" contentType="text/html"%>
 
 <%
@@ -11,8 +10,8 @@
 <ul class="nav">
 	<li class="hidden-phone">
 		<% 
-		String profilePictureUrl = user.getProfilePictureUrl();
-		if (profilePictureUrl != null) {
+		 String profilePictureUrl = user.getProfilePictureUrl();
+		 if (profilePictureUrl != null) {
 		%>
 		<img src="<%=profilePictureUrl %>" height="40px" width="40px" />
 		<% } else { %>
@@ -29,7 +28,8 @@
 			<% } %>
 			<li><a href="/user/settings.jsp">Settings</a></li>
 			<li class="divider"></li>
-			<li><a href="/logout_fb.do">Logout</a></li>
+			<%-- <li><a href="<%= UserWrapper.getFacebookLogoutURL() %>">Logout</a></li> --%>
+			<li><a href="<%= UserWrapper.getGoogleLogoutURL() %>">Logout</a></li>
 		</ul>
 	</li>
 </ul>

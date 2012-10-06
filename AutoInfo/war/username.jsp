@@ -5,7 +5,6 @@
 
 <%
 	UserWrapper user = UserWrapper.getInstance(request.getSession(false));
-	String fbURL = "http://www.facebook.com/dialog/oauth?client_id=176948449109248&redirect_uri=" + URLEncoder.encode("http://carhub.us/login_fb.do", "UTF-8") + "&scope=email";
 %>
 
 <% if (user.isLoggedIn()) { %>
@@ -37,6 +36,7 @@
 
 <% } else { %>
 <li>
-	<a href="<%= fbURL %>"><img src="/img/fb_connect.png" /></a>
+	<%-- <a href="<%= UserWrapper.getFacebookLoginURL() %>"><img src="/img/fb_connect.png" /></a> --%>
+	<a href="<%= UserWrapper.getGoogleLoginURL() %>">Login</a>
 </li>
 <% } %>

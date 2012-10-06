@@ -13,6 +13,58 @@
 		<url-pattern>/_ah/spi/*</url-pattern>
 	</servlet-mapping>
 
+	<!-- Map JSP pages to paths so that we can have easier
+		access to vehicle name/parameters -->
+	<servlet>
+		<servlet-name>UserVehicle</servlet-name>
+		<jsp-file>/user/car.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserVehicle</servlet-name>
+		<url-pattern>/vehicle/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserVehicleExpenseManager</servlet-name>
+		<jsp-file>/user/expenseTracker.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserVehicleExpenseManager</servlet-name>
+		<url-pattern>/vehicle/expenses/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserVehicleMaintenanceRecords</servlet-name>
+		<jsp-file>/user/maintenance.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserVehicleMaintenanceRecords</servlet-name>
+		<url-pattern>/vehicle/maintenance/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserVehicleGasMileage</servlet-name>
+		<jsp-file>/user/gasMileage.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserVehicleGasMileage</servlet-name>
+		<url-pattern>/vehicle/gasmileage/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserVehicleCharts</servlet-name>
+		<jsp-file>/user/charts.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserVehicleCharts</servlet-name>
+		<url-pattern>/vehicle/charts/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserVehicleNews</servlet-name>
+		<jsp-file>/user/news.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserVehicleNews</servlet-name>
+		<url-pattern>/vehicle/news/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Facebook Login/Logout Endpoints -->
 	<servlet>
 		<servlet-name>FBLogin</servlet-name>
 		<servlet-class>edu.se319.team1.carhub.servlets.FBLoginServlet</servlet-class>

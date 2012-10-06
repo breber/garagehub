@@ -26,7 +26,7 @@
 						<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Garage <b class="caret hidden-phone"></b></a>
 						<ul class="dropdown-menu">
 							<% for (UserVehicle v : vehicles) { %>
-							<li><a href="/user/car.jsp?carId=<%=v.getIdentifier()%>"><%= v.toString() %></a></li>
+							<li><a href="/vehicle/<%=v.getIdentifier()%>"><%= v.toString() %></a></li>
 							<% } %>
 							<% if (!vehicles.isEmpty()) { %>
 							<li class="divider"></li>

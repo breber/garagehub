@@ -1,4 +1,14 @@
+<%@page import="edu.se319.team1.carhub.data.DatastoreUtils"%>
+<%@page import="edu.se319.team1.carhub.data.UserVehicle"%>
+<%@page import="edu.se319.team1.carhub.UserWrapper"%>
 <%@page language="java" contentType="text/html"%>
+
+<%
+	UserWrapper user = UserWrapper.getInstance(request.getSession(false));
+	String carId = request.getParameter("carId");
+	UserVehicle vehicle = DatastoreUtils.getUserVehicle(user, carId);
+	String carName = vehicle.toString();
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,13 +22,14 @@
 	<div class="container-fluid center-block">
 		<div class="row-fluid">
 			<jsp:include page="/sideNav.jsp">
-				<jsp:param value='<%=request.getParameter("carName") %>' name="carName"/>
+				<jsp:param value='<%=carName %>' name="carName"/>
+				<jsp:param value='<%=carId %>' name="carId"/>
 			</jsp:include>
 
 			<div class="well span9">
-				<h2><%=request.getParameter("carName") %></h2>
+				<h2><%=carName %></h2>
 
-				<p>Some info about <%=request.getParameter("carName") %></p>
+				<p>Some info about <%=carName %></p>
 			</div>
 		</div>
 	</div>

@@ -7,6 +7,9 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.appengine.api.datastore.Entity;
 
 @PersistenceCapable
@@ -78,11 +81,16 @@ public class UserVehicle implements Comparable<UserVehicle> {
 	 * @param e
 	 */
 	public UserVehicle(Entity e) {
-		this.owner = (String) e.getProperty(Columns.OWNER);
-		this.make = (String) e.getProperty(Columns.MAKE);
-		this.model = (String) e.getProperty(Columns.MODEL);
-		this.year = (String) e.getProperty(Columns.YEAR);
-		this.dateLastModified = (Date) e.getProperty(Columns.LAST_MODIFIED);
+		if (e != null) {
+			if (e.getKey() != null) {
+				this.identifier = e.getKey().getId();
+			}
+			this.owner = (String) e.getProperty(Columns.OWNER);
+			this.make = (String) e.getProperty(Columns.MAKE);
+			this.model = (String) e.getProperty(Columns.MODEL);
+			this.year = (String) e.getProperty(Columns.YEAR);
+			this.dateLastModified = (Date) e.getProperty(Columns.LAST_MODIFIED);
+		}
 	}
 
 	/**
@@ -150,5 +158,27 @@ public class UserVehicle implements Comparable<UserVehicle> {
 	@Override
 	public String toString() {
 		return year + " " + make + " " + model;
+	}
+
+	/**
+	 * Create a JSONObject representation
+	 * 
+	 * @return
+	 */
+	public JSONObject toJSONObject() {
+		JSONObject toRet = new JSONObject();
+
+		try {
+			toRet.put(Columns.IDENTIFIER, identifier);
+			toRet.put(Columns.LAST_MODIFIED, dateLastModified);
+			toRet.put(Columns.MAKE, make);
+			toRet.put(Columns.MODEL, model);
+			toRet.put(Columns.YEAR, year);
+			toRet.put(Columns.OWNER, owner);
+		} catch (JSONException e) {
+			// Do nothing...
+		}
+
+		return toRet;
 	}
 }

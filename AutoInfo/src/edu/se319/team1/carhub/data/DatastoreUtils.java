@@ -10,9 +10,14 @@ import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.PropertyProjection;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.memcache.MemcacheService;
@@ -66,6 +71,35 @@ public class DatastoreUtils {
 		}
 
 		return toRet;
+	}
+
+	/**
+	 * Get the Vehicle owned by the user
+	 * 
+	 * @param user the user to get vehicles for
+	 * @return the UserVehicle that matches the ID, null if it doesn't exist
+	 */
+	public static UserVehicle getUserVehicle(UserWrapper user, String vehicleId) {
+		if (user != null && user.isLoggedIn()) {
+			// Get the Datastore Service
+			try {
+				Key key = KeyFactory.createKey(UserVehicle.class.getSimpleName(), Long.parseLong(vehicleId));
+
+				DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+				Query q = new Query(UserVehicle.class.getSimpleName());
+				q.setFilter(new CompositeFilter(CompositeFilterOperator.AND,
+						Arrays.<Filter>asList(new FilterPredicate(UserVehicle.Columns.OWNER, FilterOperator.EQUAL, user.getUserId()),
+								new FilterPredicate(Entity.KEY_RESERVED_PROPERTY, Query.FilterOperator.EQUAL, key))));
+				PreparedQuery pq = datastore.prepare(q);
+
+				Entity e = pq.asSingleEntity();
+				return new UserVehicle(e);
+			} catch (NumberFormatException ex) {
+				// Do nothing right now...
+			}
+		}
+
+		return null;
 	}
 
 
@@ -180,8 +214,9 @@ public class DatastoreUtils {
 			// Get the Datastore Service
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 			Query q = new Query(Vehicle.class.getSimpleName());
-			q.setFilter(new FilterPredicate(Vehicle.Columns.MAKE, Query.FilterOperator.EQUAL, make));
-			q.setFilter(new FilterPredicate(Vehicle.Columns.MODEL, Query.FilterOperator.EQUAL, model));
+			q.setFilter(new CompositeFilter(CompositeFilterOperator.AND,
+					Arrays.<Filter>asList(new FilterPredicate(Vehicle.Columns.MAKE, Query.FilterOperator.EQUAL, make),
+							new FilterPredicate(Vehicle.Columns.MODEL, Query.FilterOperator.EQUAL, model))));
 			q.addProjection(new PropertyProjection(Vehicle.Columns.YEARS, String.class));
 			PreparedQuery pq = datastore.prepare(q);
 			StringBuilder memcachedResult = new StringBuilder();

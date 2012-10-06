@@ -7,8 +7,10 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Entity;
+
 @PersistenceCapable
-public class Vehicle implements Comparable<Vehicle> {
+public class UserVehicle implements Comparable<UserVehicle> {
 
 	/**
 	 * Column names for the database
@@ -16,9 +18,10 @@ public class Vehicle implements Comparable<Vehicle> {
 	public static class Columns {
 		public static final String IDENTIFIER = "identifier";
 		public static final String LAST_MODIFIED = "dateLastModified";
+		public static final String OWNER = "owner";
 		public static final String MAKE = "make";
 		public static final String MODEL = "model";
-		public static final String YEARS = "years";
+		public static final String YEAR = "year";
 	}
 
 	/**
@@ -34,6 +37,11 @@ public class Vehicle implements Comparable<Vehicle> {
 	private Date dateLastModified;
 
 	/**
+	 * The owner's ID
+	 */
+	private String owner;
+
+	/**
 	 * The make of the vehicle
 	 */
 	private String make;
@@ -46,18 +54,35 @@ public class Vehicle implements Comparable<Vehicle> {
 	/**
 	 * The year of the vehicle
 	 */
-	private String years;
+	private String year;
+
+	// TODO: add color
+	// TODO: add license plate
+	// TODO: add VIN?
 
 	/**
+	 * @param owner
 	 * @param make
 	 * @param model
-	 * @param years
+	 * @param year
 	 */
-	public Vehicle(String make, String model, String years) {
+	public UserVehicle(String owner, String make, String model, String year) {
+		this.owner = owner;
 		this.make = make;
 		this.model = model;
-		this.years = years;
+		this.year = year;
 		this.dateLastModified = new Date();
+	}
+
+	/**
+	 * @param e
+	 */
+	public UserVehicle(Entity e) {
+		this.owner = (String) e.getProperty(Columns.OWNER);
+		this.make = (String) e.getProperty(Columns.MAKE);
+		this.model = (String) e.getProperty(Columns.MODEL);
+		this.year = (String) e.getProperty(Columns.YEAR);
+		this.dateLastModified = (Date) e.getProperty(Columns.LAST_MODIFIED);
 	}
 
 	/**
@@ -89,19 +114,26 @@ public class Vehicle implements Comparable<Vehicle> {
 	}
 
 	/**
+	 * @return the owner
+	 */
+	public String getOwner() {
+		return owner;
+	}
+
+	/**
 	 * @return the year
 	 */
 	public String getYear() {
-		return years;
+		return year;
 	}
 
 	@Override
-	public int compareTo(Vehicle arg0) {
+	public int compareTo(UserVehicle arg0) {
 		// If the makes are the same compare the models
 		if (make.compareTo(arg0.make) == 0) {
 			// If the models are the same, return the year comparison
 			if (model.compareTo(arg0.model) == 0) {
-				return years.compareTo(arg0.years);
+				return year.compareTo(arg0.year);
 			} else {
 				// Otherwise return the modle comparison
 				return model.compareTo(arg0.model);
@@ -117,18 +149,6 @@ public class Vehicle implements Comparable<Vehicle> {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Vehicle [identifier=");
-		builder.append(identifier);
-		builder.append(", dateLastModified=");
-		builder.append(dateLastModified);
-		builder.append(", make=");
-		builder.append(make);
-		builder.append(", model=");
-		builder.append(model);
-		builder.append(", year=");
-		builder.append(years);
-		builder.append("]");
-		return builder.toString();
+		return year + " " + make + " " + model;
 	}
 }

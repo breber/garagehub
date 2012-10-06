@@ -1,3 +1,13 @@
+<%@page import="edu.se319.team1.carhub.data.DatastoreUtils"%>
+<%@page import="edu.se319.team1.carhub.data.UserVehicle"%>
+<%@page import="java.util.List"%>
+<%@page import="edu.se319.team1.carhub.UserWrapper"%>
+<%@page language="java" contentType="text/html"%>
+
+<%
+	UserWrapper user = UserWrapper.getInstance(request.getSession(false));
+	List<UserVehicle> vehicles = DatastoreUtils.getUserVehicles(user);
+%>
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
@@ -14,10 +24,12 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle"	data-toggle="dropdown">Garage <b class="caret hidden-phone"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="/user/car.jsp?carName=Ford%20Focus">Ford Focus</a></li>
-							<li><a href="/user/car.jsp?carName=Chevy%20Cruze">Chevy Cruze</a></li>
-							<li><a href="/user/car.jsp?carName=Honda%20CRV">Honda CRV</a></li>
+							<% for (UserVehicle v : vehicles) { %>
+							<li><a href="/user/car.jsp?carName=<%=v.getIdentifier()%>"><%= v.toString() %></a></li>
+							<% } %>
+							<% if (!vehicles.isEmpty()) { %>
 							<li class="divider"></li>
+							<% } %>
 							<li><a href="/user/addvehicle.jsp"><i class="icon-plus"></i> Add Vehicle</a>
 						</ul>
 					</li>

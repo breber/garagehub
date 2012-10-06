@@ -13,9 +13,12 @@ import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.PropertyProjection;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
+
+import edu.se319.team1.carhub.UserWrapper;
 
 /**
  * Utility methods for interacting with the Datastore
@@ -42,6 +45,31 @@ public class DatastoreUtils {
 	public static final String KEY_VEHICLE_MODEL = "vehicleModelList";
 
 	/**
+	 * Get a list of Vehicles owned by the user
+	 * 
+	 * @param user the user to get vehicles for
+	 * @return a list of vehicles owned by the user
+	 */
+	public static List<UserVehicle> getUserVehicles(UserWrapper user) {
+		List<UserVehicle> toRet = new ArrayList<UserVehicle>();
+
+		if (user != null && user.isLoggedIn()) {
+			// Get the Datastore Service
+			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+			Query q = new Query(UserVehicle.class.getSimpleName());
+			q.setFilter(new FilterPredicate(UserVehicle.Columns.OWNER, FilterOperator.EQUAL, user.getUserId()));
+			PreparedQuery pq = datastore.prepare(q);
+
+			for (Entity e : pq.asIterable()) {
+				toRet.add(new UserVehicle(e));
+			}
+		}
+
+		return toRet;
+	}
+
+
+	/**
 	 * Get a list of Vehicle Makes
 	 * 
 	 * @return a list of Vehicle Makes
@@ -65,12 +93,12 @@ public class DatastoreUtils {
 			// Get the Datastore Service
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 			Query q = new Query(Vehicle.class.getSimpleName());
-			q.addProjection(new PropertyProjection(Vehicle.VehicleColumns.MAKE, String.class));
+			q.addProjection(new PropertyProjection(Vehicle.Columns.MAKE, String.class));
 			PreparedQuery pq = datastore.prepare(q);
 			StringBuilder memcachedResult = new StringBuilder();
 
 			for (Entity e : pq.asIterable()) {
-				String make = String.valueOf(e.getProperty(Vehicle.VehicleColumns.MAKE));
+				String make = String.valueOf(e.getProperty(Vehicle.Columns.MAKE));
 				if (!toRet.contains(make)) {
 					toRet.add(make);
 					memcachedResult.append(make).append(SEPARATOR);
@@ -108,13 +136,13 @@ public class DatastoreUtils {
 			// Get the Datastore Service
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 			Query q = new Query(Vehicle.class.getSimpleName());
-			q.setFilter(new FilterPredicate(Vehicle.VehicleColumns.MAKE, Query.FilterOperator.EQUAL, make));
-			q.addProjection(new PropertyProjection(Vehicle.VehicleColumns.MODEL, String.class));
+			q.setFilter(new FilterPredicate(Vehicle.Columns.MAKE, Query.FilterOperator.EQUAL, make));
+			q.addProjection(new PropertyProjection(Vehicle.Columns.MODEL, String.class));
 			PreparedQuery pq = datastore.prepare(q);
 			StringBuilder memcachedResult = new StringBuilder();
 
 			for (Entity e : pq.asIterable()) {
-				String model = String.valueOf(e.getProperty(Vehicle.VehicleColumns.MODEL));
+				String model = String.valueOf(e.getProperty(Vehicle.Columns.MODEL));
 				if (!toRet.contains(model)) {
 					toRet.add(model);
 					memcachedResult.append(model).append(SEPARATOR);
@@ -152,9 +180,9 @@ public class DatastoreUtils {
 			// Get the Datastore Service
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 			Query q = new Query(Vehicle.class.getSimpleName());
-			q.setFilter(new FilterPredicate(Vehicle.VehicleColumns.MAKE, Query.FilterOperator.EQUAL, make));
-			q.setFilter(new FilterPredicate(Vehicle.VehicleColumns.MODEL, Query.FilterOperator.EQUAL, model));
-			q.addProjection(new PropertyProjection(Vehicle.VehicleColumns.YEARS, String.class));
+			q.setFilter(new FilterPredicate(Vehicle.Columns.MAKE, Query.FilterOperator.EQUAL, make));
+			q.setFilter(new FilterPredicate(Vehicle.Columns.MODEL, Query.FilterOperator.EQUAL, model));
+			q.addProjection(new PropertyProjection(Vehicle.Columns.YEARS, String.class));
 			PreparedQuery pq = datastore.prepare(q);
 			StringBuilder memcachedResult = new StringBuilder();
 
@@ -162,7 +190,7 @@ public class DatastoreUtils {
 				Entity result = pq.asSingleEntity();
 
 				if (result != null) {
-					String years = String.valueOf(result.getProperty(Vehicle.VehicleColumns.YEARS));
+					String years = String.valueOf(result.getProperty(Vehicle.Columns.YEARS));
 					String[] split = years.split(",");
 
 					for (String s : split) {

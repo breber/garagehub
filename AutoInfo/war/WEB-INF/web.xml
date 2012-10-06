@@ -33,12 +33,13 @@
 
 	<!-- Get Model info for a certain make -->
 	<servlet>
-		<servlet-name>GetModels</servlet-name>
-		<servlet-class>edu.se319.team1.carhub.servlets.GetModels</servlet-class>
+		<servlet-name>VehicleServlet</servlet-name>
+		<servlet-class>edu.se319.team1.carhub.servlets.VehicleServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>GetModels</servlet-name>
+		<servlet-name>VehicleServlet</servlet-name>
 		<url-pattern>/cars/raw/*</url-pattern>
+		<url-pattern>/user/addvehicle</url-pattern>
 	</servlet-mapping>
 
 	<!-- Retrieve Vehicle (make, model, year) data -->

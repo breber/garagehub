@@ -32,7 +32,6 @@ import com.google.appengine.api.datastore.Transaction;
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
-import edu.se319.team1.carhub.Email;
 import edu.se319.team1.carhub.PMF;
 import edu.se319.team1.carhub.Utilities;
 import edu.se319.team1.carhub.data.CarResponseString;
@@ -118,8 +117,8 @@ public class RetrieveVehicleTypes extends HttpServlet {
 		log.log(Level.INFO, "Num Skipped:  " + numSkipped);
 
 		// TODO: don't email this, but store results in datastore somewhere
-		Email.sendEmailToBrian("RetrieveVehicleTypes Update: " + new Date(), "Updated at " + new Date() + "<br /><br />Updated: " + numUpdated
-				+ "<br />Added: " + numAdded + "<br />Skipped: " + numSkipped + "<br /><br />" + vehicleList.toString());
+		//		Email.sendEmailToBrian("RetrieveVehicleTypes Update: " + new Date(), "Updated at " + new Date() + "<br /><br />Updated: " + numUpdated
+		//				+ "<br />Added: " + numAdded + "<br />Skipped: " + numSkipped + "<br /><br />" + vehicleList.toString());
 
 		// Send the user to the admin page
 		resp.sendRedirect("/admin/admin.jsp");
@@ -267,8 +266,8 @@ public class RetrieveVehicleTypes extends HttpServlet {
 		try {
 			for (Vehicle v : vehicleList) {
 				Query q = new Query(Vehicle.class.getSimpleName());
-				FilterPredicate make = new FilterPredicate(Vehicle.VehicleColumns.MAKE, Query.FilterOperator.EQUAL, v.getMake());
-				FilterPredicate model = new FilterPredicate(Vehicle.VehicleColumns.MODEL, Query.FilterOperator.EQUAL, v.getModel());
+				FilterPredicate make = new FilterPredicate(Vehicle.Columns.MAKE, Query.FilterOperator.EQUAL, v.getMake());
+				FilterPredicate model = new FilterPredicate(Vehicle.Columns.MODEL, Query.FilterOperator.EQUAL, v.getModel());
 
 				q.setFilter(CompositeFilterOperator.and(make, model));
 
@@ -283,8 +282,8 @@ public class RetrieveVehicleTypes extends HttpServlet {
 					// If result isn't null, update the last modified time to the current time
 					if (result != null) {
 						numUpdated++;
-						result.setProperty(Vehicle.VehicleColumns.LAST_MODIFIED, currentTime);
-						result.setProperty(Vehicle.VehicleColumns.YEARS, v.getYear());
+						result.setProperty(Vehicle.Columns.LAST_MODIFIED, currentTime);
+						result.setProperty(Vehicle.Columns.YEARS, v.getYear());
 						datastore.put(result);
 					} else {
 						// If the result is null, we want to add the vehicle to the database

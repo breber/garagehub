@@ -25,6 +25,11 @@ public class UserWrapper {
 	private boolean isAdmin;
 
 	/**
+	 * The ID of this user
+	 */
+	private String userId = "";
+
+	/**
 	 * The MD5 of the user's email address
 	 */
 	private String md5 = "";
@@ -54,6 +59,7 @@ public class UserWrapper {
 			toRet.isAdmin = toRet.isLoggedIn && service.isUserAdmin();
 			toRet.nickname = (toRet.isLoggedIn) ? user.getNickname() : "";
 			toRet.md5 = (toRet.isLoggedIn) ? MD5Util.md5Hex(user.getEmail()) : "00000000000000000000000000000000";
+			toRet.userId = (toRet.isLoggedIn) ? user.getUserId() : "";
 
 			return toRet;
 		} else {
@@ -86,6 +92,7 @@ public class UserWrapper {
 							"fantashley".equals(toRet.nickname));
 			toRet.md5 = null;
 			toRet.profilePictureUrl = "https://graph.facebook.com/" + toRet.nickname + "/picture";
+			toRet.userId = (String) ((toRet.isLoggedIn) ? session.getAttribute("logged_in") : "");
 
 			return toRet;
 		} else {
@@ -155,5 +162,12 @@ public class UserWrapper {
 	 */
 	public String getProfilePictureUrl() {
 		return profilePictureUrl;
+	}
+
+	/**
+	 * @return the userId
+	 */
+	public String getUserId() {
+		return userId;
 	};
 }

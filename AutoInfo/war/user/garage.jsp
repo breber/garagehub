@@ -1,4 +1,13 @@
+<%@page import="edu.se319.team1.carhub.data.DatastoreUtils"%>
+<%@page import="edu.se319.team1.carhub.data.UserVehicle"%>
+<%@page import="java.util.List"%>
+<%@page import="edu.se319.team1.carhub.UserWrapper"%>
 <%@page language="java" contentType="text/html"%>
+
+<%
+	UserWrapper user = UserWrapper.getInstance(request.getSession(false));
+	List<UserVehicle> vehicles = DatastoreUtils.getUserVehicles(user);
+%>
 
 <div class="container-fluid center-block">
 	<div class="row-fluid">
@@ -12,8 +21,26 @@
 	
 		<div class="well well-small span9">
 			<h2>Your Garage</h2>
-	
-			<p>TODO: list vehicles...</p>
+
+			<% if (vehicles.isEmpty()) { %>
+				<p>You don't have any vehicles registered.</p>
+				<p>Register one <a href="/user/addvehicle.jsp">here</a>!</p>
+			<% } else { %>
+				<table class="table">
+					<tr>
+						<th>Year</th>
+						<th>Make</th>
+						<th>Model</th>
+					</tr>
+				<% for (UserVehicle v : vehicles) { %>
+					<tr>
+						<td><%=v.getYear() %></td>
+						<td><%=v.getMake() %></td>
+						<td><%=v.getModel() %></td>
+					</tr>
+				<% } %>
+				</table>
+			<% } %>
 		</div>
 	</div>
 </div>

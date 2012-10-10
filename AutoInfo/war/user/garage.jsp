@@ -15,7 +15,7 @@
 			<ul class="nav nav-list">
 				<li class="nav-header">Navigate</li>
 				<li class="active">Garage</li>
-				<li><a href="/user/addvehicle.jsp">Add Vehicle</a></li>
+				<li><a href="/vehicle/addvehicle">Add Vehicle</a></li>
 			</ul>
 		</div>
 	
@@ -24,7 +24,7 @@
 
 			<% if (vehicles.isEmpty()) { %>
 				<p>You don't have any vehicles registered.</p>
-				<p>Register one <a href="/user/addvehicle.jsp">here</a>!</p>
+				<p>Register one <a href="/vehicle/addvehicle">here</a>!</p>
 			<% } else { %>
 				<table class="table table-striped table-bordered">
 					<tr>

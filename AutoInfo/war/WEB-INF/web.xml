@@ -24,6 +24,14 @@
 		<url-pattern>/vehicle/*</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<servlet-name>UserAddVehicle</servlet-name>
+		<jsp-file>/user/addvehicle.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserAddVehicle</servlet-name>
+		<url-pattern>/vehicle/addvehicle</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>UserVehicleExpenseManager</servlet-name>
 		<jsp-file>/user/expenseTracker.jsp</jsp-file>
 	</servlet>
@@ -62,6 +70,15 @@
 	<servlet-mapping>
 		<servlet-name>UserVehicleNews</servlet-name>
 		<url-pattern>/vehicle/news/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>AdminPage</servlet-name>
+		<jsp-file>/admin/admin.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AdminPage</servlet-name>
+		<url-pattern>/admin/*</url-pattern>
 	</servlet-mapping>
 	
 	<!-- Facebook Login/Logout Endpoints -->

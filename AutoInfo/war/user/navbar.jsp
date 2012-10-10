@@ -31,7 +31,7 @@
 							<% if (!vehicles.isEmpty()) { %>
 							<li class="divider"></li>
 							<% } %>
-							<li><a href="/user/addvehicle.jsp"><i class="icon-plus"></i> Add Vehicle</a>
+							<li><a href="/vehicle/addvehicle"><i class="icon-plus"></i> Add Vehicle</a>
 						</ul>
 					</li>
 					<% } %>

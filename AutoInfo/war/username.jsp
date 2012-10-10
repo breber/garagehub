@@ -24,7 +24,7 @@
 		<a href="#" class="dropdown-toggle" data-toggle="dropdown"><%=user.getNickname() %> <b class="caret hidden-phone"></b></a>
 		<ul class="dropdown-menu">
 			<% if (user.isAdmin()) { %>
-			<li><a href="/admin/admin.jsp">Admin</a></li>
+			<li><a href="/admin/">Admin</a></li>
 			<% } %>
 			<li><a href="/user/settings.jsp">Settings</a></li>
 			<li class="divider"></li>

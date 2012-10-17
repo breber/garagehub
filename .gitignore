@@ -13,3 +13,7 @@ AutoInfo/war/WEB-INF/lib/asm-4.0.jar
 AutoInfo/war/WEB-INF/lib/jta-1.1.jar
 
 AutoInfo/war/WEB-INF/appengine-generated/
+
+# Python stuff
+
+*.pyc

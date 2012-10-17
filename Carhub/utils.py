@@ -1,4 +1,5 @@
 from google.appengine.api import users
+import md5
 
 def get_context():
     context = {}
@@ -9,8 +10,12 @@ def get_context():
     context['logouturl'] = users.create_logout_url("/")
 
     if user:
-        context['username'] = user.nickname()
+        userobj = {}
+        userobj['isAdmin'] = users.is_current_user_admin()
+        userobj['username'] = user.nickname()
+        userobj['md5'] = md5.new(user.email()).hexdigest()
+        context['user'] = userobj
     else:
-        context['username'] = None
+        context['user'] = None
 
     return context

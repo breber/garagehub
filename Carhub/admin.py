@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from google.appengine.api import memcache, users
 from google.appengine.ext.webapp import template
 import os
@@ -29,3 +30,7 @@ class AdminHandler(webapp2.RequestHandler):
         
         # Always redirect to admin
         self.redirect("/admin")
+
+app = webapp2.WSGIApplication([
+    ('/admin/?([^/]+)?', AdminHandler)
+], debug=True)

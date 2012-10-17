@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from google.appengine.ext.webapp import template
-import admin
 import os
 import utils
 import webapp2
@@ -13,6 +12,5 @@ class MainHandler(webapp2.RequestHandler):
         self.response.out.write(template.render(path, context))
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
-    ('/admin/?([^/]+)?', admin.AdminHandler)
+    ('/', MainHandler)
 ], debug=True)

@@ -1,12 +1,13 @@
 #!/usr/bin/env python
-from google.appengine.ext.webapp import template
 from google.appengine.api import users
+from google.appengine.ext.webapp import template
 import datastore
+import datetime
 import json
+import models
 import os
 import utils
 import webapp2
-import models
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -92,6 +93,7 @@ class VehicleHandler(webapp2.RequestHandler):
                 vehicle.model = model
                 vehicle.year = year
                 vehicle.owner = currentUser.user_id()
+                vehicle.lastmodified = datetime.datetime.now()
                 
                 vehicle.put()
             

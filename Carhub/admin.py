@@ -25,13 +25,13 @@ class AdminHandler(webapp2.RequestHandler):
 
             elif method == "deletevehicles":
                 # Delete all vehicles
-                vehicles = models.BaseVehicle.all().fetch(1000)
+                vehicles = models.BaseVehicle.query().fetch(1000)
                 for v in vehicles:
                     v.delete()
 
             elif method == "deletecarresponsestring":
                 # Delete all car response strings
-                carResps = models.ServerResponseString.all().fetch(1000)
+                carResps = models.ServerResponseString.query().fetch(1000)
                 for r in carResps:
                     r.delete()
 

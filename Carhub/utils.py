@@ -18,9 +18,7 @@ def get_context(list_vehicles=True):
         context['user'] = userobj
         
         if list_vehicles:
-            # TODO: move to datastore, and optimize...
-            userVehiclesQuery = models.UserVehicle.all()
-            userVehiclesQuery.filter("owner", user.user_id())
+            userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == user.user_id())
             userVehicles = userVehiclesQuery.fetch(100)
             
             if len(userVehicles) > 0:

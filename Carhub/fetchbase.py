@@ -61,7 +61,7 @@ class FetchBaseVehicles:
     def getUpdatedRecords(self):
         """ Parse the data and figure out which BaseVehicles need to be added/updated """
 
-        prevResult = models.ServerResponseString.all().get()
+        prevResult = models.ServerResponseString.query().get()
         prevJson = None
         skip = False
         
@@ -148,9 +148,7 @@ class FetchBaseVehicles:
         # For each vehicle in the list to update
         for vehicle in self.vehicleList:
             # Create a query to get the current copy
-            query = models.BaseVehicle.all()
-            query.filter("make =", vehicle.make)
-            query.filter("model =", vehicle.model)
+            query = models.BaseVehicle.query(models.BaseVehicle.make == vehicle.make, models.BaseVehicle.model == vehicle.model)
             
             result = query.get()
             

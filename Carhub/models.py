@@ -1,20 +1,20 @@
-from google.appengine.ext import db
+from google.appengine.ext import ndb
 
 
-class ServerResponseString(db.Model):
-    response = db.TextProperty()
+class ServerResponseString(ndb.Model):
+    response = ndb.TextProperty()
 
-class BaseVehicle(db.Model):
-    make = db.StringProperty()
-    model = db.StringProperty()
-    years = db.StringProperty() # StringListProperty?
+class BaseVehicle(ndb.Model):
+    make = ndb.StringProperty()
+    model = ndb.StringProperty()
+    years = ndb.StringProperty() # StringListProperty?
 
-class UserVehicle(db.Model):
-    # TODO: last modified date?
-    make = db.StringProperty()
-    model = db.StringProperty()
-    owner = db.StringProperty()
-    year = db.StringProperty()
-    color = db.StringProperty()
-    plates = db.StringProperty()
+class UserVehicle(ndb.Model):
+    make = ndb.StringProperty()
+    model = ndb.StringProperty()
+    owner = ndb.StringProperty()
+    year = ndb.StringProperty()
+    color = ndb.StringProperty()
+    plates = ndb.StringProperty()
+    lastmodified = ndb.DateTimeProperty()
     

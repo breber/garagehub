@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="well">
+  <h2>Add Vehicle</h2>
+
+  <form action="/user/addvehicle" method="post">
+    <p>Make</p>
+    <select id="makes" name="make">
+      <option>Select a make</option>
+      {% for vehicle in vehicles %}
+      <option>{{ vehicle }}</option>
+      {% endfor %}
+    </select>
+
+    <p>Model</p>
+    <select id="models" name="model">
+      <option>Select a model</option>
+    </select>
+
+    <p>Year</p>
+    <select id="years" name="year">
+      <option>Select a year</option>
+    </select> <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+{% endblock %}
+
+{% block externaljs %}
+<script type="text/javascript" src="/static/js/addvehicle.js"></script>
+{% endblock %}

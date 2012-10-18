@@ -14,7 +14,7 @@ def get_context(list_vehicles=True):
         userobj = {}
         userobj['isAdmin'] = users.is_current_user_admin()
         userobj['username'] = user.nickname()
-        userobj['md5'] = md5.new(user.email()).hexdigest()
+        userobj['profilePic'] = "http://www.gravatar.com/avatar/%s?s=40" % md5.new(user.email()).hexdigest()
         context['user'] = userobj
         
         if list_vehicles:

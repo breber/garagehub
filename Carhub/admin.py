@@ -31,7 +31,7 @@ class AdminHandler(webapp2.RequestHandler):
 
             elif method == "deletecarresponsestring":
                 # Delete all car response strings
-                carResps = models.CarResponseString.all().fetch(1000)
+                carResps = models.ServerResponseString.all().fetch(1000)
                 for r in carResps:
                     r.delete()
 

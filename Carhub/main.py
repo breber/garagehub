@@ -12,7 +12,11 @@ class MainHandler(webapp2.RequestHandler):
     def get(self):
         context = utils.get_context()
         
-        path = os.path.join(os.path.dirname(__file__), 'templates/home.html')
+        if users.get_current_user():
+            path = os.path.join(os.path.dirname(__file__), 'templates/garage.html')
+        else:
+            path = os.path.join(os.path.dirname(__file__), 'templates/welcome.html')
+            
         self.response.out.write(template.render(path, context))
 
 class RawVehicleHandler(webapp2.RequestHandler):
@@ -30,15 +34,20 @@ class VehicleHandler(webapp2.RequestHandler):
     def get(self, makeOption, model):
         context = utils.get_context()
         
+        # If the path doesn't contain a first parameter, just show the garage
         if not makeOption:
-            # TODO: template should be garage
-            path = os.path.join(os.path.dirname(__file__), 'templates/addvehicle.html')
+            path = os.path.join(os.path.dirname(__file__), 'templates/garage.html')
             self.response.out.write(template.render(path, context))
+            
+        # If the first path parameter is "add", show the add vehicle page 
         elif makeOption == "add":
             context["vehicles"] = datastore.getListOfMakes()
             
             path = os.path.join(os.path.dirname(__file__), 'templates/addvehicle.html')
             self.response.out.write(template.render(path, context))
+        
+        # If we have a first path parameter, and it isn't add, use that as
+        # the vehicle ID and show that vehicle's page
         else:
             # TODO: should be vehicle page
             path = os.path.join(os.path.dirname(__file__), 'templates/addvehicle.html')

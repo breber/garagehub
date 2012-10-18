@@ -25,6 +25,7 @@ def getListOfMakes():
             if not v.make in toRet:
                 toRet.append(v.make)
         
+        toRet.sort()
         memcache.Client().add("vehicleMakeList", "~~".join(toRet))
         
         return toRet
@@ -49,6 +50,7 @@ def getListOfModels(make):
             if not v.model in toRet:
                 toRet.append(v.model)
         
+        toRet.sort()
         memcache.Client().add(memcacheKey, "~~".join(toRet))
         
         return toRet
@@ -70,7 +72,8 @@ def getListOfYears(make, model):
         result = query.get()
         
         toRet = result.years.split(",")
-        
+
+        toRet.sort()
         memcache.Client().add(memcacheKey, "~~".join(toRet))
         
         return toRet

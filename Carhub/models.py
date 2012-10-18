@@ -1,22 +1,18 @@
 from google.appengine.ext import db
 
 
-class Show(db.Model):
-    title = db.StringProperty()
-    poster = db.StringProperty()
+class ServerResponseString(db.Model):
+    response = db.TextProperty()
 
-class Season(db.Model):
-    show = db.ReferenceProperty(Show)
-    number = db.IntegerProperty()
-    poster = db.StringProperty()
+class BaseVehicle(db.Model):
+    make = db.StringProperty()
+    model = db.StringProperty()
+    years = db.StringProperty() # StringListProperty?
 
-class Episode(db.Model):
-    show = db.ReferenceProperty(Show)
-    season = db.IntegerProperty()
-    number = db.IntegerProperty()
-    title = db.StringProperty()
-    airdate = db.DateTimeProperty()
-    poster = db.StringProperty()
-    watched = db.BooleanProperty()
-    userid = db.StringProperty()
+class UserVehicle(db.Model):
+    baseVehicle = db.ReferenceProperty(BaseVehicle)
+    owner = db.StringProperty()
+    year = db.StringProperty()
+    color = db.StringProperty()
+    plates = db.StringProperty()
     

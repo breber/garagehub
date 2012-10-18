@@ -4,7 +4,7 @@ import os
 import utils
 import webapp2
 
-class UserHandler(webapp2.RequestHandler):
+class ToolsHandler(webapp2.RequestHandler):
     def get(self, pageName):
         context = utils.get_context()
         
@@ -19,5 +19,5 @@ class UserHandler(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication([
-    ('/user/([^/]+)', UserHandler)
+    ('/tools/([^/]+)', ToolsHandler)
 ], debug=True)

@@ -7,7 +7,7 @@ class ServerResponseString(ndb.Model):
 class BaseVehicle(ndb.Model):
     make = ndb.StringProperty()
     model = ndb.StringProperty()
-    years = ndb.StringProperty() # StringListProperty?
+    years = ndb.StringProperty()
 
 class UserVehicle(ndb.Model):
     make = ndb.StringProperty()

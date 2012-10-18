@@ -3,7 +3,7 @@ Created on Oct 17, 2012
 
 @author: breber
 '''
-from google.appengine.api import memcache, urlfetch
+from google.appengine.api import urlfetch
 import json
 import logging
 import models
@@ -47,10 +47,6 @@ class FetchBaseVehicles:
             
             # Update the records in the database
             self.updateDatabase()
-            
-            # Invalidate the current memcache string if we updated anything
-            if len(self.vehicleList) > 0:
-                memcache.Client().delete("vehicleMakeList") # TODO: extract to constant
             
             logging.info("Finished Updating")
             logging.info("Num Updated: %d" % self.numUpdated)
@@ -148,7 +144,8 @@ class FetchBaseVehicles:
         # For each vehicle in the list to update
         for vehicle in self.vehicleList:
             # Create a query to get the current copy
-            query = models.BaseVehicle.query(models.BaseVehicle.make == vehicle.make, models.BaseVehicle.model == vehicle.model)
+            query = models.BaseVehicle.query(models.BaseVehicle.make == vehicle.make, 
+                                             models.BaseVehicle.model == vehicle.model)
             
             result = query.get()
             

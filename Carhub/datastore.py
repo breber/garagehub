@@ -3,6 +3,7 @@ Created on Oct 17, 2012
 
 @author: breber
 '''
+from google.appengine.ext import ndb
 import models
 
 def getUserVehicle(vehicleId):
@@ -11,10 +12,10 @@ def getUserVehicle(vehicleId):
 
 def getListOfMakes():
     query = models.BaseVehicle().query()
-    result = query.fetch(1000)
+    results = ndb.get_multi(query.fetch(keys_only=True))
 
     toRet = []
-    for v in result:
+    for v in results:
         if not v.make in toRet:
             toRet.append(v.make)
     
@@ -24,10 +25,10 @@ def getListOfMakes():
 
 def getListOfModels(make):
     query = models.BaseVehicle().query(models.BaseVehicle.make == make)
-    result = query.fetch(1000)
+    results = ndb.get_multi(query.fetch(keys_only=True))
 
     toRet = []
-    for v in result:
+    for v in results:
         if not v.model in toRet:
             toRet.append(v.model)
     

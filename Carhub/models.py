@@ -10,7 +10,9 @@ class BaseVehicle(db.Model):
     years = db.StringProperty() # StringListProperty?
 
 class UserVehicle(db.Model):
-    baseVehicle = db.ReferenceProperty(BaseVehicle)
+    # TODO: last modified date?
+    make = db.StringProperty()
+    model = db.StringProperty()
     owner = db.StringProperty()
     year = db.StringProperty()
     color = db.StringProperty()

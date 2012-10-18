@@ -1,0 +1,69 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="well">
+  <h2>Nearby Gas Prices</h2>
+
+  <form>
+    <input onclick="hideZipCode();" type="checkbox" id="location"
+      name="loaction" value="location" checked /> Detect my location <br />
+    <br />
+
+    <section>
+      <div style="float: left;">
+        <label for="zip">Zip Code:</label><input type="text" name="zip"
+          id="zip" disabled />
+      </div>
+      <div style="float: left; margin-left: 20px;">
+        <label for="radius">Search Radius:</label> <select name="radius"
+          id="radius">
+          <option value="1">1 Mile</option>
+          <option value="2">2 Miles</option>
+          <option value="3">3 Miles</option>
+          <option value="4">4 Miles</option>
+          <option SELECTED value="5">5 Miles</option>
+          <option value="6">6 Miles</option>
+          <option value="7">7 Miles</option>
+          <option value="8">8 Miles</option>
+          <option value="9">9 Miles</option>
+          <option value="10">10 Miles</option>
+          <option value="15">15 Miles</option>
+          <option value="20">20 Miles</option>
+          <option value="25">25 Miles</option>
+          <option value="30">30 Miles</option>
+        </select>
+      </div>
+      <div style="float: left; margin-left: 20px;">
+        <label for="grade">Fuel Grade:</label> <select name="grade"
+          id="grade">
+          <option value="reg">Regular</option>
+          <option value="mid">Mid</option>
+          <option value="pre">Premium</option>
+          <option value="diesel">Diesel</option>
+        </select>
+      </div>
+      <div style="float: left; margin-left: 20px;">
+        <label for="sort">Sort By:</label> <select name="sort" id="sort">
+          <option value="price">Price</option>
+          <option value="distance">Distance</option>
+        </select>
+      </div>
+    </section>
+    <br /> <br />
+    <section>
+      <div style="float: left; clear: both;">
+        <input type="button" class="btn" onclick="getGasPrices();"
+          value="Get Gas" />
+      </div>
+    </section>
+  </form>
+  <br /> <br />
+  <table class="table pagination" id="table">
+  </table>
+  <div>Data Powered by www.myGasFeed.com.</div>
+</div>
+
+{% endblock %} {% block externaljs %}
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6rEVLWJAAQ6p3IObKwkyGoAVQ_GQZnIg&sensor=false"></script>
+<script src="/static/js/gasprices.js"></script>
+{% endblock %}

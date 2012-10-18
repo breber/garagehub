@@ -7,6 +7,13 @@ from google.appengine.api import memcache
 import logging
 import models
 
+def getUserVehicle(vehicleId):
+    result = models.UserVehicle.get_by_id(long(vehicleId))
+    
+    # TODO: cache this?
+    
+    return result
+
 def getListOfMakes():
     cacheResult = memcache.Client().get("vehicleMakeList")
     

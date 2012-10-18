@@ -1,0 +1,46 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="well" style="overflow: auto;">
+  <h2>Trip Planner</h2>
+
+  <div id="side-container">
+    <ul>
+      <li class="dir-label">From:</li>
+      <li><input id="from-input" type=text value="Chicago, IL" /></li>
+      <li class="dir-label">To:</li>
+      <li><input id="to-input" type=text value="San Jose, CA" /></li>
+    </ul>
+    <div>
+      <input onclick="Demo.getDirections();" type="button" class="btn"
+        value="Go!" style="float: left" />
+    </div>
+    <div id="dir-container"></div>
+  </div>
+  <div id="map_canvas" style="width: 500px; height: 300px"></div>
+  <br />
+  <div style="list-style-type: none; float: left;">
+    <form>
+      Number of Miles: <br />
+      <input id="num-miles-input" type="text" name="num-miles-input" /><br />
+      Average MPG: <br />
+      <input id="avg-mpg-input" type="text" name="avg-mpg-input" /> <br />
+      Estimated Price Per Gallon: <br />
+      <input id="avg-ppg-input" type="text" name="avg-ppg-input" />
+    </form>
+    <div>
+      <input onclick="calculateTripPrice();" type="button" class="btn"
+        value="Calculate Cost" style="float: left" />
+    </div>
+    <br /> <br />
+    <form>
+      Estimated Cost: <br />
+      <input id="est-cost-trip" type="text" name="est-cost-trip" /><br />
+    </form>
+  </div>
+</div>
+
+{% endblock %} {% block externaljs %}
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6rEVLWJAAQ6p3IObKwkyGoAVQ_GQZnIg&sensor=false"></script>
+<script src="/static/js/tripplanner.js"></script>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container-fluid center-block">
+  <div class="row-fluid">
+    <div class="well span3" style="padding: 8px 0;">
+      <ul class="nav nav-list">
+        <li class="nav-header">Navigate</li>
+        <li><a href="/vehicle/{{ car.key.id }}">{{ car.year }} {{ car.make }} {{ car.model }}</a></li>
+        <li>
+          <ul>
+            <li><a href="/vehicle/{{ car.key.id }}/expenses">Expense Manager</a></li>
+            <li><a href="/vehicle/{{ car.key.id }}/maintenance">Maintenance Records</a></li>
+            <li><a href="/vehicle/{{ car.key.id }}/gasmileage">Gas Mileage Tracking</a></li>
+            <li><a href="/vehicle/{{ car.key.id }}/charts">Charts</a></li>
+            <li><a href="/vehicle/{{ car.key.id }}/news">News</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <div class="well span9">
+      {% block pagecontent %}{% endblock %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}

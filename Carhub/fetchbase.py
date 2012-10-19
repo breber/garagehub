@@ -10,6 +10,8 @@ import models
 import re
 
 def performUpdate():
+    """ Wrapper for using the FetchBaseVehicles module """
+
     fetcher = FetchBaseVehicles()
     fetcher.updateVehicles()
 
@@ -20,7 +22,7 @@ class FetchBaseVehicles:
     numUpdated = 0
     numSkipped = 0
     serverResponse = ""
-    
+
     def updateVehicles(self):
         """ Perform an update of all the vehicles from Cars.com """
         
@@ -52,8 +54,8 @@ class FetchBaseVehicles:
             logging.info("Num Updated: %d" % self.numUpdated)
             logging.info("Num Added: %d" % self.numAdded)
             logging.info("Num Skipped: %d" % self.numSkipped)
-            
-    
+
+
     def getUpdatedRecords(self):
         """ Parse the data and figure out which BaseVehicles need to be added/updated """
 
@@ -116,7 +118,7 @@ class FetchBaseVehicles:
             toSave.response = self.serverResponse
             toSave.put()
 
-    
+
     def getYears(self, json, make, model):
         """ Get the list of years for the given make and model from the JSON array given """
         if not json:
@@ -135,7 +137,6 @@ class FetchBaseVehicles:
                         return model["yrs"]
         
         return None
-
 
 
     def updateDatabase(self):

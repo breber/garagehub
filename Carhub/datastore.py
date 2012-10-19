@@ -37,7 +37,8 @@ def getListOfModels(make):
     return toRet
 
 def getListOfYears(make, model):
-    query = models.BaseVehicle().query(models.BaseVehicle.make == make, models.BaseVehicle.model == model)
+    query = models.BaseVehicle().query(models.BaseVehicle.make == make, 
+                                       models.BaseVehicle.model == model)
     result = query.get()
     
     toRet = result.years.split(",")

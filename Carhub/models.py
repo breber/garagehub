@@ -18,3 +18,6 @@ class UserVehicle(ndb.Model):
     plates = ndb.StringProperty()
     lastmodified = ndb.DateTimeProperty()
     
+    def name(self):
+        return "%s %s %s" % (self.year, self.make, self.model)
+    

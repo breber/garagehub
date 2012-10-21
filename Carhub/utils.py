@@ -1,6 +1,8 @@
 from google.appengine.api import users
+from google.appengine.ext import ndb
 import hashlib
 import models
+
 
 def get_context(list_vehicles=True):
     context = {}
@@ -17,7 +19,7 @@ def get_context(list_vehicles=True):
         
         if list_vehicles:
             userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == user.user_id())
-            userVehicles = userVehiclesQuery.fetch(100)
+            userVehicles = ndb.get_multi(userVehiclesQuery.fetch(keys_only=True))
             
             if len(userVehicles) > 0:
                 context['uservehicles'] = userVehicles 

@@ -1,7 +1,14 @@
+$().ready(function() {
+	// When the page is ready, hide the table and loading
+	// sections so there isn't a huge blank space in the page
+	$("#table").hide();
+	$("#loading").hide();
+});
+
 function getGasPrices() {
 	$("#table").empty();
 	
-	var isChecked = $('#location').attr('checked')?true:false;
+	var isChecked = $('#location').attr('checked');
 	var JSONGasFeed;
 	if (isChecked) {
 		getLocation();
@@ -11,7 +18,12 @@ function getGasPrices() {
 };
 
 function hideZipCode() {
-	document.getElementById('zip').disabled = document.getElementById('location').checked;
+	if ($("#location").is(":checked")) {
+		$("#zip").prop("disabled", true);
+		$("#zip").val("");
+	} else {
+		$("#zip").prop("disabled", false);
+	}
 };
 
 function sendJSONRequest(lat, lon) {
@@ -72,22 +84,25 @@ function errorHandler(err) {
 	}
 };
 
-function showLoading(){
-	$('#table').append("<center>Loading...</center><br/>");
-	$('#table').append('<center><img id="theImg" src="/img/ajax-loader.gif" /></center>');
+function showLoading() {
+	$("#loading").removeClass("hidden");
+	$("#loading").show();
+	
+	$("#table").hide();
 };
 
 function stopLoading(){
-	$("#table").empty();
+	$("#loading").hide();
+	$("#table").show();
 };
 
-function displayGasPrices(JSONGasFeed){
+function displayGasPrices(JSONGasFeed) {
 	showLoading();
 	$.getJSON(JSONGasFeed, function(json) {
 		var grade = document.getElementById('grade').value;
 		stopLoading();
 		
-		$.each(json.stations, function(i, item){
+		$.each(json.stations, function(i, item) {
 			var price;
 			if (grade === 'reg') {
 				price = item.reg_price;

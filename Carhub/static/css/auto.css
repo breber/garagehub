@@ -7,9 +7,19 @@
 	}
 }
 
+.center {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
 .center-block {
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.hidden {
+	display: none;
 }
 
 

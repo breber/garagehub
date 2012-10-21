@@ -10,12 +10,12 @@
 
     <section>
       <div style="float: left;">
-        <label for="zip">Zip Code:</label><input type="text" name="zip"
-          id="zip" disabled />
+        <label for="zip">Zip Code:</label>
+        <input type="text" name="zip" id="zip" disabled />
       </div>
       <div style="float: left; margin-left: 20px;">
-        <label for="radius">Search Radius:</label> <select name="radius"
-          id="radius">
+        <label for="radius">Search Radius:</label>
+        <select name="radius" id="radius">
           <option value="1">1 Mile</option>
           <option value="2">2 Miles</option>
           <option value="3">3 Miles</option>
@@ -33,8 +33,8 @@
         </select>
       </div>
       <div style="float: left; margin-left: 20px;">
-        <label for="grade">Fuel Grade:</label> <select name="grade"
-          id="grade">
+        <label for="grade">Fuel Grade:</label>
+        <select name="grade" id="grade">
           <option value="reg">Regular</option>
           <option value="mid">Mid</option>
           <option value="pre">Premium</option>
@@ -42,7 +42,8 @@
         </select>
       </div>
       <div style="float: left; margin-left: 20px;">
-        <label for="sort">Sort By:</label> <select name="sort" id="sort">
+        <label for="sort">Sort By:</label>
+        <select name="sort" id="sort">
           <option value="price">Price</option>
           <option value="distance">Distance</option>
         </select>
@@ -51,14 +52,16 @@
     <br /> <br />
     <section>
       <div style="float: left; clear: both;">
-        <input type="button" class="btn" onclick="getGasPrices();"
-          value="Get Gas" />
+        <input type="button" class="btn" onclick="getGasPrices();" value="Get Gas" />
       </div>
     </section>
   </form>
-  <br /> <br />
-  <table class="table pagination" id="table">
-  </table>
+  <br /><br />
+  <div id="tableWrapper">
+    <div id="loading" class="center"><img id='theImg' src='/static/img/ajax-loader.gif' /> Loading...</div>
+    <table class="table pagination" id="table"></table>
+  </div>
+  <hr />
   <div>Data Powered by www.myGasFeed.com.</div>
 </div>
 

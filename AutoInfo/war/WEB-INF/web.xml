@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<servlet>
+		<servlet-name>SystemServiceServlet</servlet-name>
+		<servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
+		<init-param>
+			<param-name>services</param-name>
+			<param-value/>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SystemServiceServlet</servlet-name>
+		<url-pattern>/_ah/spi/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- Map JSP pages to paths so that we can have easier
+		access to vehicle name/parameters -->
+	<servlet>
+		<servlet-name>UserVehicle</servlet-name>
+		<jsp-file>/user/car.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserVehicle</servlet-name>
+		<url-pattern>/vehicle/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserAddVehicle</servlet-name>
+		<jsp-file>/user/addvehicle.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserAddVehicle</servlet-name>
+		<url-pattern>/vehicle/addvehicle</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserVehicleExpenseManager</servlet-name>
+		<jsp-file>/user/expenseTracker.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserVehicleExpenseManager</servlet-name>
+		<url-pattern>/vehicle/expenses/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserVehicleMaintenanceRecords</servlet-name>
+		<jsp-file>/user/maintenance.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserVehicleMaintenanceRecords</servlet-name>
+		<url-pattern>/vehicle/maintenance/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserVehicleGasMileage</servlet-name>
+		<jsp-file>/user/gasMileage.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserVehicleGasMileage</servlet-name>
+		<url-pattern>/vehicle/gasmileage/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserVehicleCharts</servlet-name>
+		<jsp-file>/user/charts.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserVehicleCharts</servlet-name>
+		<url-pattern>/vehicle/charts/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>UserVehicleNews</servlet-name>
+		<jsp-file>/user/news.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UserVehicleNews</servlet-name>
+		<url-pattern>/vehicle/news/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>AdminPage</servlet-name>
+		<jsp-file>/admin/admin.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AdminPage</servlet-name>
+		<url-pattern>/admin/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Facebook Login/Logout Endpoints -->
+	<servlet>
+		<servlet-name>FBLogin</servlet-name>
+		<servlet-class>edu.se319.team1.carhub.servlets.FBLoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FBLogin</servlet-name>
+		<url-pattern>/login_fb.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>FBLogout</servlet-name>
+		<servlet-class>edu.se319.team1.carhub.servlets.FBLogoutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FBLogout</servlet-name>
+		<url-pattern>/logout_fb.do</url-pattern>
+	</servlet-mapping>
+
+	<!-- Get Model info for a certain make -->
+	<servlet>
+		<servlet-name>VehicleServlet</servlet-name>
+		<servlet-class>edu.se319.team1.carhub.servlets.VehicleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>VehicleServlet</servlet-name>
+		<url-pattern>/cars/raw/*</url-pattern>
+		<url-pattern>/user/addvehicle</url-pattern>
+	</servlet-mapping>
+
+	<!-- Retrieve Vehicle (make, model, year) data -->
+	<servlet>
+		<servlet-name>RetrieveVehicleTypes</servlet-name>
+		<servlet-class>edu.se319.team1.carhub.servlets.RetrieveVehicleTypes</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RetrieveVehicleTypes</servlet-name>
+		<url-pattern>/cron/fetchvehicleinfo</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- Delete all vehicles -->
+	<servlet>
+		<servlet-name>DeleteAllVehicles</servlet-name>
+		<servlet-class>edu.se319.team1.carhub.servlets.DeleteAllVehicles</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DeleteAllVehicles</servlet-name>
+		<url-pattern>/admin/deletevehicles</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>DeleteAllCarResponseString</servlet-name>
+		<servlet-class>edu.se319.team1.carhub.servlets.DeleteAllCarResponseString</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DeleteAllCarResponseString</servlet-name>
+		<url-pattern>/admin/deletecarresponsestring</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>ClearMemcache</servlet-name>
+		<servlet-class>edu.se319.team1.carhub.servlets.ClearMemcache</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ClearMemcache</servlet-name>
+		<url-pattern>/admin/clearmemcache</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- Require an admin for certain endpoints -->
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/cron/*</url-pattern>
+			<!-- <url-pattern>/admin/*</url-pattern> -->
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<!-- Require user to be logged in to access certain endpoints -->
+	<!-- <security-constraint> <web-resource-collection> <url-pattern>/cars/*</url-pattern> 
+		<url-pattern>/user/*</url-pattern> </web-resource-collection> <auth-constraint> 
+		<role-name>*</role-name> </auth-constraint> </security-constraint> -->
+
+	<servlet>
+		<servlet-name>LoginRequiredServlet</servlet-name>
+		<servlet-class>edu.se319.team1.carhub.servlets.LoginRequiredServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoginRequiredServlet</servlet-name>
+		<url-pattern>/_ah/login_required</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+</web-app>

@@ -61,6 +61,20 @@ class AdminHandler(webapp2.RequestHandler):
         # Always redirect to admin
         self.redirect("/admin")
 
+class CronHandler(webapp2.RequestHandler):
+    """The request handler for the /cron/([^/]+) path """
+
+    def get(self, method):
+        """
+        Executes the defined cron job
+        
+        Args: 
+            method - what cron job to run
+        """
+        if method == "fetch":
+            fetchbase.performUpdate()
+
 app = webapp2.WSGIApplication([
-    ('/admin/?([^/]+)?', AdminHandler)
+    ('/admin/?([^/]+)?', AdminHandler),
+    ('/cron/([^/]+)', CronHandler)
 ], debug=True)

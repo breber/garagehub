@@ -1,5 +1,5 @@
 cron:
 - description: update car data
-  url: /admin/fetchvehicleinfo
+  url: /cron/fetch
   schedule: every day 00:00
   timezone: America/Chicago

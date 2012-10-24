@@ -13,7 +13,7 @@
 <path>${GOOGLE_APP_ENGINE}</path>
 <path>${GOOGLE_APP_ENGINE}/lib/PyAMF</path>
 <path>${GOOGLE_APP_ENGINE}/lib/antlr3</path>
-<path>${GOOGLE_APP_ENGINE}/lib/django_1_3</path>
+<path>${GOOGLE_APP_ENGINE}/lib/django_1_4</path>
 <path>${GOOGLE_APP_ENGINE}/lib/enum</path>
 <path>${GOOGLE_APP_ENGINE}/lib/fancy_urllib</path>
 <path>${GOOGLE_APP_ENGINE}/lib/google-api-python-client</path>

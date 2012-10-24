@@ -17,3 +17,4 @@ AutoInfo/war/WEB-INF/appengine-generated/
 # Python stuff
 
 *.pyc
+Carhub/.pydevproject

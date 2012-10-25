@@ -9,6 +9,7 @@ import logging
 import os
 import utils
 import webapp2
+from xmlrpclib import DateTime
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -57,20 +58,21 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
                 
             self.response.out.write(template.render(path, context))
     
-    def post(self, makeOption, model):
+    def post(self, vehicleId, model):
         currentUser = users.get_current_user()
         
-        logging.info("entered the post function")
+        logging.info("entered the Expense post function")
         
         if currentUser:
 #            TODO: do something with the post
-            datePurchased = self.request.get("datePurchased", None)
+            dateString = self.request.get("datePurchased", None)
+            datePurchased = datetime.datetime.strptime(dateString, "%m-%d-%Y")
             category = self.request.get("category", None)
             location = self.request.get("location", None)
             amount = self.request.get("amount", None)
             description = self.request.get("description", None)
             logging.info("I finished getting information")
-            logging.info("%s %s %s %s %d" % datePurchased, category, location, description, amount)
+            logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
             
             if datePurchased and category and location and amount and description:
                 expense = models.UserExpense()
@@ -81,7 +83,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
                 expense.description = description
                 
                 expense.owner = currentUser.user_id()
-                expense.vehicle = "Fake Car TODO" #TODO
+                expense.vehicle = vehicleId
                 expense.lastmodified = datetime.datetime.now()
                 
                 expense.put()
@@ -151,6 +153,7 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/settings', SettingsHandler),
     ('/vehicle/([^/]+)/expenses/?(.+?)?', VehicleExpenseHandler),
+    ('/vehicle/([^/]+)/expenses/(.+?)?', VehicleExpenseHandler),
     ('/vehicle/([^/]+)?/?(.+?)?', VehicleHandler),
     ('/cars/raw/([^/]+)?/?(.+?)?', RawVehicleHandler)
 ], debug=True)

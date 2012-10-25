@@ -4,7 +4,7 @@
 <div class="well">
   <h2>Add Expense</h2>
 
-  <form action="/vehicle/expense/add" method="post">
+  <form action="/vehicle/{{ car.key.id }}/expenses/add" method="post">
     <p>Date Purchased</p>
     <input type="text" name="datePurchased" id="datePurchased">
      
@@ -33,7 +33,9 @@
 
 $(document).ready(function() {
 	//make the date picker work
-	$('#datePurchased').datepicker();
+	$('#datePurchased').datepicker({
+		format: 'mm-dd-yyyy'
+	});
 });
 
 </script>

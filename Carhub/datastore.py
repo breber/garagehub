@@ -18,6 +18,35 @@ def getUserVehicle(vehicleId):
 
     return models.UserVehicle.get_by_id(long(vehicleId))
 
+def getUserExpenseCategories(userId):
+    """Gets a list of user categories (strings)
+    
+    Args: 
+        userId - The user ID
+    
+    Returns
+        A string list of categories for that user
+    """
+
+    query = models.UserExpenseCategory().query(models.UserExpenseCategory.owner == userId)
+    results = ndb.get_multi(query.fetch(keys_only=True))
+
+    toRet = []
+    
+    #TODO declare default categories for expenses somewhere else
+    toRet.append("Maintenance")
+    toRet.append("Fuel Up")
+    toRet.append("Repair")
+    toRet.append("Uncategoriezed")
+    
+    for c in results:
+        if not c.category in toRet:
+            toRet.append(c.category)
+    
+    toRet.sort()
+    
+    return toRet
+
 
 def getListOfMakes():
     """Gets a list of vehicle makes (strings)

@@ -34,3 +34,9 @@ class UserExpense(ndb.Model):
     def name(self):
         return "%s %s %s %s" % (self.purchaseDate, self.location, self.category, self.amount)
     
+class UserExpenseCategory(ndb.Model):
+    owner = ndb.StringProperty()
+    category = ndb.StringProperty()
+    
+    def name(self):
+        return self.category

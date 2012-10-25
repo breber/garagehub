@@ -47,6 +47,8 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):
         context = utils.get_context()
         context["car"] = datastore.getUserVehicle(vehicleId)
+        context["categories"] = datastore.getUserExpenseCategories(users.get_current_user().user_id())
+        
         
         if not vehicleId:
             self.redirect("/")
@@ -67,7 +69,20 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
 #            TODO: do something with the post
             dateString = self.request.get("datePurchased", None)
             datePurchased = datetime.datetime.strptime(dateString, "%m-%d-%Y")
-            category = self.request.get("category", None)
+            newCategory = self.request.get("newCategory", None)
+            
+            if newCategory:
+                category = newCategory
+                newCategoryObj = models.UserExpenseCategory()
+                newCategoryObj.owner = currentUser.user_id()
+                newCategoryObj.category = newCategory
+                
+                if not newCategoryObj.category in datastore.getUserExpenseCategories(currentUser.user_id()):
+                    newCategoryObj.put()
+                
+            else:
+                category = self.request.get("category", None)
+                
             location = self.request.get("location", None)
             amount = self.request.get("amount", None)
             description = self.request.get("description", None)

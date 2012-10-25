@@ -20,12 +20,14 @@
         Register one <a href="/vehicle/add">here</a>!
       </p>
       {% else %}
-      <table class="table table-striped table-bordered">
-        <tr>
-          <th>Year</th>
-          <th>Make</th>
-          <th>Model</th>
-        </tr>
+      <table class="table table-striped table-bordered" id="vehicle-table">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th>Make</th>
+            <th>Model</th>
+          </tr>
+        </thead>
         {% for v in uservehicles %}
         <tr>
           <td>{{ v.year }}</td>
@@ -38,5 +40,25 @@
     </div>
   </div>
 </div>
+
+{% endblock %}
+{% block externaljs %}
+
+<script type="text/javascript" src="/static/js/jquery.dataTables.min.js"></script>
+<script>
+
+$(document).ready(function() {
+	$('#vehicle-table').dataTable( {
+		"sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+		"bPaginate": false,
+        "bLengthChange": false,
+        "bFilter": false,
+        "bSort": true,
+        "bInfo": false,
+        "bAutoWidth": false
+	} );
+});
+
+</script>
 
 {% endblock %}

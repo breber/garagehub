@@ -21,3 +21,15 @@ class UserVehicle(ndb.Model):
     def name(self):
         return "%s %s %s" % (self.year, self.make, self.model)
     
+class UserExpense(ndb.Model):
+    owner = ndb.StringProperty()
+    vehicle = ndb.KeyProperty()
+    purchaseDate = ndb.DateProperty()
+    category = ndb.StringProperty()
+    location = ndb.StringProperty()
+    description = ndb.StringProperty()
+    amount = ndb.StringProperty()
+    
+    def name(self):
+        return "%s %s %s %s" % (self.purchaseDate, self.location, self.category, self.amount)
+    

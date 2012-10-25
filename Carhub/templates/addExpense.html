@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="well">
+  <h2>Add Vehicle</h2>
+
+  <form action="/vehicle/expense/add" method="post">
+    <p>Date Purchased</p>
+    <input type="text" name="datePurchased" id="datePurchased">
+     
+
+    <p>Model</p>
+    <select id="models" name="model">
+      <option>Select a model</option>
+    </select>
+
+    <p>Year</p>
+    <select id="years" name="year">
+      <option>Select a year</option>
+    </select> <br>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+{% endblock %}
+
+{% block externaljs %}
+<script type="text/javascript" src="/static/js/addexpense.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap-datepicker.js"></script>
+{% endblock %}

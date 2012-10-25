@@ -64,6 +64,8 @@ class VehicleHandler(webapp2.RequestHandler):
                 
             if pageName == "expenses":
                 path = os.path.join(os.path.dirname(__file__), 'templates/expenses.html')
+            elif pageName == "expenses/add":
+                path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
             elif pageName == "maintenance":
                 path = os.path.join(os.path.dirname(__file__), 'templates/maintenance.html')
             elif pageName == "gasmileage":

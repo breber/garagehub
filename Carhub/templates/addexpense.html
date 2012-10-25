@@ -8,16 +8,19 @@
     <p>Date Purchased</p>
     <input type="text" name="datePurchased" id="datePurchased">
      
-
-    <p>Model</p>
-    <select id="models" name="model">
-      <option>Select a model</option>
-    </select>
-
-    <p>Year</p>
-    <select id="years" name="year">
-      <option>Select a year</option>
-    </select> <br>
+	<p>Category</p>
+    <input type="text" name="category">
+    
+    <p>Location</p>
+    <input type="text" name="location">
+    
+    <p>Amount Spent</p>
+    <input type="text" name="amount">
+    
+    <p>Description of Purchase</p>
+    <input type="text" name="description">
+    
+    <br>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>
@@ -25,6 +28,14 @@
 {% endblock %}
 
 {% block externaljs %}
-<script type="text/javascript" src="/static/js/addexpense.js"></script>
 <script type="text/javascript" src="/static/js/bootstrap-datepicker.js"></script>
+<script>
+
+$(document).ready(function() {
+	//make the date picker work
+	$('#datePurchased').datepicker();
+});
+
+</script>
+
 {% endblock %}

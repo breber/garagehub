@@ -59,8 +59,27 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
     def post(self, makeOption, model):
         currentUser = users.get_current_user()
         
-#        if currentUser:
+        if currentUser:
 #            TODO: do something with the post
+            datePurchased = self.request.get("datePurchased", None)
+            category = self.request.get("category", None)
+            location = self.request.get("location", None)
+            amount = self.request.get("amount", None)
+            description = self.request.get("description", None)
+            
+            if datePurchased and category and location and amount and description:
+                expense = models.UserExpense()
+                expense.purchaseDate = datePurchased
+                expense.category = category
+                expense.location = location
+                expense.amount = amount
+                expense.description = description
+                
+                expense.owner = currentUser.user_id()
+                expense.vehicle = "Fake Car TODO" #TODO
+                expense.lastmodified = datetime.datetime.now()
+                
+                expense.put()
             
             
         self.redirect("/")

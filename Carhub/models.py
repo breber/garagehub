@@ -29,6 +29,7 @@ class UserExpense(ndb.Model):
     location = ndb.StringProperty()
     description = ndb.StringProperty()
     amount = ndb.StringProperty()
+    lastmodified = ndb.DateTimeProperty()
     
     def name(self):
         return "%s %s %s %s" % (self.purchaseDate, self.location, self.category, self.amount)

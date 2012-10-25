@@ -41,6 +41,30 @@ class RawVehicleHandler(webapp2.RequestHandler):
             yearList = datastore.getListOfYears(make, model)
             self.response.out.write(json.dumps(yearList))
 
+class VehicleExpenseHandler(webapp2.RequestHandler):
+    def get(self, vehicleId, pageName):
+        context = utils.get_context()
+        context["car"] = datastore.getUserVehicle(vehicleId)
+        
+        if not vehicleId:
+            self.redirect("/")
+        else:
+            if pageName == "add":
+                path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
+            else:
+                path = os.path.join(os.path.dirname(__file__), 'templates/expenses.html')
+                
+            self.response.out.write(template.render(path, context))
+    
+    def post(self, makeOption, model):
+        currentUser = users.get_current_user()
+        
+#        if currentUser:
+#            TODO: do something with the post
+            
+            
+        self.redirect("/")
+
 class VehicleHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):
         context = utils.get_context()
@@ -62,11 +86,7 @@ class VehicleHandler(webapp2.RequestHandler):
         else:
             context["car"] = datastore.getUserVehicle(vehicleId)
                 
-            if pageName == "expenses":
-                path = os.path.join(os.path.dirname(__file__), 'templates/expenses.html')
-            elif pageName == "expenses/add":
-                path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
-            elif pageName == "maintenance":
+            if pageName == "maintenance":
                 path = os.path.join(os.path.dirname(__file__), 'templates/maintenance.html')
             elif pageName == "gasmileage":
                 path = os.path.join(os.path.dirname(__file__), 'templates/gasmileage.html')
@@ -104,6 +124,7 @@ class VehicleHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/settings', SettingsHandler),
+    ('/vehicle/([^/]+)/expenses/?(.+?)?', VehicleExpenseHandler),
     ('/vehicle/([^/]+)?/?(.+?)?', VehicleHandler),
     ('/cars/raw/([^/]+)?/?(.+?)?', RawVehicleHandler)
 ], debug=True)

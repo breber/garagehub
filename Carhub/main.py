@@ -5,6 +5,7 @@ import datastore
 import datetime
 import json
 import models
+import logging
 import os
 import utils
 import webapp2
@@ -59,6 +60,8 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
     def post(self, makeOption, model):
         currentUser = users.get_current_user()
         
+        logging.info("entered the post function")
+        
         if currentUser:
 #            TODO: do something with the post
             datePurchased = self.request.get("datePurchased", None)
@@ -66,6 +69,8 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
             location = self.request.get("location", None)
             amount = self.request.get("amount", None)
             description = self.request.get("description", None)
+            logging.info("I finished getting information")
+            logging.info("%s %s %s %s %d" % datePurchased, category, location, description, amount)
             
             if datePurchased and category and location and amount and description:
                 expense = models.UserExpense()
@@ -122,6 +127,8 @@ class VehicleHandler(webapp2.RequestHandler):
     
     def post(self, makeOption, model):
         currentUser = users.get_current_user()
+        
+        logging.info("entered the add vehicle post function")
         
         if currentUser:
             make = self.request.get("make", None)

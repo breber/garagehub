@@ -20,7 +20,7 @@
         Register one <a href="/vehicle/add">here</a>!
       </p>
       {% else %}
-      <table class="table table-striped table-bordered" id="vehicle-table">
+      <table class="table table-striped table-bordered table-hover" id="vehicle-table">
         <thead>
           <tr>
             <th>Year</th>
@@ -29,7 +29,7 @@
           </tr>
         </thead>
         {% for v in uservehicles %}
-        <tr>
+        <tr id="{{ v.key.id }}" class="linkable">
           <td>{{ v.year }}</td>
           <td>{{ v.make }}</td>
           <td>{{ v.model }}</td>
@@ -48,7 +48,7 @@
 <script>
 
 $(document).ready(function() {
-	$('#vehicle-table').dataTable( {
+	$('#vehicle-table').dataTable({
 		"sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
 		"bPaginate": false,
         "bLengthChange": false,
@@ -56,7 +56,13 @@ $(document).ready(function() {
         "bSort": true,
         "bInfo": false,
         "bAutoWidth": false
-	} );
+	});
+	
+	$('#vehicle-table tr').click(function() {
+		if (this.id !== undefined && this.id !== null) {
+			window.location = "/vehicle/" + this.id;
+		}
+	});
 });
 
 </script>

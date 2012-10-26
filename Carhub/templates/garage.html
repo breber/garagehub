@@ -59,7 +59,7 @@ $(document).ready(function() {
 	});
 	
 	$('#vehicle-table tr').click(function() {
-		if (this.id !== undefined && this.id !== null) {
+		if (this.id !== undefined && this.id !== null && "" !== this.id) {
 			window.location = "/vehicle/" + this.id;
 		}
 	});

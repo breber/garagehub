@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 from google.appengine.api import users
+from google.appengine.ext import ndb
 from google.appengine.ext.webapp import template
 import datastore
 import datetime
 import json
-import models
 import logging
+import models
 import os
 import utils
 import webapp2
-from xmlrpclib import DateTime
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -46,9 +46,15 @@ class RawVehicleHandler(webapp2.RequestHandler):
 class VehicleExpenseHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):
         context = utils.get_context()
+        user = users.get_current_user()
         context["car"] = datastore.getUserVehicle(vehicleId)
-        context["categories"] = datastore.getUserExpenseCategories(users.get_current_user().user_id())
+        context["categories"] = datastore.getUserExpenseCategories(user.user_id())
         
+        #TODO this needs to grab based on vehicle chosen also
+        userExpensesQuery = models.UserExpense.query(models.UserExpense.owner == user.user_id())
+        userExpenses = ndb.get_multi(userExpensesQuery.fetch(keys_only=True))
+        if len(userExpenses) > 0:
+            context['userexpenses'] = userExpenses 
         
         if not vehicleId:
             self.redirect("/")
@@ -104,7 +110,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
                 expense.put()
             
             
-        self.redirect("/")
+        self.redirect("/vehicle/%s/expenses" % vehicleId)
 
 class VehicleHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):
@@ -168,7 +174,6 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/settings', SettingsHandler),
     ('/vehicle/([^/]+)/expenses/?(.+?)?', VehicleExpenseHandler),
-    ('/vehicle/([^/]+)/expenses/(.+?)?', VehicleExpenseHandler),
     ('/vehicle/([^/]+)?/?(.+?)?', VehicleHandler),
     ('/cars/raw/([^/]+)?/?(.+?)?', RawVehicleHandler)
 ], debug=True)

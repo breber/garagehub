@@ -3,7 +3,6 @@ from google.appengine.ext import ndb
 import hashlib
 import models
 
-
 def get_context(list_vehicles=True):
     context = {}
     context['loginurl'] = users.create_login_url("/")
@@ -23,12 +22,6 @@ def get_context(list_vehicles=True):
             
             if len(userVehicles) > 0:
                 context['uservehicles'] = userVehicles 
-
-        #TODO this needs to grab based on vehicle chosen also
-        userExpensesQuery = models.UserExpense.query(models.UserExpense.owner == user.user_id())
-        userExpenses = ndb.get_multi(userExpensesQuery.fetch(keys_only=True))
-        if len(userExpenses) > 0:
-                context['userexpenses'] = userExpenses 
         
     else:
         context['user'] = None

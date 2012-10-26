@@ -40,3 +40,4 @@ class UserExpenseCategory(ndb.Model):
     
     def name(self):
         return self.category
+    

@@ -1,68 +1,67 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base_vehicle.html' %} {% block pagecontent %}
 
-<div class="well">
-	<h2>Add Expense</h2>
+<h2>Add Expense</h2>
 
-	<form action="/vehicle/{{ car.key.id }}/expenses/add" method="post">
-		<p>Date of Purchase</p>
-		<input type="text" name="datePurchased" id="datePurchased">
+<form action="/vehicle/{{ car.key.id }}/expenses/add" method="post">
+  <p>Date of Purchase</p>
+  <input type="text" name="datePurchased" id="datePurchased">
 
-		<p>Category</p>
-		<div>
-			<div class="accordion" id="accordion3">
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse"
-							data-parent="#accordion3" href="#collapseOne"> Use Existing Category </a>
-					</div>
-					<div id="collapseOne" class="accordion-body collapse in">
-						<div class="accordion-inner">
-							<select id="category" name="category">
-								<option>Select a Category</option> {% for category in categories %}
-								<option>{{ category }}</option> {% endfor %}
-							</select>
-						</div>
-					</div>
-				</div>
-				<div class="accordion-group">
-					<div class="accordion-heading">
-						<a class="accordion-toggle" data-toggle="collapse"
-							data-parent="#accordion3" href="#collapseTwo"> Use New Category </a>
-					</div>
-					<div id="collapseTwo" class="accordion-body collapse">
-						<div class="accordion-inner">
-						<p>Enter a new category name</p>
-							<input style="float: left" type="text" name="newCategory" id="newCategory">
-							
-						</div>
-					</div>
-				</div>
-			</div>
+  <p>Category</p>
+  <div>
+    <div class="accordion" id="accordion3">
+      <div class="accordion-group">
+        <div class="accordion-heading">
+          <a class="accordion-toggle" data-toggle="collapse"
+            data-parent="#accordion3" href="#collapseOne">Use Existing Category</a>
+        </div>
+        <div id="collapseOne" class="accordion-body collapse in">
+          <div class="accordion-inner">
+            <select id="category" name="category">
+              <option>Select a Category</option>
+              {% for category in categories %}
+              <option>{{ category }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-group">
+        <div class="accordion-heading">
+          <a class="accordion-toggle" data-toggle="collapse"
+            data-parent="#accordion3" href="#collapseTwo">Use New Category</a>
+        </div>
+        <div id="collapseTwo" class="accordion-body collapse">
+          <div class="accordion-inner">
+            <p>Enter a new category name</p>
+            <input type="text" name="newCategory" id="newCategory">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-		</div>
+  <p>Location</p>
+  <input type="text" name="location">
 
-		<p>Location</p>
-		<input type="text" name="location">
+  <p>Amount Spent</p>
+  <input type="text" name="amount">
 
-		<p>Amount Spent</p>
-		<input type="text" name="amount">
-
-		<p>Description of Purchase</p>
-		<input type="text" name="description"> <br>
-		<button type="submit" class="btn btn-primary">Submit</button>
-	</form>
-</div>
+  <p>Description of Purchase</p>
+  <input type="text" name="description">
+  <br />
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
 {% endblock %} {% block externaljs %}
 <script type="text/javascript" src="/static/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="/static/js/addexpense.js"></script>
 <script>
-	$(document).ready(function() {
-		//make the date picker work
-		$('#datePurchased').datepicker({
-			format : 'mm-dd-yyyy'
-		});
-	});
+$(document).ready(function() {
+  //make the date picker work
+  $('#datePurchased').datepicker({
+  	format : 'mm-dd-yyyy'
+  });
+});
 </script>
 
 {% endblock %}

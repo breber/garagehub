@@ -23,40 +23,50 @@
     // Check that we got results
     document.getElementById('searchresults').innerHTML = '';
     if (newsSearch.results && newsSearch.results.length > 0) {
-    	var newsTable = document.createElement('table');
-    	newsTable.setAttribute("class", "table table-striped");
-    	document.getElementById('searchresults').appendChild(newsTable);
+    	//var newsTable = document.createElement('table');
+    	//newsTable.setAttribute("class", "table table-striped");
+    	//document.getElementById('searchresults').appendChild(newsTable);
       
     	// iterate through search results array
     	for (var i = 0; i < newsSearch.results.length; i++) {
         
     		// Create HTML elements for search results
-        var tableRow = document.createElement('tr');
-        var td = document.createElement('td');
-        
+        //var tableRow = document.createElement('tr');
+        //var td = document.createElement('td');
+        var articleDiv = document.createElement('div');
+        articleDiv.setAttribute("class", "news-articlediv news-roundedcorners");
         // link to news article
         var a = document.createElement('a');
         a.href = newsSearch.results[i].unescapedUrl;
         a.innerHTML = newsSearch.results[i].unescapedUrl;
+        a.setAttribute("class", "news-floatleft news-linkmargins");
 		
         // link title
         var linkTitle = document.createElement('p');
+        linkTitle.setAttribute("class", "news-articletitle");
 		linkTitle.innerHTML = newsSearch.results[i].title;
-		td.appendChild(linkTitle);
-        td.appendChild(a);
-        tableRow.appendChild(td);
-        td = document.createElement('td');
+		articleDiv.appendChild(linkTitle);
+        
+        //tableRow.appendChild(td);
+        //td = document.createElement('td');
         
         // publishing information
-        var publishInfo = document.createElement('p');
+        var publishInfo = document.createElement('span');
         publishInfo.innerHTML = "<b>" + newsSearch.results[i].publisher + "</b>";
-        td.appendChild(publishInfo);
-        publishInfo = document.createElement('p');
+        publishInfo.setAttribute("class", "news-floatleft");
+        articleDiv.appendChild(publishInfo);
+        //td.appendChild(publishInfo);
+        publishInfo = document.createElement('span');
         var pubDate = new Date(newsSearch.results[i].publishedDate);
         publishInfo.innerHTML = pubDate.toDateString();
-        td.appendChild(publishInfo);
-        tableRow.appendChild(td);
-        newsTable.appendChild(tableRow);
+        publishInfo.setAttribute("class", "news-floatright");
+        articleDiv.appendChild(publishInfo);
+        articleDiv.appendChild(a);
+
+        document.getElementById('searchresults').appendChild(articleDiv);
+        //td.appendChild(publishInfo);
+        //tableRow.appendChild(td);
+        //newsTable.appendChild(tableRow);
       }
     }
   };
@@ -71,6 +81,7 @@
     newsSearch.setResultSetSize(8);
     // Specify search queries
     newsSearch.execute('"{{ car.year }} {{ car.make }} {{ car.model }}"');
+    //newsSearch.execute('"2013 Toyota Prius"');
 
     // Include the required Google branding
     google.search.Search.getBranding('branding');

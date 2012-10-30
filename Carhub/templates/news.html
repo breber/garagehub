@@ -70,8 +70,7 @@
     newsSearch.setSearchCompleteCallback(this, searchComplete, null);
     newsSearch.setResultSetSize(8);
     // Specify search queries
-    //newsSearch.execute('"{{ car.year }} {{ car.make }} {{ car.model }}"');
-    newsSearch.execute('"2013 Toyota Prius"');
+    newsSearch.execute('"{{ car.year }} {{ car.make }} {{ car.model }}"');
 
     // Include the required Google branding
     google.search.Search.getBranding('branding');

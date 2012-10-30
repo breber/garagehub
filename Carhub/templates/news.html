@@ -10,6 +10,9 @@
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
+
+//Reference: https://developers.google.com/news-search/v1/devguide#hiworld 
+
   // This code generates a "Raw Searcher" to handle search queries. The Raw 
   // Searcher requires you to handle and draw the search results manually.
   google.load('search', '1');
@@ -20,16 +23,40 @@
     // Check that we got results
     document.getElementById('searchresults').innerHTML = '';
     if (newsSearch.results && newsSearch.results.length > 0) {
-      for (var i = 0; i < newsSearch.results.length; i++) {
-        // Create HTML elements for search results
-        var p = document.createElement('p');
+    	var newsTable = document.createElement('table');
+    	newsTable.setAttribute("class", "table table-striped");
+    	document.getElementById('searchresults').appendChild(newsTable);
+      
+    	// iterate through search results array
+    	for (var i = 0; i < newsSearch.results.length; i++) {
+        
+    		// Create HTML elements for search results
+        var tableRow = document.createElement('tr');
+        var td = document.createElement('td');
+        
+        // link to news article
         var a = document.createElement('a');
         a.href = newsSearch.results[i].unescapedUrl;
-        a.innerHTML = newsSearch.results[i].title;
-
-        // Append search results to the HTML nodes
-        p.appendChild(a);
-        document.getElementById('searchresults').appendChild(p);
+        a.innerHTML = newsSearch.results[i].unescapedUrl;
+		
+        // link title
+        var linkTitle = document.createElement('p');
+		linkTitle.innerHTML = newsSearch.results[i].title;
+		td.appendChild(linkTitle);
+        td.appendChild(a);
+        tableRow.appendChild(td);
+        td = document.createElement('td');
+        
+        // publishing information
+        var publishInfo = document.createElement('p');
+        publishInfo.innerHTML = "<b>" + newsSearch.results[i].publisher + "</b>";
+        td.appendChild(publishInfo);
+        publishInfo = document.createElement('p');
+        var pubDate = new Date(newsSearch.results[i].publishedDate);
+        publishInfo.innerHTML = pubDate.toDateString();
+        td.appendChild(publishInfo);
+        tableRow.appendChild(td);
+        newsTable.appendChild(tableRow);
       }
     }
   };
@@ -43,10 +70,11 @@
     newsSearch.setSearchCompleteCallback(this, searchComplete, null);
     newsSearch.setResultSetSize(8);
     // Specify search queries
-    newsSearch.execute('"{{ car.year }} {{ car.make }} {{ car.model }}"');
+    //newsSearch.execute('"{{ car.year }} {{ car.make }} {{ car.model }}"');
+    newsSearch.execute('"2013 Toyota Prius"');
 
     // Include the required Google branding
-    //google.search.Search.getBranding('branding');
+    google.search.Search.getBranding('branding');
   };
 
   // Set a callback to call your code when the page loads

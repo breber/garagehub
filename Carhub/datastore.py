@@ -37,7 +37,7 @@ def getUserExpenseCategories(userId):
     toRet.append("Maintenance")
     toRet.append("Fuel Up")
     toRet.append("Repair")
-    toRet.append("Uncategoriezed")
+    toRet.append("Uncategorized")
     
     for c in results:
         if not c.category in toRet:

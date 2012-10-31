@@ -23,52 +23,49 @@
     // Check that we got results
     document.getElementById('searchresults').innerHTML = '';
     if (newsSearch.results && newsSearch.results.length > 0) {
-    	//var newsTable = document.createElement('table');
-    	//newsTable.setAttribute("class", "table table-striped");
-    	//document.getElementById('searchresults').appendChild(newsTable);
       
     	// iterate through search results array
     	for (var i = 0; i < newsSearch.results.length; i++) {
         
-    		// Create HTML elements for search results
-        //var tableRow = document.createElement('tr');
-        //var td = document.createElement('td');
-        var articleDiv = document.createElement('div');
-        articleDiv.setAttribute("class", "news-articlediv news-roundedcorners");
-        articleDiv.setAttribute("onclick", "window.open('" + newsSearch.results[i].unescapedUrl + "')");
-        // link to news article
-        var a = document.createElement('a');
-        a.href = newsSearch.results[i].unescapedUrl;
-        a.innerHTML = newsSearch.results[i].unescapedUrl;
-        a.setAttribute("class", "news-floatleft news-links");
-		
-        // link title
-        var linkTitle = document.createElement('p');
-        linkTitle.setAttribute("class", "news-articletitle");
-		linkTitle.innerHTML = newsSearch.results[i].title;
-		articleDiv.appendChild(linkTitle);
-        
-        //tableRow.appendChild(td);
-        //td = document.createElement('td');
-        
-        // publishing information
-        var publishInfo = document.createElement('span');
-        publishInfo.innerHTML = "<b>" + newsSearch.results[i].publisher + "</b>";
-        publishInfo.setAttribute("class", "news-floatleft");
-        articleDiv.appendChild(publishInfo);
-        //td.appendChild(publishInfo);
-        publishInfo = document.createElement('span');
-        var pubDate = new Date(newsSearch.results[i].publishedDate);
-        publishInfo.innerHTML = pubDate.toDateString();
-        publishInfo.setAttribute("class", "news-floatright");
-        articleDiv.appendChild(publishInfo);
-        articleDiv.appendChild(a);
-
-        document.getElementById('searchresults').appendChild(articleDiv);
-        //td.appendChild(publishInfo);
-        //tableRow.appendChild(td);
-        //newsTable.appendChild(tableRow);
-      }
+	        var articleDiv = document.createElement('div');
+	        articleDiv.setAttribute("class", "news-articlediv news-roundedcorners");
+	        
+	        // open article in new window when div is clicked
+	        articleDiv.setAttribute("onclick", "window.open('" + newsSearch.results[i].unescapedUrl + "')");
+	        
+	        // link to news article
+	        var a = document.createElement('a');
+	        a.href = newsSearch.results[i].unescapedUrl;
+	        a.innerHTML = newsSearch.results[i].unescapedUrl;
+	        a.setAttribute("class", "news-floatleft news-links");
+			
+	        // link title
+	        var linkTitle = document.createElement('p');
+	        linkTitle.setAttribute("class", "news-articletitle");
+			linkTitle.innerHTML = newsSearch.results[i].title;
+			articleDiv.appendChild(linkTitle);
+	        
+	        // publisher information
+	        var publishInfo = document.createElement('span');
+	        publishInfo.innerHTML = "<b>" + newsSearch.results[i].publisher + "</b>";
+	        publishInfo.setAttribute("class", "news-floatleft");
+	        articleDiv.appendChild(publishInfo);
+	
+	        // published date
+	        publishInfo = document.createElement('span');
+	        var pubDate = new Date(newsSearch.results[i].publishedDate);
+	        publishInfo.innerHTML = pubDate.toDateString();
+	        publishInfo.setAttribute("class", "news-floatright");
+	        articleDiv.appendChild(publishInfo);
+	        articleDiv.appendChild(a);
+	
+	        document.getElementById('searchresults').appendChild(articleDiv);
+      	}
+    }
+    else {
+    	var noResults = document.createElement('p');
+    	noResults.innerHTML = "There is no recent news for the {{ car.year }} {{ car.make }} {{ car.model }}.";
+    	document.getElementById('searchresults').appendChild(noResults);
     }
   };
 

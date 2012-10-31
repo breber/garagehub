@@ -28,7 +28,7 @@ class UserExpense(ndb.Model):
     category = ndb.StringProperty()
     location = ndb.StringProperty()
     description = ndb.StringProperty()
-    amount = ndb.StringProperty()
+    amount = ndb.StringProperty()       # TODO: should this be a FloatProperty?
     lastmodified = ndb.DateTimeProperty()
     
     def name(self):

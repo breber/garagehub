@@ -117,6 +117,10 @@ class FetchBaseVehicles:
 
             toSave.response = self.serverResponse
             toSave.put()
+        else:
+            self.numAdded = -1
+            self.numUpdated = -1
+            self.numSkipped = -1
 
 
     def getYears(self, json, make, model):

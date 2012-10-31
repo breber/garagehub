@@ -33,7 +33,9 @@ def getUserExpenseCategories(userId):
 
     toRet = []
     
-    #TODO declare default categories for expenses somewhere else
+    # TODO: declare default categories for expenses somewhere else
+    # BR COMMENT: maybe just store the defaults as categories with
+    #             an owner = "none" or something?
     toRet.append("Maintenance")
     toRet.append("Fuel Up")
     toRet.append("Repair")

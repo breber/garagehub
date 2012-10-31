@@ -1,6 +1,5 @@
 from google.appengine.ext import ndb
 
-
 class ServerResponseString(ndb.Model):
     response = ndb.TextProperty()
 
@@ -17,27 +16,33 @@ class UserVehicle(ndb.Model):
     color = ndb.StringProperty()
     plates = ndb.StringProperty()
     lastmodified = ndb.DateTimeProperty()
-    
-    def name(self):
-        return "%s %s %s" % (self.year, self.make, self.model)
-    
-class UserExpense(ndb.Model):
+
+class BaseExpense(ndb.Model):
     owner = ndb.StringProperty()
     vehicle = ndb.StringProperty()
-    purchaseDate = ndb.DateProperty()
-    category = ndb.StringProperty()
+    date = ndb.DateProperty()
+    lastmodified = ndb.DateTimeProperty()
+    category = ndb.KeyProperty()
     location = ndb.StringProperty()
     description = ndb.StringProperty()
-    amount = ndb.StringProperty()       # TODO: should this be a FloatProperty?
-    lastmodified = ndb.DateTimeProperty()
-    
-    def name(self):
-        return "%s %s %s %s" % (self.purchaseDate, self.location, self.category, self.amount)
-    
+    amount = ndb.FloatProperty()
+    picture = ndb.BlobKeyProperty()
+
+class MaintenanceRecord(BaseExpense):
+    odometer = ndb.IntegerProperty()
+
+class FuelRecord(BaseExpense):
+    odometerStart = ndb.IntegerProperty()
+    odometerEnd = ndb.IntegerProperty()
+    gallons = ndb.FloatProperty()
+    costPerGallon = ndb.FloatProperty()
+    fuelGrade = ndb.IntegerProperty()
+
 class UserExpenseCategory(ndb.Model):
     owner = ndb.StringProperty()
     category = ndb.StringProperty()
-    
-    def name(self):
-        return self.category
-    
+
+class Notification(ndb.Model):
+    owner = ndb.StringProperty()
+    vehicle = ndb.StringProperty()
+    # TODO

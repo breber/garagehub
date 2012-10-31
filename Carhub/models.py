@@ -17,6 +17,9 @@ class UserVehicle(ndb.Model):
     plates = ndb.StringProperty()
     lastmodified = ndb.DateTimeProperty()
 
+    def name(self):
+        return "%s %s %s" % (self.year, self.make, self.model)
+
 class BaseExpense(ndb.Model):
     owner = ndb.StringProperty()
     vehicle = ndb.StringProperty()
@@ -27,6 +30,9 @@ class BaseExpense(ndb.Model):
     description = ndb.StringProperty()
     amount = ndb.FloatProperty()
     picture = ndb.BlobKeyProperty()
+    
+    def name(self):
+        return "%s %s %s %s" % (self.date, self.location, self.category, self.amount)
 
 class MaintenanceRecord(BaseExpense):
     odometer = ndb.IntegerProperty()
@@ -41,6 +47,9 @@ class FuelRecord(BaseExpense):
 class UserExpenseCategory(ndb.Model):
     owner = ndb.StringProperty()
     category = ndb.StringProperty()
+    
+    def name(self):
+        return self.category
 
 class Notification(ndb.Model):
     owner = ndb.StringProperty()

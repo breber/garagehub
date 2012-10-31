@@ -102,6 +102,7 @@ body {
 	font-size: 18px;
 	float: left;
 	clear: both;
+	color: #034482;
 }
 
 .news-floatright {
@@ -116,7 +117,6 @@ body {
 
 .news-links {
 	margin-top: 8px;
-	color: grey;
 }
 
 .news-roundedcorners {
@@ -132,10 +132,10 @@ div.news-articlediv {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	padding: 10px;
-	border: 1px solid grey;
-	box-shadow: -1px -1px 1px grey;
+	border: 1px solid #034482;
+	box-shadow: -1px -1px 1px #034482;
 }
 
 div.news-articlediv:hover {
-	background-color: #F5F5F5;
+	background-color: #E0F2F7;
 }

@@ -39,6 +39,7 @@ function drawChart() {
 
 	var options = {
 		title : 'Average Gas Milage',
+		backgroundColor: '#f5f5f5',
 		series : [{
 			visibleInLegend : true
 		}, {

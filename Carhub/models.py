@@ -25,7 +25,7 @@ class BaseExpense(ndb.Model):
     vehicle = ndb.StringProperty()
     date = ndb.DateProperty()
     lastmodified = ndb.DateTimeProperty()
-    category = ndb.KeyProperty()
+    category = ndb.StringProperty()
     location = ndb.StringProperty()
     description = ndb.StringProperty()
     amount = ndb.FloatProperty()

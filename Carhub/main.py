@@ -51,7 +51,8 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
         context["categories"] = datastore.getUserExpenseCategories(user.user_id())
         
         # TODO: this needs to grab based on vehicle chosen also
-        userExpensesQuery = models.UserExpense.query(models.UserExpense.owner == user.user_id())
+        # TODO: get all types of expenses
+        userExpensesQuery = models.BaseExpense.query(models.BaseExpense.owner == user.user_id())
         userExpenses = ndb.get_multi(userExpensesQuery.fetch(keys_only=True))
         if len(userExpenses) > 0:
             context['userexpenses'] = userExpenses 
@@ -89,13 +90,13 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
                 category = self.request.get("category", None)
 
             location = self.request.get("location", None)
-            amount = self.request.get("amount", None)
+            amount = float(self.request.get("amount", None))
             description = self.request.get("description", None)
             logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
             
             if datePurchased and category and location and amount and description:
-                expense = models.UserExpense()
-                expense.purchaseDate = datePurchased
+                expense = models.BaseExpense()
+                expense.date = datePurchased
                 expense.category = category
                 expense.location = location
                 expense.amount = amount

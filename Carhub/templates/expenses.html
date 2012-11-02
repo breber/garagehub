@@ -34,16 +34,16 @@
 			<th>Category</th>
 			<th>Location</th>
 			<th>Description</th>
-			<th>Amount$</th>
+			<th>Cost</th>
 		</tr>
 	</thead>
 	{% for e in userexpenses %}
 	<tr>
-		<td>{{ e.purchaseDate }}</td>
+		<td>{{ e.date }}</td>
 		<td>{{ e.category }}</td>
 		<td>{{ e.location }}</td>
 		<td>{{ e.description }}</td>
-		<td>{{ e.amount }}</td>
+		<td>{{ e.amount|stringformat:".2f" }}</td>
 	</tr>
 	{% endfor %}
 </table>

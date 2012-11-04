@@ -22,7 +22,7 @@ class UserVehicle(ndb.Model):
 
 class BaseExpense(ndb.Model):
     owner = ndb.StringProperty()
-    vehicle = ndb.StringProperty()
+    vehicle = ndb.IntegerProperty()
     date = ndb.DateProperty()
     lastmodified = ndb.DateTimeProperty()
     category = ndb.StringProperty()

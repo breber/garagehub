@@ -19,6 +19,10 @@ handlers:
   script: admin.app
   login: admin
 
+- url: /brian/?.*
+  script: brian.app
+  login: admin
+
 - url: /cron/?.*
   script: admin.app
   login: admin

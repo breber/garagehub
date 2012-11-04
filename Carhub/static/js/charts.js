@@ -1,9 +1,30 @@
+$("#empty").hide();
+$("#chart_div").hide();
+$("#loading").show();
+
 google.load("visualization", "1", {
 	packages : [ "corechart" ]
 });
-google.setOnLoadCallback(drawChart);
+google.setOnLoadCallback(fetchData);
 
-function drawChart() {
+function fetchData() {
+	// TODO: better way to get vehicle ID
+	var locationStr = window.location.pathname;
+	var vehicleId = /\/vehicle\/([^\/]+)/.exec(locationStr);
+	var dateRange = 120;
+	
+	$.getJSON("/api/fuel/" + vehicleId[1] + "/" + dateRange, function(data) {
+		drawFuelChart(data);
+	});
+};
+
+function drawFuelChart(content) {
+	if (content.length < 2) {
+		$("#loading").hide();
+		$("#chart_div").hide();
+		$("#empty").show();
+	}
+	
 	var data = new google.visualization.DataTable();
 	data.addColumn('string', 'Date');
 	data.addColumn('number', 'MPG');
@@ -11,29 +32,16 @@ function drawChart() {
 
 	var currentDate = new Date();
 	var arr = [];
-	for ( var i = 10; i >= 0; i--) {
-		var rand = Math.random();
-		var result = 35;
-		if (rand > .5) {
-			result += (rand * 5);
-		} else {
-			result -= (rand * 5);
+	$.each(content, function(index, item) {
+		if (item.odometerStart !== -1) {
+			var tmp = [];
+			tmp.push(item.date);
+			tmp.push((item.odometerEnd - item.odometerStart) / item.gallons);
+			tmp.push(item.costPerGallon);
+			
+			arr.push(tmp);
 		}
-
-		var tmp = [];
-		var tmpDate = new Date(currentDate.getTime() - (i * 604800000));
-		tmp.push((tmpDate.getMonth() + 1) + "/" + tmpDate.getDate());
-		tmp.push(result);
-
-		rand = Math.random();
-		if (rand > .5) {
-			tmp.push(3.5 + rand);
-		} else {
-			tmp.push(3.5 - rand);
-		}
-
-		arr.push(tmp);
-	}
+	});
 
 	data.addRows(arr);
 
@@ -51,6 +59,11 @@ function drawChart() {
 			title : '$ / Gallon',
 		}]
 	};
+
+	$("#loading").hide();
+	$("#empty").hide();
+	$("#chart_div").show();
+	
 	var chartDiv = document.getElementById('chart_div');
 	var chart = new google.visualization.LineChart(chartDiv);
 	chart.draw(data, options);

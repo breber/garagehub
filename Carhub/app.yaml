@@ -27,12 +27,16 @@ handlers:
   script: admin.app
   login: admin
 
-- url: /settings
-  script: main.app
+- url: /settings/?.*
+  script: settings.app
   login: required
 
 - url: /vehicle/?.*
-  script: main.app
+  script: vehicle.app
+  login: required
+
+- url: /api/?.*
+  script: api.app
   login: required
 
 - url: .*

@@ -5,6 +5,7 @@ Created on Oct 17, 2012
 '''
 from google.appengine.ext import ndb
 import models
+import datetime
 
 def getUserVehicle(vehicleId):
     """Gets the UserVehicle instance for the given ID
@@ -17,6 +18,43 @@ def getUserVehicle(vehicleId):
     """
 
     return models.UserVehicle.get_by_id(long(vehicleId))
+
+def getFuelRecords(userId, vehicleId, day_range=30):
+    """Gets the FuelRecords for the given vehicle ID
+    
+    Args: 
+        vehicleId - The vehicle ID
+        day_range - The time range
+    
+    Returns
+        The list of FuelRecords
+    """
+    
+    delta = datetime.timedelta(days=day_range)
+    date = datetime.datetime.now() - delta
+    query = models.FuelRecord().query(models.FuelRecord.owner == userId,
+                                      models.FuelRecord.vehicle == long(vehicleId),
+                                      models.FuelRecord.date >= date)
+    query = query.order(models.FuelRecord.date)
+    results = ndb.get_multi(query.fetch(keys_only=True))
+
+    toRet = []
+    
+    for record in results:
+        obj = {}
+        obj["date"] = record.date.strftime("%m/%d/%y")
+        obj["lastmodified"] = record.lastmodified.ctime()
+        obj["category"] = record.category
+        obj["location"] = record.location
+        obj["amount"] = record.amount
+        obj["odometerStart"] = record.odometerStart
+        obj["odometerEnd"] = record.odometerEnd
+        obj["gallons"] = record.gallons
+        obj["costPerGallon"] = record.costPerGallon
+        obj["fuelGrade"] = record.fuelGrade
+        toRet.append(obj)
+        
+    return toRet
 
 def getUserExpenseCategories(userId):
     """Gets a list of user categories (strings)

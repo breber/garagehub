@@ -1,8 +1,14 @@
 {% extends 'base_vehicle.html' %} 
 {% block pagecontent %}
 
-<div id="chart_div"></div>
-
+<div>
+  <div id="loading" class="center"><img src='/static/img/ajax-loader.gif' /> Loading...</div>
+  <div id="empty">
+    <p>You don't have any expenses recorded yet.</p>
+    <p>Record some <a href="/vehicle/{{ car.key.id }}/expenses/add">here</a>!</p>
+  </div>
+  <div id="chart_div"></div>
+</div>
 {% endblock %}
 
 {% block externaljs %}

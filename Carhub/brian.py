@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from google.appengine.api import urlfetch, users
+from google.appengine.api import urlfetch
 import datetime
 import json
 import models
@@ -12,7 +12,6 @@ class FetchCarsBrian(webapp2.RequestHandler):
         
         if result.status_code == 200:
             jsonResult = json.loads(result.content)
-#            user = users.get_current_user().user_id()
             
             for vehicle in jsonResult:
                 if vehicle["emailAddress"] == "reber.brian@gmail.com":

@@ -70,7 +70,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
                 expense.description = description
                 
                 expense.owner = currentUser.user_id()
-                expense.vehicle = vehicleId
+                expense.vehicle = long(vehicleId)
                 expense.lastmodified = datetime.datetime.now()
                 
                 expense.put()

@@ -19,6 +19,25 @@ def getUserVehicle(vehicleId):
 
     return models.UserVehicle.get_by_id(long(vehicleId))
 
+def getBaseExpenseRecords(userId, vehicleId, day_range=30):
+    """Gets the BaseExpense for the given vehicle ID
+    
+    Args: 
+        vehicleId - The vehicle ID
+        day_range - The time range
+    
+    Returns
+        The list of BaseExpense
+    """
+    
+    delta = datetime.timedelta(days=day_range)
+    date = datetime.datetime.now() - delta
+    query = models.BaseExpense().query(models.BaseExpense.owner == userId,
+                                       models.BaseExpense.vehicle == long(vehicleId),
+                                       models.BaseExpense.date >= date)
+    query = query.order(models.BaseExpense.date)
+    return ndb.get_multi(query.fetch(keys_only=True))
+
 def getFuelRecords(userId, vehicleId, day_range=30):
     """Gets the FuelRecords for the given vehicle ID
     
@@ -36,25 +55,26 @@ def getFuelRecords(userId, vehicleId, day_range=30):
                                       models.FuelRecord.vehicle == long(vehicleId),
                                       models.FuelRecord.date >= date)
     query = query.order(models.FuelRecord.date)
-    results = ndb.get_multi(query.fetch(keys_only=True))
+    return ndb.get_multi(query.fetch(keys_only=True))
 
-    toRet = []
+def getMaintenanceRecords(userId, vehicleId, day_range=30):
+    """Gets the MaintenanceRecords for the given vehicle ID
     
-    for record in results:
-        obj = {}
-        obj["date"] = record.date.strftime("%m/%d/%y")
-        obj["lastmodified"] = record.lastmodified.ctime()
-        obj["category"] = record.category
-        obj["location"] = record.location
-        obj["amount"] = record.amount
-        obj["odometerStart"] = record.odometerStart
-        obj["odometerEnd"] = record.odometerEnd
-        obj["gallons"] = record.gallons
-        obj["costPerGallon"] = record.costPerGallon
-        obj["fuelGrade"] = record.fuelGrade
-        toRet.append(obj)
-        
-    return toRet
+    Args: 
+        vehicleId - The vehicle ID
+        day_range - The time range
+    
+    Returns
+        The list of MaintenanceRecords
+    """
+    
+    delta = datetime.timedelta(days=day_range)
+    date = datetime.datetime.now() - delta
+    query = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == userId,
+                                             models.MaintenanceRecord.vehicle == long(vehicleId),
+                                             models.MaintenanceRecord.date >= date)
+    query = query.order(models.MaintenanceRecord.date)
+    return ndb.get_multi(query.fetch(keys_only=True))
 
 def getUserExpenseCategories(userId):
     """Gets a list of user categories (strings)

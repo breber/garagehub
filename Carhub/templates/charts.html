@@ -4,10 +4,13 @@
 <div>
   <div id="loading" class="center"><img src='/static/img/ajax-loader.gif' /> Loading...</div>
   <div id="empty">
-    <p>You don't have any expenses recorded yet.</p>
+    <p>You don't have any recent expenses recorded.</p>
     <p>Record some <a href="/vehicle/{{ car.key.id }}/expenses/add">here</a>!</p>
   </div>
-  <div id="chart_div"></div>
+  <div id="charts">
+    <div id="fuel_chart_div"></div>
+    <div id="category_chart_div"></div>
+  </div>
 </div>
 {% endblock %}
 

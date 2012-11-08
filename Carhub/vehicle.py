@@ -14,7 +14,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):
         context = utils.get_context()
         user = users.get_current_user()
-        context["car"] = datastore.getUserVehicle(vehicleId)
+        context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
         context["categories"] = datastore.getUserExpenseCategories(user.user_id())
         
         # TODO: this needs to grab based on vehicle chosen also
@@ -96,8 +96,11 @@ class VehicleHandler(webapp2.RequestHandler):
         # If we have a first path parameter, and it isn't add, use that as
         # the vehicle ID and show that vehicle's page
         else:
-            context["car"] = datastore.getUserVehicle(vehicleId)
-                
+            context["car"] = datastore.getUserVehicle(users.get_current_user().user_id(), vehicleId)
+            
+            if not context["car"]:
+                self.redirect("/")
+            
             if pageName == "maintenance":
                 path = os.path.join(os.path.dirname(__file__), 'templates/maintenance.html')
             elif pageName == "gasmileage":

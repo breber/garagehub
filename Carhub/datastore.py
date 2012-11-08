@@ -4,10 +4,10 @@ Created on Oct 17, 2012
 @author: breber
 '''
 from google.appengine.ext import ndb
-import models
 import datetime
+import models
 
-def getUserVehicle(vehicleId):
+def getUserVehicle(userId, vehicleId):
     """Gets the UserVehicle instance for the given ID
     
     Args: 
@@ -17,7 +17,12 @@ def getUserVehicle(vehicleId):
         The UserVehicle with the given ID, None otherwise
     """
 
-    return models.UserVehicle.get_by_id(long(vehicleId))
+    car = models.UserVehicle.get_by_id(long(vehicleId))
+    
+    if car and car.owner == userId:   
+        return car
+    else:
+        return None
 
 def getBaseExpenseRecords(userId, vehicleId, day_range=30):
     """Gets the BaseExpense for the given vehicle ID

@@ -21,7 +21,7 @@ def get_context(list_vehicles=True):
             userVehicles = ndb.get_multi(userVehiclesQuery.fetch(keys_only=True))
             
             if len(userVehicles) > 0:
-                context['uservehicles'] = userVehicles 
+                context['uservehicles'] = sorted(userVehicles, key=lambda UserVehicle:UserVehicle.name())
         
     else:
         context['user'] = None

@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="well">
+<div class="well ">
   <h2>Nearby Gas Prices</h2>
 
   <form>
@@ -64,7 +64,7 @@
   <hr />
   <div>Data Powered by www.myGasFeed.com.</div>
   
-    <div id="map_canvas" style="width: 500px; height: 300px"></div>
+    <div id="map_canvas" style="width: 500px; height: 300px; display:none;"></div>
 </div>
 
 {% endblock %} {% block externaljs %}
@@ -73,14 +73,12 @@
   
 <script src="/static/js/gasprices.js"></script>
 <script type="text/javascript" src="/static/js/jquery.dataTables.min.js"></script>
-
 <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
 
 <script>
 	$(document).ready(function() {
 		
-		//$( "#map_canvas" ).hide();
 		getGasPrices();
 		
 	});
@@ -104,21 +102,37 @@
 	$("#gaspricetable tr").live("click", function() {
 		var lat = $(this).find('td').eq(5).text();
 		var lon = $(this).find('td').eq(6).text();
+		$('body').addClass('stop-scrolling');
+		$( "#map_canvas" ).dialog({position: "fixed", show: "blind", hide: "explode", width:535, height:420, modal:true, resizable: false, 
+			buttons:{
+			    Close:{
+			        text:'Close',
+			        class:'btn',
+					click: function () {
+			            $(this).dialog("close");
+			            clearOverlays();
+			            $('body').removeClass('stop-scrolling');
+			        }
+			      }
+			}
+		});
 		
-		//$( "#dialog" ).show();
-		$( "#map_canvas" ).dialog({show: "blind", hide: "explode", width:535, height:420, modal:true, resizable: false, buttons: {
-	        Close : function () {
-	            $(this).dialog("close");
-	            //$( "#dialog" ).hide();
-	        }
-	    } });
 		
-		var latLng = new google.maps.LatLng(lat, lon); //Makes a latlng
-	    Demo.map.panTo(latLng, 25);
+
+		var mapOptions = {
+		        zoom: 14,
+		        center: new google.maps.LatLng(lat, lon),
+		        mapTypeId: google.maps.MapTypeId.ROADMAP
+		      };
+    	Demo.map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+
 	    clearOverlays();
+	    
+	    var latLng = new google.maps.LatLng(lat, lon); //Makes a latlng
 		addMarker(latLng);
 		
 		$(".ui-dialog-titlebar").hide();
+		
 	    
 	});
 	

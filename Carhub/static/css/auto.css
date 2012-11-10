@@ -151,3 +151,8 @@ div.news-articlediv {
 div.news-articlediv:hover {
 	background-color: #E0F2F7;
 }
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}

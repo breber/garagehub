@@ -41,7 +41,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
         
         if currentUser:
             dateString = self.request.get("datePurchased", None)
-            datePurchased = datetime.datetime.strptime(dateString, "%m-%d-%Y")
+            datePurchased = datetime.datetime.strptime(dateString, "%m/%d/%Y")
             newCategory = self.request.get("newCategory", None)
             
             if newCategory:
@@ -77,6 +77,151 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
 
         self.redirect("/vehicle/%s/expenses" % vehicleId)
 
+
+class VehicleMaintenanceHandler(webapp2.RequestHandler):
+    def get(self, vehicleId, pageName):
+        context = utils.get_context()
+        user = users.get_current_user()
+        context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
+        context["categories"] = datastore.getUserExpenseCategories(user.user_id())
+        
+        # TODO: this needs to grab based on vehicle chosen also
+        # TODO: get all types of expenses
+        userExpensesQuery = models.BaseExpense.query(models.BaseExpense.owner == user.user_id())
+        userExpenses = ndb.get_multi(userExpensesQuery.fetch(keys_only=True))
+        if len(userExpenses) > 0:
+            context['userexpenses'] = userExpenses 
+        
+        if not vehicleId:
+            self.redirect("/")
+        else:
+            if pageName == "add":
+                path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
+            else:
+                path = os.path.join(os.path.dirname(__file__), 'templates/maintenance.html')
+                
+            self.response.out.write(template.render(path, context))
+    
+    def post(self, vehicleId, model):
+        
+        #TODO make this accept a Maintenance object
+        
+        #TODO Validation
+        currentUser = users.get_current_user()
+        
+        logging.info("entered the Maintenance Expense post function")
+        
+        if currentUser:
+            dateString = self.request.get("datePurchased", None)
+            datePurchased = datetime.datetime.strptime(dateString, "%m/%d/%Y")
+            newCategory = self.request.get("newCategory", None)
+            
+            if newCategory:
+                category = newCategory
+                newCategoryObj = models.UserExpenseCategory()
+                newCategoryObj.owner = currentUser.user_id()
+                newCategoryObj.category = newCategory
+
+                if not newCategoryObj.category in datastore.getUserExpenseCategories(currentUser.user_id()):
+                    newCategoryObj.put()
+
+            else:
+                category = self.request.get("category", None)
+
+            location = self.request.get("location", None)
+            amount = float(self.request.get("amount", None))
+            description = self.request.get("description", None)
+            logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
+            
+            if datePurchased and category and location and amount and description:
+                expense = models.BaseExpense()
+                expense.date = datePurchased
+                expense.category = category
+                expense.location = location
+                expense.amount = amount
+                expense.description = description
+                
+                expense.owner = currentUser.user_id()
+                expense.vehicle = long(vehicleId)
+                expense.lastmodified = datetime.datetime.now()
+                
+                expense.put()
+
+        self.redirect("/vehicle/%s/expenses" % vehicleId)
+
+class VehicleGasMileageHandler(webapp2.RequestHandler):
+    def get(self, vehicleId, pageName):
+        context = utils.get_context()
+        user = users.get_current_user()
+        context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
+        context["categories"] = datastore.getUserExpenseCategories(user.user_id())
+        
+        # TODO: this needs to grab based on vehicle chosen also
+        # TODO: get all types of expenses
+        userExpensesQuery = models.BaseExpense.query(models.BaseExpense.owner == user.user_id())
+        userExpenses = ndb.get_multi(userExpensesQuery.fetch(keys_only=True))
+        if len(userExpenses) > 0:
+            context['userexpenses'] = userExpenses 
+        
+        if not vehicleId:
+            self.redirect("/")
+        else:
+            if pageName == "add":
+                path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
+            else:
+                path = os.path.join(os.path.dirname(__file__), 'templates/gasmileage.html')
+                
+            self.response.out.write(template.render(path, context))
+    
+    def post(self, vehicleId, model):
+        
+        #TODO make this accept a Gas Mileage object
+        
+        #TODO Validation
+        currentUser = users.get_current_user()
+        
+        logging.info("entered the Gas Mileage Expense post function")
+        
+        if currentUser:
+            dateString = self.request.get("datePurchased", None)
+            datePurchased = datetime.datetime.strptime(dateString, "%m/%d/%Y")
+            newCategory = self.request.get("newCategory", None)
+            
+            if newCategory:
+                category = newCategory
+                newCategoryObj = models.UserExpenseCategory()
+                newCategoryObj.owner = currentUser.user_id()
+                newCategoryObj.category = newCategory
+
+                if not newCategoryObj.category in datastore.getUserExpenseCategories(currentUser.user_id()):
+                    newCategoryObj.put()
+
+            else:
+                category = self.request.get("category", None)
+
+            location = self.request.get("location", None)
+            amount = float(self.request.get("amount", None))
+            description = self.request.get("description", None)
+            logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
+            
+            if datePurchased and category and location and amount and description:
+                expense = models.BaseExpense()
+                expense.date = datePurchased
+                expense.category = category
+                expense.location = location
+                expense.amount = amount
+                expense.description = description
+                
+                expense.owner = currentUser.user_id()
+                expense.vehicle = long(vehicleId)
+                expense.lastmodified = datetime.datetime.now()
+                
+                expense.put()
+
+        self.redirect("/vehicle/%s/gasmileage" % vehicleId)
+
+
+
 class VehicleHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):
         context = utils.get_context()
@@ -101,11 +246,8 @@ class VehicleHandler(webapp2.RequestHandler):
             if not context["car"]:
                 self.redirect("/")
             
-            if pageName == "maintenance":
-                path = os.path.join(os.path.dirname(__file__), 'templates/maintenance.html')
-            elif pageName == "gasmileage":
-                path = os.path.join(os.path.dirname(__file__), 'templates/gasmileage.html')
-            elif pageName == "charts":
+            
+            if pageName == "charts":
                 path = os.path.join(os.path.dirname(__file__), 'templates/charts.html')
             elif pageName == "news":
                 path = os.path.join(os.path.dirname(__file__), 'templates/news.html')
@@ -138,5 +280,7 @@ class VehicleHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/vehicle/([^/]+)/expenses/?(.+?)?', VehicleExpenseHandler),
+    ('/vehicle/([^/]+)/maintenance/?(.+?)?', VehicleMaintenanceHandler),
+    ('/vehicle/([^/]+)/gasmileage/?(.+?)?', VehicleGasMileageHandler),
     ('/vehicle/([^/]+)?/?(.+?)?', VehicleHandler),
 ], debug=True)

@@ -1,11 +1,14 @@
 {% extends 'base_vehicle.html' %} {% block pagecontent %}
 
-<h2>Add Expense</h2>
+<h2 class="generic">Add Expense</h2>
+<h2 class="maintenance">Add Maintenance Record</h2>
+<h2 class="gasmileage">Add Fuel Up Record</h2>
 
-<form action="/vehicle/{{ car.key.id }}/expenses/add" method="post">
+<form action="add" method="post">
   <p>Date of Purchase</p>
   <input type="text" name="datePurchased" id="datePurchased">
 
+  <div class="generic" >
   <p>Category</p>
   <div>
     <div class="accordion" id="accordion3">
@@ -16,7 +19,7 @@
         </div>
         <div id="collapseOne" class="accordion-body collapse in">
           <div class="accordion-inner">
-            <select id="category" name="category">
+            <select id="category1" name="category1">
               <option>Select a Category</option>
               {% for category in categories %}
               <option>{{ category }}</option>
@@ -33,35 +36,63 @@
         <div id="collapseTwo" class="accordion-body collapse">
           <div class="accordion-inner">
             <p>Enter a new category name</p>
-            <input type="text" name="newCategory" id="newCategory">
+            <input type="text" name="newCategory1" id="newCategory1">
           </div>
         </div>
       </div>
     </div>
   </div>
-
+  
+    <p>Category</p>
+    <select id="category" name="category">
+      <option>Select a Category</option>
+      {% for category in categories %}
+      <option>{{ category }}</option>
+      {% endfor %}
+    </select>
+    <input type="text" name="newCategory" id="newCategory">
+    <button type="button" class="btn btn-primary" id="categoryButton">Add and Use New Category</button>
+  </div> 
+  
+  <br>
   <p>Location</p>
   <input type="text" name="location">
 
-  <p>Amount Spent</p>
-  <input type="text" name="amount">
-
-  <p>Description of Purchase</p>
-  <input type="text" name="description">
+  <div class="generic maintenance">
+    <p>Amount Spent</p>
+    <input type="text" name="amount">
+  
+    <p>Description of Purchase</p>
+    <input type="text" name="description">
+  </div>
+  
+  <div class="maintenance fuel">
+    <p>Odometer Reading</p>
+    <input type="text" name="odometer">
+  </div>
+  
+  <div class="gasmileage">
+  	<p># of Gallons</p>
+    <input type="text" name="gallons">
+    
+    <p>Price Per Gallon</p>
+    <input type="text" name="pricepergallons">
+    
+    <p>Fuel Grade</p>
+    <select name="grade" id="grade">
+      <option value="reg">Regular</option>
+      <option value="mid">Mid</option>
+      <option value="pre">Premium</option>
+      <option value="diesel">Diesel</option>
+    </select>
+    
+  </div>
   <br />
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
-{% endblock %} {% block externaljs %}
+{% endblock %} 
+{% block externaljs %}
 <script type="text/javascript" src="/static/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="/static/js/addexpense.js"></script>
-<script>
-$(document).ready(function() {
-  //make the date picker work
-  $('#datePurchased').datepicker({
-  	format : 'mm-dd-yyyy'
-  });
-});
-</script>
-
 {% endblock %}

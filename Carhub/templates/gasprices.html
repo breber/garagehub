@@ -59,7 +59,7 @@
   <br /><br />
   <div id="tableWrapper">
     <div id="loading" class="center"><img id='theImg' src='/static/img/ajax-loader.gif' /> Loading...</div>
-    <table class="table pagination table-striped table-bordered table-hover" id="gaspricetable"></table>
+    <table class="table pagination table-striped table-bordered table-hover linkable" id="gaspricetable"></table>
   </div>
   <hr />
   <div>Data Powered by www.myGasFeed.com.</div>
@@ -99,9 +99,9 @@
 
 	google.maps.event.addDomListener(window, 'load', Demo.init);
 	
-	$("#gaspricetable tr").live("click", function() {
-		var lat = $(this).find('td').eq(5).text();
-		var lon = $(this).find('td').eq(6).text();
+	$("#gaspricetable tr td").live("click", function() {
+		var lat = $(this).parent().find('td').eq(5).text();
+		var lon = $(this).parent().find('td').eq(6).text();
 		$('body').addClass('stop-scrolling');
 		$( "#map_canvas" ).dialog({position: "fixed", show: "blind", hide: "explode", width:535, height:420, modal:true, resizable: false, 
 			buttons:{
@@ -132,8 +132,7 @@
 		addMarker(latLng);
 		
 		$(".ui-dialog-titlebar").hide();
-		
-	    
+			    
 	});
 	
 	// Function for adding a marker to the page.

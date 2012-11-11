@@ -100,7 +100,7 @@ body {
 	float: left;
 	overflow: auto;
 	padding: 2px 0px 2px 0px;
-	max-height: 500px;
+	max-height: 600px;
 }
 
 #dir-container table {

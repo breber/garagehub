@@ -122,7 +122,7 @@ function displayGasPrices(JSONGasFeed) {
 			}
 
 			if (price !== 'N/A') {
-				$('#gaspricetable').last().append("<tr><td>"+item.station+"</td><td>"+item.address+"</td><td>"+price+"</td><td>"+item.distance+"</td><td>"+dateUpdated+"</td><td>"+item.lat+"</td><td>"+item.lng+"</td></tr>");
+				$('#gaspricetable').last().append("<tr class=\"linkable\"><td>"+item.station+"</td><td>"+item.address+"</td><td>"+price+"</td><td>"+item.distance+"</td><td>"+dateUpdated+"</td><td>"+item.lat+"</td><td>"+item.lng+"</td></tr>");
 			}
 		});
 		var count = 0;
@@ -144,7 +144,7 @@ function displayGasPrices(JSONGasFeed) {
 			}
 			
 			if (price === 'N/A') {
-				$('#gaspricetable').last().append("<tr><td>"+item.station+"</td><td>"+item.address+"</td><td>"+price+"</td><td>"+item.distance+"</td><td>"+dateUpdated+"</td><td>"+item.lat+"</td><td>"+item.lng+"</td></tr>");//.click(function(e){alert(e.text());});
+				$('#gaspricetable').last().append("<tr class=\"linkable\"><td>"+item.station+"</td><td>"+item.address+"</td><td>"+price+"</td><td>"+item.distance+"</td><td>"+dateUpdated+"</td><td>"+item.lat+"</td><td>"+item.lng+"</td></tr>");//.click(function(e){alert(e.text());});
 			}
 			count = count + 1;
 	    });

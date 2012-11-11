@@ -6,9 +6,9 @@
   <div id="side-container">
     <ul>
       <li class="dir-label">From:</li>
-      <li><input id="from-input" type=text value="Chicago, IL" /></li>
+      <li><input id="from-input" type=text value="Minneapolis, MN" /></li>
       <li class="dir-label">To:</li>
-      <li><input id="to-input" type=text value="San Jose, CA" /></li>
+      <li><input id="to-input" type=text value="Ames, IA" /></li>
     </ul>
     <div>
       <input onclick="Demo.getDirections();" type="button" class="btn"
@@ -16,16 +16,22 @@
     </div>
     <div id="dir-container"></div>
   </div>
-  <div id="map_canvas" style="width: 500px; height: 300px"></div>
+  <div id="map_canvas" style="width: 850px; height: 500px"></div>
   <br />
   <div style="list-style-type: none; float: left;">
-    <form>
-      Number of Miles: <br />
-      <input id="num-miles-input" type="text" name="num-miles-input" /><br />
-      Average MPG: <br />
-      <input id="avg-mpg-input" type="text" name="avg-mpg-input" /> <br />
-      Estimated Price Per Gallon: <br />
+    <form >
+    <div style="float:left;margin-right:20px;">
+      <label for="num-miles-input">Number of Miles:</label> 
+      <input id="num-miles-input" type="text" name="num-miles-input" />
+      </div>
+      <div style="float:left;margin-right:20px;">
+      <label for="avg-mpg-input">Average MPG:</label>
+      <input id="avg-mpg-input" type="text" name="avg-mpg-input" /> 
+      </div>
+      <div style="float:left;margin-right:20px;">
+      <label for="avg-ppg-input">Estimated Price Per Gallon:</label>
       <input id="avg-ppg-input" type="text" name="avg-ppg-input" />
+      </div>
     </form>
     <div>
       <input onclick="calculateTripPrice();" type="button" class="btn"
@@ -33,8 +39,10 @@
     </div>
     <br /> <br />
     <form>
+    <div style="float:left; clear:both;" margin-right:20px;">
       Estimated Cost: <br />
       <input id="est-cost-trip" type="text" name="est-cost-trip" /><br />
+      </div>
     </form>
   </div>
 </div>

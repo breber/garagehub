@@ -293,6 +293,7 @@ class VehicleHandler(webapp2.RequestHandler):
             elif model == "delete":
                 vehicle = datastore.getUserVehicle(currentUser.user_id(), makeOption)
                 if vehicle:
+                    # TODO: delete all data that corresponds to this vehicle
                     vehicle.key.delete()
             
         self.redirect("/")

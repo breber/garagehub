@@ -246,7 +246,6 @@ class VehicleHandler(webapp2.RequestHandler):
             if not context["car"]:
                 self.redirect("/")
             
-            
             if pageName == "charts":
                 path = os.path.join(os.path.dirname(__file__), 'templates/charts.html')
             elif pageName == "news":
@@ -262,19 +261,39 @@ class VehicleHandler(webapp2.RequestHandler):
         currentUser = users.get_current_user()
 
         if currentUser:
-            make = self.request.get("make", None)
-            model = self.request.get("model", None)
-            year = self.request.get("year", None)
-            
-            if make and model and year:
-                vehicle = models.UserVehicle()
-                vehicle.make = make
-                vehicle.model = model
-                vehicle.year = year
-                vehicle.owner = currentUser.user_id()
-                vehicle.lastmodified = datetime.datetime.now()
+            if makeOption == "add":
+                make = self.request.get("make", None)
+                model = self.request.get("model", None)
+                year = self.request.get("year", None)
                 
-                vehicle.put()
+                if make and model and year:
+                    vehicle = models.UserVehicle()
+                    vehicle.make = make
+                    vehicle.model = model
+                    vehicle.year = year
+                    vehicle.owner = currentUser.user_id()
+                    vehicle.lastmodified = datetime.datetime.now()
+                    
+                    vehicle.put()
+            elif model == "update":
+                vehicle = datastore.getUserVehicle(currentUser.user_id(), makeOption)
+                if vehicle:
+                    color = self.request.get("color", None)
+                    plates = self.request.get("plates", None)
+                    
+                    # Conditionally update the vehicle object
+                    vehicle.color = color if color else color.plates
+                    vehicle.plates = plates if plates else vehicle.plates
+                    
+                    vehicle.lastmodified = datetime.datetime.now()
+                    vehicle.put()
+                    
+                    self.redirect("/vehicle/%d" % vehicle.key.id())
+                    return
+            elif model == "delete":
+                vehicle = datastore.getUserVehicle(currentUser.user_id(), makeOption)
+                if vehicle:
+                    vehicle.key.delete()
             
         self.redirect("/")
 

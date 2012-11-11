@@ -15,9 +15,32 @@
   </tr>
 </table>
 
-{% endblock %}
-{% block externaljs %}
+<form action="/vehicle/{{ car.key.id }}/delete" method="post">
+  <input type="submit" class="btn btn-danger" value="Delete"></input>
+  <a href="#editCar" role="button" class="btn btn-primary" data-toggle="modal">Edit Vehicle</a>
+</form>
 
-<script type="text/javascript" src="/static/js/car.js"></script>
+<div id="editCar" class="modal hide fade">
+  <form action="/vehicle/{{ car.key.id }}/update" method="post">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      <h3>Update Vehicle</h3>
+    </div>
+    <div class="modal-body">
+      <div>
+        <label for="color">Color:</label>
+        <input id="color" type="text" name="color" value="{{ car.color }}" /> 
+      </div>
+      <div>
+        <label for="plates">License Plates:</label>
+        <input id="plates" type="text" name="plates" value="{% if car.plates %}{{ car.plates }}{% endif %}" /> 
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn" data-dismiss="modal">Close</a>
+      <input type="submit" class="btn btn-primary"></input>
+    </div>
+  </form>
+</div>
 
 {% endblock %}

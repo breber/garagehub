@@ -3,6 +3,21 @@
 
 <h2>{{ car.name }}</h2>
 
-<p>Some info about {{ car.name }}</p>
+<table id="cartable" class="table" style="table-layout:fixed">
+  <tr class="hidden"><td></td><td></td></tr>
+  <tr>
+    <td>Color</td>
+    <td class="editable">{% if car.color %}{{ car.color }}{% else %}N/A{% endif %}</td>
+  </tr>
+  <tr>
+    <td>License Plates</td>
+    <td class="editable">{% if car.plates %}{{ car.plates }}{% else %}N/A{% endif %}</td>
+  </tr>
+</table>
+
+{% endblock %}
+{% block externaljs %}
+
+<script type="text/javascript" src="/static/js/car.js"></script>
 
 {% endblock %}

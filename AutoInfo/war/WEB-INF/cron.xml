@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<cronentries>
-	<cron>
-		<url>/cron/fetchvehicleinfo</url>
-		<description>Fetch Vehicle info (Make, model, year, etc) data</description>
-		<schedule>every day 00:00</schedule>
-		<timezone>America/Chicago</timezone>
-	</cron>
-</cronentries>

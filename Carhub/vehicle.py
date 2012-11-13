@@ -75,7 +75,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
                 
                 expense.put()
 
-        self.redirect("/vehicle/%s/expenses" % vehicleId)
+        self.redirect("/vehicle/%s/expenses" % vehicleId)        
 
 
 class VehicleMaintenanceHandler(webapp2.RequestHandler):
@@ -297,8 +297,8 @@ class VehicleHandler(webapp2.RequestHandler):
                     vehicle.key.delete()
             
         self.redirect("/")
-
-app = webapp2.WSGIApplication([
+        
+app = webapp2.WSGIApplication([                  
     ('/vehicle/([^/]+)/expenses/?(.+?)?', VehicleExpenseHandler),
     ('/vehicle/([^/]+)/maintenance/?(.+?)?', VehicleMaintenanceHandler),
     ('/vehicle/([^/]+)/gasmileage/?(.+?)?', VehicleGasMileageHandler),

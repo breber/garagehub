@@ -91,8 +91,7 @@ def getMaintenanceCategories(userId):
         A string list of categories for that user
     """
 
-    query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner == userId or
-                                               models.MaintenanceCategory.owner == "defaultMaintCategory")
+    query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId, "defaultMaintCategory"]))
     
     results = ndb.get_multi(query.fetch(keys_only=True))
 

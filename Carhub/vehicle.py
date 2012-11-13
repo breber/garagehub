@@ -75,38 +75,39 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
                 
                 expense.put()
 
-        self.redirect("/vehicle/%s/expenses" % vehicleId)        
-
-
+        self.redirect("/vehicle/%s/expenses" % vehicleId)     
+        
+        
 class VehicleMaintenanceHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):
-        context = utils.get_context()
-        user = users.get_current_user()
-        context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
-        context["categories"] = datastore.getUserExpenseCategories(user.user_id())
         
-        # TODO: this needs to grab based on vehicle chosen also
-        # TODO: get all types of expenses
-        userExpensesQuery = models.BaseExpense.query(models.BaseExpense.owner == user.user_id())
-        userExpenses = ndb.get_multi(userExpensesQuery.fetch(keys_only=True))
-        if len(userExpenses) > 0:
-            context['userexpenses'] = userExpenses 
+        context = utils.get_context()
         
         if not vehicleId:
-            self.redirect("/")
-        else:
-            if pageName == "add":
-                path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
-            else:
-                path = os.path.join(os.path.dirname(__file__), 'templates/maintenance.html')
-                
+            path = os.path.join(os.path.dirname(__file__), 'templates/garage.html')
             self.response.out.write(template.render(path, context))
+        
+        user = users.get_current_user()
+        context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
+        context["categories"] = datastore.getMaintenanceCategories(user.user_id())
+        
+        maintRecords = datastore.getMaintenanceRecords(users.get_current_user().user_id(), 
+                                                                  vehicleId)
+        
+        if len(maintRecords) > 0:
+            context["maintRecords"] = maintRecords
+            
+        
+        if pageName == "add":
+            path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
+        else:
+            path = os.path.join(os.path.dirname(__file__), 'templates/maintenance.html')
+            
+        self.response.out.write(template.render(path, context))   
     
     def post(self, vehicleId, model):
         
-        #TODO make this accept a Maintenance object
-        
-        #TODO Validation
+        # TODO: Validation
         currentUser = users.get_current_user()
         
         logging.info("entered the Maintenance Expense post function")
@@ -118,11 +119,11 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
             
             if newCategory:
                 category = newCategory
-                newCategoryObj = models.UserExpenseCategory()
+                newCategoryObj = models.MaintenanceCategory()
                 newCategoryObj.owner = currentUser.user_id()
                 newCategoryObj.category = newCategory
 
-                if not newCategoryObj.category in datastore.getUserExpenseCategories(currentUser.user_id()):
+                if not newCategoryObj.category in datastore.getMaintenanceCategories(currentUser.user_id()):
                     newCategoryObj.put()
 
             else:
@@ -134,20 +135,24 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
             logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
             
             if datePurchased and category and location and amount and description:
-                expense = models.BaseExpense()
-                expense.date = datePurchased
-                expense.category = category
-                expense.location = location
-                expense.amount = amount
-                expense.description = description
+                maintRec = models.MaintenanceRecord()
+                maintRec.date = datePurchased
+                maintRec.category = category
+                maintRec.location = location
+                maintRec.amount = amount
+                maintRec.description = description
                 
-                expense.owner = currentUser.user_id()
-                expense.vehicle = long(vehicleId)
-                expense.lastmodified = datetime.datetime.now()
+                odometer = self.request.get("odometer", None)
+                if odometer:
+                    maintRec.odometer = int(odometer)
                 
-                expense.put()
+                maintRec.owner = currentUser.user_id()
+                maintRec.vehicle = long(vehicleId)
+                maintRec.lastmodified = datetime.datetime.now()
+                
+                maintRec.put()
 
-        self.redirect("/vehicle/%s/expenses" % vehicleId)
+        self.redirect("/vehicle/%s/maintenance" % vehicleId)
 
 class VehicleGasMileageHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):

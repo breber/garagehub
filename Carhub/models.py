@@ -50,6 +50,13 @@ class UserExpenseCategory(ndb.Model):
     
     def name(self):
         return self.category
+    
+class MaintenanceCategory(ndb.Model):
+    owner = ndb.StringProperty()
+    category = ndb.StringProperty()
+    
+    def name(self):
+        return self.category
 
 class Notification(ndb.Model):
     owner = ndb.StringProperty()

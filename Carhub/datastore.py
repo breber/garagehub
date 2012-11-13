@@ -81,6 +81,29 @@ def getMaintenanceRecords(userId, vehicleId, day_range=30):
     query = query.order(models.MaintenanceRecord.date)
     return ndb.get_multi(query.fetch(keys_only=True))
 
+def getMaintenanceCategories(userId):
+    """Gets a list of user categories (strings)
+    
+    Args: 
+        userId - The user ID
+    
+    Returns
+        A string list of categories for that user
+    """
+
+    query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner == userId)
+    results = ndb.get_multi(query.fetch(keys_only=True))
+
+    toRet = []
+    
+    for c in results:
+        if not c.category in toRet:
+            toRet.append(c.category)
+    
+    toRet.sort()
+    
+    return toRet
+
 def getUserExpenseCategories(userId):
     """Gets a list of user categories (strings)
     

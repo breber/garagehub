@@ -1,6 +1,7 @@
 $("#empty").hide();
 $("#charts").hide();
 $("#loading").show();
+$("#empty").removeClass("hidden");
 
 google.load("visualization", "1", {
 	packages : [ "corechart" ]

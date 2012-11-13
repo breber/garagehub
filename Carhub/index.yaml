@@ -24,6 +24,13 @@ indexes:
 
 - kind: FuelRecord
   properties:
+  - name: owner
+  - name: vehicle
+  - name: date
+    direction: desc
+
+- kind: FuelRecord
+  properties:
   - name: vehicle
   - name: date
 

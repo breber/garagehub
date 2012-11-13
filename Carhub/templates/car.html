@@ -13,6 +13,14 @@
     <td>License Plates</td>
     <td class="editable">{% if car.plates %}{{ car.plates }}{% else %}N/A{% endif %}</td>
   </tr>
+  <tr>
+    <td>Current Odometer</td>
+    <td>{{ fuel.odometerEnd }}</td>
+  </tr>
+  <tr>
+    <td>Total Cost</td>
+    <td>{{ car.cost }}</td>
+  </tr>
 </table>
 
 <form action="/vehicle/{{ car.key.id }}/delete" method="post">

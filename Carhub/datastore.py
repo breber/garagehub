@@ -62,6 +62,23 @@ def getFuelRecords(userId, vehicleId, day_range=30):
     query = query.order(models.FuelRecord.date)
     return ndb.get_multi(query.fetch(keys_only=True))
 
+def getNFuelRecords(userId, vehicleId, numberToFetch=10):
+    """Gets the FuelRecords for the given vehicle ID
+    
+    Args: 
+        vehicleId - The vehicle ID
+        day_range - The time range
+        numberToFetch - The number of records to fetch
+    
+    Returns
+        The list of FuelRecords
+    """
+    
+    query = models.FuelRecord().query(models.FuelRecord.owner == userId,
+                                      models.FuelRecord.vehicle == long(vehicleId))
+    query = query.order(-models.FuelRecord.date)
+    return ndb.get_multi(query.fetch(numberToFetch, keys_only=True))
+
 def getMaintenanceRecords(userId, vehicleId, day_range=30):
     """Gets the MaintenanceRecords for the given vehicle ID
     

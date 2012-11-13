@@ -230,6 +230,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
 class VehicleHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):
         context = utils.get_context()
+        currentUserId = users.get_current_user().user_id()
         
         # If the path doesn't contain a first parameter, just show the garage
         if not vehicleId:
@@ -246,7 +247,12 @@ class VehicleHandler(webapp2.RequestHandler):
         # If we have a first path parameter, and it isn't add, use that as
         # the vehicle ID and show that vehicle's page
         else:
-            context["car"] = datastore.getUserVehicle(users.get_current_user().user_id(), vehicleId)
+            context["car"] = datastore.getUserVehicle(currentUserId, vehicleId)
+            latestFuel = datastore.getNFuelRecords(currentUserId, vehicleId, 1)
+            if latestFuel and len(latestFuel) > 0:
+                context["fuel"] = latestFuel[0]
+            
+            # TODO: add total expense to the output
             
             if not context["car"]:
                 self.redirect("/")

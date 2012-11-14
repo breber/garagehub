@@ -1,7 +1,17 @@
 {% extends 'base_vehicle.html' %} 
 {% block pagecontent %}
 
-<h2>{{ car.name }}</h2>
+<div style="vertical-align: middle;">
+<h2 style="float: none; display: inline; ">{{ car.name }}</h2>
+<div style="float: right; display: inline; margin-top: 5px;">
+<form action="/vehicle/{{ car.key.id }}/delete" method="post" >
+  <input type="submit" class="btn btn-danger" value="Delete"></input>
+  <a href="#editCar" role="button" class="btn btn-primary" data-toggle="modal">Edit Vehicle</a>
+</form>
+</div>
+</div>
+
+
 
 <table id="cartable" class="table" style="table-layout:fixed">
   <tr class="hidden"><td></td><td></td></tr>
@@ -23,10 +33,7 @@
   </tr>
 </table>
 
-<form action="/vehicle/{{ car.key.id }}/delete" method="post">
-  <input type="submit" class="btn btn-danger" value="Delete"></input>
-  <a href="#editCar" role="button" class="btn btn-primary" data-toggle="modal">Edit Vehicle</a>
-</form>
+
 
 <div id="editCar" class="modal hide fade">
   <form action="/vehicle/{{ car.key.id }}/update" method="post">

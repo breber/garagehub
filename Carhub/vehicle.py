@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from google.appengine.api import users
-from google.appengine.ext import ndb
 from google.appengine.ext.webapp import template
 from models import FuelRecord
 import datastore
@@ -65,7 +64,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
                 expense.amount = amount
                 expense.description = description
                 
-                #TODO get image for receipt
+                #TODO: get image for receipt
                 
                 expense.owner = currentUser.user_id()
                 expense.vehicle = long(vehicleId)
@@ -162,9 +161,9 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
         context["categories"] = datastore.getUserExpenseCategories(user.user_id())
-        #TODO make this query get all user fuel records
-        context['userfuelrecords'] = datastore.getFuelRecords(user.user_id(), vehicleId, 30) 
-        context['lastfuelrecord'] = datastore.getFuelRecords(user.user_id(), vehicleId, 1) 
+        context['userfuelrecords'] = datastore.getFuelRecords(user.user_id(), vehicleId, None)
+        # TODO: no need to query again, since we already got all the fuel records previously
+        context['lastfuelrecord'] = datastore.getFuelRecords(user.user_id(), vehicleId, 1)
         
         if not vehicleId:
             self.redirect("/")
@@ -178,9 +177,9 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
     
     def post(self, vehicleId, model):
         
-        #TODO make this accept a Gas Mileage object
+        #TODO: make this accept a Gas Mileage object
         
-        #TODO handle what to do if the optional fields are not entered.
+        #TODO: handle what to do if the optional fields are not entered.
         currentUser = users.get_current_user()
         
         logging.info("entered the Gas Mileage Expense post function")
@@ -219,11 +218,11 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             if datePurchased and amount and costPerGallon:
                 record = models.FuelRecord()
                 record.date = datePurchased
-                #TODO this is the category for all Fuel Records, move to a constants file
+                #TODO: this is the category for all Fuel Records, move to a constants file
                 record.category = "Fuel Record"
                 record.location = location
                 record.amount = amount
-                #TODO this is the description for all fuel records
+                #TODO: this is the description for all fuel records
                 record.description = "Filled up with gas"
                 record.odometerEnd = odometer
                 
@@ -238,7 +237,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
                 if lastFuelRecord:
                     record.odometerStart = lastFuelRecord.odometerEnd
                 else:
-                    #TODO don't know how to handle this
+                    #TODO: don't know how to handle this
                     record.odometerStart = -1
                     
                 record.gallons = gallons

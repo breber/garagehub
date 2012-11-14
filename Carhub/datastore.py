@@ -68,11 +68,16 @@ def getFuelRecords(userId, vehicleId, day_range=30):
         The list of FuelRecords
     """
     
-    delta = datetime.timedelta(days=day_range)
-    date = datetime.datetime.now() - delta
-    query = models.FuelRecord().query(models.FuelRecord.owner == userId,
-                                      models.FuelRecord.vehicle == long(vehicleId),
-                                      models.FuelRecord.date >= date)
+    if day_range:
+        delta = datetime.timedelta(days=day_range)
+        date = datetime.datetime.now() - delta
+        query = models.FuelRecord().query(models.FuelRecord.owner == userId,
+                                          models.FuelRecord.vehicle == long(vehicleId),
+                                          models.FuelRecord.date >= date)
+    else:
+        query = models.FuelRecord().query(models.FuelRecord.owner == userId,
+                                  models.FuelRecord.vehicle == long(vehicleId))
+
     query = query.order(models.FuelRecord.date)
     return ndb.get_multi(query.fetch(keys_only=True))
 
@@ -291,12 +296,12 @@ def getActiveMileageNotifications(userId):
             categoryQuery = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == userId,
                                                              models.MaintenanceRecord.vehicle == r.vehicle,
                                                              models.MaintenanceRecord.category == r.category).order(-models.MaintenanceRecord.date)
-            lastMaintRecord = categoryQuery.fetch(1)
+            lastMaintRecord = categoryQuery.get()
             lastMaintMileage = lastMaintRecord.odometer
             
             mileageQuery = models.FuelRecord().query(models.FuelRecord.owner == userId,
                                                      models.FuelRecord.vehicle == r.vehicle).order(-models.FuelRecord.odometerEnd)
-            lastFuelRecord = mileageQuery.fetch(1)
+            lastFuelRecord = mileageQuery.get()
             lastFuelMileage = lastFuelRecord.endOdometer
             
             maxmileage = lastMaintMileage

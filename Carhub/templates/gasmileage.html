@@ -26,7 +26,7 @@
 	  </tr>
   </thead>
 
-  {% for e in userfuelrecords %}
+    {% for e in userfuelrecords %}
 	<tr>
 		<td>{{ e.date }}</td>
 		<td>{{ e.gallons|stringformat:".2f" }}</td>

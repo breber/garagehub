@@ -1,7 +1,5 @@
 from google.appengine.api import users
-from google.appengine.ext import ndb
 import hashlib
-import models
 import datastore
 
 def get_context(list_vehicles=True):

@@ -49,15 +49,11 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
                     newCategoryObj.put()
 
             else:
-                category = self.request.get("category", None)
-                
-                # if no category selected then default to uncategorized
-                if (category == "Select a Category"):
-                    category = "Uncategorized"
+                category = self.request.get("category", "Uncategorized")
 
-            location = self.request.get("location", None)
+            location = self.request.get("location", "")
             amount = float(self.request.get("amount", None))
-            description = self.request.get("description", None)
+            description = self.request.get("description", "")
             logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
             
             if datePurchased and category and location and amount and description:
@@ -129,16 +125,12 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
 
             else:
                 # Not using a new category, so get the existing category
-                category = self.request.get("category", None)
-                
-                # if no category selected then default to uncategorized
-                if (category == "Select a Category"):
-                    category = "Uncategorized"
+                category = self.request.get("category", "Uncategorized")
 
-            location = self.request.get("location", None)
+            location = self.request.get("location", "")
             amount = float(self.request.get("amount", None))
-            description = self.request.get("description", None)
-            odometer = int(self.request.get("odometer", None))
+            description = self.request.get("description", "")
+            odometer = int(self.request.get("odometer", -1))
             logging.info("Maintenance Info Obtained %s %s %s %s %f %d", datePurchased, category, location, description, amount, odometer)
             
             if datePurchased and category and location and amount and description:
@@ -148,10 +140,7 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
                 maintRec.location = location
                 maintRec.amount = amount
                 maintRec.description = description
-                
-                odometer = self.request.get("odometer", None)
-                if odometer:
-                    maintRec.odometer = int(odometer)
+                maintRec.odometer = odometer
                 
                 maintRec.owner = currentUser.user_id()
                 maintRec.vehicle = long(vehicleId)
@@ -203,12 +192,12 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
                     newCategoryObj.put()
 
             else:
-                category = self.request.get("category", None)
+                category = self.request.get("category", "Uncategorized")
 
-            location = self.request.get("location", None)
+            location = self.request.get("location", "")
             amount = float(self.request.get("amount", None))
-            description = self.request.get("description", None)
-            odometer = int(self.request.get("odometer". None))
+            description = self.request.get("description", "")
+            odometer = int(self.request.get("odometer". -1))
             costPerGallon = float(self.request.get("pricepergallons", None))
             fuelGrade = self.request.get("grade")
             

@@ -18,18 +18,22 @@
 
 
   <tr>
+    <th>Date</th>
     <th>Average MPG</th>
     <th>Miles Driven</th>
     <th>Gallons Used</th>
     <th>Average $ / Gallon</th>
   </tr>
 
-  <tr>
-    <td>55.8</td>
-    <td>100,234</td>
-    <td>501</td>
-    <td>$3.29</td>
-  </tr>
+  {% for e in userfuelrecords %}
+	<tr>
+		<td>{{ e.date }}</td>
+		<td>{{ e.category }}</td>
+		<td>{{ e.location }}</td>
+		<td>{{ e.gallons }}</td>
+		<td>{{ e.amount|stringformat:".2f" }}</td>
+	</tr>
+	{% endfor %}
 
 </table>
 

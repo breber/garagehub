@@ -56,7 +56,8 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
             description = self.request.get("description", "")
             logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
             
-            if datePurchased and category and location and amount and description:
+            if datePurchased and amount:
+                logging.info("Expense Being Added")
                 expense = models.BaseExpense()
                 expense.date = datePurchased
                 expense.category = category
@@ -131,10 +132,10 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
             location = self.request.get("location", "")
             amount = float(self.request.get("amount", None))
             description = self.request.get("description", "")
-            odometer = int(self.request.get("odometer", -1))
+            odometer = int(self.request.get("odometer",int(-1)))
             logging.info("Maintenance Info Obtained %s %s %s %s %f %d", datePurchased, category, location, description, amount, odometer)
             
-            if datePurchased and category and location and amount and description:
+            if datePurchased and amount:
                 maintRec = models.MaintenanceRecord()
                 maintRec.date = datePurchased
                 maintRec.category = category
@@ -180,7 +181,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         
         if currentUser:
             dateString = self.request.get("datePurchased", None)
-            datePurchased = datetime.datetime.strptime(dateString, "%m/%d/%Y")
+            datePurchased = datetime.datetime.strptime(dateString, "%Y-%m-%d")
             newCategory = self.request.get("newCategory", None)
             
             if newCategory:
@@ -198,14 +199,14 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             location = self.request.get("location", "")
             amount = float(self.request.get("amount", None))
             description = self.request.get("description", "")
-            odometer = int(self.request.get("odometer". -1))
+            odometer = int(self.request.get("odometer". int(-1)))
             costPerGallon = float(self.request.get("pricepergallons", None))
             fuelGrade = self.request.get("grade")
             
             gallons = amount / costPerGallon
             logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
             
-            if datePurchased and category and location and amount and description:
+            if datePurchased and amount and costPerGallon:
                 record = models.FuelRecord()
                 record.date = datePurchased
                 #TODO this is the category for all Fuel Records, move to a constants file
@@ -228,7 +229,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
                     record.odometerStart = lastFuelRecord.odometerEnd
                 else:
                     #TODO don't know how to handle this
-                    record.odometerStart = -1
+                    record.odometerStart = int(-1)
                     
                 record.gallons = gallons
                 record.costPerGallon = costPerGallon

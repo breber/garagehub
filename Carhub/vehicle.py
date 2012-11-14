@@ -2,6 +2,7 @@
 from google.appengine.api import users
 from google.appengine.ext import ndb
 from google.appengine.ext.webapp import template
+from models import FuelRecord
 import datastore
 import datetime
 import logging
@@ -16,13 +17,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
         context["categories"] = datastore.getUserExpenseCategories(user.user_id())
-        
-        # TODO: this needs to grab based on vehicle chosen also
-        # TODO: get all types of expenses
-        userExpensesQuery = models.BaseExpense.query(models.BaseExpense.owner == user.user_id())
-        userExpenses = ndb.get_multi(userExpensesQuery.fetch(keys_only=True))
-        if len(userExpenses) > 0:
-            context['userexpenses'] = userExpenses 
+        context['userexpenses'] = datastore.getBaseExpenseRecords(user.user_id(), vehicleId, 30) 
         
         if not vehicleId:
             self.redirect("/")
@@ -41,7 +36,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
         
         if currentUser:
             dateString = self.request.get("datePurchased", None)
-            datePurchased = datetime.datetime.strptime(dateString, "%m/%d/%Y")
+            datePurchased = datetime.datetime.strptime(dateString, "%Y-%m-%d")
             newCategory = self.request.get("newCategory", None)
             
             if newCategory:
@@ -55,6 +50,10 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
 
             else:
                 category = self.request.get("category", None)
+                
+                # if no category selected then default to uncategorized
+                if (category == "Select a Category"):
+                    category = "Uncategorized"
 
             location = self.request.get("location", None)
             amount = float(self.request.get("amount", None))
@@ -69,6 +68,8 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
                 expense.amount = amount
                 expense.description = description
                 
+                #TODO get image for receipt
+                
                 expense.owner = currentUser.user_id()
                 expense.vehicle = long(vehicleId)
                 expense.lastmodified = datetime.datetime.now()
@@ -81,7 +82,6 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
 class VehicleMaintenanceHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):
         context = utils.get_context()
-        user = users.get_current_user()
         
         if not vehicleId:
             path = os.path.join(os.path.dirname(__file__), 'templates/garage.html')
@@ -113,7 +113,9 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
         
         if currentUser:
             dateString = self.request.get("datePurchased", None)
-            datePurchased = datetime.datetime.strptime(dateString, "%m/%d/%Y")
+            datePurchased = datetime.datetime.strptime(dateString, "%Y-%m-%d")
+            
+            #check to see if a new category is being used
             newCategory = self.request.get("newCategory", None)
             
             if newCategory:
@@ -126,12 +128,18 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
                     newCategoryObj.put()
 
             else:
+                # Not using a new category, so get the existing category
                 category = self.request.get("category", None)
+                
+                # if no category selected then default to uncategorized
+                if (category == "Select a Category"):
+                    category = "Uncategorized"
 
             location = self.request.get("location", None)
             amount = float(self.request.get("amount", None))
             description = self.request.get("description", None)
-            logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
+            odometer = int(self.request.get("odometer", None))
+            logging.info("Maintenance Info Obtained %s %s %s %s %f %d", datePurchased, category, location, description, amount, odometer)
             
             if datePurchased and category and location and amount and description:
                 maintRec = models.MaintenanceRecord()
@@ -159,13 +167,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
         context["categories"] = datastore.getUserExpenseCategories(user.user_id())
-        
-        # TODO: this needs to grab based on vehicle chosen also
-        # TODO: get all types of expenses
-        userExpensesQuery = models.BaseExpense.query(models.BaseExpense.owner == user.user_id())
-        userExpenses = ndb.get_multi(userExpensesQuery.fetch(keys_only=True))
-        if len(userExpenses) > 0:
-            context['userexpenses'] = userExpenses 
+        context['userfuelrecords'] = datastore.getFuelRecords(user.user_id(), vehicleId, 30) 
         
         if not vehicleId:
             self.redirect("/")
@@ -181,7 +183,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         
         #TODO make this accept a Gas Mileage object
         
-        #TODO Validation
+        #TODO handle what to do if the optional fields are not entered.
         currentUser = users.get_current_user()
         
         logging.info("entered the Gas Mileage Expense post function")
@@ -206,21 +208,47 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             location = self.request.get("location", None)
             amount = float(self.request.get("amount", None))
             description = self.request.get("description", None)
+            odometer = int(self.request.get("odometer". None))
+            costPerGallon = float(self.request.get("pricepergallons", None))
+            fuelGrade = self.request.get("grade")
+            
+            gallons = amount / costPerGallon
             logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
             
             if datePurchased and category and location and amount and description:
-                expense = models.BaseExpense()
-                expense.date = datePurchased
-                expense.category = category
-                expense.location = location
-                expense.amount = amount
-                expense.description = description
+                record = models.FuelRecord()
+                record.date = datePurchased
+                #TODO this is the category for all Fuel Records, move to a constants file
+                record.category = "Fuel Record"
+                record.location = location
+                record.amount = amount
+                #TODO this is the description for all fuel records
+                record.description = "Filled up with gas"
+                record.odometerEnd = odometer
                 
-                expense.owner = currentUser.user_id()
-                expense.vehicle = long(vehicleId)
-                expense.lastmodified = datetime.datetime.now()
+                lastFuelRecord = 0
+                # find the previous gas record and grab the odometer reading
+                for fuelRecord in  datastore.getFuelRecords(currentUser.user_id(), vehicleId, 30):
+                    if not lastFuelRecord:
+                        lastFuelRecord = fuelRecord
+                    elif(lastFuelRecord.date < FuelRecord.date):
+                        lastFuelRecord = fuelRecord
                 
-                expense.put()
+                if lastFuelRecord:
+                    record.odometerStart = lastFuelRecord.odometerEnd
+                else:
+                    #TODO don't know how to handle this
+                    record.odometerStart = -1
+                    
+                record.gallons = gallons
+                record.costPerGallon = costPerGallon
+                record.fuelGrade = fuelGrade                
+                
+                record.owner = currentUser.user_id()
+                record.vehicle = long(vehicleId)
+                record.lastmodified = datetime.datetime.now()
+                
+                record.put()
 
         self.redirect("/vehicle/%s/gasmileage" % vehicleId)
 

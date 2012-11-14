@@ -23,7 +23,7 @@ def getUserVehicle(userId, vehicleId):
         return car
     else:
         return None
-    
+        
 def getUserVehicleList(userId):
     """Gets a list of vehicles for the given user
     
@@ -36,6 +36,7 @@ def getUserVehicleList(userId):
     
     userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == userId)
     return ndb.get_multi(userVehiclesQuery.fetch(keys_only=True))
+
 
 def getBaseExpenseRecords(userId, vehicleId, day_range=30):
     """Gets the BaseExpense for the given vehicle ID
@@ -227,7 +228,7 @@ def getListOfYears(make, model):
     toRet.sort()
     
     return toRet
-
+    
 def getNotifications(userId):
     """Gets a list of user's notifications
     
@@ -244,4 +245,3 @@ def getNotifications(userId):
     sorted(results, key=lambda Notification:Notification.name())
     
     return results
-        

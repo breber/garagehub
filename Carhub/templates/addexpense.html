@@ -1,14 +1,23 @@
-{% extends 'base_vehicle.html' %} {% block pagecontent %}
+{% extends 'base_vehicle.html' %} 
+{% block externalcss %}
+<link rel="stylesheet" href="/static/css/validationEngine.jquery.css" type="text/css"/>
+<link rel="stylesheet" href="/static/css/datepicker.css" type="text/css"/>
+{% endblock %}
 
-<h2 class="generic">Add Expense</h2>
-<h2 class="maintenance">Add Maintenance Record</h2>
-<h2 class="gasmileage">Add Fuel Up Record</h2>
+{% block pagecontent %}
 
-<form action="add" method="post">
-  <p>Date of Purchase</p>
-  <input type="text" name="datePurchased" id="datePurchased">
+<h2 class="generic hidden">Add Expense</h2>
+<h2 class="maintenance hidden">Add Maintenance Record</h2>
+<h2 class="gasmileage hidden">Add Fuel Up Record</h2>
 
-  <div class="generic maintenance" >
+
+<form id="addform" action="add" method="post">
+  <div class="generic maintenance gasmileage hidden">
+    <p>Date of Purchase</p>
+    <input type="text" class="validate[required,custom[date],past[now],future[1920-01-01]]"  name="datePurchased" id="datePurchased">
+  </div>
+  
+  <div class="generic hidden" >
   <p>Category</p>
   <div>
     <div class="accordion" id="accordion3">
@@ -52,40 +61,37 @@
     </select>
     <input type="text" name="newCategory" id="newCategory">
     <button type="button" class="btn btn-primary" id="categoryButton">Add and Use New Category</button>
+  <br>
   </div> 
   
-  <br>
-  <p>Location</p>
-  <input type="text" name="location">
+  <div class="generic maintenance gasmileage hidden">
+    <p>Location</p>
+    <input type="text" name="location">
 
-  <div class="generic maintenance">
-    <p>Amount Spent</p>
-    <input type="text" name="amount">
-  
+    <p>Amount Spent ($)</p>
+    <input type="text" class="validate[required, custom[number]]" name="amount" id="amount">
+  </div>
+  <div class="generic maintenance hidden">
     <p>Description of Purchase</p>
     <input type="text" name="description">
   </div>
   
-  <div class="maintenance fuel">
-    <p>Odometer Reading</p>
-    <input type="text" name="odometer">
-  </div>
-  
-  <div class="gasmileage">
-  	<p># of Gallons</p>
-    <input type="text" name="gallons">
-    
+  <div class="gasmileage hidden">    
     <p>Price Per Gallon</p>
-    <input type="text" name="pricepergallons">
+    <input type="text" class="validate[custom[number]]" name="pricepergallons">
     
     <p>Fuel Grade</p>
     <select name="grade" id="grade">
-      <option value="reg">Regular</option>
-      <option value="mid">Mid</option>
-      <option value="pre">Premium</option>
-      <option value="diesel">Diesel</option>
+      <option value="Regular">Regular</option>
+      <option value="Mid">Mid</option>
+      <option value="Premium">Premium</option>
+      <option value="Diesel">Diesel</option>
     </select>
+  </div>
     
+  <div class="maintenance gasmileage hidden">
+    <p>Odometer Reading</p>
+    <input type="text" class="validate[integer, min[0]]" name="odometer">
   </div>
   <br />
   <button type="submit" class="btn btn-primary">Submit</button>
@@ -94,5 +100,7 @@
 {% endblock %} 
 {% block externaljs %}
 <script type="text/javascript" src="/static/js/ext/bootstrap-datepicker.js"></script>
+<script src="/static/js/ext/jquery.validationEngine-en.js" type="text/javascript" ></script>
+<script src="/static/js/ext/jquery.validationEngine.js" type="text/javascript" ></script>
 <script type="text/javascript" src="/static/js/addexpense.js"></script>
 {% endblock %}

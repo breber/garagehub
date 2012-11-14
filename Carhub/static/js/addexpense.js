@@ -4,30 +4,30 @@ var usingNewCategory = false;
 $(document).ready(function() {
 	// display input fields based on which record is being added
 	if(window.location.pathname.indexOf("gasmileage") > -1){
-		$('.generic').hide();
-		$('.maintenance').hide();
-		$('.gasmileage').show();
+		$('.gasmileage').removeClass( "hidden");
 	} else if(window.location.pathname.indexOf("maintenance") > -1){
-		$('.generic').hide();
-		$('.gasmileage').hide();
-		$('.maintenance').show();
+		$('.maintenance').removeClass( "hidden");
 	} else if(window.location.pathname.indexOf("expense") > -1){
-		$('.gasmileage').hide();
-		$('.maintenance').hide();
-		$('.generic').show();
+		$('.generic').removeClass( "hidden");
 	}
 	
+	// validation engine set up
+	$('#addform').validationEngine();
 	
+	
+	
+	//category stuff
 	$('#collapseTwo').on('hidden', function() {
 		// clears the value so that we know to use the existing category
 		$("#newCategory").val("");
 	});
 	
 	var currentDate = new Date();
-	var prettyDate = (currentDate.getMonth()+1) + '/' + currentDate.getDate() + '/' + currentDate.getFullYear();
+	var prettyDate = (currentDate.getFullYear() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getDate() );
 	// make the date picker work
-	$('#datePurchased').datepicker({ dateFormat: "mm/dd/yyyy", 
-		yearRange: '1900:2020' });
+	$('#datePurchased').datepicker({
+		format: 'yyyy-mm-dd'
+	});
 	
 	$('#datePurchased').val(prettyDate);
 	
@@ -49,9 +49,6 @@ $(document).ready(function() {
 		}
 	});
 	
-	
-	
-	//TODO have tell which expense type it is
 	
 });
 

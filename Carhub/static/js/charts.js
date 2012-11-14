@@ -1,18 +1,35 @@
-$("#empty").hide();
-$("#charts").hide();
-$("#loading").show();
-$("#empty").removeClass("hidden");
+$(".range").click(function() {
+    fetchData(new Number(this.id));
+});
 
 google.load("visualization", "1", {
     packages : [ "corechart" ]
 });
 google.setOnLoadCallback(fetchData);
 
-function fetchData() {
+function startLoading() {
+    $("#empty").removeClass("hidden");
+    $("#charts").removeClass("hidden");
+    $("#empty").hide();
+    $("#charts").hide();
+    $("#loading").show();
+}
+
+function stopLoading() {
+    $("#loading").hide();
+    $("#empty").hide();
+    $("#charts").show();
+}
+
+function fetchData(dateRange) {
+    startLoading();
     // TODO: better way to get vehicle ID
     var vehicleId = /\/vehicle\/([^\/]+)/.exec(window.location.pathname);
-    var dateRange = 120;
 
+    if (!(dateRange instanceof Number)) {
+        dateRange = 120;
+    }
+    
     $.getJSON("/api/expense/fuel/" + vehicleId[1] + "/" + dateRange, function(data) {
         drawFuelChart(data);
     });
@@ -65,9 +82,7 @@ function drawFuelChart(content) {
         } ]
     };
 
-    $("#loading").hide();
-    $("#empty").hide();
-    $("#charts").show();
+    stopLoading();
 
     var chartDiv = document.getElementById('fuel_chart_div');
     var chart = new google.visualization.LineChart(chartDiv);
@@ -91,9 +106,7 @@ function drawCategoryChart(content) {
         backgroundColor : '#f5f5f5',
     };
 
-    $("#loading").hide();
-    $("#empty").hide();
-    $("#charts").show();
+    stopLoading();
 
     var chartDiv = document.getElementById('category_chart_div');
     var chart = new google.visualization.PieChart(chartDiv);

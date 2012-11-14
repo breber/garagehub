@@ -214,4 +214,21 @@ def getListOfYears(make, model):
     toRet.sort()
     
     return toRet
+
+def getNotifications(userId):
+    """Gets a list of user's notifications
+    
+    Args:
+        userId - The user ID
+    
+    Returns
+        A list of user's notifications
+    """
+
+    query = models.Notification().query(models.Notification.owner == userId)
+    results = ndb.get_multi(query.fetch(keys_only=True))
+    
+    sorted(results, key=lambda Notification:Notification.name())
+    
+    return results
         

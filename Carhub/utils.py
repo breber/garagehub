@@ -2,6 +2,7 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 import hashlib
 import models
+import datastore
 
 def get_context(list_vehicles=True):
     context = {}
@@ -22,6 +23,11 @@ def get_context(list_vehicles=True):
             
             if len(userVehicles) > 0:
                 context['uservehicles'] = sorted(userVehicles, key=lambda UserVehicle:UserVehicle.name())
+            
+            notifications = datastore.getNotifications(user.user_id())
+            
+            if len(notifications) > 0:
+                context['notifications'] = notifications
         
     else:
         context['user'] = None

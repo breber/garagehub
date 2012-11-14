@@ -60,5 +60,14 @@ class MaintenanceCategory(ndb.Model):
 
 class Notification(ndb.Model):
     owner = ndb.StringProperty()
-    vehicle = ndb.StringProperty()
-    # TODO
+    vehicle = ndb.IntegerProperty()
+    vehicleName = ndb.StringProperty()
+    category = ndb.StringProperty()
+    recurring = ndb.BooleanProperty()
+    dateBased = ndb.BooleanProperty()
+    mileBased = ndb.BooleanProperty()
+    date = ndb.DateProperty()
+    mileage = ndb.IntegerProperty()
+
+    def name(self):
+        return "%s %s" % (self.vehicleName, self.category)

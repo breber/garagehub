@@ -82,6 +82,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
 class VehicleMaintenanceHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):
         context = utils.get_context()
+        user = users.get_current_user()
         
         if not vehicleId:
             path = os.path.join(os.path.dirname(__file__), 'templates/garage.html')

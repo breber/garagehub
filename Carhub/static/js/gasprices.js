@@ -105,8 +105,10 @@ function displayGasPrices(JSONGasFeed) {
 		stopLoading();
 		
 		$.each(json.stations, function(i, item) {
+			
 			var price;
 			var dateUpdated;
+			var distance = item.distance;
 			if (grade === 'reg') {
 				price = item.reg_price;
 				dateUpdated = item.reg_date;
@@ -121,54 +123,50 @@ function displayGasPrices(JSONGasFeed) {
 				dateUpdated = item.diesel_date;
 			}
 
-			if (price !== 'N/A') {
-				$('#gaspricetable').last().append("<tr class=\"linkable\"><td>"+item.station+"</td><td>"+item.address+"</td><td>"+price+"</td><td>"+item.distance+"</td><td>"+dateUpdated+"</td><td>"+item.lat+"</td><td>"+item.lng+"</td></tr>");
-			}
-		});
-		var count = 0;
-		$.each(json.stations, function(i, item){
-			var price;
-			var dateUpdated;
-			if (grade === 'reg') {
-				price = item.reg_price;
-				dateUpdated = item.reg_date;
-			} else if (grade === 'mid') {
-				price = item.mid_price;
-				dateUpdated = item.mid_date;
-			} else if (grade === 'pre') {
-				price = item.pre_price;
-				dateUpdated = item.pre_date;
-			} else if (grade === 'diesel') {
-				price = item.diesel_price;
-				dateUpdated = item.diesel_date;
+			var index = distance.indexOf("miles");
+			if(index != -1){
+				distance = distance.substr(0, index);
 			}
 			
-			if (price === 'N/A') {
-				$('#gaspricetable').last().append("<tr class=\"linkable\"><td>"+item.station+"</td><td>"+item.address+"</td><td>"+price+"</td><td>"+item.distance+"</td><td>"+dateUpdated+"</td><td>"+item.lat+"</td><td>"+item.lng+"</td></tr>");//.click(function(e){alert(e.text());});
-			}
-			count = count + 1;
-	    });
+			$('#gaspricetable').last().append("<tr class=\"linkable\"><td>"+item.station+"</td><td>"+item.address+"</td><td>"+price+"</td><td>"+distance+"</td><td>"+dateUpdated+"</td><td>"+item.lat+"</td><td>"+item.lng+"</td></tr>");
+			
+		});
 		
-		$('#gaspricetable').prepend("<thead><tr><th>Name</th><th>Location</th><th>Price</th><th>Distance</th><th>Last Updated</th><th>Lat</th><th>Lon</th></tr></thead>");
-		
+		$('#gaspricetable').prepend("<thead><tr><th>Name</th><th>Location</th><th>Price (Dollars)</th><th>Distance (Miles)</th><th>Last Updated</th><th>Lat</th><th>Lon</th></tr></thead>");
 
+		//Hide the latitude and longitude columns
 		$("#gaspricetable td:nth-child(6),th:nth-child(6)").hide();
 		$("#gaspricetable td:nth-child(7),th:nth-child(7)").hide();
 		
+		
+		var sort = document.getElementById('sort').value;
+		var sortByColumn = 2;
+		if(sort === "distance"){
+			sortByColumn = 3;
+		}
 		if (typeof oTable == 'undefined') {
 			oTable = $('#gaspricetable').dataTable({
+				"aaSorting": [[ sortByColumn, "asc" ]],
 				"bPaginate": false,
 		        "bLengthChange": false,
 		        "bFilter": false,
-		        "bSort": true,
 		        "bInfo": false,
 		        "bAutoWidth": false
 			});
+
 		}
 		else
 		{
-			oTable.fnClearTable( 0 );
-			oTable.fnDraw();
+			oTable.fnDestroy();
+			oTable = $('#gaspricetable').dataTable({
+				"aaSorting": [[ sortByColumn, "asc" ]],
+				"bPaginate": false,
+		        "bLengthChange": false,
+		        "bFilter": false,
+		        "bInfo": false,
+		        "bAutoWidth": false
+			});
+		
 		}
 		
 	});

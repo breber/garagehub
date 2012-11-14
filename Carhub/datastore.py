@@ -76,7 +76,7 @@ def getFuelRecords(userId, vehicleId, day_range=30):
                                           models.FuelRecord.date >= date)
     else:
         query = models.FuelRecord().query(models.FuelRecord.owner == userId,
-                                  models.FuelRecord.vehicle == long(vehicleId))
+                                          models.FuelRecord.vehicle == long(vehicleId))
 
     query = query.order(models.FuelRecord.date)
     return ndb.get_multi(query.fetch(keys_only=True))

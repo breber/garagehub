@@ -1,20 +1,4 @@
-# General Java ignores
-*.class
-classes/
-
-# Jars provided by the AppEngine SDK
-AutoInfo/war/WEB-INF/lib/appengine*.jar
-AutoInfo/war/WEB-INF/lib/datanucleus*.jar
-AutoInfo/war/WEB-INF/lib/geronimo*.jar
-AutoInfo/war/WEB-INF/lib/jdo-api*.jar
-AutoInfo/war/WEB-INF/lib/jsr107cache-1.1.jar
-AutoInfo/war/WEB-INF/lib/transaction-api-1.1.jar
-AutoInfo/war/WEB-INF/lib/asm-4.0.jar
-AutoInfo/war/WEB-INF/lib/jta-1.1.jar
-
-AutoInfo/war/WEB-INF/appengine-generated/
-
 # Python stuff
-
+.DS_Store
 *.pyc
 Carhub/.pydevproject

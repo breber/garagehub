@@ -162,7 +162,9 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
         context["categories"] = datastore.getUserExpenseCategories(user.user_id())
+        #TODO make this query get all user fuel records
         context['userfuelrecords'] = datastore.getFuelRecords(user.user_id(), vehicleId, 30) 
+        context['lastfuelrecord'] = datastore.getFuelRecords(user.user_id(), vehicleId, 1) 
         
         if not vehicleId:
             self.redirect("/")

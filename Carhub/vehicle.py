@@ -82,26 +82,26 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):
         
         context = utils.get_context()
+        user = users.get_current_user()
         
         if not vehicleId:
             path = os.path.join(os.path.dirname(__file__), 'templates/garage.html')
             self.response.out.write(template.render(path, context))
-        
-        user = users.get_current_user()
-        context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
-        context["categories"] = datastore.getMaintenanceCategories(user.user_id())
-        
-        maintRecords = datastore.getMaintenanceRecords(users.get_current_user().user_id(), 
-                                                                  vehicleId)
-        
-        if len(maintRecords) > 0:
-            context["maintRecords"] = maintRecords
             
+        categories = datastore.getMaintenanceCategories(user.user_id())
+        if len(categories) > 0:
+            context["categories"] = categories
         
         if pageName == "add":
             path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
         else:
             path = os.path.join(os.path.dirname(__file__), 'templates/maintenance.html')
+        
+            maintRecords = datastore.getMaintenanceRecords(users.get_current_user().user_id(), 
+                                                                      vehicleId)
+        
+            if len(maintRecords) > 0:
+                context["maintRecords"] = maintRecords
             
         self.response.out.write(template.render(path, context))   
     

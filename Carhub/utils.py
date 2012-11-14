@@ -18,8 +18,7 @@ def get_context(list_vehicles=True):
         context['user'] = userobj
         
         if list_vehicles:
-            userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == user.user_id())
-            userVehicles = ndb.get_multi(userVehiclesQuery.fetch(keys_only=True))
+            userVehicles = datastore.getUserVehicleList(user.user_id())
             
             if len(userVehicles) > 0:
                 context['uservehicles'] = sorted(userVehicles, key=lambda UserVehicle:UserVehicle.name())

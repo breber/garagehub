@@ -68,6 +68,8 @@ class Notification(ndb.Model):
     mileBased = ndb.BooleanProperty()
     date = ndb.DateProperty()
     mileage = ndb.IntegerProperty()
+    notifyDaysBefore = ndb.IntegerProperty()
+    notifyMilesBefore = ndb.IntegerProperty()
 
     def name(self):
         return "%s %s" % (self.vehicleName, self.category)

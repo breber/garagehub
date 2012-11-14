@@ -28,8 +28,27 @@ class RawVehicleHandler(webapp2.RequestHandler):
         else:
             yearList = datastore.getListOfYears(make, model)
             self.response.out.write(json.dumps(yearList))
+            
+class NotificationHandler(webapp2.RequestHandler):
+    def get(self, pageName):
+        context = utils.get_context()
+        user = users.get_current_user()
+        
+        if pageName == "add":
+            path = os.path.join(os.path.dirname(__file__), 'templates/addnotification.html')
+            userVehicles = datastore.getUserVehicleList(user.user_id())
+            if len(userVehicles) > 0:
+                context["vehicles"] = userVehicles
+            userCategories = datastore.getMaintenanceCategories(user.user_id())
+            if len(userCategories) > 0:
+                context["categories"] = userCategories
+        else:
+            path = os.path.join(os.path.dirname(__file__), 'templates/notifications.html')
+
+        self.response.out.write(template.render(path, context))
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/notifications/?(.+?)?', NotificationHandler),
     ('/cars/raw/([^/]+)?/?(.+?)?', RawVehicleHandler)
 ], debug=True)

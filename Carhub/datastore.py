@@ -23,6 +23,19 @@ def getUserVehicle(userId, vehicleId):
         return car
     else:
         return None
+    
+def getUserVehicleList(userId):
+    """Gets a list of vehicles for the given user
+    
+    Args: 
+        userId - The user ID
+    
+    Returns
+        The list of user's vehicles
+    """
+    
+    userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == userId)
+    return ndb.get_multi(userVehiclesQuery.fetch(keys_only=True))
 
 def getBaseExpenseRecords(userId, vehicleId, day_range=30):
     """Gets the BaseExpense for the given vehicle ID

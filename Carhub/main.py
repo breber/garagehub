@@ -43,9 +43,16 @@ class NotificationHandler(webapp2.RequestHandler):
             if len(userCategories) > 0:
                 context["categories"] = userCategories
         else:
+            notifications = datastore.getNotifications(user.user_id())
+            if len(notifications) > 0:
+                context["notifications"] = notifications
             path = os.path.join(os.path.dirname(__file__), 'templates/notifications.html')
 
         self.response.out.write(template.render(path, context))
+        
+    def post(self):
+        context = utils.get_context()
+        user = users.get_current_user()
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),

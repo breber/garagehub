@@ -42,7 +42,7 @@ class FuelRecord(BaseExpense):
     odometerEnd = ndb.IntegerProperty()
     gallons = ndb.FloatProperty()
     costPerGallon = ndb.FloatProperty()
-    fuelGrade = ndb.IntegerProperty()
+    fuelGrade = ndb.StringProperty()
 
 class UserExpenseCategory(ndb.Model):
     owner = ndb.StringProperty()

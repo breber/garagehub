@@ -132,7 +132,11 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
             location = self.request.get("location", "")
             amount = float(self.request.get("amount", None))
             description = self.request.get("description", "")
-            odometer = int(self.request.get("odometer",int(-1)))
+            odometer = self.request.get("odometer",None)
+            if odometer:
+                odometer = int(odometer)
+            else:
+                odometer = -1
             logging.info("Maintenance Info Obtained %s %s %s %s %f %d", datePurchased, category, location, description, amount, odometer)
             
             if datePurchased and amount:
@@ -199,7 +203,11 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             location = self.request.get("location", "")
             amount = float(self.request.get("amount", None))
             description = self.request.get("description", "")
-            odometer = int(self.request.get("odometer". int(-1)))
+            odometer = self.request.get("odometer",None)
+            if odometer:
+                odometer = int(odometer)
+            else:
+                odometer = -1
             costPerGallon = float(self.request.get("pricepergallons", None))
             fuelGrade = self.request.get("grade")
             
@@ -229,7 +237,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
                     record.odometerStart = lastFuelRecord.odometerEnd
                 else:
                     #TODO don't know how to handle this
-                    record.odometerStart = int(-1)
+                    record.odometerStart = -1
                     
                 record.gallons = gallons
                 record.costPerGallon = costPerGallon

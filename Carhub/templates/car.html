@@ -2,13 +2,14 @@
 {% block pagecontent %}
 
 <div style="vertical-align: middle;">
-<h2 style="float: none; display: inline; ">{{ car.name }}</h2>
-<div style="float: right; display: inline-block; padding: 5px;">
-<form action="/vehicle/{{ car.key.id }}/delete" method="post" >
-  <input type="submit" class="btn btn-danger" value="Delete"></input>
-  <a href="#editCar" role="button" class="btn btn-primary" data-toggle="modal">Edit Vehicle</a>
-</form>
-</div>
+	<h2 style="float: none; display: inline;">{{ car.name }}</h2>
+	<div style="float: right; display: inline-block; padding: 5px;">
+		<form action="/vehicle/{{ car.key.id }}/delete" method="post">
+			<input type="submit" class="btn btn-danger" value="Delete"></input> <a
+				href="#editCar" role="button" class="btn btn-primary"
+				data-toggle="modal">Edit Vehicle</a>
+		</form>
+	</div>
 </div>
 
 

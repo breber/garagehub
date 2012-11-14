@@ -9,7 +9,14 @@
     <p>You don't have any recent expenses recorded.</p>
     <p>Record some <a href="/vehicle/{{ car.key.id }}/expenses/add">here</a>!</p>
   </div>
-  <div id="charts">
+  <div id="charts" class="hidden">
+    <div class="btn-group" data-toggle="buttons-radio">
+      <button class="btn range" id="7">1 W</button>
+      <button class="btn range" id="30">1 M</button>
+      <button class="btn range active" id="90">3 M</button>
+      <button class="btn range" id="180">6 M</button>
+      <button class="btn range" id="365">1 Yr</button>
+    </div>
     <div id="fuel_chart_div"></div>
     <div id="category_chart_div"></div>
   </div>

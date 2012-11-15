@@ -1,0 +1,53 @@
+{% extends 'base_vehicle.html' %} 
+{% block pagecontent %}
+
+<h2>Notifications</h2>
+
+{% if notifications %}
+
+<table class="table table-striped table-bordered table-hover">
+	<thead>
+		<tr>
+			<th>Vehicle</th>
+			<th>Category</th>
+			<th>Frequency</th>
+			<th>Next Deadline</th>
+		</tr>
+	</thead>
+	{% for notif in notifications %}
+	<tr>
+		<td>{{ notif.vehicle }}</td>
+		<td>{{ notif.category }}</td>
+		<td>
+		{% if notif.recurring %}
+			{% if notif.dateBased %}
+			<span>Every {{ notif.recurringMonths }} Months</span>
+				{% if notif.mileBased %}
+				<span> or </span>
+				{% endif %}
+			{% endif %}
+			{% if notif.mileBased %}
+			<span>Every {{ notif.recurringMiles }} Miles</span>
+			{% endif %}
+		{% else %}
+			One-Time
+		{% endif %}
+		</td>
+		<td>
+		{% if notif.dateBased %}
+		<span>{{ notif.date }}</span>
+			{% if notif.mileBased %}
+			<span> or </span>
+			{% endif %}
+		{% endif %}
+		{% if notif.mileBased %}
+		<span>At {{ notif.mileage }} Miles</span>
+		{% endif %}
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+
+{% endif %}
+{% endblock %}
+

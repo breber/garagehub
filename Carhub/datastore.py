@@ -261,18 +261,18 @@ def getActiveDateNotifications(userId):
         A list of date notifications to display
     """
     
-    query = models.Notification().query(models.Notification.owner == userId)
-    results = ndb.get_multi(query.fetch(keys_only=True))
+    results = getNotifications(userId)
     
     toRet = []
     
     for r in results:
-        if r.dateBased:
-            daysNotice = datetime.timedelta(days=r.notifyDaysBefore)
-            deltaRemaining = r.date - datetime.date
-            daysRemaining = datetime.timedelta(deltaRemaining).days
-            if daysRemaining <= daysNotice:
-                toRet.append(r)
+        if r.dateLastSeen != datetime.date:
+            if r.dateBased:
+                daysNotice = datetime.timedelta(days=r.notifyDaysBefore)
+                deltaRemaining = r.date - datetime.date
+                daysRemaining = datetime.timedelta(deltaRemaining).days
+                if daysRemaining <= daysNotice:
+                    toRet.append(r)
                 
     return toRet
 
@@ -286,29 +286,47 @@ def getActiveMileageNotifications(userId):
         A list of mileage notifications to display
     """
     
-    query = models.Notification().query(models.Notification.owner == userId)
-    results = ndb.get_multi(query.fetch(keys_only=True))
+    results = getNotifications(userId)
     
     toRet = []
     
     for r in results:
-        if r.mileBased:
-            categoryQuery = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == userId,
-                                                             models.MaintenanceRecord.vehicle == r.vehicle,
-                                                             models.MaintenanceRecord.category == r.category).order(-models.MaintenanceRecord.date)
-            lastMaintRecord = categoryQuery.get()
-            lastMaintMileage = lastMaintRecord.odometer
-            
-            mileageQuery = models.FuelRecord().query(models.FuelRecord.owner == userId,
-                                                     models.FuelRecord.vehicle == r.vehicle).order(-models.FuelRecord.odometerEnd)
-            lastFuelRecord = mileageQuery.get()
-            lastFuelMileage = lastFuelRecord.endOdometer
-            
-            maxmileage = lastMaintMileage
-            if lastFuelMileage > lastMaintMileage:
-                maxmileage = lastFuelMileage
-                
-            if (r.mileage - maxmileage) <= r.notifyMilesBefore:
-                toRet.append(r)
+        if r.dateLastSeen != datetime.date:
+            if r.mileBased:
+                maxmileage = getLastRecordedMileage(userId, r.vehicle)
+                if (r.mileage - maxmileage) <= r.notifyMilesBefore:
+                    toRet.append(r)
                 
     return toRet
+
+def getLastRecordedMileage(userId, vehicleId):
+    """Gets the user's last recorded mileage for specified vehicle
+    
+    Args:
+        userId - The user's ID
+        vehicleId - The vehicle's mileage we are querying
+    
+    Returns
+        The last recorded mileage
+    """
+    
+    lastMaintMileage = 0
+    lastFuelMileage = 0
+
+    maintRecordQuery = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == userId, 
+                                                        models.MaintenanceRecord.vehicle == r.vehicle).order(-models.MaintenanceRecord.odometer)
+    lastMaintRecord = maintRecordQuery.get()
+    if lastMaintRecord:
+        lastMaintMileage = lastMaintRecord.odometer
+    
+    mileageQuery = models.FuelRecord().query(models.FuelRecord.owner == userId,
+                                             models.FuelRecord.vehicle == r.vehicle).order(-models.FuelRecord.odometerEnd)
+    lastFuelRecord = mileageQuery.get()
+    if lastFuelRecord:
+        lastFuelMileage = lastFuelRecord.endOdometer
+    
+    maxmileage = lastMaintMileage
+    if lastFuelMileage > lastMaintMileage:
+        maxmileage = lastFuelMileage
+                
+    return maxmileage

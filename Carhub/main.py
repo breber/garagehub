@@ -53,6 +53,8 @@ class NotificationHandler(webapp2.RequestHandler):
     def post(self):
         context = utils.get_context()
         user = users.get_current_user()
+        
+        
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),

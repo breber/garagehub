@@ -1,0 +1,44 @@
+{% extends 'base_vehicle.html' %} 
+{% block pagecontent %}
+
+<h2>Add Notification</h2>
+
+<form action="add" method="post" class="form-horizontal">
+	<div class="control-group">
+		<label class="control-label" for="selectVehicle">Vehicle</label>
+		<div class="controls">
+			<select id="selectVehicle" name="selectVehicle">
+				{% if vehicles %}
+					{% for v in vehicles %}
+						<option value="{{ v.key.id }}">{{ v.name }}</option>
+					{% endfor %}
+				{% endif %}
+			</select>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label" for="selectCategory">Category</label>
+		<div class="controls">
+			<select id="selectCategory" name="selectCategory">
+				{% if categories %}
+					{% for c in categories %}
+						<option value="{{ c.category }}">{{ c.name }}</option>
+					{% endfor %}
+				{% endif %}
+			</select>
+		</div>
+	</div>
+	<div class="control-group">
+		<label class="control-label">Frequency</label>
+		<div class="controls">
+			<label class="radio inline">
+				<input type="radio" name="frequencyRadio" value="false"> One-Time
+			</label>
+			<label class="radio inline">
+				<input type="radio" name="frequencyRadio" value="true"> Recurring
+			</label>
+		</div>
+	</div>
+</form>
+
+{% endblock %}

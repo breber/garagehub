@@ -284,9 +284,7 @@ class VehicleHandler(webapp2.RequestHandler):
         # the vehicle ID and show that vehicle's page
         else:
             context["car"] = datastore.getUserVehicle(currentUserId, vehicleId)
-            latestFuel = datastore.getNFuelRecords(currentUserId, vehicleId, 1)
-            if latestFuel and len(latestFuel) > 0:
-                context["fuel"] = latestFuel[0]
+            context["latestMilage"] = datastore.getLastRecordedMileage(currentUserId, long(vehicleId))
             
             # TODO: add total expense to the output
             

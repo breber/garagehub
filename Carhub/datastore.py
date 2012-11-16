@@ -350,7 +350,7 @@ def getLastRecordedMileage(userId, vehicleId):
     mileageQuery = mileageQuery.order(-models.FuelRecord.odometerEnd)
     lastFuelRecord = mileageQuery.get()
     if lastFuelRecord:
-        lastFuelMileage = lastFuelRecord.endOdometer
+        lastFuelMileage = lastFuelRecord.odometerEnd
     
     maxmileage = lastMaintMileage
     if lastFuelMileage > lastMaintMileage:

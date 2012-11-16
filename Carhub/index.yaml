@@ -16,28 +16,22 @@ indexes:
   - name: vehicle
   - name: date
 
-- kind: BaseExpense
+- kind: FuelRecord
   properties:
   - name: owner
   - name: vehicle
   - name: date
+
+- kind: FuelRecord
+  properties:
+  - name: owner
+  - name: vehicle
+  - name: odometerEnd
     direction: desc
 
-- kind: FuelRecord
+- kind: MaintenanceRecord
   properties:
   - name: owner
-  - name: vehicle
-  - name: date
-
-- kind: FuelRecord
-  properties:
-  - name: owner
-  - name: vehicle
-  - name: date
-    direction: desc
-
-- kind: FuelRecord
-  properties:
   - name: vehicle
   - name: date
 
@@ -45,4 +39,5 @@ indexes:
   properties:
   - name: owner
   - name: vehicle
-  - name: date
+  - name: odometer
+    direction: desc

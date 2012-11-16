@@ -18,7 +18,7 @@
   <thead>
 	  <tr>
 	    <th>Date</th>
-	    <th># Gallons</th>
+	    <th>MPG</th>
 	    <th>Total Price</th>
 	    <th>$ / Gallon</th>
 	    <th>Location</th>
@@ -30,6 +30,11 @@
 	<tr>
 		<td>{{ e.date }}</td>
 		<td>{{ e.gallons|stringformat:".2f" }}</td>
+		{% if e.odometerEnd != -1 and e.odometerStart != -1 and e.gallons > 0 and e.odometerEnd >= e.odometerStart %}
+		  <td>{{ e.mpg|stringformat:".2f" }} </td>
+		{% else %}
+		  <td>N/A</td>
+		{% endif %}
 		<td>{{ e.amount|stringformat:".2f" }}</td>
 		<td>{{ e.costPerGallon|stringformat:".2f" }}</td>
 		{% if e.location == "" %}

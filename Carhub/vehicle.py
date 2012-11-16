@@ -162,8 +162,9 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
         context["categories"] = datastore.getUserExpenseCategories(user.user_id())
         context['userfuelrecords'] = datastore.getFuelRecords(user.user_id(), vehicleId, None)
-        # TODO: no need to query again, since we already got all the fuel records previously
-        context['lastfuelrecord'] = datastore.getFuelRecords(user.user_id(), vehicleId, 1)
+        latestFuel = datastore.getNFuelRecords(user.user_id(), vehicleId, 1)
+        if latestFuel and len(latestFuel) > 0:
+            context["lastfuelrecord"] = latestFuel[0]
         
         if not vehicleId:
             self.redirect("/")
@@ -224,25 +225,28 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
                 record.amount = amount
                 #TODO: this is the description for all fuel records
                 record.description = "Filled up with gas"
+                record.gallons = gallons
+                record.costPerGallon = costPerGallon
+                record.fuelGrade = fuelGrade 
                 record.odometerEnd = odometer
                 
                 lastFuelRecord = 0
                 # find the previous gas record and grab the odometer reading
-                for fuelRecord in  datastore.getFuelRecords(currentUser.user_id(), vehicleId, 30):
-                    if not lastFuelRecord:
-                        lastFuelRecord = fuelRecord
-                    elif(lastFuelRecord.date < FuelRecord.date):
-                        lastFuelRecord = fuelRecord
-                
-                if lastFuelRecord:
+                latestFuel = datastore.getNFuelRecords(currentUser.user_id(), vehicleId, 1)
+                if latestFuel and len(latestFuel) > 0:
+                    lastFuelRecord = latestFuel[0]
                     record.odometerStart = lastFuelRecord.odometerEnd
+                    
                 else:
                     #TODO: don't know how to handle this
                     record.odometerStart = -1
+                
+                if record.odometerEnd != -1 and record.odometerStart != -1:
+                    record.mpg = (record.odometerEnd - record.odometerEnd)/record.gallons
+                else:
+                    record.mpg = 0;
                     
-                record.gallons = gallons
-                record.costPerGallon = costPerGallon
-                record.fuelGrade = fuelGrade                
+                             
                 
                 record.owner = currentUser.user_id()
                 record.vehicle = long(vehicleId)

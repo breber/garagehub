@@ -38,6 +38,7 @@ class MaintenanceRecord(BaseExpense):
     odometer = ndb.IntegerProperty()
 
 class FuelRecord(BaseExpense):
+    mpg = ndb.FloatProperty()
     odometerStart = ndb.IntegerProperty()
     odometerEnd = ndb.IntegerProperty()
     gallons = ndb.FloatProperty()

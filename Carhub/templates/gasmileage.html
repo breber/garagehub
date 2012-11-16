@@ -116,7 +116,7 @@
 <script>
 
 $(document).ready(function() {
-	$('#gasmileagetable').dataTable( {
+	var dTable = $('#gasmileagetable').dataTable( {
 		"sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
 		"bPaginate": false,
         "bLengthChange": false,
@@ -126,7 +126,6 @@ $(document).ready(function() {
         "bAutoWidth": false
 	} );
 	
-	$('#gasmileagetable').fnSort( [ [0,'asc'] );
 });
 
 </script>

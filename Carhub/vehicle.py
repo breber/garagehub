@@ -18,6 +18,12 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
         context["categories"] = datastore.getUserExpenseCategories(user.user_id())
         context['userexpenses'] = datastore.getBaseExpenseRecords(user.user_id(), vehicleId, 30) 
         
+        expenseTotal = 0;
+        for expense in  context['userexpenses']:
+            expenseTotal += expense.amount
+        
+        context['expensetotal'] = expenseTotal
+        
         if not vehicleId:
             self.redirect("/")
         else:

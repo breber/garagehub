@@ -29,7 +29,6 @@
     {% for e in userfuelrecords %}
 	<tr>
 		<td>{{ e.date }}</td>
-		<td>{{ e.gallons|stringformat:".2f" }}</td>
 		{% if e.odometerEnd != -1 and e.odometerStart != -1 and e.gallons > 0 and e.odometerEnd >= e.odometerStart %}
 		  <td>{{ e.mpg|stringformat:".2f" }} </td>
 		{% else %}
@@ -126,6 +125,8 @@ $(document).ready(function() {
         "bAutoWidth": false
 	} );
 	
+	// sort by date, most recent first
+	dTable.fnSort( [ [0,'desc'] ]  );
 });
 
 </script>

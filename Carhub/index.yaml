@@ -16,6 +16,13 @@ indexes:
   - name: vehicle
   - name: date
 
+- kind: BaseExpense
+  properties:
+  - name: owner
+  - name: vehicle
+  - name: date
+    direction: desc
+
 - kind: FuelRecord
   properties:
   - name: owner

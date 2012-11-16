@@ -54,7 +54,7 @@ def getBaseExpenseRecords(userId, vehicleId, day_range=30):
     query = models.BaseExpense().query(models.BaseExpense.owner == userId,
                                        models.BaseExpense.vehicle == long(vehicleId),
                                        models.BaseExpense.date >= date)
-    query = query.order(-models.BaseExpense.date)
+    query = query.order(models.BaseExpense.date)
     return ndb.get_multi(query.fetch(keys_only=True))
 
 def getFuelRecords(userId, vehicleId, day_range=30):
@@ -78,7 +78,7 @@ def getFuelRecords(userId, vehicleId, day_range=30):
         query = models.FuelRecord().query(models.FuelRecord.owner == userId,
                                           models.FuelRecord.vehicle == long(vehicleId))
 
-    query = query.order(-models.FuelRecord.date)
+    query = query.order(models.FuelRecord.date)
     return ndb.get_multi(query.fetch(keys_only=True))
 
 def getNFuelRecords(userId, vehicleId, numberToFetch=10):
@@ -95,7 +95,7 @@ def getNFuelRecords(userId, vehicleId, numberToFetch=10):
     
     query = models.FuelRecord().query(models.FuelRecord.owner == userId,
                                       models.FuelRecord.vehicle == long(vehicleId))
-    query = query.order(-models.FuelRecord.date)
+    query = query.order(models.FuelRecord.date)
     return ndb.get_multi(query.fetch(numberToFetch, keys_only=True))
 
 def getMaintenanceRecords(userId, vehicleId, day_range=30):

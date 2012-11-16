@@ -38,7 +38,7 @@ def getUserVehicleList(userId):
     return ndb.get_multi(userVehiclesQuery.fetch(keys_only=True))
 
 
-def getBaseExpenseRecords(userId, vehicleId, day_range=30):
+def getBaseExpenseRecords(userId, vehicleId, day_range=30, ascending=True):
     """Gets the BaseExpense for the given vehicle ID
     
     Args: 
@@ -49,20 +49,28 @@ def getBaseExpenseRecords(userId, vehicleId, day_range=30):
         The list of BaseExpense
     """
     
-    delta = datetime.timedelta(days=day_range)
-    date = datetime.datetime.now() - delta
-    query = models.BaseExpense().query(models.BaseExpense.owner == userId,
-                                       models.BaseExpense.vehicle == long(vehicleId),
-                                       models.BaseExpense.date >= date)
-    query = query.order(models.BaseExpense.date)
+    if day_range:
+        delta = datetime.timedelta(days=day_range)
+        date = datetime.datetime.now() - delta
+        query = models.BaseExpense().query(models.BaseExpense.owner == userId,
+                                           models.BaseExpense.vehicle == long(vehicleId),
+                                           models.BaseExpense.date >= date)
+    else:
+        query = models.BaseExpense().query(models.BaseExpense.owner == userId,
+                                           models.BaseExpense.vehicle == long(vehicleId))
+    
+    if ascending:
+        query = query.order(models.BaseExpense.date)
+    else:
+        query = query.order(-models.BaseExpense.date)
     return ndb.get_multi(query.fetch(keys_only=True))
 
-def getFuelRecords(userId, vehicleId, day_range=30):
+def getFuelRecords(userId, vehicleId, day_range=30, ascending=True):
     """Gets the FuelRecords for the given vehicle ID
     
     Args: 
         vehicleId - The vehicle ID
-        day_range - The time range
+        day_range - The time range (None for all)
     
     Returns
         The list of FuelRecords
@@ -78,10 +86,14 @@ def getFuelRecords(userId, vehicleId, day_range=30):
         query = models.FuelRecord().query(models.FuelRecord.owner == userId,
                                           models.FuelRecord.vehicle == long(vehicleId))
 
-    query = query.order(models.FuelRecord.date)
+    if ascending:
+        query = query.order(models.FuelRecord.date)
+    else:
+        query = query.order(-models.FuelRecord.date)
+
     return ndb.get_multi(query.fetch(keys_only=True))
 
-def getNFuelRecords(userId, vehicleId, numberToFetch=10):
+def getNFuelRecords(userId, vehicleId, numberToFetch=10, ascending=True):
     """Gets the FuelRecords for the given vehicle ID
     
     Args: 
@@ -95,10 +107,14 @@ def getNFuelRecords(userId, vehicleId, numberToFetch=10):
     
     query = models.FuelRecord().query(models.FuelRecord.owner == userId,
                                       models.FuelRecord.vehicle == long(vehicleId))
-    query = query.order(models.FuelRecord.date)
+    
+    if ascending:
+        query = query.order(models.FuelRecord.date)
+    else:
+        query = query.order(-models.FuelRecord.date)
     return ndb.get_multi(query.fetch(numberToFetch, keys_only=True))
 
-def getMaintenanceRecords(userId, vehicleId, day_range=30):
+def getMaintenanceRecords(userId, vehicleId, day_range=30, ascending=True):
     """Gets the MaintenanceRecords for the given vehicle ID
     
     Args: 
@@ -109,12 +125,21 @@ def getMaintenanceRecords(userId, vehicleId, day_range=30):
         The list of MaintenanceRecords
     """
     
-    delta = datetime.timedelta(days=day_range)
-    date = datetime.datetime.now() - delta
-    query = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == userId,
-                                             models.MaintenanceRecord.vehicle == long(vehicleId),
-                                             models.MaintenanceRecord.date >= date)
-    query = query.order(models.MaintenanceRecord.date)
+    if day_range:
+        delta = datetime.timedelta(days=day_range)
+        date = datetime.datetime.now() - delta
+        query = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == userId,
+                                                 models.MaintenanceRecord.vehicle == long(vehicleId),
+                                                 models.MaintenanceRecord.date >= date)
+    else:
+        query = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == userId,
+                                                 models.MaintenanceRecord.vehicle == long(vehicleId))
+    
+    if ascending:
+        query = query.order(models.MaintenanceRecord.date)
+    else:
+        query = query.order(-models.MaintenanceRecord.date)
+    
     return ndb.get_multi(query.fetch(keys_only=True))
 
 def getMaintenanceCategories(userId):

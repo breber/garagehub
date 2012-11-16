@@ -314,13 +314,15 @@ def getLastRecordedMileage(userId, vehicleId):
     lastFuelMileage = 0
 
     maintRecordQuery = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == userId, 
-                                                        models.MaintenanceRecord.vehicle == r.vehicle).order(-models.MaintenanceRecord.odometer)
+                                                        models.MaintenanceRecord.vehicle == vehicleId)
+    maintRecordQuery = maintRecordQuery.order(-models.MaintenanceRecord.odometer)
     lastMaintRecord = maintRecordQuery.get()
     if lastMaintRecord:
         lastMaintMileage = lastMaintRecord.odometer
     
     mileageQuery = models.FuelRecord().query(models.FuelRecord.owner == userId,
-                                             models.FuelRecord.vehicle == r.vehicle).order(-models.FuelRecord.odometerEnd)
+                                             models.FuelRecord.vehicle == vehicleId)
+    mileageQuery = mileageQuery.order(-models.FuelRecord.odometerEnd)
     lastFuelRecord = mileageQuery.get()
     if lastFuelRecord:
         lastFuelMileage = lastFuelRecord.endOdometer

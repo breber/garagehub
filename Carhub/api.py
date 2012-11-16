@@ -3,7 +3,6 @@ from google.appengine.api import users
 import datastore
 import json
 import webapp2
-import logging
 
 class ExpenseFuelHandler(webapp2.RequestHandler):
     def get(self, vehicleId, day_range):

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-from google.appengine.api import urlfetch
+from google.appengine.api import urlfetch, users
+from google.appengine.ext import ndb
 import datetime
 import json
 import models
@@ -46,7 +47,17 @@ class FetchCarsBrian(webapp2.RequestHandler):
                         toAdd.odometerEnd = prevOdometer
                         toAdd.put()
                         
+class UpdateFuelBrian(webapp2.RequestHandler):
+    def get(self):
+        query = models.FuelRecord.query(models.FuelRecord.owner == users.get_current_user().user_id())
+        results = ndb.get_multi(query.fetch(keys_only=True))
+        
+        for f in results:
+            if f.gallons != 0:
+                f.mpg = (f.odometerEnd - f.odometerStart) / f.gallons
+                f.put()
 
 app = webapp2.WSGIApplication([
     ('/brian/fetch', FetchCarsBrian),
+    ('/brian/update', UpdateFuelBrian),
 ], debug=True)

@@ -29,6 +29,7 @@ class ExpenseFuelHandler(webapp2.RequestHandler):
                 obj["gallons"] = record.gallons
                 obj["costPerGallon"] = record.costPerGallon
                 obj["fuelGrade"] = record.fuelGrade
+                obj["mpg"] = record.mpg
                 toRet.append(obj)
             
             self.response.out.write(json.dumps(toRet))

@@ -17,6 +17,11 @@
     <input type="text" class="validate[required,custom[date],past[now],future[1920-01-01]]"  name="datePurchased" id="datePurchased">
   </div>
   
+  <div class="generic maintenance gasmileage hidden">
+    <p>Reciept Picture</p>
+    <input type="file" class="chooseImagePicker" name="myRecieptPhoto">
+  </div>
+  
   <div class="generic maintenance hidden" >
   
   <div class="tabbable well well-small">
@@ -34,7 +39,7 @@
 	      </select>
         </div>
         <div class="tab-pane" id="lB">
-		  <input type="text" class="btn-addcategory" name="newCategory" id="newCategory">
+		  <input type="text" class="btn-addcategory" name="newCategory" id="newCategory" onkeypress="newCategoryKeyPress(event);" >
           <button type="button" class="btn btn-inverse btn-addcategory" id="categoryButton">+</button>
         </div>
       </div>

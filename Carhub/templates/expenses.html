@@ -38,7 +38,7 @@
 	</thead>
 	{% for e in userexpenses %}
 	<tr>
-		<td>{{ e.date }}</td>
+		<td>{{ e.date|date:"Y-m-d" }}</td>
 		<td>{{ e.category }}</td>
 		<td>{{ e.location }}</td>
 		<td>{{ e.description }}</td>

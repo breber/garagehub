@@ -24,13 +24,14 @@
 	    <th>Total Price</th>
 	    <th>$ / Gallon</th>
 	    <th>Location</th>
-	    <th>Odometer</th>
+	    <th>Fuel Grade</th>
+	    <th>Odometer Range</th>
 	  </tr>
   </thead>
 
     {% for e in userfuelrecords %}
 	<tr>
-		<td>{{ e.date }}</td>
+		<td>{{ e.date|date:"Y-m-d" }}</td>
 		{% if e.odometerEnd != -1 and e.odometerStart != -1 and e.gallons > 0 and e.odometerEnd >= e.odometerStart %}
 		  <td>{{ e.mpg|stringformat:".2f" }} </td>
 		{% else %}
@@ -43,11 +44,17 @@
 		{% else %}
 		  <td>{{ e.location }}</td>
 		{% endif %}
+		<td>{{ e.fuelGrade }}</td>
 		
-		{% if e.odometerEnd == -1 %}
-		  <td>N/A</td>
+		{% if e.odometerStart == -1 %}
+		  <td>N/A - 
 		{% else %}
-		  <td>{{ e.odometerEnd }}</td>
+		  <td>{{ e.odometerStart }} -
+		{% endif %}
+		{% if e.odometerEnd == -1 %}
+		  N/A</td>
+		{% else %}
+		  {{ e.odometerEnd }}</td>
 		{% endif %}
 	</tr>
 	{% endfor %}

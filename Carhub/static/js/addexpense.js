@@ -39,7 +39,7 @@ $(document).ready(function() {
 			} 
 			$('#category')[0].options[categoriesLength]=new Option($('#newCategory').val(), $('#newCategory').val(), false, true);
 		
-			prepareNewCategory();
+			prepareEmptyTextInput( $('#newCategory'), "Enter New Category");
 			// switch to category tab
 			$('#categorytab a:first').tab('show'); 
 		} else {
@@ -66,6 +66,15 @@ function manualOdometerClick() {
 	$('#odometertab li:eq(1) a').tab('show');
 }
 
+function newCategoryKeyPress(e)
+{
+    // look for window.event in case event isn't passed in
+    if (typeof e == 'undefined' && window.event) { e = window.event; }
+    if (e.keyCode == 13)
+    {
+        document.getElementById('categoryButton').click();
+    }
+}
 
 
 

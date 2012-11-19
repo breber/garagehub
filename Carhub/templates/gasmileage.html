@@ -2,8 +2,8 @@
 
 <h2>Gas Mileage Tracker</h2>
 
-<h3>MPG: 55.8</h3>
-<h3>Miles: 100,234</h3>
+<h3>Average MPG: 55.8</h3>
+<h3>Miles Recorded: 100,234</h3>
 
 <div class="btn-group" data-toggle="buttons-radio">
   <button type="button" class="btn">Most Recent Fuel Up</button>
@@ -13,6 +13,8 @@
   <button type="button" class="btn">All</button>
   <button type="button" class="btn">Custom</button>
 </div>
+
+<a class="btn btn-primary pull-right" href="/vehicle/{{ car.key.id }}/gasmileage/add">Add Fuel Transaction</a>
 
 <table class="table table-striped table-bordered" id="gasmileagetable">
   <thead>
@@ -52,61 +54,6 @@
 
 </table>
 
-
-<br />
-<a class="btn btn-primary pull-right" href="/vehicle/{{ car.key.id }}/gasmileage/add">Add Fuel Transaction</a>
-<br />
-<br />
-
-<table class="table table-striped table-bordered">
-  <thead>
-	  <tr>
-	    <th>Date</th>
-	    <th># Gallons</th>
-	    <th>Total Price</th>
-	    <th>$ / Gallon</th>
-	    <th>Location</th>
-	    <th>Odometer</th>
-	  </tr>
-  </thead>
-
-  <tr>
-    <td>2012-09-12 05:07:44</td>
-    <td>22.13</td>
-    <td>$82.99</td>
-    <td>$3.75</td>
-    <td>Kum N' Go</td>
-    <td>100,234</td>
-  </tr>
-
-  <tr>
-    <td>2012-09-12 05:07:44</td>
-    <td>15.32</td>
-    <td>$50.50</td>
-    <td>$3.62</td>
-    <td>Amaco</td>
-    <td>99,823</td>
-  </tr>
-
-  <tr>
-    <td>2012-09-12 05:07:44</td>
-    <td>10.23</td>
-    <td>$20.44</td>
-    <td>$3.39</td>
-    <td>BP</td>
-    <td>99,389</td>
-  </tr>
-
-  <tr>
-    <td>2012-09-12 05:07:44</td>
-    <td>2.02</td>
-    <td>$6.05</td>
-    <td>$3.01</td>
-    <td>Philips 66</td>
-    <td>98,978</td>
-  </tr>
-
-</table>
 
 {% endblock %}
 {% block externaljs %}

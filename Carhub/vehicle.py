@@ -165,8 +165,8 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
         context["categories"] = datastore.getUserExpenseCategories(user.user_id())
-        context['userfuelrecords'] = datastore.getFuelRecords(user.user_id(), vehicleId, None)
-        latestFuel = datastore.getNFuelRecords(user.user_id(), vehicleId, 1)
+        context['userfuelrecords'] = datastore.getFuelRecords(user.user_id(), vehicleId, None, False)
+        latestFuel = datastore.getNFuelRecords(user.user_id(), vehicleId, 1, False)
         if latestFuel and len(latestFuel) > 0:
             context["lastfuelrecord"] = latestFuel[0]
         
@@ -182,8 +182,6 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
     
     def post(self, vehicleId, model):
         
-        #TODO: make this accept a Gas Mileage object
-        
         #TODO: handle what to do if the optional fields are not entered.
         currentUser = users.get_current_user()
         
@@ -192,33 +190,45 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         if currentUser:
             dateString = self.request.get("datePurchased", None)
             datePurchased = datetime.datetime.strptime(dateString, "%Y-%m-%d")
-            newCategory = self.request.get("newCategory", None)
-            
-            if newCategory:
-                category = newCategory
-                newCategoryObj = models.UserExpenseCategory()
-                newCategoryObj.owner = currentUser.user_id()
-                newCategoryObj.category = newCategory
-
-                if not newCategoryObj.category in datastore.getUserExpenseCategories(currentUser.user_id()):
-                    newCategoryObj.put()
-
-            else:
-                category = self.request.get("category", "Uncategorized")
 
             location = self.request.get("location", "")
             amount = float(self.request.get("amount", None))
-            description = self.request.get("description", "")
-            odometer = self.request.get("odometer",None)
-            if odometer:
-                odometer = int(odometer)
-            else:
-                odometer = -1
             costPerGallon = float(self.request.get("pricepergallons", None))
             fuelGrade = self.request.get("grade")
             
+            # try to get from last fuel record if user wants to, or else try to get it from 
+            #      the manual entry tab if it is not entered then assume it is -1 which means N/A
+            useOdometerLastRecord = self.request.get("sinceLastFuelRecord",False)
+            
+            lastFuelRecord = None
+            if useOdometerLastRecord:
+                # find the previous gas record and grab the odometer reading
+                latestFuel = datastore.getNFuelRecords(currentUser.user_id(), vehicleId, 1)
+                if latestFuel and len(latestFuel) > 0:
+                    lastFuelRecord = latestFuel[0]
+                    odometerStart = lastFuelRecord.odometerEnd
+            if not lastFuelRecord:
+                # try to get from manual odometer start entry
+                odometerStart = self.request.get("odometerStart",None)
+                if odometerStart and odometerStart != "Enter Odometer Start":
+                    odometerStart = int(odometerStart)
+                else:
+                    odometerStart = -1
+            
+            
+            odometerEnd = self.request.get("odometerEnd",None)
+            if odometerEnd:
+                odometerEnd = int(odometerEnd)
+            else:
+                odometerEnd = -1
+            
             gallons = amount / costPerGallon
-            logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
+            if odometerEnd != -1 and odometerStart != -1:
+                mpg = (odometerEnd - odometerStart)/gallons
+            else:
+                mpg = -1;
+                    
+            logging.info("Expense Info Obtained %s %s %d %d %d %d", datePurchased, location, amount, costPerGallon, odometerStart, odometerEnd)
             
             if datePurchased and amount and costPerGallon:
                 record = models.FuelRecord()
@@ -227,31 +237,16 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
                 record.category = "Fuel Record"
                 record.location = location
                 record.amount = amount
-                #TODO: this is the description for all fuel records
+                #TODO: this is the description for all fuel records, move to a constants file
                 record.description = "Filled up with gas"
                 record.gallons = gallons
                 record.costPerGallon = costPerGallon
                 record.fuelGrade = fuelGrade 
-                record.odometerEnd = odometer
+                record.odometerStart = odometerStart
+                record.odometerEnd = odometerEnd
+                record.mpg = mpg
                 
-                lastFuelRecord = 0
-                # find the previous gas record and grab the odometer reading
-                latestFuel = datastore.getNFuelRecords(currentUser.user_id(), vehicleId, 1)
-                if latestFuel and len(latestFuel) > 0:
-                    lastFuelRecord = latestFuel[0]
-                    record.odometerStart = lastFuelRecord.odometerEnd
-                    
-                else:
-                    #TODO: don't know how to handle this
-                    record.odometerStart = -1
-                
-                if record.odometerEnd != -1 and record.odometerStart != -1:
-                    record.mpg = (record.odometerEnd - record.odometerEnd)/record.gallons
-                else:
-                    record.mpg = 0;
-                    
-                             
-                
+                # record ownership
                 record.owner = currentUser.user_id()
                 record.vehicle = long(vehicleId)
                 record.lastmodified = datetime.datetime.now()

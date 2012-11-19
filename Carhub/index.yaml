@@ -33,6 +33,13 @@ indexes:
   properties:
   - name: owner
   - name: vehicle
+  - name: date
+    direction: desc
+
+- kind: FuelRecord
+  properties:
+  - name: owner
+  - name: vehicle
   - name: odometerEnd
     direction: desc
 

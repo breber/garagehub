@@ -18,51 +18,29 @@
   </div>
   
   <div class="generic maintenance hidden" >
-  <p>Category</p>
-  <div>
-    <div class="accordion" id="accordion3">
-      <div class="accordion-group">
-        <div class="accordion-heading">
-          <a class="accordion-toggle" data-toggle="collapse"
-            data-parent="#accordion3" href="#collapseOne">Use Existing Category</a>
+  
+  <div class="tabbable well well-small">
+      <ul id="categorytab" class="nav nav-tabs">
+        <li class="active"><a href="#lA" data-toggle="tab">Category</a></li>
+        <li class=""><a href="#lB" data-toggle="tab">Add New Category</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="lA">
+	      <select id="category" name="category">
+	        <option>Select a Category</option>
+	        {% for category in categories %}
+	        <option>{{ category }}</option>
+	        {% endfor %}
+	      </select>
         </div>
-        <div id="collapseOne" class="accordion-body collapse in">
-          <div class="accordion-inner">
-            <select id="category1" name="category1">
-              <option>Select a Category</option>
-              {% for category in categories %}
-              <option>{{ category }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-      </div>
-      <div class="accordion-group">
-        <div class="accordion-heading">
-          <a class="accordion-toggle" data-toggle="collapse"
-            data-parent="#accordion3" href="#collapseTwo">Use New Category</a>
-        </div>
-        <div id="collapseTwo" class="accordion-body collapse">
-          <div class="accordion-inner">
-            <p>Enter a new category name</p>
-            <input type="text" name="newCategory1" id="newCategory1">
-          </div>
+        <div class="tab-pane" id="lB">
+		  <input type="text" class="btn-addcategory" name="newCategory" id="newCategory">
+          <button type="button" class="btn btn-inverse btn-addcategory" id="categoryButton">+</button>
         </div>
       </div>
     </div>
-  </div>
-  
-    <p>Category</p>
-    <select id="category" name="category">
-      <option>Select a Category</option>
-      {% for category in categories %}
-      <option>{{ category }}</option>
-      {% endfor %}
-    </select>
-    <input type="text" name="newCategory" id="newCategory">
-    <button type="button" class="btn btn-primary" id="categoryButton">Add and Use New Category</button>
-  <br>
   </div> 
+  
   
   <div class="generic maintenance gasmileage hidden">
     <p>Location</p>
@@ -90,12 +68,62 @@
   </div>
     
   <div class="maintenance gasmileage hidden">
-    <p>Odometer Reading</p>
+    <p>Current Odometer Reading</p>
     <input type="text" class="validate[integer, min[0]]" name="odometer">
   </div>
   
   
   <div class="gasmileage hidden">
+   <div class="tabbable well well-small">
+      <ul id="odometertab" class="nav nav-tabs">
+        <li class="active"><a href="#lA" data-toggle="tab">Last Fuel Record</a></li>
+        <li class=""><a href="#lB" data-toggle="tab">Manual Entry</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="lA">
+	      {% if not lastfuelrecord %}
+		  	<input type="checkbox" id="sinceLastFuelRecord"
+		      name="sinceLastFuelRecord"  /> First fuel up since last fuel record? <br />
+		  
+		  {% else %}
+		  <input type="checkbox" id="sinceLastFuelRecord"
+		      name="sinceLastFuelRecord" checked /> First fuel up since last fuel record? <br />
+			<table class="table table-striped table-bordered" id="lastgasmileagetable">
+			  <thead>
+				  <tr>
+				    <th>Date</th>
+				    <th>Total Price</th>
+				    <th>$ / Gallon</th>
+				    <th>Location</th>
+				    <th>Odometer</th>
+				  </tr>
+			  </thead>
+				<tr>
+					<td>{{ lastfuelrecord.date }}</td>
+					<td>{{ lastfuelrecord.amount|stringformat:".2f" }}</td>
+					<td>{{ lastfuelrecord.costPerGallon|stringformat:".2f" }}</td>
+					{% if lastfuelrecord.location == "" %}
+					  <td>N/A</td>
+					{% else %}
+					  <td>{{ lastfuelrecord.location }}</td>
+					{% endif %}
+					
+					{% if lastfuelrecord.odometerEnd == -1 %}
+					  <td>N/A</td>
+					{% else %}
+					  <td>{{ lastfuelrecord.odometerEnd }}</td>
+					{% endif %}
+				</tr>
+			 </table>
+			 {% endif %}
+        </div>
+        <div class="tab-pane" id="lB">
+		  <input type="text" class="btn-addcategory" name="newCategory" id="newCategory">
+          <button type="button" class="btn btn-inverse btn-addcategory" id="categoryButton">+</button>
+        </div>
+      </div>
+    </div>
+  </div> 
   
   {% if not lastfuelrecord %}
   	<input type="checkbox" id="sinceLastFuelRecord"

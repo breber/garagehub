@@ -156,3 +156,10 @@ div.news-articlediv:hover {
   height: 100%;
   overflow: hidden;
 }
+
+/* For addexpense.html */
+.btn-addcategory{
+	margin-bottom: 10px;
+	float: left;
+}
+

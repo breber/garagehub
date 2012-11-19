@@ -1,5 +1,5 @@
 // variable to keep track if we are using a new category or not
-var usingNewCategory = false;
+var categoriesLength = -1;
 
 $(document).ready(function() {
 	// display input fields based on which record is being added
@@ -14,13 +14,8 @@ $(document).ready(function() {
 	// validation engine set up
 	$('#addform').validationEngine();
 	
-	
-	
-	//category stuff
-	$('#collapseTwo').on('hidden', function() {
-		// clears the value so that we know to use the existing category
-		$("#newCategory").val("");
-	});
+	// set up new category tbx to be empty
+	prepareNewCategory();
 	
 	var currentDate = new Date();
 	var prettyDate = (currentDate.getFullYear() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getDate() );
@@ -30,27 +25,41 @@ $(document).ready(function() {
 	});
 	
 	$('#datePurchased').val(prettyDate);
-	
-	// start out with new category field hidden
-	$('#newCategory').hide();
+
 	
 	// make function to toggle between using new category and existing categories 
 	$('#categoryButton').click(function(){
-		usingNewCategory = ! usingNewCategory;
-		if(usingNewCategory){
-			$('#newCategory').show();
-			$('#category').hide();
-			$('#categoryButton').html("Use Existing Category");
+		// hide validation warnings because you are not submitting it
+		$('#addform').validationEngine('hide');
+		
+		if($('#newCategory').val() != "" && $('#newCategory').val() != null && $('#newCategory').val() != "Enter New Category"){
+			if(categoriesLength == -1){
+				categoriesLength = $('#category')[0].options.length;				
+			} 
+			$('#category')[0].options[categoriesLength]=new Option($('#newCategory').val(), $('#newCategory').val(), false, true);
+		
+			prepareNewCategory();
+			// switch to category tab
+			$('#categorytab a:first').tab('show'); 
 		} else {
-			$('#newCategory').hide();
-			$('#newCategory').val("");
-			$('#category').show();
-			$('#categoryButton').html("Add and Use New Category");
+			alert("False");
 		}
 	});
 	
 	
 });
+
+function prepareNewCategory() {
+	$('#newCategory').css("color","gray");
+	$('#newCategory').val("Enter New Category");
+	$('#newCategory').click( newCategoryClick );
+}
+
+function newCategoryClick(){
+	$('#newCategory').val("");
+	$('#newCategory').unbind("click");
+	$('#newCategory').css("color","black");
+}
 
 
 

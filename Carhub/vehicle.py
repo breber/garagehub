@@ -15,7 +15,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
         context["categories"] = datastore.getUserExpenseCategories(user.user_id())
-        context['userexpenses'] = datastore.getBaseExpenseRecords(user.user_id(), vehicleId, 30) 
+        context['userexpenses'] = datastore.getBaseExpenseRecords(user.user_id(), vehicleId, None, False) 
         
         expenseTotal = 0;
         for expense in  context['userexpenses']:
@@ -38,22 +38,21 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
         
         logging.info("entered the Expense post function")
         
+       
         if currentUser:
             dateString = self.request.get("datePurchased", None)
             datePurchased = datetime.datetime.strptime(dateString, "%Y-%m-%d")
             newCategory = self.request.get("newCategory", None)
             
-            if newCategory:
-                category = newCategory
+            # find out if new category has been added
+            userCatgories = datastore.getUserExpenseCategories(currentUser.user_id())
+            category = self.request.get("category", "Uncategorized")
+            if not category in userCatgories:
+                # this is a new category, add it to the database
                 newCategoryObj = models.UserExpenseCategory()
                 newCategoryObj.owner = currentUser.user_id()
-                newCategoryObj.category = newCategory
-
-                if not newCategoryObj.category in datastore.getUserExpenseCategories(currentUser.user_id()):
-                    newCategoryObj.put()
-
-            else:
-                category = self.request.get("category", "Uncategorized")
+                newCategoryObj.category = category
+                newCategoryObj.put()
 
             location = self.request.get("location", "")
             amount = float(self.request.get("amount", None))

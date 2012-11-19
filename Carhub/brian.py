@@ -55,6 +55,9 @@ class UpdateFuelBrian(webapp2.RequestHandler):
         for f in results:
             if f.gallons != 0:
                 f.mpg = (f.odometerEnd - f.odometerStart) / f.gallons
+                f.category = "Fuel Record"
+                f.description = "Filled up with gas"
+                f.fuelGrade = "Regular"
                 f.put()
 
 app = webapp2.WSGIApplication([

@@ -372,7 +372,7 @@ def getTotalCost(userId, vehicleId):
     # TODO: find a better way (more efficient) to calculate this
     totalCost = 0
 
-    baseExpenses = getBaseExpenseRecords(userId, vehicleId)
+    baseExpenses = getBaseExpenseRecords(userId, vehicleId, None)
     fuelRecords = getFuelRecords(userId, vehicleId, None)
     maintRecords = getMaintenanceRecords(userId, vehicleId, None)
 

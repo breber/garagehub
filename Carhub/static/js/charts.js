@@ -58,7 +58,11 @@ function drawFuelChart(content) {
         if (item.odometerStart !== -1) {
             var tmp = [];
             tmp.push(item.date);
-            tmp.push((item.odometerEnd - item.odometerStart) / item.gallons);
+            if (item.mpg !== undefined) {
+                tmp.push(item.mpg);
+            } else {
+                tmp.push((item.odometerEnd - item.odometerStart) / item.gallons);                
+            }
             tmp.push(item.costPerGallon);
 
             arr.push(tmp);

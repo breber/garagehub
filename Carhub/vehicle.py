@@ -203,7 +203,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             lastFuelRecord = None
             if useOdometerLastRecord:
                 # find the previous gas record and grab the odometer reading
-                latestFuel = datastore.getNFuelRecords(currentUser.user_id(), vehicleId, 1)
+                latestFuel = datastore.getNFuelRecords(currentUser.user_id(), vehicleId, 1, False)
                 if latestFuel and len(latestFuel) > 0:
                     lastFuelRecord = latestFuel[0]
                     odometerStart = lastFuelRecord.odometerEnd

@@ -357,3 +357,32 @@ def getLastRecordedMileage(userId, vehicleId):
         maxmileage = lastFuelMileage
                 
     return maxmileage
+
+def getTotalCost(userId, vehicleId):
+    """Gets the total spent on the specified vehicle
+    
+    Args:
+        userId - The user's ID
+        vehicleId - The vehicle's mileage we are querying
+    
+    Returns
+        The total spent on the specified vehicle
+    """
+
+    # TODO: find a better way (more efficient) to calculate this
+    totalCost = 0
+
+    baseExpenses = getBaseExpenseRecords(userId, vehicleId)
+    fuelRecords = getFuelRecords(userId, vehicleId, None)
+    maintRecords = getMaintenanceRecords(userId, vehicleId, None)
+
+    for b in baseExpenses:
+        totalCost += b.amount
+    
+    for f in fuelRecords:
+        totalCost += f.amount
+    
+    for m in maintRecords:
+        totalCost += m.amount
+                
+    return totalCost

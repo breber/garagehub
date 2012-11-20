@@ -279,8 +279,7 @@ class VehicleHandler(webapp2.RequestHandler):
         else:
             context["car"] = datastore.getUserVehicle(currentUserId, vehicleId)
             context["latestMilage"] = datastore.getLastRecordedMileage(currentUserId, long(vehicleId))
-            
-            # TODO: add total expense to the output
+            context["totalCost"] = datastore.getTotalCost(currentUserId, long(vehicleId))
             
             if not context["car"]:
                 self.redirect("/")

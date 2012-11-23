@@ -53,5 +53,12 @@ indexes:
   properties:
   - name: owner
   - name: vehicle
+  - name: date
+    direction: desc
+
+- kind: MaintenanceRecord
+  properties:
+  - name: owner
+  - name: vehicle
   - name: odometer
     direction: desc

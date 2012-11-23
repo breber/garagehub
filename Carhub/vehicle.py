@@ -15,7 +15,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
         context["categories"] = datastore.getUserExpenseCategories(user.user_id())
-        context['userexpenses'] = datastore.getBaseExpenseRecords(user.user_id(), vehicleId, None, False) 
+        context['userexpenses'] = datastore.getAllExpenseRecords(user.user_id(), vehicleId, None, False) 
         
         expenseTotal = 0;
         for expense in  context['userexpenses']:

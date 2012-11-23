@@ -170,6 +170,19 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         if latestFuel and len(latestFuel) > 0:
             context["lastfuelrecord"] = latestFuel[0]
         
+        i = 0
+        mpgTotal = 0
+        milesLogged = 0
+        for fuelRecord in  context['userfuelrecords']:
+            if fuelRecord.mpg > -1:
+                i = i + 1
+                mpgTotal += fuelRecord.mpg
+            if fuelRecord.odometerEnd != -1 and fuelRecord.odometerStart != -1:
+                milesLogged += (fuelRecord.odometerEnd - fuelRecord.odometerStart)
+        
+        context['avgmpg'] = mpgTotal/i
+        context['milestotal'] = milesLogged
+        
         if not vehicleId:
             self.redirect("/")
         else:

@@ -2,8 +2,8 @@
 {% block pagecontent %}
 
 <div style="vertical-align: middle;">
-  <h2 style="float: none; display: inline;">{{ car.name }}</h2>
-  <div style="float: right; display: inline-block; padding: 5px;">
+  <h2 class="car-title">{{ car.name }}</h2>
+  <div class="car-buttons">
     <form action="/vehicle/{{ car.key.id }}/delete" method="post">
       <input type="submit" class="btn btn-danger" value="Delete"></input>
       <a href="#editCar" class="btn btn-primary" data-toggle="modal">Edit Vehicle</a>
@@ -11,8 +11,7 @@
   </div>
 </div>
 
-
-<table id="cartable" class="table" style="table-layout:fixed">
+<table id="cartable" class="table cartable">
   <tr class="hidden"><td></td><td></td></tr>
   <tr>
     <td>Color</td>
@@ -41,7 +40,7 @@
     <div class="modal-body">
       <div>
         <label for="color">Color:</label>
-        <input id="color" type="text" name="color" value="{{ car.color }}" /> 
+        <input id="color" type="text" name="color" value="{% if car.color %}{{ car.color }}{% endif %}" /> 
       </div>
       <div>
         <label for="plates">License Plates:</label>

@@ -98,7 +98,7 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
             else:
                 path = os.path.join(os.path.dirname(__file__), 'templates/maintenance.html')
             
-                maintRecords = datastore.getMaintenanceRecords(user.user_id(), vehicleId)
+                maintRecords = datastore.getMaintenanceRecords(user.user_id(), vehicleId, None)
             
                 if len(maintRecords) > 0:
                     context["maintRecords"] = maintRecords

@@ -2,8 +2,8 @@
 {% block pagecontent %}
 
 <div style="vertical-align: middle;">
-  <h2 class="car-title">{{ car.name }}</h2>
-  <div class="car-buttons">
+  <h2 class="pull-left">{{ car.name }}</h2>
+  <div class="pull-right car-buttons">
     <form action="/vehicle/{{ car.key.id }}/delete" method="post">
       <input type="submit" class="btn btn-danger" value="Delete"></input>
       <a href="#editCar" class="btn btn-primary" data-toggle="modal">Edit Vehicle</a>

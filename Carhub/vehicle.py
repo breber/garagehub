@@ -180,7 +180,11 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             if fuelRecord.odometerEnd != -1 and fuelRecord.odometerStart != -1:
                 milesLogged += (fuelRecord.odometerEnd - fuelRecord.odometerStart)
         
-        context['avgmpg'] = mpgTotal/i
+        if i != 0:
+            context['avgmpg'] = mpgTotal / i
+        else:
+            context['avgmpg'] = 0
+
         context['milestotal'] = milesLogged
         
         if not vehicleId:

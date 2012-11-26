@@ -94,7 +94,8 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 class VehicleBaseExpenseEditorHandler(webapp2.RequestHandler):
     def post(self, vehicleId, model):
-    
+        placeholder = "put something here because error otherwise"
+
 class VehicleMaintenanceHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):
         context = utils.get_context()

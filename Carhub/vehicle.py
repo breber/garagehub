@@ -50,9 +50,12 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
         
        
         if currentUser:
-            upload_files = self.get_uploads('file');
-            blob_info = upload_files[0]
-            recieptKey = blob_info.key()
+            fileChosen = self.request.get("file", None)
+            recieptKey = None
+            if fileChosen:
+                upload_files = self.get_uploads('file')
+                blob_info = upload_files[0]
+                recieptKey = str(blob_info.key())
             
             
             dateString = self.request.get("datePurchased", None)
@@ -82,7 +85,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 expense.location = location
                 expense.amount = amount
                 expense.description = description
-                expense.picture = str(recieptKey)
+                expense.picture = recieptKey
                 
                 expense.owner = currentUser.user_id()
                 expense.vehicle = long(vehicleId)

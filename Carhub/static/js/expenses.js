@@ -11,6 +11,8 @@ $(document).ready(function() {
 		"aaSorting" : [ [ 0, 'desc' ] ]
 	});
 	
+	addDatepickerToJEditable();
+	
 	/* Apply the jEditable handlers to the table */
 	$('.edit-date').editable( '../examples_support/editable_ajax.php', {
         "callback": function( sValue, y ) {
@@ -23,7 +25,7 @@ $(document).ready(function() {
                 "column": dTable.fnGetPosition( this )[2]
             };
         },
-        type   : 'select',
+        type   : 'datepicker',
         "height": "14px",
         "width": "100%"
     } );
@@ -120,7 +122,29 @@ $('.receiptlink').click( function() {
 	$('#modalimage').attr('src', this.getAttribute('value'));
 });
 
-
+function addDatepickerToJEditable(){
+	$.editable.addInputType('datepicker', {
+	    element : function(settings, original) {
+	        var input = $('<input>');
+	        if (settings.width  != 'none') { input.width(settings.width);  }
+	    	if (settings.height != 'none') { input.height(settings.height); }
+	        input.attr('autocomplete','off');
+	    	$(this).append(input);
+	    	return(input);
+	    },
+	    plugin : function(settings, original) {
+	        /* Workaround for missing parentNode in IE */
+	    	var form = this;
+	    	settings.onblur = 'ignore';
+	    	$(this).find('input').datepicker().bind('click', function() {
+	    		$(this).datepicker('show');
+	            return false;
+	        }).bind('dateSelected', function(e, selectedDate, $td) {
+	            $(form).submit();
+	        });
+	    }
+	});
+}
 
 
 

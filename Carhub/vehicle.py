@@ -152,7 +152,7 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
             location = self.request.get("location", "")
             amount = float(self.request.get("amount", None))
             description = self.request.get("description", "")
-            odometer = self.request.get("odometer",None)
+            odometer = self.request.get("odometerEnd", None)
             if odometer:
                 odometer = int(odometer)
             else:

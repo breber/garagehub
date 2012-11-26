@@ -53,11 +53,14 @@ class UpdateFuelBrian(webapp2.RequestHandler):
         results = ndb.get_multi(query.fetch(keys_only=True))
         
         for f in results:
-            if f.gallons != 0:
+            if f.gallons != 0 and f.odometerStart > -1:
                 f.mpg = (f.odometerEnd - f.odometerStart) / f.gallons
                 f.category = "Fuel Record"
                 f.description = "Filled up with gas"
                 f.fuelGrade = "Regular"
+                f.put()
+            else:
+                f.mpg = -1
                 f.put()
 
 app = webapp2.WSGIApplication([

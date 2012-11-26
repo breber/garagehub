@@ -185,8 +185,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         i = 0
         mpgTotal = 0
         milesLogged = 0
-        # TODO: this has some problems
-        for fuelRecord in  context['userfuelrecords']:
+        for fuelRecord in context['userfuelrecords']:
             if fuelRecord.mpg > -1:
                 i = i + 1
                 mpgTotal += fuelRecord.mpg
@@ -198,7 +197,8 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         else:
             context['avgmpg'] = 0
 
-        context['milestotal'] = milesLogged
+        # add milestotal as a comma-delimited string
+        context['milestotal'] = '{:,d}'.format(milesLogged)
         
         if not vehicleId:
             self.redirect("/")

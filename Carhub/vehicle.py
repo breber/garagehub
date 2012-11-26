@@ -66,7 +66,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 # this is a new category, add it to the database
                 newCategoryObj = models.UserExpenseCategory()
                 newCategoryObj.owner = currentUser.user_id()
-                newCategoryObj.category = category
+                newCategoryObj.category = category # did you mean to put newCategory here?
                 newCategoryObj.put()
 
             location = self.request.get("location", "")
@@ -136,7 +136,7 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
             #check to see if a new category is being used
             newCategory = self.request.get("newCategory", None)
             
-            if newCategory:
+            if (newCategory != "Enter New Category") and newCategory:
                 category = newCategory
                 newCategoryObj = models.MaintenanceCategory()
                 newCategoryObj.owner = currentUser.user_id()

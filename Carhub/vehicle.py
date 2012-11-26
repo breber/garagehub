@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 from google.appengine.api import users
 from google.appengine.ext.webapp import template
+
+from google.appengine.ext import blobstore
+from google.appengine.ext.webapp import blobstore_handlers
+
+
 import datastore
 import datetime
 import logging
@@ -9,7 +14,7 @@ import os
 import utils
 import webapp2
 
-class VehicleExpenseHandler(webapp2.RequestHandler):
+class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
     def get(self, vehicleId, pageName):
         context = utils.get_context()
         user = users.get_current_user()
@@ -22,6 +27,11 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
             expenseTotal += expense.amount
         
         context['expensetotal'] = expenseTotal
+        
+        #upload url
+        blobstore_url = self.request.url + "/add"
+        upload_url = blobstore.create_upload_url(blobstore_url)
+        context["upload_url"] = upload_url
         
         if not vehicleId:
             self.redirect("/")
@@ -40,6 +50,11 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
         
        
         if currentUser:
+            upload_files = self.get_uploads('file');
+            blob_info = upload_files[0]
+            recieptKey = blob_info.key()
+            
+            
             dateString = self.request.get("datePurchased", None)
             datePurchased = datetime.datetime.strptime(dateString, "%Y-%m-%d")
             newCategory = self.request.get("newCategory", None)
@@ -67,8 +82,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
                 expense.location = location
                 expense.amount = amount
                 expense.description = description
-                
-                #TODO: get image for receipt
+                expense.picture = str(recieptKey)
                 
                 expense.owner = currentUser.user_id()
                 expense.vehicle = long(vehicleId)

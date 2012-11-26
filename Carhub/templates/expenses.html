@@ -32,6 +32,7 @@
       <th>Location</th>
       <th>Description</th>
       <th>Cost</th>
+      <th>Picture</th>
     </tr>
   </thead>
   {% for e in userexpenses %}
@@ -41,10 +42,19 @@
     <td>{{ e.location }}</td>
     <td>{{ e.description }}</td>
     <td>{{ e.amount|stringformat:".2f" }}</td>
+    
+    {% if e.picture %}
+    <td><button type="button" class="btn btn-success receiptlink" value="/blob/{{ e.picture }}">Receipt</a></td>
+    {% else %}
+    <td>N/A</td>
+    {% endif %}
   </tr>
   {% endfor %}
 </table>
 
+<div id="displayimage" class="modal hide fade">
+  <img id="modalimage">
+</div>
 
 {% endif %} {% endblock %} {% block externaljs %}
 
@@ -62,6 +72,18 @@
 			"aaSorting" : [ [ 0, 'desc' ] ]
 		});
 	});
+	
+	//TODO move to own js file
+	$('.receiptlink').click( function() {
+		$('#displayimage').modal();
+		$('#modalimage').attr('src', this.getAttribute('value'));
+	});
+	
+	//TODO
+	// 	make modal to upload images in editable table mode
+	//	make editable table mode and display the columns that need to be able to be edited
+	//	move this js to separate file
+	
 </script>
 
 {% endblock %}

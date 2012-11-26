@@ -29,7 +29,7 @@ class BaseExpense(ndb.Model):
     location = ndb.StringProperty()
     description = ndb.StringProperty()
     amount = ndb.FloatProperty()
-    picture = ndb.BlobKeyProperty()
+    picture = ndb.StringProperty()
     
     def name(self):
         return "%s %s %s %s" % (self.date, self.location, self.category, self.amount)

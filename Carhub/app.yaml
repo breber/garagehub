@@ -26,6 +26,10 @@ handlers:
 - url: /cron/?.*
   script: admin.app
   login: admin
+  
+- url: /blob/?.*
+  script: blob.app
+  login: required
 
 - url: /settings/?.*
   script: settings.app

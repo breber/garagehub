@@ -37,11 +37,11 @@
   </thead>
   {% for e in userexpenses %}
   <tr>
-    <td>{{ e.date|date:"Y-m-d" }}</td>
-    <td>{{ e.category }}</td>
-    <td>{{ e.location }}</td>
-    <td>{{ e.description }}</td>
-    <td>{{ e.amount|stringformat:".2f" }}</td>
+    <td><div class="edit-date" id="date">{{ e.date|date:"Y-m-d" }}</div></td>
+    <td><div class="edit-category id="category" >{{ e.category }}</div></td>
+    <td><div class="edit-location" id="location">{{ e.location }}</div></td>
+    <td><div class="edit-description" id="description">{{ e.description }}</div></td>
+    <td><div class="edit-amount" id="amount">{{ e.amount|stringformat:".2f" }}</div></td>
     
     {% if e.picture %}
     <td><button type="button" class="btn btn-success receiptlink" value="/blob/{{ e.picture }}">Receipt</a></td>
@@ -57,33 +57,7 @@
 </div>
 
 {% endif %} {% endblock %} {% block externaljs %}
-
 <script type="text/javascript" src="/static/js/ext/jquery.dataTables.min.js"></script>
-<script>
-	$(document).ready(function() {
-		var dTable = $('#expense-table').dataTable({
-			"sDom" : "<'row'<'span6'l><'span6'f>r>t",
-			"bPaginate" : false,
-			"bLengthChange" : false,
-			"bFilter" : false,
-			"bSort" : true,
-			"bInfo" : false,
-			"bAutoWidth" : false,
-			"aaSorting" : [ [ 0, 'desc' ] ]
-		});
-	});
-	
-	//TODO move to own js file
-	$('.receiptlink').click( function() {
-		$('#displayimage').modal();
-		$('#modalimage').attr('src', this.getAttribute('value'));
-	});
-	
-	//TODO
-	// 	make modal to upload images in editable table mode
-	//	make editable table mode and display the columns that need to be able to be edited
-	//	move this js to separate file
-	
-</script>
-
+<script type="text/javascript" src="/static/js/ext/jquery.jeditable.js"></script>
+<script type="text/javascript" src="/static/js/expenses.js"></script>
 {% endblock %}

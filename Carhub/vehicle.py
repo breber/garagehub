@@ -306,7 +306,7 @@ class VehicleHandler(webapp2.RequestHandler):
         # the vehicle ID and show that vehicle's page
         else:
             context["car"] = datastore.getUserVehicle(currentUserId, vehicleId)
-            context["latestMilage"] = datastore.getLastRecordedMileage(currentUserId, long(vehicleId))
+            context["latestMilage"] = '{:,d}'.format(datastore.getLastRecordedMileage(currentUserId, long(vehicleId)))
             context["totalCost"] = datastore.getTotalCost(currentUserId, long(vehicleId))
             
             if not context["car"]:

@@ -1,11 +1,7 @@
 #!/usr/bin/env python
 from google.appengine.api import users
-from google.appengine.ext.webapp import template
-
 from google.appengine.ext import blobstore
-from google.appengine.ext.webapp import blobstore_handlers
-
-
+from google.appengine.ext.webapp import blobstore_handlers, template
 import datastore
 import datetime
 import logging
@@ -27,16 +23,15 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
             expenseTotal += expense.amount
         
         context['expensetotal'] = expenseTotal
-        
-        #upload url
-        blobstore_url = self.request.url + "/add"
-        upload_url = blobstore.create_upload_url(blobstore_url)
-        context["upload_url"] = upload_url
-        
+
         if not vehicleId:
             self.redirect("/")
         else:
             if pageName == "add":
+                blobstore_url = self.request.url + "/add"
+                upload_url = blobstore.create_upload_url(blobstore_url)
+                context["upload_url"] = upload_url
+
                 path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
             else:
                 path = os.path.join(os.path.dirname(__file__), 'templates/expenses.html')
@@ -45,10 +40,9 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
     
     def post(self, vehicleId, model):
         currentUser = users.get_current_user()
-        
+
         logging.info("entered the Expense post function")
-        
-       
+
         if currentUser:
             fileChosen = self.request.get("file", None)
             recieptKey = None
@@ -56,7 +50,6 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 upload_files = self.get_uploads('file')
                 blob_info = upload_files[0]
                 recieptKey = str(blob_info.key())
-            
             
             dateString = self.request.get("datePurchased", None)
             datePurchased = datetime.datetime.strptime(dateString, "%Y-%m-%d")
@@ -126,7 +119,6 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
             self.response.out.write(template.render(path, context))
     
     def post(self, vehicleId, model):
-        
         # TODO: Validation
         currentUser = users.get_current_user()
         
@@ -193,6 +185,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         i = 0
         mpgTotal = 0
         milesLogged = 0
+        # TODO: this has some problems
         for fuelRecord in  context['userfuelrecords']:
             if fuelRecord.mpg > -1:
                 i = i + 1
@@ -218,8 +211,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             self.response.out.write(template.render(path, context))
     
     def post(self, vehicleId, model):
-        
-        #TODO: handle what to do if the optional fields are not entered.
+        # TODO: handle what to do if the optional fields are not entered.
         currentUser = users.get_current_user()
         
         logging.info("entered the Gas Mileage Expense post function")
@@ -261,7 +253,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             
             gallons = amount / costPerGallon
             if odometerEnd != -1 and odometerStart != -1:
-                mpg = (odometerEnd - odometerStart)/gallons
+                mpg = (odometerEnd - odometerStart) / gallons
             else:
                 mpg = -1;
                     
@@ -291,7 +283,6 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
                 record.put()
 
         self.redirect("/vehicle/%s/gasmileage" % vehicleId)
-
 
 
 class VehicleHandler(webapp2.RequestHandler):
@@ -365,6 +356,7 @@ class VehicleHandler(webapp2.RequestHandler):
                     
                     self.redirect("/vehicle/%d" % vehicle.key.id())
                     return
+
             elif model == "delete":
                 vehicle = datastore.getUserVehicle(currentUser.user_id(), makeOption)
                 if vehicle:

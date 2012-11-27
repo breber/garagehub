@@ -16,10 +16,11 @@ class FetchCarsBrian(webapp2.RequestHandler):
             
             for vehicle in jsonResult:
                 if vehicle["emailAddress"] == "reber.brian@gmail.com":
+                    userId = vehicle["userId"]
                     veh = models.UserVehicle()
                     veh.make = vehicle["make"]
                     veh.model = vehicle["model"]
-                    veh.owner = vehicle["userId"]
+                    veh.owner = userId
                     veh.year = vehicle["year"]
                     veh.color = vehicle["color"]
                     veh.plates = vehicle["licensePlate"]
@@ -32,38 +33,70 @@ class FetchCarsBrian(webapp2.RequestHandler):
                     for fuel in fuelRecords:
                         toAdd = models.FuelRecord()
                         toAdd.vehicle = vehicleId
-                        toAdd.owner = fuel["userId"]
+                        toAdd.owner = userId
                         toAdd.date = datetime.datetime.fromtimestamp((fuel["date"] / 1000))
                         toAdd.lastmodified = datetime.datetime.now()
-                        toAdd.category = "Fuel"
+                        toAdd.category = "Fuel Record"
                         toAdd.location = fuel["vendor"]
-                        toAdd.description = ""
+                        toAdd.description = "Filled up with gas"
                         toAdd.gallons = fuel["gallons"]
                         toAdd.costPerGallon = fuel["costPerGallon"]
                         toAdd.amount = toAdd.gallons * toAdd.costPerGallon
-                        toAdd.fuelGrade = fuel["fuelGrade"]
+                        
+                        fuelGrade = fuel["fuelGrade"]
+                        
+                        if fuelGrade == 87:
+                            toAdd.fuelGrade = "Regular"
+                        elif fuelGrade == 89:
+                            toAdd.fuelGrade = "Mid"
+                        else:
+                            toAdd.fuelGrade = "Regular"
                         toAdd.odometerStart = prevOdometer
                         prevOdometer = fuel["odometer"]
                         toAdd.odometerEnd = prevOdometer
+
+                        if toAdd.gallons != 0 and toAdd.odometerStart > -1:
+                            toAdd.mpg = (toAdd.odometerEnd - toAdd.odometerStart) / toAdd.gallons
+                        else:
+                            toAdd.mpg = -1
+                
                         toAdd.put()
-                        
-class UpdateFuelBrian(webapp2.RequestHandler):
+
+                    maintRecords = vehicle["maintenanceRecords"]
+                    for maint in maintRecords:
+                        toAdd = models.MaintenanceRecord()
+                        toAdd.vehicle = vehicleId
+                        toAdd.owner = userId
+                        toAdd.date = datetime.datetime.fromtimestamp((maint["date"] / 1000))
+                        toAdd.lastmodified = datetime.datetime.now()
+                        toAdd.category = "Generic Maintenance"
+                        toAdd.location = maint["vendor"]
+                        toAdd.description = maint["title"]
+                        toAdd.amount = maint["totalCost"]
+                        toAdd.odometer = maint["odometer"]
+                        toAdd.put()
+
+class DeleteRecordsBrian(webapp2.RequestHandler):
     def get(self):
         query = models.FuelRecord.query(models.FuelRecord.owner == users.get_current_user().user_id())
         results = ndb.get_multi(query.fetch(keys_only=True))
         
         for f in results:
-            if f.gallons != 0 and f.odometerStart > -1:
-                f.mpg = (f.odometerEnd - f.odometerStart) / f.gallons
-                f.category = "Fuel Record"
-                f.description = "Filled up with gas"
-                f.fuelGrade = "Regular"
-                f.put()
-            else:
-                f.mpg = -1
-                f.put()
+            f.key.delete()
+        
+        query = models.MaintenanceRecord.query(models.MaintenanceRecord.owner == users.get_current_user().user_id())
+        results = ndb.get_multi(query.fetch(keys_only=True))
+        
+        for m in results:
+            m.key.delete()
+        
+        query = models.UserVehicle.query(models.UserVehicle.owner == users.get_current_user().user_id())
+        results = ndb.get_multi(query.fetch(keys_only=True))
+        
+        for v in results:
+            v.key.delete()
 
 app = webapp2.WSGIApplication([
     ('/brian/fetch', FetchCarsBrian),
-    ('/brian/update', UpdateFuelBrian),
+    ('/brian/delete', DeleteRecordsBrian),
 ], debug=True)

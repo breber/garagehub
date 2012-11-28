@@ -4,9 +4,11 @@
   <h2>Trip Planner</h2>
 
   <div id="side-container">
+   <input onclick="hideFromInput();" id="useCurrentLocation" type="checkbox" value="useCurrentLocation" style = "float: left; " checked/>
+   <label for="useCurrentLocation" style = "float: left; padding-left: 5px; " > Use my location</label><br/><br/>
     <ul>
       <li class="dir-label">From:</li>
-      <li><input id="from-input" type=text value="Minneapolis, MN" /></li>
+      <li><input id="from-input" type=text value=""/></li>
       <li class="dir-label">To:</li>
       <li><input id="to-input" type=text value="Ames, IA" /></li>
     </ul>

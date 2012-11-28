@@ -94,9 +94,9 @@ function getGasPrices() {
 };
 
 function hideZipCode() {
+
 	if ($("#location").is(":checked")) {
 		$("#zip").prop("disabled", true);
-		$("#zip").val("");
 	} else {
 		$("#zip").prop("disabled", false);
 	}

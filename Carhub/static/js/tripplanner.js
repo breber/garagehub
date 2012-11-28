@@ -10,6 +10,14 @@ function calculateTripPrice() {
     
 }
 
+function hideFromInput() {
+	if ($("#useCurrentLocation").is(":checked")) {
+		$("#from-input").prop("disabled", true);
+	} else {
+		$("#from-input").prop("disabled", false);
+	}
+};
+
 var Demo = {
 // 	    		  // HTML Nodes
 		  dirContainer: document.getElementById('dir-container'),
@@ -40,14 +48,25 @@ var Demo = {
 		  getDirections: function() {
 		    var fromStr = Demo.fromInput.value;
 		    var toStr = Demo.toInput.value;
-		    var dirRequest = {
-		      origin: fromStr,
-		      destination: toStr,
-		      travelMode: google.maps.DirectionsTravelMode.DRIVING,
-		      unitSystem: google.maps.DirectionsUnitSystem.IMPERIAL,
-		      provideRouteAlternatives: true
-		    };
-		    Demo.dirService.route(dirRequest, Demo.showDirections);
+
+		    navigator.geolocation.getCurrentPosition(function(position){
+			    var curLat;
+			    var curLon;
+		    	curLat = position.coords.latitude;
+		    	curLon = position.coords.longitude;
+		    	if ($("#useCurrentLocation").is(":checked")) {
+			    	fromStr = new google.maps.LatLng(curLat, curLon);
+			    }
+			    var dirRequest = {
+			      origin: fromStr,
+			      destination: toStr,
+			      travelMode: google.maps.DirectionsTravelMode.DRIVING,
+			      unitSystem: google.maps.DirectionsUnitSystem.IMPERIAL,
+			      provideRouteAlternatives: true
+			    };
+			    Demo.dirService.route(dirRequest, Demo.showDirections);
+		    });
+		    
 		  },
 
 		  init: function() {
@@ -83,4 +102,6 @@ $(document).ready(function()
     	document.getElementById('num-miles-input').value = Math.round(getTotalDistance(Demo.dirRenderer.getDirections(), Demo.dirRenderer.getRouteIndex())/1609.344);
 		calculateTripPrice();
     });
+    
+    hideFromInput();
 });

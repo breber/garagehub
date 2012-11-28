@@ -181,25 +181,9 @@ function displayGasPrices(JSONGasFeed) {
 		stopLoading();
 		
 		$.each(json.stations, function(i, item) {
-			
-			var price;
-			var dateUpdated;
 			var distance = item.distance;
-			if (grade === 'reg') {
-				price = item.reg_price;
-				dateUpdated = item.reg_date;
-			} else if (grade === 'mid') {
-				price = item.mid_price;
-				dateUpdated = item.mid_date;
-			} else if (grade === 'pre') {
-				price = item.pre_price;
-				dateUpdated = item.pre_date;
-			} else if (grade === 'diesel') {
-				price = item.diesel_price;
-				dateUpdated = item.diesel_date;
-			}
-			price = item.price;
-			dateUpdated = item.date;
+			var price = item.price;
+			var dateUpdated = item.date;
 			var index = distance.indexOf("miles");
 			if(index != -1){
 				distance = distance.substr(0, index);

@@ -45,7 +45,7 @@ class MaintenanceRecord(BaseExpense):
     odometer = ndb.IntegerProperty()
     
     def odometer_formatted(self):
-        return utils.format_float(self.odometer)
+        return utils.format_int(self.odometer)
 
 class FuelRecord(BaseExpense):
     mpg = ndb.FloatProperty()

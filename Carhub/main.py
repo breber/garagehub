@@ -55,6 +55,8 @@ class NotificationHandler(webapp2.RequestHandler):
         user = users.get_current_user()
         
         
+        
+        
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),

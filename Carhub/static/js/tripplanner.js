@@ -32,7 +32,7 @@ var Demo = {
 		  showDirections: function(dirResult, dirStatus) {
 			  
 		    if (dirStatus != google.maps.DirectionsStatus.OK) {
-		      alert('Directions failed: ' + dirStatus);
+		      alert('Directions failed. Please check input and enable HTML 5 location services.');
 		      return;
 		    }
 

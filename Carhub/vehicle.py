@@ -22,7 +22,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
         for expense in  context['userexpenses']:
             expenseTotal += expense.amount
         
-        context['expensetotal'] = expenseTotal
+        context['expensetotal'] = utils.format_float(expenseTotal)
 
         if not vehicleId:
             self.redirect("/")
@@ -198,7 +198,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             context['avgmpg'] = 0
 
         # add milestotal as a comma-delimited string
-        context['milestotal'] = '{:,d}'.format(milesLogged)
+        context['milestotal'] = utils.format_int(milesLogged)
         
         if not vehicleId:
             self.redirect("/")
@@ -306,7 +306,7 @@ class VehicleHandler(webapp2.RequestHandler):
         # the vehicle ID and show that vehicle's page
         else:
             context["car"] = datastore.getUserVehicle(currentUserId, vehicleId)
-            context["latestMilage"] = '{:,d}'.format(datastore.getLastRecordedMileage(currentUserId, long(vehicleId)))
+            context["latestMilage"] = utils.format_int(datastore.getLastRecordedMileage(currentUserId, long(vehicleId)))
             context["totalCost"] = datastore.getTotalCost(currentUserId, long(vehicleId))
             
             if not context["car"]:

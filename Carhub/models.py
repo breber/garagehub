@@ -1,4 +1,5 @@
 from google.appengine.ext import ndb
+import utils
 
 class ServerResponseString(ndb.Model):
     response = ndb.TextProperty()
@@ -31,11 +32,18 @@ class BaseExpense(ndb.Model):
     amount = ndb.FloatProperty()
     picture = ndb.StringProperty()
     
+    def amount_formatted(self):
+        return utils.format_float(self.amount)
+    
     def name(self):
         return "%s %s %s %s" % (self.date, self.location, self.category, self.amount)
 
 class MaintenanceRecord(BaseExpense):
     odometer = ndb.IntegerProperty()
+    
+    def odometer_formatted(self):
+        return utils.format_float(self.odometer)
+
 
 class FuelRecord(BaseExpense):
     mpg = ndb.FloatProperty()
@@ -44,6 +52,12 @@ class FuelRecord(BaseExpense):
     gallons = ndb.FloatProperty()
     costPerGallon = ndb.FloatProperty()
     fuelGrade = ndb.StringProperty()
+
+    def odometerStart_formatted(self):
+        return utils.format_int(self.odometerStart)
+
+    def odometerEnd_formatted(self):
+        return utils.format_int(self.odometerEnd)
 
 class UserExpenseCategory(ndb.Model):
     owner = ndb.StringProperty()

@@ -41,7 +41,7 @@
     <td>N/A</td>
     {% endif %}
 
-    <td>{{ e.amount|stringformat:".2f" }}</td>
+    <td>{{ e.amount_formatted }}</td>
     <td>{{ e.costPerGallon|stringformat:".2f" }}</td>
 
     {% if e.location == "" %}
@@ -56,12 +56,12 @@
     {% if e.odometerStart == -1 %}
     N/A - 
     {% else %}
-    {{ e.odometerStart }} -
+    {{ e.odometerStart_formatted }} -
     {% endif %}
     {% if e.odometerEnd == -1 %}
     N/A
     {% else %}
-    {{ e.odometerEnd }}
+    {{ e.odometerEnd_formatted }}
     {% endif %}
     </td>
 

@@ -26,8 +26,8 @@
 		<td>{{ m.date }}</td>
 		<td>{{ m.location }}</td>
 		<td>{{ m.description }}</td>
-		<td>{{ m.amount|stringformat:".2f" }}</td>
-		<td>{{ m.odometer }}</td>
+		<td>{{ m.amount_formatted }}</td>
+		<td>{{ m.odometer_formatted }}</td>
 	</tr>
 	{% endif %}
 	{% endfor %}

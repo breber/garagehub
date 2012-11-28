@@ -9,7 +9,7 @@
   <p>Record one <a href="/vehicle/{{ car.key.id }}/expenses/add">here</a>!</p>
 </div>
 {% else %}
-<h3>Total Money Spent: ${{ expensetotal|stringformat:".2f" }}</h3>
+<h3>Total Money Spent: ${{ expensetotal }}</h3>
 <div>
   <div class="btn-group" class="pull-right" data-toggle="buttons-radio">
     <button type="button" class="btn">Most Recent Purchase</button>
@@ -41,7 +41,7 @@
     <td><div class="edit-category id="category" >{{ e.category }}</div></td>
     <td><div class="edit-location" id="location">{{ e.location }}</div></td>
     <td><div class="edit-description" id="description">{{ e.description }}</div></td>
-    <td><div class="edit-amount" id="amount">{{ e.amount|stringformat:".2f" }}</div></td>
+    <td><div class="edit-amount" id="amount">{{ e.amount_formatted }}</div></td>
     
     {% if e.picture %}
     <td><button type="button" class="btn btn-success receiptlink" value="/blob/{{ e.picture }}">Receipt</a></td>

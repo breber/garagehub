@@ -31,3 +31,8 @@ def get_context(list_vehicles=True):
 
     return context
 
+def format_int(number):
+    return '{:,d}'.format(number)
+
+def format_float(number):
+    return '{:,.2f}'.format(number)

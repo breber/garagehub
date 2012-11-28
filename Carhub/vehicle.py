@@ -193,7 +193,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
                 milesLogged += (fuelRecord.odometerEnd - fuelRecord.odometerStart)
         
         if i != 0:
-            context['avgmpg'] = mpgTotal / i
+            context['avgmpg'] = utils.format_float(mpgTotal / i)
         else:
             context['avgmpg'] = 0
 
@@ -307,7 +307,7 @@ class VehicleHandler(webapp2.RequestHandler):
         else:
             context["car"] = datastore.getUserVehicle(currentUserId, vehicleId)
             context["latestMilage"] = utils.format_int(datastore.getLastRecordedMileage(currentUserId, long(vehicleId)))
-            context["totalCost"] = datastore.getTotalCost(currentUserId, long(vehicleId))
+            context["totalCost"] = utils.format_float(datastore.getTotalCost(currentUserId, long(vehicleId)))
             
             if not context["car"]:
                 self.redirect("/")

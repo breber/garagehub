@@ -36,3 +36,6 @@ def format_int(number):
 
 def format_float(number):
     return '{:,.2f}'.format(number)
+
+def format_date(timestamp):
+    return timestamp.strftime("%Y/%m/%d")

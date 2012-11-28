@@ -31,7 +31,10 @@ class BaseExpense(ndb.Model):
     description = ndb.StringProperty()
     amount = ndb.FloatProperty()
     picture = ndb.StringProperty()
-    
+
+    def date_formatted(self):
+        return utils.format_date(self.date)
+
     def amount_formatted(self):
         return utils.format_float(self.amount)
     
@@ -44,7 +47,6 @@ class MaintenanceRecord(BaseExpense):
     def odometer_formatted(self):
         return utils.format_float(self.odometer)
 
-
 class FuelRecord(BaseExpense):
     mpg = ndb.FloatProperty()
     odometerStart = ndb.IntegerProperty()
@@ -53,11 +55,20 @@ class FuelRecord(BaseExpense):
     costPerGallon = ndb.FloatProperty()
     fuelGrade = ndb.StringProperty()
 
+    def mpg_formatted(self):
+        return utils.format_float(self.mpg)
+
     def odometerStart_formatted(self):
         return utils.format_int(self.odometerStart)
 
     def odometerEnd_formatted(self):
         return utils.format_int(self.odometerEnd)
+
+    def gallons_formatted(self):
+        return utils.format_float(self.gallons)
+
+    def costPerGallon_formatted(self):
+        return utils.format_float(self.costPerGallon)
 
 class UserExpenseCategory(ndb.Model):
     owner = ndb.StringProperty()

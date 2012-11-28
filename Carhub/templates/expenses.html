@@ -37,7 +37,7 @@
   </thead>
   {% for e in userexpenses %}
   <tr>
-    <td><div class="edit-date" id="date">{{ e.date|date:"Y-m-d" }}</div></td>
+    <td><div class="edit-date" id="date">{{ e.date_formatted }}</div></td>
     <td><div class="edit-category id="category" >{{ e.category }}</div></td>
     <td><div class="edit-location" id="location">{{ e.location }}</div></td>
     <td><div class="edit-description" id="description">{{ e.description }}</div></td>

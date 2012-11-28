@@ -2,7 +2,7 @@
 
 <h2>Gas Mileage Tracker</h2>
 
-<h3>Average MPG: {{ avgmpg|stringformat:".2f" }}</h3>
+<h3>Average MPG: {{ avgmpg }}</h3>
 <h3>Miles Recorded: {{ milestotal }}</h3>
 
 <div>
@@ -33,16 +33,16 @@
 
   {% for e in userfuelrecords %}
   <tr>
-    <td>{{ e.date|date:"Y-m-d" }}</td>
+    <td>{{ e.date_formatted }}</td>
 
     {% if e.odometerEnd != -1 and e.odometerStart != -1 and e.gallons > 0 and e.odometerEnd >= e.odometerStart %}
-    <td>{{ e.mpg|stringformat:".2f" }}</td>
+    <td>{{ e.mpg_formatted }}</td>
     {% else %}
     <td>N/A</td>
     {% endif %}
 
     <td>{{ e.amount_formatted }}</td>
-    <td>{{ e.costPerGallon|stringformat:".2f" }}</td>
+    <td>{{ e.costPerGallon_formatted }}</td>
 
     {% if e.location == "" %}
     <td>N/A</td>

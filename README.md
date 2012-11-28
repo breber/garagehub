@@ -26,8 +26,6 @@ When you have been added to the AppEngine application, it should show up in the 
 In Eclipse, you'll want to be in the PyDev perspective.
 
 	  /
-	  ├── AutoInfo/
-	  │   └── The original site prototype in Java/JSP
 	  ├── CarHub/
 	  │   ├── static/
 	  │   │   ├── css/
@@ -60,11 +58,11 @@ To keep this file organized, we will have the global classes at the top of the f
 
 	/* global classes */
 	.center { ... }
-	
+
 	/* news.html */
 	.news-title { ... }
 	.news-float { ... }
-	
+
 	...
 
 ## Helpful Links ##

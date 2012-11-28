@@ -25,8 +25,8 @@
 		<div class="controls">
 			<select id="selectCategory" name="selectCategory">
 				{% if categories %}
-					{% for c in categories %}
-						<option value="{{ c.category }}">{{ c.name }}</option>
+					{% for cat in categories %}
+						<option value="{{ cat.category }}">{{ cat.name }}</option>
 					{% endfor %}
 				{% endif %}
 			</select>

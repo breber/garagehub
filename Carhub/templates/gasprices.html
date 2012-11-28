@@ -64,7 +64,9 @@
   <hr />
   <div>Data Powered by www.myGasFeed.com.</div>
   
-    <div id="map_canvas" style="width: 500px; height: 300px; display:none;"></div>
+  <div id="modalMap" class="modal hide fade">
+  	<div id="map_canvas"  style="height: 300px;"></div>
+  </div>
 </div>
 
 {% endblock %} {% block externaljs %}
@@ -77,83 +79,8 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" />
 
 <script>
-	$(document).ready(function() {
-		
-		getGasPrices();
-		
-	});
-	
-	var markersArray = [];
-	var Demo = {
 
-			  init: function() {
-				  var mapOptions = {
-					        zoom: 14,
-					        center: new google.maps.LatLng(-34.397, 150.644),
-					        mapTypeId: google.maps.MapTypeId.ROADMAP
-					      };
-			    Demo.map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
 
-			  }
-			};
-
-	google.maps.event.addDomListener(window, 'load', Demo.init);
-	
-	$("#gaspricetable tr td").live("click", function() {
-		var lat = $(this).parent().find('td').eq(5).text();
-		var lon = $(this).parent().find('td').eq(6).text();
-		$('body').addClass('stop-scrolling');
-		$( "#map_canvas" ).dialog({position: "fixed", show: "blind", hide: "explode", width:535, height:420, modal:true, resizable: false, 
-			buttons:{
-			    Close:{
-			        text:'Close',
-			        class:'btn',
-					click: function () {
-			            $(this).dialog("close");
-			            clearOverlays();
-			            $('body').removeClass('stop-scrolling');
-			        }
-			      }
-			}
-		});
-		
-		
-
-		var mapOptions = {
-		        zoom: 14,
-		        center: new google.maps.LatLng(lat, lon),
-		        mapTypeId: google.maps.MapTypeId.ROADMAP
-		      };
-    	Demo.map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-
-	    clearOverlays();
-	    
-	    var latLng = new google.maps.LatLng(lat, lon); //Makes a latlng
-		addMarker(latLng);
-		
-		$(".ui-dialog-titlebar").hide();
-			    
-	});
-	
-	// Function for adding a marker to the page.
-    function addMarker(location) {
-        marker = new google.maps.Marker({
-            position: location,
-            map: Demo.map
-        });
-        
-        markersArray.push(marker);
-    }
-
-    function clearOverlays() {
-    	  if (markersArray) {
-    	    for (i in markersArray) {
-    	      markersArray[i].setMap(null);
-    	    }
-    	  }
-    	}
-	
-	
 </script>
 
 {% endblock %}

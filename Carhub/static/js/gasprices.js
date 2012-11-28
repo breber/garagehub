@@ -1,9 +1,85 @@
-$().ready(function() {
+//array to keep track of the markers displayed in the map
+var markersArray = [];
+
+//variable to keep track of the 
+var latLngModal;
+
+//variable to keep track of the map
+var Demo = {
+
+		  init: function() {
+			  var mapOptions = {
+				        zoom: 14,
+				        center: new google.maps.LatLng(-34.397, 150.644),
+				        mapTypeId: google.maps.MapTypeId.ROADMAP
+				      };
+		    Demo.map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+
+		  }
+		};
+
+//Ready function
+$(document).ready(function() {
 	// When the page is ready, hide the table and loading
 	// sections so there isn't a huge blank space in the page
 	$("#gaspricetable").hide();
 	$("#loading").hide();
+	
+	getGasPrices();
+	
 });
+
+//Work around for the map displaying grey areas on the modal load
+$('#modalMap').on('shown', function () {
+    google.maps.event.trigger(Demo.map, "resize");
+    var lat = $(this).parent().find('td').eq(5).text();
+	var lon = $(this).parent().find('td').eq(6).text();
+	var latLng = new google.maps.LatLng(lat, lon); //Makes a latlng
+	Demo.map.panTo(latLngModal);
+});
+
+//render the map
+google.maps.event.addDomListener(window, 'load', Demo.init);
+
+$("#gaspricetable tr td").live("click", function() {
+	var lat = $(this).parent().find('td').eq(5).text();
+	var lon = $(this).parent().find('td').eq(6).text();
+	$( "#modalMap" ).modal();	
+	
+
+	var mapOptions = {
+	        zoom: 14,
+	        center: new google.maps.LatLng(lat, lon),
+	        mapTypeId: google.maps.MapTypeId.ROADMAP
+	      };
+	Demo.map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+
+    clearOverlays();
+    
+    var latLng = new google.maps.LatLng(lat, lon); //Makes a latlng
+	addMarker(latLng);
+	latLngModal = latLng;
+});
+
+// Function for adding a marker to the page.
+function addMarker(location) {
+    marker = new google.maps.Marker({
+        position: location,
+        map: Demo.map
+    });
+    
+    markersArray.push(marker);
+}
+
+//function to clear all map overlays
+function clearOverlays() {
+	  if (markersArray) {
+	    for (i in markersArray) {
+	      markersArray[i].setMap(null);
+	    }
+	  }
+	}
+
 
 function getGasPrices() {
 	$("#gaspricetable").empty();
@@ -122,7 +198,8 @@ function displayGasPrices(JSONGasFeed) {
 				price = item.diesel_price;
 				dateUpdated = item.diesel_date;
 			}
-
+			price = item.price;
+			dateUpdated = item.date;
 			var index = distance.indexOf("miles");
 			if(index != -1){
 				distance = distance.substr(0, index);

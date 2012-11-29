@@ -62,7 +62,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 # this is a new category, add it to the database
                 newCategoryObj = models.UserExpenseCategory()
                 newCategoryObj.owner = currentUser.user_id()
-                newCategoryObj.category = category # did you mean to put newCategory here?
+                newCategoryObj.category = category
                 newCategoryObj.put()
 
             location = self.request.get("location", "")
@@ -105,7 +105,8 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
             categories = datastore.getMaintenanceCategories(user.user_id())
             if len(categories) > 0:
                 context["categories"] = categories
-            
+                logging.info("Category %s", categories[0])
+            logging.info("No categories")
             if pageName == "add":
                 path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
             else:
@@ -128,21 +129,14 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
             dateString = self.request.get("datePurchased", None)
             datePurchased = datetime.datetime.strptime(dateString, "%Y-%m-%d")
             
-            #check to see if a new category is being used
-            newCategory = self.request.get("newCategory", None)
+            category = self.request.get("category", "Uncategorized")
+            maintCategories = datastore.getMaintenanceCategories(currentUser.user_id())
             
-            if (newCategory != "Enter New Category") and newCategory:
-                category = newCategory
+            if not (category in maintCategories):
                 newCategoryObj = models.MaintenanceCategory()
                 newCategoryObj.owner = currentUser.user_id()
-                newCategoryObj.category = newCategory
-
-                if not newCategoryObj.category in datastore.getMaintenanceCategories(currentUser.user_id()):
-                    newCategoryObj.put()
-
-            else:
-                # Not using a new category, so get the existing category
-                category = self.request.get("category", "Uncategorized")
+                newCategoryObj.category = category
+                newCategoryObj.put()
 
             location = self.request.get("location", "")
             amount = float(self.request.get("amount", None))

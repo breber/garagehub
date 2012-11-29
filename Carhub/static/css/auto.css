@@ -175,6 +175,14 @@ div.news-articlediv:hover {
 	width: 30px;
 }
 
+.addnotif-textfieldmargins {
+	margin: 0px 5px;
+}
+
+.addnotif-rightmargin {
+	margin-right: 5px;
+}
+
 .stop-scrolling {
   height: 100%;
   overflow: hidden;

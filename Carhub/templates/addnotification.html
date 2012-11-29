@@ -1,13 +1,13 @@
-{% extends 'base_vehicle.html' %} 
+{% extends 'base.html' %} 
 {% block externalcss %}
 <link rel="stylesheet" href="/static/css/validationEngine.jquery.css" type="text/css"/>
 <link rel="stylesheet" href="/static/css/datepicker.css" type="text/css"/>
 {% endblock %}
-{% block pagecontent %}
+{% block content %}
 
 <h2>Add Notification</h2>
 
-<form action="add" method="post" class="form-horizontal">
+<form action="/notifications" method="post" class="form-horizontal">
 	<div class="control-group">
 		<label class="control-label" for="selectVehicle">Vehicle</label>
 		<div class="controls">
@@ -36,11 +36,11 @@
 		<label class="control-label">Frequency</label>
 		<div class="controls">
 			<label class="radio inline">
-				<input type="radio" class="triggerChange" id="onetimeFreq" name="frequencyRadio" value="false"> 
+				<input type="radio" class="triggerChange" id="onetimeFreq" name="frequencyRadio" value="False"> 
 				One-Time
 			</label>
 			<label class="radio inline">
-				<input type="radio" class="triggerChange" id="recurringFreq" name="frequencyRadio" value="true"> 
+				<input type="radio" class="triggerChange" id="recurringFreq" name="frequencyRadio" value="True"> 
 				Recurring
 			</label>
 		</div>
@@ -49,10 +49,10 @@
 		<label class="control-label">Alert Type</label>
 		<div class="controls">
 			<label class="checkbox inline">
-				<input type="checkbox" class="triggerChange" id="dateCheckbox" name="typeCheckbox" value="date"> Date
+				<input type="checkbox" class="triggerChange" id="dateCheckbox" name="dateCheckbox" value="True"> Date
 			</label>
 			<label class="checkbox inline">
-				<input type="checkbox" class="triggerChange" id="mileageCheckbox" name="typeCheckbox" value="mileage"> Mileage
+				<input type="checkbox" class="triggerChange" id="mileageCheckbox" name="mileageCheckbox" value="True"> Mileage
 			</label>
 		</div>
 	</div>
@@ -60,9 +60,9 @@
 		<label class="control-label">Schedule</label>
 		<div class="controls">
 			Notify every
-			<input type="text" class="addnotif-smallinput addnotif-centertext" name="recurrMonths">
+			<input type="text" class="addnotif-smallinput addnotif-centertext addnotif-textfieldmargins" name="recurrMonths">
 			<b>months</b> starting
-			<input type="text" class="addnotif-smallinput addnotif-centertext" name="daysAdvance">
+			<input type="text" class="addnotif-smallinput addnotif-centertext addnotif-textfieldmargins" name="daysAdvance">
 			<b>days</b> in advance.
 		</div>
 	</div>
@@ -70,9 +70,9 @@
 		<label class="control-label">Schedule</label>
 		<div class="controls">
 			Notify every
-			<input type="text" class="input-small addnotif-centertext" name="recurrMiles">
+			<input type="text" class="input-small addnotif-centertext addnotif-textfieldmargins" name="recurrMiles">
 			<b>miles</b> starting
-			<input type="text" class="input-small addnotif-centertext" name="milesAdvance">
+			<input type="text" class="input-small addnotif-centertext addnotif-textfieldmargins" name="milesAdvance">
 			<b>miles</b> in advance.
 		</div>
 	</div>
@@ -85,7 +85,7 @@
 	<div class="control-group changingDiv" id="onetimeMilesDiv">
 		<label class="control-label">Notify At</label>
 		<div class="controls">
-			<input type="text" class="input-small addnotif-centertext" name="milesToNotify">
+			<input type="text" class="input-small addnotif-centertext addnotif-rightmargin" name="milesToNotify">
 			miles
 		</div>
 	</div>

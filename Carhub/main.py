@@ -2,7 +2,9 @@
 from google.appengine.api import users
 from google.appengine.ext.webapp import template
 import datastore
+import datetime
 import json
+import models
 import os
 import utils
 import webapp2
@@ -50,14 +52,72 @@ class NotificationHandler(webapp2.RequestHandler):
 
         self.response.out.write(template.render(path, context))
         
-    def post(self):
+    def post(self, pageName):
         context = utils.get_context()
         user = users.get_current_user()
         
+        newNotificationObj = models.Notification()
+        newNotificationObj.owner = user.user_id()
+        vehicleId = int(self.request.get("selectVehicle", 0))
+        newNotificationObj.vehicle = vehicleId
+        vehicleName = datastore.getUserVehicle(user.user_id(), vehicleId)
+        newNotificationObj.vehicleName = vehicleName.name()
+        category = self.request.get("selectCategory", None)
+        newNotificationObj.category = category
+        recurring = bool(self.request.get("frequencyRadio", False))
+        newNotificationObj.recurring = recurring
+        dateBased = bool(self.request.get("dateCheckbox", False))
+        newNotificationObj.dateBased = dateBased
+        mileBased = bool(self.request.get("mileageCheckbox", False))
+        newNotificationObj.mileBased = mileBased
+        daysBefore = self.request.get("daysAdvance", 0)
+        if daysBefore == '':
+            daysBefore = 0
+        newNotificationObj.notifyDaysBefore = int(daysBefore)
+        milesBefore = self.request.get("milesAdvance", 0)
+        if milesBefore == '':
+            milesBefore = 0
+        newNotificationObj.notifyMilesBefore = int(milesBefore)
+        recurringMiles = self.request.get("recurrMiles", 0)
+        if recurringMiles == '':
+            recurringMiles = 0
+        newNotificationObj.recurringMiles = int(recurringMiles)
+        recurringMonths = self.request.get("recurrMonths", 0)
+        if recurringMonths == '':
+            recurringMonths = 0
+        newNotificationObj.recurringMonths = int(recurringMonths)
+        newNotificationObj.dateLastSeen = datetime.date.min
         
+        if recurring:
+            if dateBased:
+                lastMaintRecord = datastore.getMostRecentMaintRecord(user.user_id(), vehicleId, category)
+                if lastMaintRecord:
+                    lastRecordedDate = lastMaintRecord.date
+                else:
+                    lastRecordedDate = datetime.date
+                notifyYear = lastRecordedDate.year + recurringMonths / 12
+                notifyMonth = lastRecordedDate.month + (recurringMonths % 12)
+                if notifyMonth > 12:
+                    notifyMonth -= 12
+                    notifyYear += 1
+                newNotificationObj.date = datetime.date(notifyYear, notifyMonth, lastRecordedDate.day)
+            if mileBased:
+                lastMileage = datastore.getLastRecordedMileage(user.user_id(), vehicleId)
+                if not lastMileage:
+                    lastMileage = 0
+                newNotificationObj.mileage = lastMileage + recurringMiles
+        else:
+            if dateBased:
+                dateString = self.request.get("dateToNotify", None)
+                if dateString:
+                    newNotificationObj.date = datetime.datetime.strptime(dateString, "%Y-%m-%d")
+            if mileBased:
+                newNotificationObj.mileage = int(self.request.get("milesToNotify", None))
+                
+        newNotificationObj.put()
         
+        self.redirect("/notifications")
         
-
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/notifications/?(.+?)?', NotificationHandler),

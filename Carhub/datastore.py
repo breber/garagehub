@@ -159,6 +159,28 @@ def getMaintenanceRecords(userId, vehicleId, day_range=30, ascending=True):
     
     return ndb.get_multi(query.fetch(keys_only=True))
 
+def getMostRecentMaintRecord(userId, vehicleId, category):
+    """Gets most recent maintenance record for category
+    
+    Args: 
+        userId - The user ID
+        vehicleId - The ID of the vehicle
+        category - The maintenance category being queried
+    
+    Returns
+        The most recent maintenance record for specified category
+    """
+    
+    query = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == userId,
+                                             models.MaintenanceRecord.vehicle == vehicleId,
+                                             models.MaintenanceRecord.category == category)
+    
+    query = query.order(-models.MaintenanceRecord.date)
+    
+    maintRecord = query.get()
+    
+    return maintRecord 
+
 def getMaintenanceCategories(userId):
     """Gets a list of user categories (strings)
     

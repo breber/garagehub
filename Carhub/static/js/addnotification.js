@@ -1,6 +1,9 @@
 $(document).ready(function() {
 	
 	$('.changingDiv').hide();
+	$('#onetimeFreq').attr('checked', 'checked');
+	$('#dateCheckbox').attr('checked', 'checked');
+	showProperFields();
 
 	var currentDate = new Date();
 	var prettyDate = (currentDate.getFullYear() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getDate() );

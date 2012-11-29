@@ -45,6 +45,14 @@ indexes:
 
 - kind: MaintenanceRecord
   properties:
+  - name: category
+  - name: owner
+  - name: vehicle
+  - name: date
+    direction: desc
+
+- kind: MaintenanceRecord
+  properties:
   - name: owner
   - name: vehicle
   - name: date

@@ -8,11 +8,11 @@ google.load("visualization", "1", {
 google.setOnLoadCallback(fetchData);
 
 function startLoading() {
-    $("#empty").removeClass("hidden");
-    $("#charts").removeClass("hidden");
     $("#empty").hide();
     $("#charts").hide();
     $("#loading").show();
+    $("#empty").removeClass("hidden");
+    $("#charts").removeClass("hidden");
 }
 
 function stopLoading() {

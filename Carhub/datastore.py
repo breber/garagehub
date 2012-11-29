@@ -195,21 +195,17 @@ def getMaintenanceCategories(userId):
     results = ndb.get_multi(query.fetch(keys_only=True))
 
     if not results:
-        oil = models.MaintenanceCategory(owner="defaultMaintCategory",
-                                         category="Oil Change")
-        oil.put()
+        models.MaintenanceCategory(owner="defaultMaintCategory",
+                                   category="Oil Change").put()
         
-        repair = models.MaintenanceCategory(owner="defaultMaintCategory",
-                                            category="Repair")
-        repair.put()
+        models.MaintenanceCategory(owner="defaultMaintCategory",
+                                   category="Repair").put()
         
-        recall = models.MaintenanceCategory(owner="defaultMaintCategory",
-                                            category="Recall")
-        recall.put()
+        models.MaintenanceCategory(owner="defaultMaintCategory",
+                                   category="Recall").put()
 
-        wash = models.MaintenanceCategory(owner="defaultMaintCategory",
-                                          category="Car Wash")
-        wash.put()
+        models.MaintenanceCategory(owner="defaultMaintCategory",
+                                   category="Car Wash").put()
         
         query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId, "defaultMaintCategory"]))
         results = ndb.get_multi(query.fetch(keys_only=True))
@@ -234,18 +230,27 @@ def getUserExpenseCategories(userId):
         A string list of categories for that user
     """
 
-    query = models.UserExpenseCategory().query(models.UserExpenseCategory.owner == userId)
+    query = models.UserExpenseCategory().query(models.UserExpenseCategory.owner.IN([userId, "defaultCategory"]))
     results = ndb.get_multi(query.fetch(keys_only=True))
 
+    if not results:
+        # TODO: some of these seem duplicated with maintenance categories...
+        models.UserExpenseCategory(owner="defaultCategory",
+                                   category="Maintenance").put()
+        
+        models.UserExpenseCategory(owner="defaultCategory",
+                                   category="Fuel Up").put()
+        
+        models.UserExpenseCategory(owner="defaultCategory",
+                                   category="Repair").put()
+
+        models.UserExpenseCategory(owner="defaultCategory",
+                                   category="Uncategorized").put()
+        
+        query = models.UserExpenseCategory().query(models.UserExpenseCategory.owner.IN([userId, "defaultCategory"]))
+        results = ndb.get_multi(query.fetch(keys_only=True))
+
     toRet = []
-    
-    # TODO: declare default categories for expenses somewhere else
-    # BR COMMENT: maybe just store the defaults as categories with
-    #             an owner = "none" or something?
-    toRet.append("Maintenance")
-    toRet.append("Fuel Up")
-    toRet.append("Repair")
-    toRet.append("Uncategorized")
     
     for c in results:
         if not c.category in toRet:

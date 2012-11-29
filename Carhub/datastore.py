@@ -192,8 +192,27 @@ def getMaintenanceCategories(userId):
     """
 
     query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId, "defaultMaintCategory"]))
-    
     results = ndb.get_multi(query.fetch(keys_only=True))
+
+    if not results:
+        oil = models.MaintenanceCategory(owner="defaultMaintCategory",
+                                         category="Oil Change")
+        oil.put()
+        
+        repair = models.MaintenanceCategory(owner="defaultMaintCategory",
+                                            category="Repair")
+        repair.put()
+        
+        recall = models.MaintenanceCategory(owner="defaultMaintCategory",
+                                            category="Recall")
+        recall.put()
+
+        wash = models.MaintenanceCategory(owner="defaultMaintCategory",
+                                          category="Car Wash")
+        wash.put()
+        
+        query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId, "defaultMaintCategory"]))
+        results = ndb.get_multi(query.fetch(keys_only=True))
 
     toRet = []
     

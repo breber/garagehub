@@ -1,5 +1,10 @@
-{% extends 'base_vehicle.html' %} {% block pagecontent %}
+{% extends 'base_vehicle.html' %} 
+{% block externalcss %}
+<link rel="stylesheet" href="/static/css/dataTables.bootstrap.css" type="text/css"/>
+{% endblock %}
+{% block pagecontent %}
 
+<div>
 <h2>Expense Manager</h2>
 
 {% if not userexpenses %}
@@ -10,7 +15,11 @@
 </div>
 {% else %}
 <h3>Total Money Spent: ${{ expensetotal }}</h3>
-<div>
+  <a class="btn btn-primary pull-right" href="/vehicle/{{ car.key.id }}/expenses/add">Add Expense</a>
+  <br>
+  <br>
+  <a class="btn btn-primary pull-right" onClick="editRecord('/vehicle/{{ car.key.id }}/expenses/add/')">Edit Expense</a>
+
   <div class="btn-group" class="pull-right" data-toggle="buttons-radio">
     <button type="button" class="btn">Most Recent Purchase</button>
     <button type="button" class="btn">1 M</button>
@@ -19,14 +28,12 @@
     <button type="button" class="btn">All</button>
     <button type="button" class="btn">Custom</button>
   </div>
-  <div class="pull-right">
-    <a class="btn btn-primary pull-right" href="/vehicle/{{ car.key.id }}/expenses/add">Add Expense</a>
-  </div>
 </div>
 
-<table class="table table-striped table-bordered" id="expense-table">
+<table class="table table-striped table-bordered dataTable DTTT_selectable" id="expense-table">
   <thead>
     <tr>
+      <th>Expense ID</th>
       <th>Date</th>
       <th>Category</th>
       <th>Location</th>
@@ -35,13 +42,15 @@
       <th>Picture</th>
     </tr>
   </thead>
+  <tbody>
   {% for e in userexpenses %}
   <tr>
-    <td><div class="edit-date" id="date">{{ e.date_formatted }}</div></td>
-    <td><div class="edit-category id="category" >{{ e.category }}</div></td>
-    <td><div class="edit-location" id="location">{{ e.location }}</div></td>
-    <td><div class="edit-description" id="description">{{ e.description }}</div></td>
-    <td><div class="edit-amount" id="amount">{{ e.amount_formatted }}</div></td>
+  	<td>{{ e.key.id }}</td>
+    <td>{{ e.date_formatted }}</td>
+    <td>{{ e.category }}</td>
+    <td>{{ e.location }}</td>
+    <td>{{ e.description }}</td>
+    <td>{{ e.amount_formatted }}</td>
     
     {% if e.picture %}
     <td><button type="button" class="btn btn-success receiptlink" value="/blob/{{ e.picture }}">Receipt</a></td>
@@ -50,6 +59,7 @@
     {% endif %}
   </tr>
   {% endfor %}
+  </tbody>
 </table>
 
 <div id="displayimage" class="modal hide fade">
@@ -58,6 +68,7 @@
 
 {% endif %} {% endblock %} {% block externaljs %}
 <script type="text/javascript" src="/static/js/ext/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="/static/js/ext/jquery.jeditable.js"></script>
+<script type="text/javascript" src="/static/js/ext/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="/static/js/ext/TableTools.js"></script>
 <script type="text/javascript" src="/static/js/expenses.js"></script>
 {% endblock %}

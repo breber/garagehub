@@ -88,10 +88,6 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
 
         self.redirect("/vehicle/%s/expenses" % vehicleId)     
 
-class VehicleBaseExpenseEditorHandler(webapp2.RequestHandler):
-    def post(self, vehicleId, model):
-        placeholder = "put something here because error otherwise"
-
 class VehicleMaintenanceHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName):
         context = utils.get_context()

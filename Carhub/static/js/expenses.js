@@ -1,3 +1,4 @@
+var editID;
 
 $(document).ready(function() {
 	var dTable = $('#expense-table').dataTable({
@@ -8,113 +9,39 @@ $(document).ready(function() {
 		"bSort" : true,
 		"bInfo" : false,
 		"bAutoWidth" : false,
-		"aaSorting" : [ [ 0, 'desc' ] ]
+		"oTableTools": {
+            "sRowSelect": "multi",
+		},
+		/*"aoColumnDefs": [
+		                 { "bVisible":    false, "aTargets": [0]}
+		             ],*/
+		"aaSorting" : [ [ 1, 'desc' ] ]
+	});
+	 
+	//the aoColumnDefs line will hide the first column which has the record key in it.
+	
+	
+	
+	//make rows selectable
+	$('#expense-table tbody').click(function(event) {
+		$(dTable.fnSettings().aoData).each(function (){
+			$(this.nTr).removeClass('active');
+		});
+		$(event.target.parentNode).addClass('active');
+		
+		//get address
+		editID = event.target.parentNode.cells[0].textContent;
 	});
 	
-	addDatepickerToJEditable();
-	
-	/* Apply the jEditable handlers to the table */
-	$('.edit-date').editable( '../examples_support/editable_ajax.php', {
-        "callback": function( sValue, y ) {
-            var aPos = dTable.fnGetPosition( this );
-            dTable.fnUpdate( sValue, aPos[0], aPos[1] );
-        },
-        "submitdata": function ( value, settings ) {
-            return {
-                "row_id": this.parentNode.getAttribute('id'),
-                "column": dTable.fnGetPosition( this )[2]
-            };
-        },
-        type   : 'datepicker',
-        "height": "14px",
-        "width": "100%"
-    } );
-	
-	/* Apply the jEditable handlers to the table */
-	$('.edit-category').editable( '../examples_support/editable_ajax.php', {
-        "callback": function( sValue, y ) {
-            var aPos = dTable.fnGetPosition( this );
-            dTable.fnUpdate( sValue, aPos[0], aPos[1] );
-        },
-        "submitdata": function ( value, settings ) {
-            return {
-                "row_id": this.parentNode.getAttribute('id'),
-                "column": dTable.fnGetPosition( this )[2]
-            };
-        },
-        type   : 'select',
-        "height": "14px",
-        "width": "100%"
-    } );
-	
-	/* Apply the jEditable handlers to the table */
-	$('.edit-category').editable( '../examples_support/editable_ajax.php', {
-        "callback": function( sValue, y ) {
-            var aPos = dTable.fnGetPosition( this );
-            dTable.fnUpdate( sValue, aPos[0], aPos[1] );
-        },
-        "submitdata": function ( value, settings ) {
-            return {
-                "row_id": this.parentNode.getAttribute('id'),
-                "column": dTable.fnGetPosition( this )[2]
-            };
-        },
-        type   : 'select',
-        "height": "14px",
-        "width": "100%"
-    } );
-	
-	/* Apply the jEditable handlers to the table */
-	$('.edit-location').editable( '../examples_support/editable_ajax.php', {
-        "callback": function( sValue, y ) {
-            var aPos = dTable.fnGetPosition( this );
-            dTable.fnUpdate( sValue, aPos[0], aPos[1] );
-        },
-        "submitdata": function ( value, settings ) {
-            return {
-                "row_id": this.parentNode.getAttribute('id'),
-                "column": dTable.fnGetPosition( this )[2]
-            };
-        },
-        type   : 'textarea',
-        "height": "14px",
-        "width": "100%"
-    } );
-	
-	/* Apply the jEditable handlers to the table */
-	$('.edit-description').editable( '../examples_support/editable_ajax.php', {
-        "callback": function( sValue, y ) {
-            var aPos = dTable.fnGetPosition( this );
-            dTable.fnUpdate( sValue, aPos[0], aPos[1] );
-        },
-        "submitdata": function ( value, settings ) {
-            return {
-                "row_id": this.parentNode.getAttribute('id'),
-                "column": dTable.fnGetPosition( this )[2]
-            };
-        },
-        type   : 'textarea',
-        "height": "14px",
-        "width": "100%"
-    } );
-	
-	/* Apply the jEditable handlers to the table */
-	$('.edit-amount').editable( '../examples_support/editable_ajax.php', {
-        "callback": function( sValue, y ) {
-            var aPos = dTable.fnGetPosition( this );
-            dTable.fnUpdate( sValue, aPos[0], aPos[1] );
-        },
-        "submitdata": function ( value, settings ) {
-            return {
-                "row_id": this.parentNode.getAttribute('id'),
-                "column": dTable.fnGetPosition( this )[2]
-            };
-        },
-        type   : 'textarea',
-        "height": "14px",
-        "width": "100%"
-    } );
-	
+
+	/* in case you want row_selected
+table.display tr.even.row_selected td {
+	background-color: #B0BED9;
+}
+
+table.display tr.odd.row_selected td {
+	background-color: #9FAFD1;
+}*/
 });
 
 $('.receiptlink').click( function() {
@@ -122,31 +49,18 @@ $('.receiptlink').click( function() {
 	$('#modalimage').attr('src', this.getAttribute('value'));
 });
 
-function addDatepickerToJEditable(){
-	$.editable.addInputType('datepicker', {
-	    element : function(settings, original) {
-	        var input = $('<input>');
-	        if (settings.width  != 'none') { input.width(settings.width);  }
-	    	if (settings.height != 'none') { input.height(settings.height); }
-	        input.attr('autocomplete','off');
-	    	$(this).append(input);
-	    	return(input);
-	    },
-	    plugin : function(settings, original) {
-	        /* Workaround for missing parentNode in IE */
-	    	var form = this;
-	    	settings.onblur = 'ignore';
-	    	$(this).find('input').datepicker().bind('click', function() {
-	    		$(this).datepicker('show');
-	            return false;
-	        }).bind('dateSelected', function(e, selectedDate, $td) {
-	            $(form).submit();
-	        });
-	    }
-	});
+function editSelectedRecord()
+{
+	//TODO get the selected row and edit it.
+	
+
 }
 
-
+function editRecord(link){
+	alert(link + editID);
+	
+	window.location = link + editID;
+}
 
 //TODO
 // 	make modal to upload images in editable table mode

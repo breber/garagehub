@@ -372,7 +372,7 @@ class VehicleHandler(webapp2.RequestHandler):
         self.redirect("/")
         
 app = webapp2.WSGIApplication([                  
-    ('/vehicle/([^/]+)/expenses/?(.+?)?', VehicleExpenseHandler),
+    ('/vehicle/([^/]+)/expenses/?(.+?)?/?(.+?)?', VehicleExpenseHandler),
     ('/vehicle/([^/]+)/maintenance/?(.+?)?', VehicleMaintenanceHandler),
     ('/vehicle/([^/]+)/gasmileage/?(.+?)?', VehicleGasMileageHandler),
     ('/vehicle/([^/]+)?/?(.+?)?', VehicleHandler),

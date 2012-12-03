@@ -32,21 +32,14 @@ class VehicleExpenseEditDeleteHandler(webapp2.RequestHandler):
 class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
     def get(self, vehicleId, pageName, expenseId):
         context = utils.get_context()
-        
         user = users.get_current_user()
-        context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
-        context["categories"] = datastore.getUserExpenseCategories(user.user_id())
-        context['userexpenses'] = datastore.getAllExpenseRecords(user.user_id(), vehicleId, None, False) 
-        
-        expenseTotal = 0;
-        for expense in  context['userexpenses']:
-            expenseTotal += expense.amount
-        
-        context['expensetotal'] = utils.format_float(expenseTotal)
 
         if not vehicleId:
             self.redirect("/")
         else:
+            context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
+            context["categories"] = datastore.getUserExpenseCategories(user.user_id())
+            
             if pageName == "add":
                 blobstore_url = self.request.url + "/add"
                 upload_url = blobstore.create_upload_url(blobstore_url)
@@ -60,15 +53,16 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 
                 baseExpense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
                 context["editexpenseobj"] = baseExpense
-                
-                # TODO remove this
-                logging.warn("edit object desc= %s" % str(baseExpense.description))
 
                 path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
             elif pageName == "delete":
                 # Delete record
                 baseExpense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
                 if baseExpense:
+                    image = baseExpense.picture
+                    if image:
+                        blobstore.BlobInfo.get(image).delete()
+                    
                     baseExpense.key.delete()
                 else:
                     logging.warn("No object was deleted. Couldn't find it.")
@@ -76,14 +70,20 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 self.redirect("/vehicle/" + vehicleId + "/expenses")
                 return
             else:
+                context['userexpenses'] = datastore.getAllExpenseRecords(user.user_id(), vehicleId, None, False) 
+                
+                expenseTotal = 0;
+                for expense in  context['userexpenses']:
+                    expenseTotal += expense.amount
+                
+                context['expensetotal'] = utils.format_float(expenseTotal)
+
                 path = os.path.join(os.path.dirname(__file__), 'templates/expenses.html')
                 
             self.response.out.write(template.render(path, context))
     
     def post(self, vehicleId, pageName, expenseId):
         user = users.get_current_user()
-
-        logging.info("entered the Expense post function")
 
         if user:
             fileChosen = self.request.get("file", None)
@@ -173,6 +173,10 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
                 # Delete record
                 maintenanceRecord = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, maintenanceId)
                 if maintenanceRecord:
+                    image = maintenanceRecord.picture
+                    if image:
+                        blobstore.BlobInfo.get(image).delete()
+                        
                     maintenanceRecord.key.delete()
                 else:
                     logging.warn("No maintenance record object was deleted. Couldn't find it.")
@@ -246,6 +250,8 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
         context["categories"] = datastore.getUserExpenseCategories(user.user_id())
         context['userfuelrecords'] = datastore.getFuelRecords(user.user_id(), vehicleId, None, False)
+        
+        # TODO: do we need this latestFuel record?
         latestFuel = datastore.getNFuelRecords(user.user_id(), vehicleId, 1, False)
         if latestFuel and len(latestFuel) > 0:
             context["lastfuelrecord"] = latestFuel[0]
@@ -302,6 +308,10 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
                 # Delete record
                 fuelRecord = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, fuelRecordId)
                 if fuelRecord:
+                    image = fuelRecord.picture
+                    if image:
+                        blobstore.BlobInfo.get(image).delete()
+
                     fuelRecord.key.delete()
                 else:
                     logging.warn("No fuel record object was deleted. Couldn't find it.")
@@ -401,14 +411,12 @@ class VehicleHandler(webapp2.RequestHandler):
         # If the path doesn't contain a first parameter, just show the garage
         if not vehicleId:
             path = os.path.join(os.path.dirname(__file__), 'templates/garage.html')
-            self.response.out.write(template.render(path, context))
             
         # If the first path parameter is "add", show the add vehicle page 
         elif vehicleId == "add":
             context["vehicles"] = datastore.getListOfMakes()
             
             path = os.path.join(os.path.dirname(__file__), 'templates/addvehicle.html')
-            self.response.out.write(template.render(path, context))
         
         # If we have a first path parameter, and it isn't add, use that as
         # the vehicle ID and show that vehicle's page
@@ -424,12 +432,10 @@ class VehicleHandler(webapp2.RequestHandler):
                 path = os.path.join(os.path.dirname(__file__), 'templates/charts.html')
             elif pageName == "news":
                 path = os.path.join(os.path.dirname(__file__), 'templates/news.html')
-            elif pageName == "addrecord":
-                path = os.path.join(os.path.dirname(__file__), 'templates/addrecord.html')
             else:
                 path = os.path.join(os.path.dirname(__file__), 'templates/car.html')
                 
-            self.response.out.write(template.render(path, context))
+        self.response.out.write(template.render(path, context))
     
     def post(self, makeOption, model):
         user = users.get_current_user()
@@ -466,10 +472,7 @@ class VehicleHandler(webapp2.RequestHandler):
                     return
 
             elif model == "delete":
-                vehicle = datastore.getUserVehicle(user.user_id(), makeOption)
-                if vehicle:
-                    # TODO: delete all data that corresponds to this vehicle
-                    vehicle.key.delete()
+                datastore.deleteUserVehicle(user.user_id(), makeOption)
             
         self.redirect("/")
         

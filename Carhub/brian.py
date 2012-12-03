@@ -81,26 +81,24 @@ class FetchCarsBrian(webapp2.RequestHandler):
                         toAdd.amount = maint["totalCost"]
                         toAdd.odometer = maint["odometer"]
                         toAdd.put()
+        
+        self.redirect("/")
 
 class DeleteRecordsBrian(webapp2.RequestHandler):
     def get(self):
-        query = models.FuelRecord.query(models.FuelRecord.owner == users.get_current_user().user_id())
+        query = models.BaseExpense.query(models.BaseExpense.owner == users.get_current_user().user_id())
         results = ndb.get_multi(query.fetch(keys_only=True))
         
         for f in results:
             f.key.delete()
-        
-        query = models.MaintenanceRecord.query(models.MaintenanceRecord.owner == users.get_current_user().user_id())
-        results = ndb.get_multi(query.fetch(keys_only=True))
-        
-        for m in results:
-            m.key.delete()
         
         query = models.UserVehicle.query(models.UserVehicle.owner == users.get_current_user().user_id())
         results = ndb.get_multi(query.fetch(keys_only=True))
         
         for v in results:
             v.key.delete()
+        
+        self.redirect("/")
 
 app = webapp2.WSGIApplication([
     ('/brian/fetch', FetchCarsBrian),

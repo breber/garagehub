@@ -6,7 +6,6 @@ Created on Oct 17, 2012
 from google.appengine.ext import ndb
 import datetime
 import models
-import logging
 
 def getUserVehicle(userId, vehicleId):
     """Gets the UserVehicle instance for the given ID
@@ -96,7 +95,6 @@ def getBaseExpenseRecord(userId, vehicleId, expenseId):
             return baseExpense
                                                
     return None
-
 
 def getFuelRecords(userId, vehicleId, day_range=30, ascending=True):
     """Gets the FuelRecords for the given vehicle ID
@@ -455,3 +453,20 @@ def getTotalCost(userId, vehicleId):
         totalCost += b.amount
                 
     return totalCost
+
+def deleteUserVehicle(userId, vehicleId):
+    """Deletes a UserVehicle, along with any related records
+    
+    Args:
+        userId - The user's ID
+        vehicleId - The vehicle to delete
+    """
+    vehicle = getUserVehicle(userId, vehicleId)
+    if vehicle:
+        expenseRecords = getAllExpenseRecords(userId, vehicleId, None)
+        for r in expenseRecords:
+            r.key.delete()
+
+        # TODO: delete notifications
+        
+        vehicle.key.delete()

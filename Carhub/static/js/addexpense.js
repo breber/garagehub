@@ -51,6 +51,13 @@ $(document).ready(function() {
 	// try to load expense record to edit.
 	if(window.location.pathname.indexOf("edit") > -1){
 		editExpenseRecord();
+		if(window.location.pathname.indexOf("gasmileage") > -1){
+			editFuelRecord();
+		} else if(window.location.pathname.indexOf("maintenance") > -1){
+			editMaintenanceRecord();
+		} else if(window.location.pathname.indexOf("expense") > -1){
+			editExpenseRecord();
+		}
 	}
 	
 	
@@ -84,6 +91,28 @@ function newCategoryKeyPress(e)
 
 // Populate baseExpense fields based on record input
 function editExpenseRecord() {
+	$('#datePurchased').val( $('#editdatepurchased').text());
+	$('#category').val( $('#editcategory').text());
+	
+	$('#location').val( $('#editlocation').text());
+	
+	
+	$('#amount').val($('#editamount').text());
+	$('#description').val( $('#editdescription').text());	
+}
+
+//Populate Maintenance fields based on record input
+function editMaintenanceRecord() {
+	$('#datePurchased').val( $('#editdatepurchased').text());
+	$('#category').val( $('#editcategory').text());
+	$('#location').val( $('#editlocation').text());
+	$('#amount').val($('#editamount').text());
+	$('#description').val( $('#editdescription').text());	
+	$('#description').val( $('#editodometer').text());
+}
+
+//Populate Fuel Record fields based on record input
+function editFuelRecord() {
 	$('#datePurchased').val( $('#editdatepurchased').text());
 	$('#category').val( $('#editcategory').text());
 	

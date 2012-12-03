@@ -151,8 +151,28 @@
 	<div id="editdescription" >{{ editexpenseobj.description }}</div>
 	
 </div>
-
 {% endif %}
+{% if editmaintenanceobj %}
+<div id="editmaintenanceobject" class="hidden">
+	<div id="editdatepurchased">{{ editmaintenanceobj.date_formatted }}</div>
+	<div id="editcategory" >{{ editmaintenanceobj.category }}</div>
+	<div id="editlocation" >{{ editmaintenanceobj.location }}</div>
+	<div id="editamount" >{{ editmaintenanceobj.amount }}</div>
+	<div id="editdescription" >{{ editmaintenanceobj.description }}</div>
+	<div id="editodometer" >{{ editmaintenanceobj.description }}</div>
+</div>
+{% endif %}
+{% if editfuelrecordobj %}
+<div id="editexpenseobject" class="hidden">
+	<div id="editdatepurchased">{{ editexpenseobj.date_formatted }}</div>
+	<div id="editcategory" >{{ editexpenseobj.category }}</div>
+	<div id="editlocation" >{{ editexpenseobj.location }}</div>
+	<div id="editamount" >{{ editexpenseobj.amount }}</div>
+	<div id="editdescription" >{{ editexpenseobj.description }}</div>
+	
+</div>
+{% endif %}
+
 
 {% endblock %} 
 {% block externaljs %}

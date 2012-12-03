@@ -6,6 +6,7 @@
 
 {% block pagecontent %}
 
+
 <h2 class="generic hidden">Add Expense</h2>
 <h2 class="maintenance hidden">Add Maintenance Record</h2>
 <h2 class="gasmileage hidden">Add Fuel Up Record</h2>
@@ -50,14 +51,14 @@
   
   <div class="generic maintenance gasmileage hidden">
     <p>Location</p>
-    <input type="text" name="location">
+    <input type="text" name="location" id="location">
 
     <p>Amount Spent ($)</p>
     <input type="text" class="validate[required, custom[number]]" name="amount" id="amount">
   </div>
   <div class="generic maintenance hidden">
     <p>Description of Purchase</p>
-    <input type="text" name="description">
+    <input type="text" name="description" id="description">
   </div>
   
   <div class="gasmileage hidden">    
@@ -135,7 +136,23 @@
  
   <br />
   <button type="submit" class="btn btn-primary">Submit</button>
+
+
+
+
 </form>
+
+{% if editexpenseobj %}
+<div id="editexpenseobject" class="hidden">
+	<div id="editdatepurchased">{{ editexpenseobj.date_formatted }}</div>
+	<div id="editcategory" >{{ editexpenseobj.category }}</div>
+	<div id="editlocation" >{{ editexpenseobj.location }}</div>
+	<div id="editamount" >{{ editexpenseobj.amount_formatted }}</div>
+	<div id="editdescription" >{{ editexpenseobj.description }}</div>
+	
+</div>
+
+{% endif %}
 
 {% endblock %} 
 {% block externaljs %}

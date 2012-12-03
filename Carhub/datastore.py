@@ -6,6 +6,7 @@ Created on Oct 17, 2012
 from google.appengine.ext import ndb
 import datetime
 import models
+import logging
 
 def getUserVehicle(userId, vehicleId):
     """Gets the UserVehicle instance for the given ID
@@ -76,6 +77,26 @@ def getBaseExpenseRecords(userId, vehicleId, day_range=30, ascending=True):
     else:
         query = query.order(-models.BaseExpense.date)
     return ndb.get_multi(query.fetch(keys_only=True))
+
+def getBaseExpenseRecord(userId, vehicleId, expenseId):
+    """Gets the BaseExpense for the given expenseId
+    
+    Args: 
+        vehicleId - The vehicle ID
+        expenseId - The expense ID
+    
+    Returns
+        The BaseExpense
+    """
+    
+    if expenseId:
+        baseExpense = models.BaseExpense.get_by_id(long(expenseId))
+        
+        if baseExpense and str(baseExpense.owner) == str(userId) and str(baseExpense.vehicle) == str(vehicleId):
+            return baseExpense
+                                               
+    return None
+
 
 def getFuelRecords(userId, vehicleId, day_range=30, ascending=True):
     """Gets the FuelRecords for the given vehicle ID

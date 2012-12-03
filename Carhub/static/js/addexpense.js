@@ -19,10 +19,10 @@ $(document).ready(function() {
 	prepareEmptyTextInput( $('#odometerStart'), "Enter Odometer Start");
 	
 	var currentDate = new Date();
-	var prettyDate = (currentDate.getFullYear() + '-' + (currentDate.getMonth()+1) + '-' + currentDate.getDate() );
+	var prettyDate = (currentDate.getFullYear() + '/' + (currentDate.getMonth()+1) + '/' + currentDate.getDate() );
 	// make the date picker work
 	$('#datePurchased').datepicker({
-		format: 'yyyy-mm-dd'
+		format: 'yyyy/mm/dd'
 	});
 	
 	$('#datePurchased').val(prettyDate);
@@ -46,6 +46,12 @@ $(document).ready(function() {
 			alert("False");
 		}
 	});
+
+	
+	// try to load expense record to edit.
+	if(window.location.pathname.indexOf("edit") > -1){
+		editExpenseRecord();
+	}
 	
 	
 });
@@ -74,6 +80,18 @@ function newCategoryKeyPress(e)
     {
         document.getElementById('categoryButton').click();
     }
+}
+
+// Populate baseExpense fields based on record input
+function editExpenseRecord() {
+	$('#datePurchased').val( $('#editdatepurchased').text());
+	$('#category').val( $('#editcategory').text());
+	
+	$('#location').val( $('#editlocation').text());
+	
+	
+	$('#amount').val($('#editamount').text());
+	$('#description').val( $('#editdescription').text());	
 }
 
 

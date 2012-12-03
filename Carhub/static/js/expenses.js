@@ -57,9 +57,9 @@ function editSelectedRecord()
 }
 
 function editRecord(link){
-	alert(link + editID);
 
 	// TODO make sure something is selected
+	
 	
 	window.location = link + editID;
 }

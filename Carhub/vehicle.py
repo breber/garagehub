@@ -10,6 +10,25 @@ import os
 import utils
 import webapp2
 
+class VehicleExpenseEditDeleteHandler(webapp2.RequestHandler):
+    def get(self, vehicleId, pageName, expenseId):
+        user = users.get_current_user()
+
+        expense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
+        
+        if expense:
+            if expense._class_name() == "BaseExpense":
+                self.redirect("/vehicle/" + vehicleId + "/expenses/" + pageName + "/" + expenseId)
+                return
+            elif expense._class_name() == "MaintenanceRecord":
+                self.redirect("/vehicle/" + vehicleId + "/maintenance/" + pageName + "/" + expenseId)
+                return
+            elif expense._class_name() == "FuelRecord":
+                self.redirect("/vehicle/" + vehicleId + "/gasmileage/" + pageName + "/" + expenseId)
+                return
+        
+        self.redirect("/vehicle/" + vehicleId + "/expenses")
+
 class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
     def get(self, vehicleId, pageName, expenseId):
         context = utils.get_context()
@@ -381,8 +400,9 @@ class VehicleHandler(webapp2.RequestHandler):
             
         self.redirect("/")
         
-app = webapp2.WSGIApplication([                  
+app = webapp2.WSGIApplication([ 
     ('/vehicle/([^/]+)/expenses/?([^/]+)?/?(.+)?', VehicleExpenseHandler),
+    ('/vehicle/([^/]+)/expense/?([^/]+)?/?(.+)?', VehicleExpenseEditDeleteHandler),                 
     ('/vehicle/([^/]+)/maintenance/?(.+?)?', VehicleMaintenanceHandler),
     ('/vehicle/([^/]+)/gasmileage/?(.+?)?', VehicleGasMileageHandler),
     ('/vehicle/([^/]+)?/?(.+?)?', VehicleHandler),

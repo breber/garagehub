@@ -12,6 +12,15 @@ indexes:
 
 - kind: BaseExpense
   properties:
+  - name: category
+  - name: class
+  - name: owner
+  - name: vehicle
+  - name: date
+    direction: desc
+
+- kind: BaseExpense
+  properties:
   - name: class
   - name: owner
   - name: vehicle

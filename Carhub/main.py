@@ -110,7 +110,7 @@ class NotificationHandler(webapp2.RequestHandler):
         newNotificationObj.recurringMonths = recurringMonths
         
         deltaoneday = datetime.timedelta(days=1)
-        newNotificationObj.dateLastSeen = datetime.datetime.now() - deltaoneday
+        newNotificationObj.dateLastSeen = datetime.date.today() - deltaoneday
         
         if newRecurring:
             if newDateBased:
@@ -138,7 +138,7 @@ class NotificationHandler(webapp2.RequestHandler):
                 if dateString:
                     newNotificationObj.date = datetime.datetime.strptime(dateString, "%Y-%m-%d")
             if newMileBased:
-                newNotificationObj.mileage = int(self.request.get("milesToNotify", None))
+                newNotificationObj.mileage = int(self.request.get("milesToNotify", 0))
                 
         newNotificationObj.put()
         

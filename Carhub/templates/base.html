@@ -53,12 +53,20 @@
             {% if user %}
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Notifications 
-              	{% if notifications %}
-              	<span class="badge badge-important">{{ notifications.count }}</span> 
+              	{% if totalNotifications %}
+              	<span class="badge badge-important">{{ totalNotifications }}</span> 
               	{% endif %}
               	<b class="caret hidden-phone"></b></a>
               <ul class="dropdown-menu">
-                {% if notifications %}
+              	{% for notif in dateNotifications %}
+              	<li><a href="/notifications">
+              		{{ notif.vehicleName }}: Need {{ notif.category }} by {{ notif.date }}
+              	</a></li>
+              	{% endfor %}
+              	{% for notif in mileNotifications %}
+              	<li>{{ notif.vehicleName }}: Need {{ notif.category }} at {{ notif.mileage }} miles</li>
+              	{% endfor %}
+                {% if totalNotifications %}
                 <li class="divider"></li>
                 {% endif %}
                 <li><a href="/notifications/add"><i class="icon-plus"></i> Add Notification</a></li>

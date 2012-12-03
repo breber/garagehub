@@ -21,10 +21,14 @@ def get_context(list_vehicles=True):
             if len(userVehicles) > 0:
                 context['uservehicles'] = sorted(userVehicles, key=lambda UserVehicle:UserVehicle.name())
             
-            notifications = datastore.getNotifications(user.user_id())
+            dateNotifications = datastore.getActiveDateNotifications(user.user_id())
+            mileNotifications = datastore.getActiveMileageNotifications(user.user_id())
+            totalNotifications = len(dateNotifications) + len(mileNotifications)
             
-            if len(notifications) > 0:
-                context['notifications'] = notifications
+            if totalNotifications > 0:
+                context['dateNotifications'] = dateNotifications
+                context['mileNotifications'] = mileNotifications
+                context['totalNotifications'] = totalNotifications
         
     else:
         context['user'] = None

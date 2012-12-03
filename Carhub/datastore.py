@@ -370,12 +370,11 @@ def getActiveDateNotifications(userId):
     toRet = []
     
     for r in results:
-        if r.dateLastSeen != datetime.date:
+        if r.dateLastSeen != datetime.date.today():
             if r.dateBased:
                 daysNotice = datetime.timedelta(days=r.notifyDaysBefore)
-                deltaRemaining = r.date - datetime.date
-                daysRemaining = datetime.timedelta(deltaRemaining).days
-                if daysRemaining <= daysNotice:
+                deltaRemaining = datetime.datetime.combine(r.date, datetime.time()) - datetime.datetime.now()
+                if deltaRemaining <= daysNotice:
                     toRet.append(r)
                 
     return toRet
@@ -395,7 +394,7 @@ def getActiveMileageNotifications(userId):
     toRet = []
     
     for r in results:
-        if r.dateLastSeen != datetime.date:
+        if r.dateLastSeen != datetime.date.today():
             if r.mileBased:
                 maxmileage = getLastRecordedMileage(userId, r.vehicle)
                 if (r.mileage - maxmileage) <= r.notifyMilesBefore:

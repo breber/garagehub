@@ -218,17 +218,26 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             context["lastfuelrecord"] = latestFuel[0]
         
         i = 0
+        mpgTots = 0
         mpgTotal = 0
+        gallonsTotal = 0
         milesLogged = 0
         for fuelRecord in context['userfuelrecords']:
-            if fuelRecord.mpg > -1:
+            if fuelRecord.mpg > -1 and fuelRecord.gallons > -1:
                 i = i + 1
-                mpgTotal += fuelRecord.mpg
+                mpgTots += fuelRecord.mpg
+                mpgTotal += fuelRecord.mpg * fuelRecord.gallons
+                gallonsTotal += fuelRecord.gallons
             if fuelRecord.odometerEnd != -1 and fuelRecord.odometerStart != -1:
                 milesLogged += (fuelRecord.odometerEnd - fuelRecord.odometerStart)
         
         if i != 0:
-            context['avgmpg'] = utils.format_float(mpgTotal / i)
+            context['avgmpg'] = utils.format_float(mpgTotal / gallonsTotal)
+        
+            # Can remove if you want to
+            # This has comparison between average mpg value vs total miles logged divided by gallons
+            logging.warn("avgmpg=%s, mpggallon=%s, miles/gal=%s" % (utils.format_float(mpgTots / i), utils.format_float(mpgTotal / gallonsTotal), utils.format_float(milesLogged / gallonsTotal) ))
+            
         else:
             context['avgmpg'] = 0
 

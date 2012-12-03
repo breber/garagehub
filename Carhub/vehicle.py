@@ -11,7 +11,7 @@ import utils
 import webapp2
 
 class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
-    def get(self, vehicleId, pageName):
+    def get(self, vehicleId, pageName, expenseId):
         context = utils.get_context()
         user = users.get_current_user()
         context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
@@ -33,12 +33,28 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 context["upload_url"] = upload_url
 
                 path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
+            elif pageName == "edit":
+                blobstore_url = self.request.url + "/add"
+                upload_url = blobstore.create_upload_url(blobstore_url)
+                context["upload_url"] = upload_url
+                
+                #todo import edited record data
+
+                path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
+            elif pageName == "delete":
+                blobstore_url = self.request.url + "/add"
+                
+                #todo delete record
+                
+                context["upload_url"] = upload_url
+
+                path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
             else:
                 path = os.path.join(os.path.dirname(__file__), 'templates/expenses.html')
                 
             self.response.out.write(template.render(path, context))
     
-    def post(self, vehicleId, model):
+    def post(self, vehicleId, pageName, expenseId):
         currentUser = users.get_current_user()
 
         logging.info("entered the Expense post function")

@@ -4,6 +4,7 @@ from google.appengine.ext import ndb
 import datetime
 import json
 import models
+import os
 import webapp2
 
 class FetchCarsBrian(webapp2.RequestHandler):
@@ -13,10 +14,15 @@ class FetchCarsBrian(webapp2.RequestHandler):
         
         if result.status_code == 200:
             jsonResult = json.loads(result.content)
+            debug = os.environ['SERVER_SOFTWARE'].startswith('Dev')
             
             for vehicle in jsonResult:
                 if vehicle["emailAddress"] == "reber.brian@gmail.com":
                     userId = vehicle["userId"]
+                    
+                    if debug:
+                        userId = users.get_current_user().user_id()
+                    
                     veh = models.UserVehicle()
                     veh.make = vehicle["make"]
                     veh.model = vehicle["model"]

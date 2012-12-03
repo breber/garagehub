@@ -16,7 +16,7 @@
 	</thead>
 	{% for notif in notifications %}
 	<tr>
-		<td>{{ notif.vehicle }}</td>
+		<td>{{ notif.vehicleName }}</td>
 		<td>{{ notif.category }}</td>
 		<td>
 		{% if notif.recurring %}
@@ -41,7 +41,7 @@
 			{% endif %}
 		{% endif %}
 		{% if notif.mileBased %}
-		<span>At {{ notif.mileage }} Miles</span>
+		<span>{{ notif.mileage }} Miles</span>
 		{% endif %}
 		</td>
 	</tr>

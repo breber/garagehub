@@ -42,28 +42,11 @@ class ExpenseCategoryHandler(webapp2.RequestHandler):
         
         if user:
             if day_range:
-                fuels = datastore.getFuelRecords(user.user_id(), vehicleId, long(day_range))
-                maintenances = datastore.getMaintenanceRecords(user.user_id(), vehicleId, long(day_range))
                 baseexpenses = datastore.getBaseExpenseRecords(user.user_id(), vehicleId, long(day_range))
             else:
-                fuels = datastore.getFuelRecords(user.user_id(), vehicleId)
-                maintenances = datastore.getMaintenanceRecords(user.user_id(), vehicleId)
                 baseexpenses = datastore.getBaseExpenseRecords(user.user_id(), vehicleId)
             
             toRet = {}
-            for record in fuels:
-                category = str(record.category)
-                prev = 0
-                if category in toRet.keys():
-                    prev = toRet[category]
-                toRet[category] = prev + record.amount
-            
-            for record in maintenances:
-                category = str(record.category)
-                prev = 0
-                if category in toRet.keys():
-                    prev = toRet[category]
-                toRet[category] = prev + record.amount
 
             for record in baseexpenses:
                 category = str(record.category)

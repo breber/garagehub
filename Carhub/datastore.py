@@ -48,12 +48,7 @@ def getAllExpenseRecords(userId, vehicleId, day_range=30, ascending=True):
         The list of Expenses
     """
     
-    allExpenses = getBaseExpenseRecords(userId, vehicleId, day_range, ascending)
-    allExpenses = allExpenses + getMaintenanceRecords(userId, vehicleId, day_range, ascending)
-    allExpenses = allExpenses + getFuelRecords(userId, vehicleId, day_range, ascending)
-    
-    return allExpenses
-    
+    return getBaseExpenseRecords(userId, vehicleId, day_range, ascending)
 
 def getBaseExpenseRecords(userId, vehicleId, day_range=30, ascending=True):
     """Gets the BaseExpense for the given vehicle ID

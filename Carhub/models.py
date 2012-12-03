@@ -1,4 +1,5 @@
 from google.appengine.ext import ndb
+from google.appengine.ext.ndb import polymodel
 import utils
 
 class ServerResponseString(ndb.Model):
@@ -21,7 +22,7 @@ class UserVehicle(ndb.Model):
     def name(self):
         return "%s %s %s" % (self.year, self.make, self.model)
 
-class BaseExpense(ndb.Model):
+class BaseExpense(polymodel.PolyModel):
     owner = ndb.StringProperty()
     vehicle = ndb.IntegerProperty()
     date = ndb.DateProperty()

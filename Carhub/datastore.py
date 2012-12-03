@@ -427,20 +427,11 @@ def getTotalCost(userId, vehicleId):
         The total spent on the specified vehicle
     """
 
-    # TODO: find a better way (more efficient) to calculate this
     totalCost = 0
 
     baseExpenses = getBaseExpenseRecords(userId, vehicleId, None)
-    fuelRecords = getFuelRecords(userId, vehicleId, None)
-    maintRecords = getMaintenanceRecords(userId, vehicleId, None)
 
     for b in baseExpenses:
         totalCost += b.amount
-    
-    for f in fuelRecords:
-        totalCost += f.amount
-    
-    for m in maintRecords:
-        totalCost += m.amount
                 
     return totalCost

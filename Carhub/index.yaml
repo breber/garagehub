@@ -12,15 +12,6 @@ indexes:
 
 - kind: BaseExpense
   properties:
-  - name: category
-  - name: class
-  - name: owner
-  - name: vehicle
-  - name: date
-    direction: desc
-
-- kind: BaseExpense
-  properties:
   - name: class
   - name: owner
   - name: vehicle
@@ -48,25 +39,4 @@ indexes:
   - name: owner
   - name: vehicle
   - name: odometerEnd
-    direction: desc
-
-- kind: BaseExpense
-  properties:
-  - name: owner
-  - name: vehicle
-  - name: date
-    direction: desc
-
-- kind: FuelRecord
-  properties:
-  - name: owner
-  - name: vehicle
-  - name: date
-    direction: desc
-
-- kind: MaintenanceRecord
-  properties:
-  - name: owner
-  - name: vehicle
-  - name: date
     direction: desc

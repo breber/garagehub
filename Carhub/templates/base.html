@@ -64,7 +64,9 @@
               	</a></li>
               	{% endfor %}
               	{% for notif in mileNotifications %}
-              	<li>{{ notif.vehicleName }}: Need {{ notif.category }} at {{ notif.mileage }} miles</li>
+              	<li><a href="/notifications">
+              		{{ notif.vehicleName }}: Need {{ notif.category }} at {{ notif.mileage }} miles
+              	</a></li>
               	{% endfor %}
                 {% if totalNotifications %}
                 <li class="divider"></li>

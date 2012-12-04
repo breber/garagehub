@@ -14,4 +14,4 @@ class picture_view(blobstore_handlers.BlobstoreDownloadHandler):
             
 app = webapp2.WSGIApplication([                  
     ('/blob/([^/]+)', picture_view)
-], debug=True)
+])

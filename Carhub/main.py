@@ -4,7 +4,6 @@ from google.appengine.ext.webapp import template
 import datetime
 import datastore
 import json
-import logging
 import models
 import os
 import utils
@@ -54,7 +53,6 @@ class NotificationHandler(webapp2.RequestHandler):
         self.response.out.write(template.render(path, context))
         
     def post(self, pageName):
-        context = utils.get_context()
         user = users.get_current_user()
         
         newNotificationObj = models.Notification()

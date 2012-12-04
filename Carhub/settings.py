@@ -18,4 +18,4 @@ class SettingsHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/settings', SettingsHandler)
-], debug=True)
+])

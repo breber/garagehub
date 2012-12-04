@@ -67,4 +67,4 @@ class ExpenseCategoryHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/api/expense/fuel/([^/]+)/?(.+?)?', ExpenseFuelHandler),
     ('/api/expense/category/([^/]+)/?(.+?)?', ExpenseCategoryHandler)
-], debug=True)
+])

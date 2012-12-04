@@ -20,4 +20,4 @@ class ToolsHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/tools/([^/]+)', ToolsHandler)
-], debug=True)
+])

@@ -73,7 +73,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 context['userexpenses'] = datastore.getAllExpenseRecords(user.user_id(), vehicleId, None, False) 
                 
                 expenseTotal = 0;
-                for expense in  context['userexpenses']:
+                for expense in context['userexpenses']:
                     expenseTotal += expense.amount
                 
                 context['expensetotal'] = utils.format_float(expenseTotal)
@@ -85,53 +85,51 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self, vehicleId, pageName, expenseId):
         user = users.get_current_user()
 
-        if user:
-            fileChosen = self.request.get("file", None)
-            recieptKey = None
-            if fileChosen:
-                upload_files = self.get_uploads('file')
-                blob_info = upload_files[0]
-                recieptKey = str(blob_info.key())
-            
-            dateString = self.request.get("datePurchased", None)
-            datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
-            newCategory = self.request.get("newCategory", None)
-            
-            # find out if new category has been added
-            userCatgories = datastore.getUserExpenseCategories(user.user_id())
-            category = self.request.get("category", "Uncategorized")
-            if not category in userCatgories:
-                # this is a new category, add it to the database
-                newCategoryObj = models.UserExpenseCategory()
-                newCategoryObj.owner = user.user_id()
-                newCategoryObj.category = category
-                newCategoryObj.put()
+        fileChosen = self.request.get("file", None)
+        recieptKey = None
+        if fileChosen:
+            upload_files = self.get_uploads('file')
+            blob_info = upload_files[0]
+            recieptKey = str(blob_info.key())
+        
+        dateString = self.request.get("datePurchased", None)
+        datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
+        
+        # TODO: do we need this? it doesn't appear to be used...
+        newCategory = self.request.get("newCategory", None)
+        
+        # find out if new category has been added
+        userCatgories = datastore.getUserExpenseCategories(user.user_id())
+        category = self.request.get("category", "Uncategorized")
+        if not category in userCatgories:
+            # this is a new category, add it to the database
+            newCategoryObj = models.UserExpenseCategory()
+            newCategoryObj.owner = user.user_id()
+            newCategoryObj.category = category
+            newCategoryObj.put()
 
-            location = self.request.get("location", "")
-            amount = float(self.request.get("amount", None))
-            description = self.request.get("description", "")
-            logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
+        location = self.request.get("location", "")
+        amount = float(self.request.get("amount", None))
+        description = self.request.get("description", "")
+        logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
+        
+        if datePurchased and amount:
+            if pageName == "edit":
+                expense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
+            else:
+                expense = models.BaseExpense()
             
-            if datePurchased and amount:
-                logging.info("Expense Being Added")
-                if pageName == "edit":
-                    expense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
-                else:
-                    expense = models.BaseExpense()
-                
-                
-                expense.date = datePurchased
-                expense.category = category
-                expense.location = location
-                expense.amount = amount
-                expense.description = description
-                expense.picture = recieptKey
-                
-                expense.owner = user.user_id()
-                expense.vehicle = long(vehicleId)
-                expense.lastmodified = datetime.datetime.now()
-                
-                expense.put()
+            expense.date = datePurchased
+            expense.category = category
+            expense.location = location
+            expense.amount = amount
+            expense.description = description
+            expense.picture = recieptKey
+            expense.owner = user.user_id()
+            expense.vehicle = long(vehicleId)
+            expense.lastmodified = datetime.datetime.now()
+            
+            expense.put()
 
         self.redirect("/vehicle/%s/expenses" % vehicleId)     
 
@@ -148,8 +146,6 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
             categories = datastore.getMaintenanceCategories(user.user_id())
             if len(categories) > 0:
                 context["categories"] = categories
-                logging.info("Category %s", categories[0])
-            logging.info("No categories")
             
             if pageName == "add":
                 blobstore_url = self.request.url + "/add"
@@ -164,9 +160,6 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
                 
                 maintenanceRecord = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, maintenanceId)
                 context["editmaintenanceobj"] = maintenanceRecord
-                
-                #TODO remove
-                logging.warn("edit object desc= %s" % str(maintenanceRecord.description))
 
                 path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
             elif pageName == "delete":
@@ -234,7 +227,6 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
                 maintRec.amount = amount
                 maintRec.description = description
                 maintRec.odometer = odometer
-                
                 maintRec.owner = user.user_id()
                 maintRec.vehicle = long(vehicleId)
                 maintRec.lastmodified = datetime.datetime.now()
@@ -272,11 +264,6 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         
         if i != 0:
             context['avgmpg'] = utils.format_float(mpgTotal / gallonsTotal)
-        
-            # Can remove if you want to
-            # This has comparison between average mpg value vs total miles logged divided by gallons
-            logging.warn("avgmpg=%s, mpggallon=%s, miles/gal=%s" % (utils.format_float(mpgTots / i), utils.format_float(mpgTotal / gallonsTotal), utils.format_float(milesLogged / gallonsTotal) ))
-            
         else:
             context['avgmpg'] = 0
 
@@ -299,9 +286,6 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
                 
                 fuelRecord = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, fuelRecordId)
                 context["editfuelrecordobj"] = fuelRecord
-                
-                #TODO remove
-                logging.warn("edit object desc= %s" % str(fuelRecord.description))
 
                 path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
             elif pageName == "delete":
@@ -341,7 +325,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             
             # try to get from last fuel record if user wants to, or else try to get it from 
             #      the manual entry tab if it is not entered then assume it is -1 which means N/A
-            useOdometerLastRecord = self.request.get("sinceLastFuelRecord",False)
+            useOdometerLastRecord = self.request.get("sinceLastFuelRecord", False)
             
             lastFuelRecord = None
             if useOdometerLastRecord:
@@ -352,14 +336,14 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
                     odometerStart = lastFuelRecord.odometerEnd
             if not lastFuelRecord:
                 # try to get from manual odometer start entry
-                odometerStart = self.request.get("odometerStart",None)
+                odometerStart = self.request.get("odometerStart", None)
                 if odometerStart and odometerStart != "Enter Odometer Start":
                     odometerStart = int(odometerStart)
                 else:
                     odometerStart = -1
             
             
-            odometerEnd = self.request.get("odometerEnd",None)
+            odometerEnd = self.request.get("odometerEnd", None)
             if odometerEnd:
                 odometerEnd = int(odometerEnd)
             else:
@@ -392,8 +376,6 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
                 record.odometerStart = odometerStart
                 record.odometerEnd = odometerEnd
                 record.mpg = mpg
-                
-                # record ownership
                 record.owner = user.user_id()
                 record.vehicle = long(vehicleId)
                 record.lastmodified = datetime.datetime.now()
@@ -440,39 +422,38 @@ class VehicleHandler(webapp2.RequestHandler):
     def post(self, makeOption, model):
         user = users.get_current_user()
 
-        if user:
-            if makeOption == "add":
-                make = self.request.get("make", None)
-                model = self.request.get("model", None)
-                year = self.request.get("year", None)
+        if makeOption == "add":
+            make = self.request.get("make", None)
+            model = self.request.get("model", None)
+            year = self.request.get("year", None)
+            
+            if make and model and year:
+                vehicle = models.UserVehicle()
+                vehicle.make = make
+                vehicle.model = model
+                vehicle.year = year
+                vehicle.owner = user.user_id()
+                vehicle.lastmodified = datetime.datetime.now()
                 
-                if make and model and year:
-                    vehicle = models.UserVehicle()
-                    vehicle.make = make
-                    vehicle.model = model
-                    vehicle.year = year
-                    vehicle.owner = user.user_id()
-                    vehicle.lastmodified = datetime.datetime.now()
-                    
-                    vehicle.put()
-            elif model == "update":
-                vehicle = datastore.getUserVehicle(user.user_id(), makeOption)
-                if vehicle:
-                    color = self.request.get("color", None)
-                    plates = self.request.get("plates", None)
-                    
-                    # Conditionally update the vehicle object
-                    vehicle.color = color if color else color.plates
-                    vehicle.plates = plates if plates else vehicle.plates
-                    
-                    vehicle.lastmodified = datetime.datetime.now()
-                    vehicle.put()
-                    
-                    self.redirect("/vehicle/%d" % vehicle.key.id())
-                    return
+                vehicle.put()
+        elif model == "update":
+            vehicle = datastore.getUserVehicle(user.user_id(), makeOption)
+            if vehicle:
+                color = self.request.get("color", None)
+                plates = self.request.get("plates", None)
+                
+                # Conditionally update the vehicle object
+                vehicle.color = color if color else color.plates
+                vehicle.plates = plates if plates else vehicle.plates
+                
+                vehicle.lastmodified = datetime.datetime.now()
+                vehicle.put()
+                
+                self.redirect("/vehicle/%d" % vehicle.key.id())
+                return
 
-            elif model == "delete":
-                datastore.deleteUserVehicle(user.user_id(), makeOption)
+        elif model == "delete":
+            datastore.deleteUserVehicle(user.user_id(), makeOption)
             
         self.redirect("/")
         

@@ -77,4 +77,4 @@ class CronHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/admin/?([^/]+)?', AdminHandler),
     ('/cron/([^/]+)', CronHandler)
-], debug=True)
+])

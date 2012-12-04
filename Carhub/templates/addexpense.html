@@ -7,9 +7,9 @@
 {% block pagecontent %}
 
 
-<h2 class="generic hidden">Add Expense</h2>
-<h2 class="maintenance hidden">Add Maintenance Record</h2>
-<h2 class="gasmileage hidden">Add Fuel Up Record</h2>
+<h2 class="generic hidden page-header">Add Expense</h2>
+<h2 class="maintenance hidden page-header">Add Maintenance Record</h2>
+<h2 class="gasmileage hidden page-header">Add Fuel Record</h2>
 
 
 <form id="addform" action="{{ upload_url }}" method="post" enctype="multipart/form-data">
@@ -63,7 +63,7 @@
   
   <div class="gasmileage hidden">    
     <p>Price Per Gallon ($)</p>
-    <input type="text" class="validate[required,custom[number]]" name="pricepergallons">
+    <input type="text" class="validate[required,custom[number]]" name="pricepergallon" id="pricepergallon">
     
     <p>Fuel Grade</p>
     <select name="grade" id="grade">
@@ -78,7 +78,7 @@
   
   
   <div class="gasmileage hidden well well-small">
-   <p>Odometer Starting Value</p>
+   <p>Starting Odometer Reading</p>
    <div class="tabbable">
       <ul id="odometertab" class="nav nav-tabs">
         <li class="active"><a href="#OdomA" data-toggle="tab">Last Fuel Record</a></li>
@@ -129,8 +129,8 @@
   </div> 
   
   <div class="maintenance gasmileage hidden">
-    <p>Current Odometer Reading</p>
-    <input type="text" class="validate[custom[integer], min[0]]" name="odometerEnd">
+    <p>Ending Odometer Reading</p>
+    <input type="text" class="validate[custom[integer], min[0]]" name="odometerEnd" id="odometerEnd">
   </div>
   
  
@@ -142,6 +142,7 @@
 
 </form>
 
+<!-- Below are hidden fields that contain record information of a record to be edited -->
 {% if editexpenseobj %}
 <div id="editexpenseobject" class="hidden">
 	<div id="editdatepurchased">{{ editexpenseobj.date_formatted }}</div>
@@ -159,17 +160,21 @@
 	<div id="editlocation" >{{ editmaintenanceobj.location }}</div>
 	<div id="editamount" >{{ editmaintenanceobj.amount }}</div>
 	<div id="editdescription" >{{ editmaintenanceobj.description }}</div>
-	<div id="editodometer" >{{ editmaintenanceobj.description }}</div>
+	<div id="editodometer" >{{ editmaintenanceobj.odometer }}</div>
 </div>
 {% endif %}
 {% if editfuelrecordobj %}
-<div id="editexpenseobject" class="hidden">
-	<div id="editdatepurchased">{{ editexpenseobj.date_formatted }}</div>
-	<div id="editcategory" >{{ editexpenseobj.category }}</div>
-	<div id="editlocation" >{{ editexpenseobj.location }}</div>
-	<div id="editamount" >{{ editexpenseobj.amount }}</div>
-	<div id="editdescription" >{{ editexpenseobj.description }}</div>
-	
+<div id="editfuelrecordobject" class="hidden">
+	<div id="editdatepurchased">{{ editfuelrecordobj.date_formatted }}</div>
+	<div id="editcategory" >{{ editfuelrecordobj.category }}</div>
+	<div id="editlocation" >{{ editfuelrecordobj.location }}</div>
+	<div id="editamount" >{{ editfuelrecordobj.amount }}</div>
+	<div id="editdescription" >{{ editfuelrecordobj.description }}</div>
+	<div id="editpricepergallon" >{{ editfuelrecordobj.costPerGallon }}</div>
+	<div id="editfuelgrade" >{{ editfuelrecordobj.fuelGrade }}</div>
+	<div id="editodometerstart" >{{ editfuelrecordobj.odometerStart }}</div>
+	<div id="editodometerend" >{{ editfuelrecordobj.odometerEnd }}</div>
+	costPerGallon
 </div>
 {% endif %}
 

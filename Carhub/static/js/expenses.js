@@ -13,15 +13,11 @@ $(document).ready(function() {
             "sRowSelect": "multi",
 		},
 		/*"aoColumnDefs": [
-		                 { "bVisible":    false, "aTargets": [0]}
-		             ],*/
-		"aaSorting" : [ [ 1, 'desc' ] ]
+		                 { "bVisible":    false, "aTargets": [0]} 
+		             ],*/  /* this code will hide the first row  */
+		"aaSorting" : [ [ 0, 'desc' ] ]
 	});
 	 
-	//the aoColumnDefs line will hide the first column which has the record key in it.
-	
-	
-	
 	//make rows selectable
 	$('#expense-table tbody').click(function(event) {
 		$(dTable.fnSettings().aoData).each(function (){
@@ -29,19 +25,9 @@ $(document).ready(function() {
 		});
 		$(event.target.parentNode).addClass('active');
 		
-		//get address
-		editID = event.target.parentNode.cells[0].textContent;
+		//get key for record
+		editID = event.target.parentNode.id;
 	});
-	
-
-	/* in case you want row_selected
-table.display tr.even.row_selected td {
-	background-color: #B0BED9;
-}
-
-table.display tr.odd.row_selected td {
-	background-color: #9FAFD1;
-}*/
 });
 
 $('.receiptlink').click( function() {
@@ -49,19 +35,17 @@ $('.receiptlink').click( function() {
 	$('#modalimage').attr('src', this.getAttribute('value'));
 });
 
-function editSelectedRecord()
-{
-	//TODO get the selected row and edit it.
-	
-
-}
-
 function editRecord(link){
 
-	// TODO make sure something is selected
+	// make sure something is selected
+	if(editID) {
+		window.location = link + editID;		
+	} else if(link.indexOf("edit") > -1){
+		alert("Please select a record to edit.");
+	} else if(link.indexOf("delete") > -1){
+		alert("Please select a record to delete.");
+	}
 	
-	
-	window.location = link + editID;
 }
 
 //TODO

@@ -91,6 +91,9 @@ function newCategoryKeyPress(e)
 
 // Populate baseExpense fields based on record input
 function editExpenseRecord() {
+	//change header 
+	$('.page-header').text("Edit Expense");
+	
 	$('#datePurchased').val( $('#editdatepurchased').text());
 	$('#category').val( $('#editcategory').text());
 	
@@ -103,24 +106,42 @@ function editExpenseRecord() {
 
 //Populate Maintenance fields based on record input
 function editMaintenanceRecord() {
+	//change header 
+	$('.page-header').text("Edit Maintenance Record");
+	
 	$('#datePurchased').val( $('#editdatepurchased').text());
 	$('#category').val( $('#editcategory').text());
 	$('#location').val( $('#editlocation').text());
 	$('#amount').val($('#editamount').text());
 	$('#description').val( $('#editdescription').text());	
-	$('#description').val( $('#editodometer').text());
+	$('#odometerEnd').val( $('#editodometer').text());
 }
 
 //Populate Fuel Record fields based on record input
 function editFuelRecord() {
+	//change header 
+	$('.page-header').text("Edit Fuel Record");
+	
 	$('#datePurchased').val( $('#editdatepurchased').text());
 	$('#category').val( $('#editcategory').text());
-	
 	$('#location').val( $('#editlocation').text());
-	
-	
 	$('#amount').val($('#editamount').text());
 	$('#description').val( $('#editdescription').text());	
+	$('#pricepergallon').val($('#editpricepergallon').text());
+	$('#grade').val($('#editfuelgrade').text());
+	
+	// Uncheck use last fuel up and switch to manual entry tab
+	$('#sinceLastFuelRecord').attr('checked', false);
+	$('#odometertab li:eq(1) a').tab('show');
+	
+	var tmpOdometer = $('#editodometerstart').text();
+	if(tmpOdometer != "-1"){
+		$('#odometerStart').val(tmpOdometer);
+	}
+	tmpOdometer = $('#editodometerend').text();
+	if(tmpOdometer != "-1"){
+		$('#odometerEnd').val(tmpOdometer);
+	}
 }
 
 

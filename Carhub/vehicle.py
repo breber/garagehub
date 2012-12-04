@@ -320,7 +320,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
 
             location = self.request.get("location", "")
             amount = float(self.request.get("amount", None))
-            costPerGallon = float(self.request.get("pricepergallons", None))
+            costPerGallon = float(self.request.get("pricepergallon", None))
             fuelGrade = self.request.get("grade")
             
             # try to get from last fuel record if user wants to, or else try to get it from 

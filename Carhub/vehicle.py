@@ -85,55 +85,56 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self, vehicleId, pageName, expenseId):
         user = users.get_current_user()
 
-        fileChosen = self.request.get("file", None)
-        recieptKey = None
-        if fileChosen:
-            upload_files = self.get_uploads('file')
-            blob_info = upload_files[0]
-            recieptKey = str(blob_info.key())
-        
-        dateString = self.request.get("datePurchased", None)
-        datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
-        
-        # TODO: do we need this? it doesn't appear to be used...
-        newCategory = self.request.get("newCategory", None)
-        
-        # find out if new category has been added
-        userCatgories = datastore.getUserExpenseCategories(user.user_id())
-        category = self.request.get("category", "Uncategorized")
-        if not category in userCatgories:
-            # this is a new category, add it to the database
-            newCategoryObj = models.UserExpenseCategory()
-            newCategoryObj.owner = user.user_id()
-            newCategoryObj.category = category
-            newCategoryObj.put()
-
-        location = self.request.get("location", "")
-        amount = float(self.request.get("amount", None))
-        description = self.request.get("description", "")
-        logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
-        
-        if datePurchased and amount:
-            if pageName == "edit":
-                expense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
-            else:
-                expense = models.BaseExpense()
+        if user:
+            fileChosen = self.request.get("file", None)
+            recieptKey = None
+            if fileChosen:
+                upload_files = self.get_uploads('file')
+                blob_info = upload_files[0]
+                recieptKey = str(blob_info.key())
             
-            expense.date = datePurchased
-            expense.category = category
-            expense.location = location
-            expense.amount = amount
-            expense.description = description
-            expense.picture = recieptKey
-            expense.owner = user.user_id()
-            expense.vehicle = long(vehicleId)
-            expense.lastmodified = datetime.datetime.now()
+            dateString = self.request.get("datePurchased", None)
+            datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
             
-            expense.put()
-
+            # TODO: do we need this? it doesn't appear to be used...
+            newCategory = self.request.get("newCategory", None)
+            
+            # find out if new category has been added
+            userCatgories = datastore.getUserExpenseCategories(user.user_id())
+            category = self.request.get("category", "Uncategorized")
+            if not category in userCatgories:
+                # this is a new category, add it to the database
+                newCategoryObj = models.UserExpenseCategory()
+                newCategoryObj.owner = user.user_id()
+                newCategoryObj.category = category
+                newCategoryObj.put()
+    
+            location = self.request.get("location", "")
+            amount = float(self.request.get("amount", None))
+            description = self.request.get("description", "")
+            logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
+            
+            if datePurchased and amount:
+                if pageName == "edit":
+                    expense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
+                else:
+                    expense = models.BaseExpense()
+                
+                expense.date = datePurchased
+                expense.category = category
+                expense.location = location
+                expense.amount = amount
+                expense.description = description
+                expense.picture = recieptKey
+                expense.owner = user.user_id()
+                expense.vehicle = long(vehicleId)
+                expense.lastmodified = datetime.datetime.now()
+                
+                expense.put()
+    
         self.redirect("/vehicle/%s/expenses" % vehicleId)     
 
-class VehicleMaintenanceHandler(webapp2.RequestHandler):
+class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
     def get(self, vehicleId, pageName, maintenanceId):
         context = utils.get_context()
         user = users.get_current_user()
@@ -193,6 +194,14 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
         logging.info("entered the Maintenance Expense post function")
         
         if user:
+            fileChosen = self.request.get("file", None)
+            recieptKey = None
+            if fileChosen:
+                upload_files = self.get_uploads('file')
+                blob_info = upload_files[0]
+                recieptKey = str(blob_info.key())
+                
+            
             dateString = self.request.get("datePurchased", None)
             datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
             
@@ -227,6 +236,7 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
                 maintRec.amount = amount
                 maintRec.description = description
                 maintRec.odometer = odometer
+                maintRec.picture = recieptKey
                 maintRec.owner = user.user_id()
                 maintRec.vehicle = long(vehicleId)
                 maintRec.lastmodified = datetime.datetime.now()
@@ -235,7 +245,7 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
 
         self.redirect("/vehicle/%s/maintenance" % vehicleId)
 
-class VehicleGasMileageHandler(webapp2.RequestHandler):
+class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
     def get(self, vehicleId, pageName, fuelRecordId):
         context = utils.get_context()
         user = users.get_current_user()
@@ -248,6 +258,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         if latestFuel and len(latestFuel) > 0:
             context["lastfuelrecord"] = latestFuel[0]
         
+        #TODO move avg mpg to util function
         i = 0
         mpgTots = 0
         mpgTotal = 0
@@ -315,6 +326,13 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         logging.info("entered the Gas Mileage Expense post function")
         
         if user:
+            fileChosen = self.request.get("file", None)
+            recieptKey = None
+            if fileChosen:
+                upload_files = self.get_uploads('file')
+                blob_info = upload_files[0]
+                recieptKey = str(blob_info.key())
+            
             dateString = self.request.get("datePurchased", None)
             datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
 
@@ -376,6 +394,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
                 record.odometerStart = odometerStart
                 record.odometerEnd = odometerEnd
                 record.mpg = mpg
+                record.picture = recieptKey
                 record.owner = user.user_id()
                 record.vehicle = long(vehicleId)
                 record.lastmodified = datetime.datetime.now()

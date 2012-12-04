@@ -11,7 +11,7 @@
 	padding: 5px 10px !important;
 }
 
-.profile-link > .caret {
+.profile-link>.caret {
 	margin-top: 18px !important;
 }
 
@@ -48,27 +48,38 @@
 }
 
 /* For DataTables */
-table.table thead .sorting,
-table.table thead .sorting_asc,
-table.table thead .sorting_desc,
-table.table thead .sorting_asc_disabled,
-table.table thead .sorting_desc_disabled {
+table.table thead .sorting,table.table thead .sorting_asc,table.table thead .sorting_desc,table.table thead .sorting_asc_disabled,table.table thead .sorting_desc_disabled
+	{
 	cursor: pointer;
 	*cursor: hand;
 }
 
-table.table thead .sorting { background: url('/static/img/sort_both.png') no-repeat center right; }
-table.table thead .sorting_asc { background: url('/static/img/sort_asc.png') no-repeat center right; }
-table.table thead .sorting_desc { background: url('/static/img/sort_desc.png') no-repeat center right; }
+table.table thead .sorting {
+	background: url('/static/img/sort_both.png') no-repeat center right;
+}
 
-table.table thead .sorting_asc_disabled { background: url('/static/img/sort_asc_disabled.png') no-repeat center right; }
-table.table thead .sorting_desc_disabled { background: url('/static/img/sort_desc_disabled.png') no-repeat center right; }
+table.table thead .sorting_asc {
+	background: url('/static/img/sort_asc.png') no-repeat center right;
+}
+
+table.table thead .sorting_desc {
+	background: url('/static/img/sort_desc.png') no-repeat center right;
+}
+
+table.table thead .sorting_asc_disabled {
+	background: url('/static/img/sort_asc_disabled.png') no-repeat center
+		right;
+}
+
+table.table thead .sorting_desc_disabled {
+	background: url('/static/img/sort_desc_disabled.png') no-repeat center
+		right;
+}
 
 table.table .linkable {
 	cursor: pointer;
 	*cursor: hand;
 }
-
 
 /* For tripplanner.html */
 body {
@@ -122,7 +133,6 @@ body {
 }
 
 /* For news.html */
-
 .news-articletitle {
 	font-size: 18px;
 	float: left;
@@ -145,10 +155,10 @@ body {
 }
 
 .news-roundedcorners {
-    -moz-border-radius: 20px;
-    -webkit-border-radius: 20px;
-    -khtml-border-radius: 20px;
-    border-radius: 20px;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	-khtml-border-radius: 20px;
+	border-radius: 20px;
 }
 
 div.news-articlediv {
@@ -166,7 +176,6 @@ div.news-articlediv:hover {
 }
 
 /* For addnotification.html */
-
 .addnotif-centertext {
 	text-align: center;
 }
@@ -184,8 +193,8 @@ div.news-articlediv:hover {
 }
 
 .stop-scrolling {
-  height: 100%;
-  overflow: hidden;
+	height: 100%;
+	overflow: hidden;
 }
 
 /* For addexpense.html */
@@ -198,3 +207,14 @@ div.news-articlediv:hover {
 	margin-bottom: 10px;
 }
 
+/* For addexpense.html */
+.img-modal {
+	width: auto;
+	height: auto;
+}
+
+.btn-edit-record {
+	float: right;
+	position: relative;
+	left: -50%;
+}

@@ -36,7 +36,6 @@ $('.receiptlink').click( function() {
 });
 
 function editRecord(link){
-
 	// make sure something is selected
 	if(editID) {
 		window.location = link + editID;		

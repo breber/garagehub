@@ -30,7 +30,7 @@
   </thead>
   <tbody>
   {% for e in userfuelrecords %}
-  <tr>
+  <tr id="{{ e.key.id }}">
     <td>{{ e.date_formatted }}</td>
 
     {% if e.odometerEnd != -1 and e.odometerStart != -1 and e.gallons > 0 and e.odometerEnd >= e.odometerStart %}

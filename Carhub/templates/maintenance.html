@@ -23,17 +23,23 @@
       <th>Description</th>
       <th>Cost</th>
       <th>Odometer</th>
+      <th>Picture</th>
     </tr>
   </thead>
   <tbody>
   {% for m in maintRecords %} 
   {% if category == m.category %}
-  <tr>
+  <tr id="{{ m.key.id }}">
     <td>{{ m.date_formatted }}</td>
     <td>{{ m.location }}</td>
     <td>{{ m.description }}</td>
     <td>{{ m.amount_formatted }}</td>
     <td>{{ m.odometer_formatted }}</td>
+    {% if m.picture %}
+    <td><button type="button" class="btn btn-success receiptlink" value="/blob/{{ m.picture }}">Receipt</a></td>
+    {% else %}
+    <td>N/A</td>
+    {% endif %}
   </tr>
   {% endif %}
   {% endfor %}

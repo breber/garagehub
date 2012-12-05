@@ -1,6 +1,12 @@
 var editID;
+var maintDatatables;
 
 $(document).ready(function() {
+	var h3s = new Array();
+	$('.h3').each(function(i) {
+		h3s[i] = this.innerHTML;
+	} );
+	
 	$('.maint-datatable').dataTable( {
 		"sDom": "<'row'<'span6'l><'span6'f>r>t",
 		"bPaginate": false,
@@ -11,10 +17,10 @@ $(document).ready(function() {
 		"bAutoWidth": false,
 		"aaSorting": [[ 0, 'desc' ]]
 	} );
-
+	
 	//make rows selectable
 	$('.maint-datatable tbody').click(function(event) {
-		$(this.parentElement.fnSettings().aoData).each(function (){
+		$($('.maint-datatable').dataTable().fnSettings().aoData).each(function (){
 			$(this.nTr).removeClass('active');
 		});
 		$(event.target.parentNode).addClass('active');

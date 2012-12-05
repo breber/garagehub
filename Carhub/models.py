@@ -46,6 +46,8 @@ class MaintenanceRecord(BaseExpense):
     odometer = ndb.IntegerProperty()
     
     def odometer_formatted(self):
+        if utils.format_int(self.odometer) == "-1":
+            return ""
         return utils.format_int(self.odometer)
 
 class FuelRecord(BaseExpense):

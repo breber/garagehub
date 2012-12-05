@@ -335,6 +335,32 @@ def getListOfYears(make, model):
     toRet.sort()
     
     return toRet
+
+def getNotification(userId, vehicleId, category, notifId):
+    """Gets the Notification for the given notifId
+    
+    Args: 
+        userId - The user ID
+        vehicleId - The vehicle ID
+        notifId - The unique notification ID
+    
+    Returns
+        The Notification
+    """
+    
+    if notifId:
+        notification = models.Notification.get_by_id(long(notifId))
+        
+        if notification and str(notification.owner) == str(userId):
+            return notification
+    
+    elif vehicleId and category:
+        query = models.Notification().query(models.Notification.owner == userId,
+                                            models.Notification.vehicle == vehicleId,
+                                            models.Notification.category == category)
+        notification = query.get()
+        
+        return notification
     
 def getNotifications(userId):
     """Gets a list of user's notifications

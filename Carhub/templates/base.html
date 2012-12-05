@@ -72,6 +72,10 @@
                 <li class="divider"></li>
                 {% endif %}
                 <li><a href="/notifications/add"><i class="icon-plus"></i> Add Notification</a></li>
+                <li><a href="/notifications"><i class="icon-eye-open"></i> View Notifications</a></li>
+                {% if totalNotifications %}
+                <li><a href="#"><i class="icon-remove-sign"></i> Clear Notifications</a></li>
+                {% endif %}
               </ul>
             </li>
             {% endif %}

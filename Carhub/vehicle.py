@@ -226,7 +226,7 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
             
             if datePurchased and amount:
                 if pageName == "edit":
-                    maintRec = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, maintenanceId)
+                    maintRec = datastore.getBaseExpenseRecord(user.user_id(), long(vehicleId), maintenanceId)
                 else:
                     maintRec = models.MaintenanceRecord()
                 
@@ -242,6 +242,33 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
                 maintRec.lastmodified = datetime.datetime.now()
                 
                 maintRec.put()
+                
+                relevantNotif = datastore.getNotification(user.user_id(), long(vehicleId), category, None)
+                
+                if relevantNotif:
+                    
+                    lastMaintRec = datastore.getMostRecentMaintRecord(user.user_id(), long(vehicleId), category)
+                    
+                    if maintRec.date == lastMaintRec.date:
+                        if relevantNotif.recurring:
+                            if relevantNotif.dateBased:
+                                recurringMonths = lastMaintRec.recurringMonths
+                                lastRecordedDate = lastMaintRec.date
+                                yearDecimalNum = lastRecordedDate.strftime("%Y")
+                                monthDecimalNum = lastRecordedDate.strftime("%m")
+                                notifyYear = int(yearDecimalNum) + recurringMonths / 12
+                                notifyMonth = int(monthDecimalNum) + (recurringMonths % 12)
+                                if notifyMonth > 12:
+                                    notifyMonth -= 12
+                                    notifyYear += 1
+                                relevantNotif.date = datetime.date(notifyYear, notifyMonth, lastRecordedDate.day)
+                            if relevantNotif.mileBased:
+                                relevantNotif.mileage = lastMaintRec.odometer + relevantNotif.recurringMiles
+                            deltaoneday = datetime.timedelta(days=1)
+                            relevantNotif.dateLastSeen = datetime.date.today() - deltaoneday
+                            relevantNotif.put()
+                        else:
+                            relevantNotif.key.delete()
 
         self.redirect("/vehicle/%s/maintenance" % vehicleId)
 

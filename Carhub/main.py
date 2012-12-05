@@ -54,14 +54,18 @@ class NotificationHandler(webapp2.RequestHandler):
         
     def post(self, pageName):
         user = users.get_current_user()
-        
-        newNotificationObj = models.Notification()
-        newNotificationObj.owner = user.user_id()
+        category = self.request.get("selectCategory", None)
         vehicleId = int(self.request.get("selectVehicle", 0))
+        
+        newNotificationObj = datastore.getNotification(user.user_id(), vehicleId, category, None)
+        if newNotificationObj:
+            newNotificationObj.key.delete()
+            
+        newNotificationObj = models.Notification()    
+        newNotificationObj.owner = user.user_id()
         newNotificationObj.vehicle = vehicleId
         vehicleName = datastore.getUserVehicle(user.user_id(), vehicleId)
         newNotificationObj.vehicleName = vehicleName.name()
-        category = self.request.get("selectCategory", None)
         newNotificationObj.category = category
         recurring = self.request.get("frequencyRadio", False)
         newRecurring = False
@@ -111,8 +115,8 @@ class NotificationHandler(webapp2.RequestHandler):
         newNotificationObj.dateLastSeen = datetime.date.today() - deltaoneday
         
         if newRecurring:
+            lastMaintRecord = datastore.getMostRecentMaintRecord(user.user_id(), vehicleId, category)
             if newDateBased:
-                lastMaintRecord = datastore.getMostRecentMaintRecord(user.user_id(), vehicleId, category)
                 if lastMaintRecord:
                     lastRecordedDate = lastMaintRecord.date
                 else:
@@ -126,9 +130,9 @@ class NotificationHandler(webapp2.RequestHandler):
                     notifyYear += 1
                 newNotificationObj.date = datetime.date(notifyYear, notifyMonth, lastRecordedDate.day)
             if newMileBased:
-                lastMileage = datastore.getLastRecordedMileage(user.user_id(), vehicleId)
-                if not lastMileage:
-                    lastMileage = 0
+                lastMileage = 0
+                if lastMaintRecord:
+                    lastMileage = lastMaintRecord.odometer
                 newNotificationObj.mileage = lastMileage + recurringMiles
         else:
             if newDateBased:

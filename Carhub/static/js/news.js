@@ -56,6 +56,7 @@
     }
   };
 
+  
   function onLoad() {
     // Create a News Search instance.
     newsSearch = new google.search.NewsSearch();

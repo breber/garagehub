@@ -179,14 +179,38 @@ div.news-articlediv:hover {
 	margin-bottom: 10px;
 }
 
-/* For addexpense.html */
+/* For expense.html */
 .img-modal {
 	width: auto;
 	height: auto;
 }
 
-.btn-add-edit-delete {
-    text-align: center;
+.expense-header {
+	float: left;
+	clear: left;
+}
+
+.expense-subheader-1 {
+	float: left;
+	clear: left;
+	margin-right: 20px;
+}
+
+.expense-subheader-2 {
+	float: left;
+	margin-right: 20px;
+}
+
+.btn-add-edit-delete{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-left: 5px;
+	float:right;
+	clear:right;
+}
+
+.alert-area{
+	clear: left;
 }
 
 /* For notifications.html */

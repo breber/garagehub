@@ -4,15 +4,14 @@
 {% endblock %}
 {% block pagecontent %}
 
-<h2>Maintenance Records</h2>
-<br>
 <div class="btn-add-edit-delete">
-  <a class="btn btn-primary pull-left" href="/vehicle/{{ car.key.id }}/maintenance/add"><i class="icon-plus"></i> Add Record</a>
-  <a class="btn btn-inverse" onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/edit/')"><i class="icon-edit"></i> Edit Record</a>
-  <a class="btn btn-danger pull-right"  onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/delete/')"><i class="icon-remove"></i> Delete Record</a>
+  <a class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/maintenance/add"><i class="icon-plus"></i> Add Record</a>
+  <a class="btn btn-inverse btn-add-edit-delete" onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/edit/')"><i class="icon-edit"></i> Edit Record</a>
+  <a class="btn btn-danger btn-add-edit-delete"  onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/delete/')"><i class="icon-remove"></i> Delete Record</a>
 </div>
-<br>
-<div id="alert-area"></div>
+<h2 class="expense-header">Maintenance Records</h2>
+
+<div id="alert-area" class="alert-area"></div>
 
 {% if categories %} 
 

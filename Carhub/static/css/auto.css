@@ -41,10 +41,6 @@ body {
 	}
 }
 
-#footer .container {
-	width: auto;
-	max-width: 680px;
-}
 #footer .container .credit {
 	margin: 20px 0;
 }

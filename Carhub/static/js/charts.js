@@ -23,8 +23,7 @@ function stopLoading() {
 
 function fetchData(dateRange) {
     startLoading();
-    // TODO: better way to get vehicle ID
-    var vehicleId = /\/vehicle\/([^\/]+)/.exec(window.location.pathname);
+    var vehicleId = getVehicleId();
 
     if (!(dateRange instanceof Number)) {
         dateRange = 120;

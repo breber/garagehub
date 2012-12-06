@@ -43,6 +43,7 @@ $(document).ready(function() {
 	});
 });
 
+// TODO: should this be moved out to common js file?
 function editRecord(link) {
 	// make sure something is selected
 	if (editID) {
@@ -54,6 +55,7 @@ function editRecord(link) {
 	}
 }
 
+// TODO: should this be moved out to common js file?
 function newAlert (message) {
 	$('.alert').remove();
 	$("#alert-area").append($("<div class='alert alert-area fade in'>" +

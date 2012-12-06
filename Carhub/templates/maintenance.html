@@ -37,7 +37,7 @@
     <td>{{ m.amount_formatted }}</td>
     <td>{{ m.odometer_formatted }}</td>
     {% if m.picture %}
-    <td><button type="button" class="btn btn-success receiptlink" value="/blob/{{ m.picture }}">Receipt</td>
+    <td><button type="button" class="btn btn-success receiptlink" value="/blob/{{ m.picture }}">Receipt</button></td>
     {% else %}
     <td>N/A</td>
     {% endif %}
@@ -50,7 +50,7 @@
 {% endif %}
 
 <div id="displayimage" class="modal hide fade img-modal">
-  <img id="modalimage">
+  <img id="modalimage" width="400">
 </div>
 
 {% endblock %}

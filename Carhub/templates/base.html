@@ -106,8 +106,17 @@
     </div>
   </div>
 
-  <div class="container-fluid center-block">
-    <div id="content">{% block content %}{% endblock %}</div>
+  <div id="wrap">
+    <div class="container-fluid center-block top-margin">
+      <div id="content">{% block content %}{% endblock %}</div>
+      <div id="push"></div>
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="container">
+      <p class="muted credit">Copyright (c) 2012</p>
+    </div>
   </div>
 
   {% block externaljs %}{% endblock %}

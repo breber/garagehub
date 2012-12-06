@@ -260,9 +260,7 @@ div.news-articlediv:hover {
 
 /* For settings.html */
 .list-categories{
-	clear: left;
-	clear: right;
-	text-align: center;
+	overflow: hidden;
 }
 
 .settings-category-1{

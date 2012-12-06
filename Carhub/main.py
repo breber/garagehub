@@ -32,7 +32,7 @@ class RawVehicleHandler(webapp2.RequestHandler):
             self.response.out.write(json.dumps(yearList))
             
 class NotificationHandler(webapp2.RequestHandler):
-    def get(self, pageName):
+    def get(self, pageName, notifId):
         context = utils.get_context()
         user = users.get_current_user()
         
@@ -54,6 +54,9 @@ class NotificationHandler(webapp2.RequestHandler):
                 for mn in mileNotifications:
                     mn.dateLastSeen = datetime.date.today()
                     mn.put()
+            elif pageName == "delete":
+                notifToDelete = models.Notification.get_by_id(long(notifId))
+                notifToDelete.key.delete()
             notifications = datastore.getNotifications(user.user_id())
             if len(notifications) > 0:
                 context["notifications"] = notifications
@@ -61,7 +64,7 @@ class NotificationHandler(webapp2.RequestHandler):
 
         self.response.out.write(template.render(path, context))
         
-    def post(self, pageName):
+    def post(self, pageName, notifId):
         user = users.get_current_user()
         category = self.request.get("selectCategory", None)
         vehicleId = int(self.request.get("selectVehicle", 0))
@@ -157,6 +160,6 @@ class NotificationHandler(webapp2.RequestHandler):
         
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/notifications/?(.+?)?', NotificationHandler),
+    ('/notifications/?([^/]+)?/?(.+?)?', NotificationHandler),
     ('/cars/raw/([^/]+)?/?(.+?)?', RawVehicleHandler)
 ], debug=True)

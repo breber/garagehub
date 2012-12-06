@@ -190,3 +190,8 @@ div.news-articlediv:hover {
 	position: relative;
 	left: -50%;
 }
+
+/* For notifications.html */
+#notif-deleteButton {
+	margin-left: 10px;
+}

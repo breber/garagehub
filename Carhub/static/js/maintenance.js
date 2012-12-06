@@ -2,11 +2,6 @@ var editID;
 var maintDatatables;
 
 $(document).ready(function() {
-	var h3s = [];
-	$('.h3').each(function(i) {
-		h3s[i] = this.innerHTML;
-	});
-
 	$('.maint-datatable').dataTable({
 		"sDom" : "t",
 		"bPaginate" : false,

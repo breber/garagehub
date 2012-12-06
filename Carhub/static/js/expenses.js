@@ -9,12 +9,6 @@ $(document).ready(function() {
 		"bSort" : true,
 		"bInfo" : false,
 		"bAutoWidth" : false,
-		"oTableTools" : {
-			"sRowSelect" : "multi",
-		},
-		/*
-		 * "aoColumnDefs": [ { "bVisible": false, "aTargets": [0]} ],
-		 *//* this code will hide the first row */
 		"aaSorting" : [ [ 0, 'desc' ] ]
 	});
 

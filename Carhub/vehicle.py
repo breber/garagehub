@@ -95,10 +95,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
             
             dateString = self.request.get("datePurchased", None)
             datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
-            
-            # TODO: do we need this? it doesn't appear to be used...
-            newCategory = self.request.get("newCategory", None)
-            
+                        
             # find out if new category has been added
             userCatgories = datastore.getUserExpenseCategories(user.user_id())
             category = self.request.get("category", "Uncategorized")

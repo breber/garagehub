@@ -218,3 +218,30 @@ div.news-articlediv:hover {
 #notif-deleteButton {
 	margin-left: 10px;
 }
+
+/* For settings.html */
+.list-categories{
+	clear: left;
+	clear: right;
+	text-align: center;
+}
+
+.settings-category-1{
+	clear: left;
+	float: left;
+	margin-right: 60px;
+}
+.settings-category-2{
+	float: left;
+	margin-right: 60px;
+}
+
+.btn-edit-delete{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-right: 10px;
+	float: left;
+	clear: left;
+}
+
+

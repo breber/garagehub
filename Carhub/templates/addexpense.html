@@ -34,7 +34,7 @@
       <div class="tab-content">
         <div class="tab-pane active" id="lA">
 	      <select id="category" name="category">
-	        <option>Select a Category</option>
+	        <option value="">Select a Category</option>
 	        {% for category in categories %}
 	        <option>{{ category }}</option>
 	        {% endfor %}
@@ -42,7 +42,8 @@
         </div>
         <div class="tab-pane" id="lB">
 		  <input type="text" class="btn-addcategory" name="newCategory" id="newCategory" onkeypress="newCategoryKeyPress(event);" >
-          <button type="button" class="btn btn-inverse btn-addcategory" id="categoryButton">+</button>
+          <button type="button" class="btn btn-primary btn-addcategory" id="categoryButton"><i class="icon-plus"></i> </button>
+          <p class="pull-right">Manage Categories on the  <a href="/settings">Settings</a> page</p>
         </div>
       </div>
     </div>

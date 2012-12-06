@@ -3,7 +3,7 @@ Created on Oct 17, 2012
 
 @author: breber
 '''
-from google.appengine.ext import ndb
+from google.appengine.ext import blobstore, ndb
 import datetime
 import models
 import utils
@@ -522,6 +522,20 @@ def getTotalCost(userId, vehicleId):
                 
     return totalCost
 
+def deleteBaseExpense(userId, expense):
+    """Deletes a BaseExpense
+    
+    Args:
+        userId - The user's ID
+        expense - The expense to delete
+    """
+    if expense and expense.owner == userId:
+        image = expense.picture
+        if image:
+            blobstore.BlobInfo.get(image).delete()
+        
+        expense.key.delete()
+
 def deleteUserVehicle(userId, vehicleId):
     """Deletes a UserVehicle, along with any related records
     
@@ -533,7 +547,7 @@ def deleteUserVehicle(userId, vehicleId):
     if vehicle:
         expenseRecords = getAllExpenseRecords(userId, vehicleId, None)
         for r in expenseRecords:
-            r.key.delete()
+            deleteBaseExpense(userId, r)
 
         # TODO: delete notifications
         

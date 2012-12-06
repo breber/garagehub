@@ -58,14 +58,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
             elif pageName == "delete":
                 # Delete record
                 baseExpense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
-                if baseExpense:
-                    image = baseExpense.picture
-                    if image:
-                        blobstore.BlobInfo.get(image).delete()
-                    
-                    baseExpense.key.delete()
-                else:
-                    logging.warn("No object was deleted. Couldn't find it.")
+                datastore.deleteBaseExpense(user.user_id(), baseExpense)
 
                 self.redirect("/vehicle/" + vehicleId + "/expenses")
                 return
@@ -172,18 +165,10 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
             elif pageName == "delete":
                 # Delete record
                 maintenanceRecord = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, maintenanceId)
-                if maintenanceRecord:
-                    image = maintenanceRecord.picture
-                    if image:
-                        blobstore.BlobInfo.get(image).delete()
-                        
-                    maintenanceRecord.key.delete()
-                else:
-                    logging.warn("No maintenance record object was deleted. Couldn't find it.")
+                datastore.deleteBaseExpense(user.user_id(), maintenanceRecord)
 
                 self.redirect("/vehicle/" + vehicleId + "/maintenance")
                 return
-            
             else:
                 path = os.path.join(os.path.dirname(__file__), 'templates/maintenance.html')
             
@@ -324,14 +309,7 @@ class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
             elif pageName == "delete":
                 # Delete record
                 fuelRecord = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, fuelRecordId)
-                if fuelRecord:
-                    image = fuelRecord.picture
-                    if image:
-                        blobstore.BlobInfo.get(image).delete()
-
-                    fuelRecord.key.delete()
-                else:
-                    logging.warn("No fuel record object was deleted. Couldn't find it.")
+                datastore.deleteBaseExpense(user.user_id(), fuelRecord)
 
                 self.redirect("/vehicle/" + vehicleId + "/maintenance")
                 return

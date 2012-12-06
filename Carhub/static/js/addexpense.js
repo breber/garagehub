@@ -14,10 +14,6 @@ $(document).ready(function() {
 	// validation engine set up
 	$('#addform').validationEngine();
 	
-	// set up new category tbx to be empty
-	prepareEmptyTextInput( $('#newCategory'), "Enter New Category");
-	prepareEmptyTextInput( $('#odometerStart'), "Enter Odometer Start");
-	
 	var currentDate = new Date();
 	var prettyDate = (currentDate.getFullYear() + '/' + (currentDate.getMonth()+1) + '/' + currentDate.getDate() );
 	// make the date picker work
@@ -42,8 +38,6 @@ $(document).ready(function() {
 			prepareEmptyTextInput( $('#newCategory'), "Enter New Category");
 			// switch to category tab
 			$('#categorytab a:first').tab('show'); 
-		} else {
-			alert("False");
 		}
 	});
 
@@ -62,18 +56,6 @@ $(document).ready(function() {
 	
 	
 });
-
-function prepareEmptyTextInput(component, startingString) {
-	component.css("color","gray");
-	component.val(startingString);
-	component.click( emptyTextInputClick );
-}
-
-function emptyTextInputClick(){
-	$(this).val("");
-	$(this).unbind("click");
-	$(this).css("color","black");
-}
 
 function manualOdometerClick() {
 	$('#odometertab li:eq(1) a').tab('show');

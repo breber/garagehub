@@ -23,6 +23,8 @@ $(document).ready(function() {
 		});
 
 		$(event.target.parentNode).addClass('active');
+		
+		$('#notif-deleteButton').removeAttr('disabled');
 
 		// get key for record
 		editID = event.target.parentNode.id;
@@ -31,8 +33,6 @@ $(document).ready(function() {
 	$('#notif-deleteButton').click(function() {
 		if (editID) {
 			window.location = "/notifications/delete/" + editID;
-		} else {
-			alert("Please select a notification to delete.");
 		}
 	});
 });

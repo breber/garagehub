@@ -19,6 +19,9 @@ $(document).ready(function() {
 		});
 		$('.alert').alert('close');
 		
+		$('#gasmileage-delete').removeAttr('disabled');
+		$('#gasmileage-edit').removeAttr('disabled');
+		
 		$(event.target.parentNode).addClass('active');
 		
 		//get key for record

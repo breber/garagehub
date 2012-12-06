@@ -6,16 +6,16 @@
 
 
 <div class="btn-add-edit-delete">
-  <a class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/expenses/add"><i class="icon-plus"></i> Add Expense</a>
-  <a class="btn btn-inverse btn-add-edit-delete" onClick="editRecord('/vehicle/{{ car.key.id }}/expense/edit/')"><i class="icon-edit"></i> Edit Record</a>
-  <a class="btn btn-danger btn-add-edit-delete"  onClick="editRecord('/vehicle/{{ car.key.id }}/expense/delete/')"><i class="icon-remove"></i> Delete Record</a>
+  <a id="expense-add" class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/expenses/add"><i class="icon-plus"></i> Add Expense</a>
+  <a id="expense-edit" class="btn btn-inverse btn-add-edit-delete" disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/expense/edit/')"><i class="icon-edit"></i> Edit Record</a>
+  <a id="expense-delete" class="btn btn-danger btn-add-edit-delete" disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/expense/delete/')"><i class="icon-remove"></i> Delete Record</a>
 </div>
 
 <h2 class="expense-header">Expense Manager</h2>
 
 {% if not userexpenses %}
 <br>
-<div>
+<div class="expense-subheader-1">
   <p>You don't have any expenses recorded yet.</p>
   <p>Record one <a href="/vehicle/{{ car.key.id }}/expenses/add">here</a>!</p>
 </div>

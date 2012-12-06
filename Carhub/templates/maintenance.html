@@ -5,12 +5,19 @@
 {% block pagecontent %}
 
 <div class="btn-add-edit-delete">
-  <a class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/maintenance/add"><i class="icon-plus"></i> Add Record</a>
-  <a class="btn btn-inverse btn-add-edit-delete" onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/edit/')"><i class="icon-edit"></i> Edit Record</a>
-  <a class="btn btn-danger btn-add-edit-delete"  onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/delete/')"><i class="icon-remove"></i> Delete Record</a>
+  <a id="maint-add"    class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/maintenance/add"><i class="icon-plus"></i> Add Record</a>
+  <a id="maint-edit"   class="btn btn-inverse btn-add-edit-delete" disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/edit/')"><i class="icon-edit"></i> Edit Record</a>
+  <a id="maint-delete" class="btn btn-danger btn-add-edit-delete"  disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/delete/')"><i class="icon-remove"></i> Delete Record</a>
 </div>
 <h2 class="expense-header">Maintenance Records</h2>
 
+{% if not userexpenses %}
+<br>
+<div class="expense-subheader-1">
+  <p>You don't have any maintenance recorded yet.</p>
+  <p>Record one <a href="/vehicle/{{ car.key.id }}/maintenance/add">here</a>!</p>
+</div>
+{% else %}
 <div id="alert-area"></div>
 
 {% if categories %} 
@@ -53,7 +60,7 @@
 <div id="displayimage" class="modal hide fade img-modal">
   <img id="modalimage" width="400">
 </div>
-
+{% endif %}
 {% endblock %}
 {% block externaljs %}
 <script type="text/javascript" src="/static/js/ext/jquery.dataTables.min.js"></script>

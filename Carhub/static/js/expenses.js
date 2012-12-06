@@ -25,6 +25,9 @@ $(document).ready(function() {
 		});
 		$('.alert').alert('close');
 		
+		$('#expense-delete').removeAttr('disabled');
+		$('#expense-edit').removeAttr('disabled');
+		
 		$(event.target.parentNode).addClass('active');
 
 		//get key for record

@@ -28,6 +28,9 @@ $(document).ready(function() {
 		});
 		$('.alert').alert('close');
 		
+		$('#maint-delete').removeAttr('disabled');
+		$('#maint-edit').removeAttr('disabled');
+		
 		$(event.target.parentNode).addClass('active');
 
 		// get key for record

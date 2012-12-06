@@ -45,6 +45,15 @@ class NotificationHandler(webapp2.RequestHandler):
             if len(userCategories) > 0:
                 context["categories"] = userCategories
         else:
+            if pageName == "clear":
+                dateNotifications = datastore.getActiveDateNotifications(user.user_id())
+                for dn in dateNotifications:
+                    dn.dateLastSeen = datetime.date.today()
+                    dn.put()
+                mileNotifications = datastore.getActiveMileageNotifications(user.user_id())
+                for mn in mileNotifications:
+                    mn.dateLastSeen = datetime.date.today()
+                    mn.put()
             notifications = datastore.getNotifications(user.user_id())
             if len(notifications) > 0:
                 context["notifications"] = notifications

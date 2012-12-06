@@ -53,18 +53,18 @@
             {% if user %}
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Notifications 
-              	{% if totalNotifications %}
-              	<span class="badge badge-important">{{ totalNotifications }}</span> 
+              	{% if newNotifications %}
+              	<span class="badge badge-important">{{ newNotifications }}</span> 
               	{% endif %}
               	<b class="caret hidden-phone"></b></a>
               <ul class="dropdown-menu">
               	{% for notif in dateNotifications %}
-              	<li><a href="/notifications">
+              	<li><a href="/notifications/clear">
               		{{ notif.vehicleName }}: Need {{ notif.category }} by {{ notif.date }}
               	</a></li>
               	{% endfor %}
               	{% for notif in mileNotifications %}
-              	<li><a href="/notifications">
+              	<li><a href="/notifications/clear">
               		{{ notif.vehicleName }}: Need {{ notif.category }} at {{ notif.mileage }} miles
               	</a></li>
               	{% endfor %}
@@ -73,9 +73,6 @@
                 {% endif %}
                 <li><a href="/notifications/add"><i class="icon-plus"></i> Add Notification</a></li>
                 <li><a href="/notifications"><i class="icon-eye-open"></i> View Notifications</a></li>
-                {% if totalNotifications %}
-                <li><a href="#"><i class="icon-remove-sign"></i> Clear Notifications</a></li>
-                {% endif %}
               </ul>
             </li>
             {% endif %}

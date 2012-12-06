@@ -1,6 +1,7 @@
 from google.appengine.api import users
-import hashlib
 import datastore
+import datetime
+import hashlib
 
 def get_context(list_vehicles=True):
     context = {}
@@ -23,12 +24,25 @@ def get_context(list_vehicles=True):
             
             dateNotifications = datastore.getActiveDateNotifications(user.user_id())
             mileNotifications = datastore.getActiveMileageNotifications(user.user_id())
+            newNotifications = []
+            
+            for dn in dateNotifications:
+                if dn.dateLastSeen != datetime.date.today():
+                    newNotifications.append(dn)
+            for mn in mileNotifications:
+                if mn.dateLastSeen != datetime.date.today():
+                    newNotifications.append(mn)
+            
+            newNotifCount = len(newNotifications)
+                    
             totalNotifications = len(dateNotifications) + len(mileNotifications)
             
             if totalNotifications > 0:
                 context['dateNotifications'] = dateNotifications
                 context['mileNotifications'] = mileNotifications
                 context['totalNotifications'] = totalNotifications
+            if newNotifCount > 0:
+                context['newNotifications'] = newNotifCount
         
     else:
         context['user'] = None

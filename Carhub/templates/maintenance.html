@@ -11,12 +11,12 @@
 </div>
 <h2 class="expense-header">Maintenance Records</h2>
 
-<div id="alert-area" class="alert-area"></div>
+<div id="alert-area"></div>
 
 {% if categories %} 
 
 {% for category in categories %}
-<h3>{{ category }}</h3>
+<h3 class="expense-subheader-1">{{ category }}</h3>
 <table class="maint-datatable table table-striped table-bordered dataTable DTTT_selectable table-hover" id="{{ category }}">
   <thead>
     <tr>

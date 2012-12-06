@@ -53,7 +53,7 @@ function editRecord(link) {
 
 function newAlert (message) {
 	$('.alert').remove();
-	$("#alert-area").append($("<div class='alert fade in'>" +
+	$("#alert-area").append($("<div class='alert alert-area fade in'>" +
 			"<button type='button' class='close' data-dismiss='alert'>x</button>" +
 			"<strong>Warning!</strong> " + message + "" +
 					"</div>"));

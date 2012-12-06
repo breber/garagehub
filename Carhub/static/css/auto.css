@@ -211,6 +211,7 @@ div.news-articlediv:hover {
 
 .alert-area{
 	clear: left;
+	clear: right;
 }
 
 /* For notifications.html */

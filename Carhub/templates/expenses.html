@@ -15,10 +15,14 @@
 </div>
 {% else %}
 <h3>Total Money Spent: ${{ expensetotal }}</h3>
-  <a class="btn btn-primary pull-left" href="/vehicle/{{ car.key.id }}/expenses/add"><i class="icon-plus-sign"></i> Add Expense</a>
-  <a class="btn btn-inverse btn-edit-record" onClick="editRecord('/vehicle/{{ car.key.id }}/expense/edit/')"><i class="icon-edit"></i> Edit Record</a>
-  <a class="btn btn-danger pull-right" onClick="editRecord('/vehicle/{{ car.key.id }}/expense/delete/')"><i class="icon-remove"></i> Delete Record</a>
 </div>
+<div class="btn-add-edit-delete">
+  <a class="btn btn-primary pull-left" href="/vehicle/{{ car.key.id }}/expenses/add"><i class="icon-plus"></i> Add Expense</a>
+  <a class="btn btn-inverse" onClick="editRecord('/vehicle/{{ car.key.id }}/expense/edit/')"><i class="icon-edit"></i> Edit Record</a>
+  <a class="btn btn-danger pull-right"  onClick="editRecord('/vehicle/{{ car.key.id }}/expense/delete/')"><i class="icon-remove"></i> Delete Record</a>
+</div>
+<br>
+<div id="alert-area"></div>
 
 <table class="table table-striped table-bordered dataTable DTTT_selectable table-hover" id="expense-table">
   <thead>

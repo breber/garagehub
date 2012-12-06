@@ -185,8 +185,6 @@ div.news-articlediv:hover {
 	height: auto;
 }
 
-.btn-edit-record {
-	float: right;
-	position: relative;
-	left: -50%;
+.btn-add-edit-delete {
+    text-align: center;
 }

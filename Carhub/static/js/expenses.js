@@ -23,6 +23,8 @@ $(document).ready(function() {
 		$(dTable.fnSettings().aoData).each(function() {
 			$(this.nTr).removeClass('active');
 		});
+		$('.alert').alert('close');
+		
 		$(event.target.parentNode).addClass('active');
 
 		//get key for record
@@ -38,14 +40,19 @@ $('.receiptlink').click(function() {
 function editRecord(link) {
 	// make sure something is selected
 	if (editID) {
-		window.location = link + editID;
-	} else if (link.indexOf("edit") > -1) {
-		alert("Please select a record to edit.");
-	} else if (link.indexOf("delete") > -1) {
-		alert("Please select a record to delete.");
+		window.location = link + editID;		
+	} else if (link.indexOf("edit") > -1){
+		newAlert("Please select a record to edit.");
+	} else if (link.indexOf("delete") > -1){
+		newAlert("Please select a record to delete.");
 	}
 }
 
-//TODO
-// 	make modal to upload images in editable table mode
-//	make editable table mode and display the columns that need to be able to be edited
+function newAlert (message) {
+	$('.alert').remove();
+	$("#alert-area").append($("<div class='alert fade in'>" +
+			"<button type='button' class='close' data-dismiss='alert'>x</button>" +
+			"<strong>Warning!</strong> " + message + "" +
+					"</div>"));
+	$('.alert').delay(2000).fadeOut("slow", function () { $(this).remove(); });
+}

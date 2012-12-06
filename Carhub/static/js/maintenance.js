@@ -20,10 +20,14 @@ $(document).ready(function() {
 
 	// make rows selectable
 	$('.maint-datatable tbody').click(function(event) {
-		$($('.maint-datatable').dataTable().fnSettings().aoData).each(function() {
-			$(this.nTr).removeClass('active');
+		$('.maint-datatable').each(function() {
+			$($(this).dataTable().fnSettings().aoData).each(function() {
+		
+				$(this.nTr).removeClass('active');
+			});
 		});
-
+		$('.alert').alert('close');
+		
 		$(event.target.parentNode).addClass('active');
 
 		// get key for record
@@ -41,8 +45,17 @@ function editRecord(link) {
 	if (editID) {
 		window.location = link + editID;
 	} else if (link.indexOf("edit") > -1) {
-		alert("Please select a record to edit.");
+		newAlert("Please select a record to edit.");
 	} else if (link.indexOf("delete") > -1) {
-		alert("Please select a record to delete.");
+		newAlert("Please select a record to delete.");
 	}
+}
+
+function newAlert (message) {
+	$('.alert').remove();
+	$("#alert-area").append($("<div class='alert fade in'>" +
+			"<button type='button' class='close' data-dismiss='alert'>x</button>" +
+			"<strong>Warning!</strong> " + message + "" +
+					"</div>"));
+	$('.alert').delay(2000).fadeOut("slow", function () { $(this).remove(); });
 }

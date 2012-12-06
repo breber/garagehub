@@ -115,9 +115,10 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
             logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
             
             if datePurchased and amount:
+                expense = None
                 if pageName == "edit":
                     expense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
-                else:
+                if not expense:
                     expense = models.BaseExpense()
                 
                 expense.date = datePurchased
@@ -125,7 +126,12 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 expense.location = location
                 expense.amount = amount
                 expense.description = description
-                expense.picture = recieptKey
+                # This ensures that editing a record won't delete the picture
+                if recieptKey:
+                    oldImage = expense.picture
+                    if oldImage:  # delete old picture
+                        blobstore.BlobInfo.get(oldImage).delete()
+                    expense.picture = recieptKey
                 expense.owner = user.user_id()
                 expense.vehicle = long(vehicleId)
                 expense.lastmodified = datetime.datetime.now()
@@ -197,6 +203,7 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
             fileChosen = self.request.get("file", None)
             recieptKey = None
             if fileChosen:
+                logging.warn("File Chosen %s", fileChosen)
                 upload_files = self.get_uploads('file')
                 blob_info = upload_files[0]
                 recieptKey = str(blob_info.key())
@@ -225,9 +232,10 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
             logging.info("Maintenance Info Obtained %s %s %s %s %f %d", datePurchased, category, location, description, amount, odometer)
             
             if datePurchased and amount:
+                maintRec = None
                 if pageName == "edit":
                     maintRec = datastore.getBaseExpenseRecord(user.user_id(), long(vehicleId), maintenanceId)
-                else:
+                if not maintRec:
                     maintRec = models.MaintenanceRecord()
                 
                 maintRec.date = datePurchased
@@ -236,7 +244,12 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
                 maintRec.amount = amount
                 maintRec.description = description
                 maintRec.odometer = odometer
-                maintRec.picture = recieptKey
+                # This ensures that editing a record won't delete the picture
+                if recieptKey:
+                    oldImage = maintRec.picture
+                    if oldImage:  # delete old picture
+                        blobstore.BlobInfo.get(oldImage).delete()
+                    maintRec.picture = recieptKey
                 maintRec.owner = user.user_id()
                 maintRec.vehicle = long(vehicleId)
                 maintRec.lastmodified = datetime.datetime.now()
@@ -280,33 +293,16 @@ class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
         context["categories"] = datastore.getUserExpenseCategories(user.user_id())
         context['userfuelrecords'] = datastore.getFuelRecords(user.user_id(), vehicleId, None, False)
         
-        # TODO: do we need this latestFuel record?
+        # Get latest fuel record
         latestFuel = datastore.getNFuelRecords(user.user_id(), vehicleId, 1, False)
         if latestFuel and len(latestFuel) > 0:
             context["lastfuelrecord"] = latestFuel[0]
         
-        #TODO move avg mpg to util function
-        i = 0
-        mpgTots = 0
-        mpgTotal = 0
-        gallonsTotal = 0
-        milesLogged = 0
-        for fuelRecord in context['userfuelrecords']:
-            if fuelRecord.mpg > -1 and fuelRecord.gallons > -1:
-                i = i + 1
-                mpgTots += fuelRecord.mpg
-                mpgTotal += fuelRecord.mpg * fuelRecord.gallons
-                gallonsTotal += fuelRecord.gallons
-            if fuelRecord.odometerEnd != -1 and fuelRecord.odometerStart != -1:
-                milesLogged += (fuelRecord.odometerEnd - fuelRecord.odometerStart)
-        
-        if i != 0:
-            context['avgmpg'] = utils.format_float(mpgTotal / gallonsTotal)
-        else:
-            context['avgmpg'] = 0
+        # add Average MPG as a comma-delimited string
+        context['avgmpg'] = datastore.getAvgGasMileage(user.user_id(), vehicleId)
 
         # add milestotal as a comma-delimited string
-        context['milestotal'] = utils.format_int(milesLogged)
+        context['milestotal'] = datastore.getMilesLogged(user.user_id(), vehicleId)
         
         if not vehicleId:
             self.redirect("/")
@@ -403,9 +399,10 @@ class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
             logging.info("Expense Info Obtained %s %s %d %d %d %d", datePurchased, location, amount, costPerGallon, odometerStart, odometerEnd)
             
             if datePurchased and amount and costPerGallon:
+                record = None
                 if pageName == "edit":
                     record = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, fuelRecordId)
-                else:
+                if not record:
                     record = models.FuelRecord()
                     
                 record.date = datePurchased
@@ -421,7 +418,12 @@ class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
                 record.odometerStart = odometerStart
                 record.odometerEnd = odometerEnd
                 record.mpg = mpg
-                record.picture = recieptKey
+                # This ensures that editing a record won't delete the picture
+                if recieptKey:
+                    oldImage = record.picture
+                    if oldImage:  # delete old picture
+                        blobstore.BlobInfo.get(oldImage).delete()
+                    record.picture = recieptKey
                 record.owner = user.user_id()
                 record.vehicle = long(vehicleId)
                 record.lastmodified = datetime.datetime.now()

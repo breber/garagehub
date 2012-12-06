@@ -6,6 +6,7 @@ Created on Oct 17, 2012
 from google.appengine.ext import ndb
 import datetime
 import models
+import utils
 
 def getUserVehicle(userId, vehicleId):
     """Gets the UserVehicle instance for the given ID
@@ -123,6 +124,49 @@ def getFuelRecords(userId, vehicleId, day_range=30, ascending=True):
         query = query.order(-models.FuelRecord.date)
 
     return ndb.get_multi(query.fetch(keys_only=True))
+
+def getAvgGasMileage(userId, vehicleId):
+    """Gets the Average MPG based on FuelRecords for the given vehicle ID
+    
+    Args: 
+        vehicleId - The vehicle ID
+    
+    Returns
+        The average mpg
+    """
+    fuelRecords = getFuelRecords(userId, vehicleId, None, False)
+    
+    milesLogged = 0
+    gallonsTotal = 0
+    for fuelRecord in fuelRecords:
+        if fuelRecord.odometerEnd != -1 and fuelRecord.odometerStart != -1 and fuelRecord.gallons != -1:
+            gallonsTotal += fuelRecord.gallons
+            milesLogged += (fuelRecord.odometerEnd - fuelRecord.odometerStart)
+    
+    avgMpg = 0
+    if milesLogged > 0:
+        avgMpg = utils.format_float(milesLogged / gallonsTotal)
+  
+   
+    return avgMpg
+
+def getMilesLogged(userId, vehicleId):
+    """Gets the miles logged based on FuelRecords for the given vehicle ID
+    
+    Args: 
+        vehicleId - The vehicle ID
+    
+    Returns
+        The miles logged
+    """
+    fuelRecords = getFuelRecords(userId, vehicleId, None, False)
+    
+    milesLogged = 0
+    for fuelRecord in fuelRecords:
+        if fuelRecord.odometerEnd != -1 and fuelRecord.odometerStart != -1:
+            milesLogged += (fuelRecord.odometerEnd - fuelRecord.odometerStart)  
+   
+    return utils.format_int(milesLogged)
 
 def getNFuelRecords(userId, vehicleId, numberToFetch=10, ascending=True):
     """Gets the FuelRecords for the given vehicle ID

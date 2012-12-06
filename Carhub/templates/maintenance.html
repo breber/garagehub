@@ -5,13 +5,15 @@
 {% block pagecontent %}
 
 <h2>Maintenance Records</h2>
-<div>
-  <a class="btn btn-primary pull-left" href="/vehicle/{{ car.key.id }}/maintenance/add"><i class="icon-plus-sign"></i> Add Record</a>
-  <a class="btn btn-inverse btn-edit-record" onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/edit/')"><i class="icon-edit"></i> Edit Record</a>
+<br>
+<div class="btn-add-edit-delete">
+  <a class="btn btn-primary pull-left" href="/vehicle/{{ car.key.id }}/maintenance/add"><i class="icon-plus"></i> Add Record</a>
+  <a class="btn btn-inverse" onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/edit/')"><i class="icon-edit"></i> Edit Record</a>
   <a class="btn btn-danger pull-right"  onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/delete/')"><i class="icon-remove"></i> Delete Record</a>
 </div>
 <br>
-<br>
+<div id="alert-area"></div>
+
 {% if categories %} 
 
 {% for category in categories %}

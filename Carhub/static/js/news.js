@@ -5,6 +5,9 @@
   google.load('search', '1');
 
   var newsSearch;
+  var carMake;
+  var carModel;
+  var carYear;
 
   function searchComplete() {
     // Check that we got results
@@ -51,7 +54,7 @@
     }
     else {
     	var noResults = document.createElement('p');
-    	noResults.innerHTML = "There is no recent news for the {{ car.year }} {{ car.make }} {{ car.model }}.";
+    	noResults.innerHTML = "There is no recent news for the " + carYear + " " + carMake + " " + carModel + ".";
     	document.getElementById('searchresults').appendChild(noResults);
     }
   };
@@ -60,13 +63,15 @@
   function onLoad() {
     // Create a News Search instance.
     newsSearch = new google.search.NewsSearch();
-
+    carMake = $('#carmake').val();
+    carModel = $('#carmodel').val();
+    carYear = $('#caryear').val();
     // Set searchComplete as the callback function when a search is 
     // complete. The newsSearch object will have results in it.
     newsSearch.setSearchCompleteCallback(this, searchComplete, null);
     newsSearch.setResultSetSize(8);
     // Specify search queries
-    newsSearch.execute('"{{ car.year }} {{ car.make }} {{ car.model }}"');
+    newsSearch.execute('"' + carYear + ' ' + carMake + ' ' + carModel + '"');
     //newsSearch.execute('"2013 Toyota Prius"');
 
     // Include the required Google branding

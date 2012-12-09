@@ -1,54 +1,54 @@
-{% extends 'base_vehicle.html' %} 
-{% block externalcss %}
-<link rel="stylesheet" href="/static/css/validationEngine.jquery.css" type="text/css"/>
-<link rel="stylesheet" href="/static/css/datepicker.css" type="text/css"/>
-{% endblock %}
-
-{% block pagecontent %}
-
+{% extends 'base_vehicle.html' %} {% block externalcss %}
+<link rel="stylesheet" href="/static/css/validationEngine.jquery.css"
+  type="text/css" />
+<link rel="stylesheet" href="/static/css/datepicker.css" type="text/css" />
+{% endblock %} {% block pagecontent %}
 
 <h2 class="generic hidden page-header">Add Expense</h2>
 <h2 class="maintenance hidden page-header">Add Maintenance Record</h2>
 <h2 class="gasmileage hidden page-header">Add Fuel Record</h2>
 
-
 <form id="addform" action="{{ upload_url }}" method="post" enctype="multipart/form-data">
-
   <div class="generic maintenance gasmileage hidden">
     <p>Date of Purchase</p>
-    <input type="text" class="validate[required,custom[date],past[now],future[1920-01-01]]"  name="datePurchased" id="datePurchased">
+    <input type="text"
+      class="validate[required,custom[date],past[now],future[1920-01-01]]"
+      name="datePurchased" id="datePurchased">
   </div>
-  
+
   <div class="generic maintenance gasmileage hidden">
-    <p>Reciept Picture</p>
+    <p>Receipt Picture</p>
     <input type="file" class="chooseImagePicker" name="file">
   </div>
-  
-  <div class="generic maintenance hidden" >
-  
-  <div class="tabbable well well-small">
+
+  <div class="generic maintenance hidden">
+    <div class="tabbable well well-small">
       <ul id="categorytab" class="nav nav-tabs">
         <li class="active"><a href="#lA" data-toggle="tab">Category</a></li>
-        <li class=""><a href="#lB" data-toggle="tab">Add New Category</a></li>
+        <li><a href="#lB" data-toggle="tab">Add New Category</a></li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="lA">
-	      <select id="category" name="category">
-	        <option value="">Select a Category</option>
-	        {% for category in categories %}
-	        <option>{{ category }}</option>
-	        {% endfor %}
-	      </select>
+          <select id="category" name="category">
+            <option value="">Select a Category</option>
+            {% for category in categories %}
+            <option>{{ category }}</option>
+            {% endfor %}
+          </select>
         </div>
         <div class="tab-pane" id="lB">
-		  <input type="text" class="btn-addcategory" name="newCategory" id="newCategory" onkeypress="newCategoryKeyPress(event);" >
-          <button type="button" class="btn btn-primary btn-addcategory" id="categoryButton"><i class="icon-plus"></i> </button>
-          <p class="pull-right">Manage Categories on the <a href="/settings">Settings</a> page</p>
+          <div class="input-append">
+            <input type="text" class="btn-addcategory" name="newCategory" id="newCategory" onkeypress="newCategoryKeyPress(event);">
+            <button type="button" class="btn btn-primary" id="categoryButton">
+              <i class="icon-plus"></i>
+            </button>
+          </div>
+          <p>Manage Categories on the <a href="/settings">Settings</a> page</p>
         </div>
       </div>
     </div>
-  </div> 
-  
+  </div>
+
   <div class="generic maintenance gasmileage hidden">
     <p>Location</p>
     <input type="text" name="location" id="location">
@@ -63,14 +63,14 @@
     <p>Description of Purchase</p>
     <input type="text" name="description" id="description">
   </div>
-  
-  <div class="gasmileage hidden">    
+
+  <div class="gasmileage hidden">
     <p>Price Per Gallon</p>
     <div class="input-prepend">
       <span class="add-on">$</span>
       <input class="span2" id="prependedInput" type="text" name="pricepergallon" id="pricepergallon" class="validate[required,custom[number]]">
     </div>
-    
+
     <p>Fuel Grade</p>
     <select name="grade" id="grade">
       <option value="Regular">Regular</option>
@@ -80,106 +80,106 @@
     </select>
   </div>
 
-  
   <div class="gasmileage hidden well well-small">
-   <p>Starting Odometer Reading</p>
-   <div class="tabbable">
+    <p>Starting Odometer Reading</p>
+    <div class="tabbable">
       <ul id="odometertab" class="nav nav-tabs">
         <li class="active"><a href="#OdomA" data-toggle="tab">Last Fuel Record</a></li>
         <li id="manualOdometerTab" class=""><a href="#OdomB" data-toggle="tab">Manual Entry</a></li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="OdomA">
-	      {% if not lastfuelrecord %}
-		  	<p>No past Fuel Records please enter starting odometer on the <a onclick="manualOdometerClick()">next tab</a></p>
-		  
-		  {% else %}
-		  <input type="checkbox" id="sinceLastFuelRecord"
-		      name="sinceLastFuelRecord" checked /> Use starting odometer value of  {{ lastfuelrecord.odometerEnd }}. <br />
-			<table class="table table-striped table-bordered" id="lastgasmileagetable">
-			  <thead>
-				  <tr>
-				    <th>Date</th>
-				    <th>Total Price</th>
-				    <th>$ / Gallon</th>
-				    <th>Location</th>
-				    <th>Odometer</th>
-				  </tr>
-			  </thead>
-				<tr>
-					<td>{{ lastfuelrecord.date }}</td>
-					<td>{{ lastfuelrecord.amount|stringformat:".2f" }}</td>
-					<td>{{ lastfuelrecord.costPerGallon|stringformat:".2f" }}</td>
-					{% if lastfuelrecord.location == "" %}
-					  <td>N/A</td>
-					{% else %}
-					  <td>{{ lastfuelrecord.location }}</td>
-					{% endif %}
-					
-					{% if lastfuelrecord.odometerEnd == -1 %}
-					  <td>N/A</td>
-					{% else %}
-					  <td>{{ lastfuelrecord.odometerEnd }}</td>
-					{% endif %}
-				</tr>
-			 </table>
-			 {% endif %}
+          {% if not lastfuelrecord %}
+          <p>No past Fuel Records please enter starting odometer on the <a onclick="manualOdometerClick()">next tab</a></p>
+          {% else %}
+          <label class="checkbox">
+            <input type="checkbox" id="sinceLastFuelRecord" name="sinceLastFuelRecord" checked> Use starting odometer value of {{ lastfuelrecord.odometerEnd }}.
+          </label>
+          
+          <table class="table table-striped table-bordered" id="lastgasmileagetable">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Total Price</th>
+                <th>$ / Gallon</th>
+                <th>Location</th>
+                <th>Odometer</th>
+              </tr>
+            </thead>
+            <tr>
+              <td>{{ lastfuelrecord.date }}</td>
+              <td>{{ lastfuelrecord.amount|stringformat:".2f" }}</td>
+              <td>{{ lastfuelrecord.costPerGallon|stringformat:".2f" }}</td>
+              {% if lastfuelrecord.location == "" %}
+              <td>N/A</td>
+              {% else %}
+              <td>{{ lastfuelrecord.location }}</td>
+              {% endif %}
+              {% if lastfuelrecord.odometerEnd == -1 %}
+              <td>N/A</td>
+              {% else %}
+              <td>{{ lastfuelrecord.odometerEnd }}</td>
+              {% endif %}
+            </tr>
+          </table>
+          {% endif %}
         </div>
         <div class="tab-pane" id="OdomB">
-		  <input type="text" class="validate[custom[integer], min[0]]" name="odometerStart" id="odometerStart">
+          <input type="text" class="validate[custom[integer], min[0]]" name="odometerStart" id="odometerStart">
         </div>
       </div>
     </div>
-  </div> 
-  
+  </div>
+
   <div class="maintenance gasmileage hidden">
     <p>Ending Odometer Reading</p>
     <input type="text" class="validate[custom[integer], min[0]]" name="odometerEnd" id="odometerEnd">
   </div>
-  
+
   <br />
-  <button type="submit" class="btn btn-primary"><i class="icon-ok"></i> Submit</button>
+  <button type="submit" class="btn btn-primary">
+    <i class="icon-ok"></i> Submit
+  </button>
 </form>
 
 <!-- Below are hidden fields that contain record information of a record to be edited -->
 {% if editexpenseobj %}
 <div id="editexpenseobject" class="hidden">
   <div id="editdatepurchased">{{ editexpenseobj.date_formatted }}</div>
-  <div id="editcategory" >{{ editexpenseobj.category }}</div>
-  <div id="editlocation" >{{ editexpenseobj.location }}</div>
-  <div id="editamount" >{{ editexpenseobj.amount }}</div>
-  <div id="editdescription" >{{ editexpenseobj.description }}</div>
+  <div id="editcategory">{{ editexpenseobj.category }}</div>
+  <div id="editlocation">{{ editexpenseobj.location }}</div>
+  <div id="editamount">{{ editexpenseobj.amount }}</div>
+  <div id="editdescription">{{ editexpenseobj.description }}</div>
 </div>
-{% endif %}
-{% if editmaintenanceobj %}
+{% endif %} {% if editmaintenanceobj %}
 <div id="editmaintenanceobject" class="hidden">
   <div id="editdatepurchased">{{ editmaintenanceobj.date_formatted }}</div>
-  <div id="editcategory" >{{ editmaintenanceobj.category }}</div>
-  <div id="editlocation" >{{ editmaintenanceobj.location }}</div>
-  <div id="editamount" >{{ editmaintenanceobj.amount }}</div>
-  <div id="editdescription" >{{ editmaintenanceobj.description }}</div>
-  <div id="editodometer" >{{ editmaintenanceobj.odometer }}</div>
+  <div id="editcategory">{{ editmaintenanceobj.category }}</div>
+  <div id="editlocation">{{ editmaintenanceobj.location }}</div>
+  <div id="editamount">{{ editmaintenanceobj.amount }}</div>
+  <div id="editdescription">{{ editmaintenanceobj.description }}</div>
+  <div id="editodometer">{{ editmaintenanceobj.odometer }}</div>
 </div>
-{% endif %}
-{% if editfuelrecordobj %}
+{% endif %} {% if editfuelrecordobj %}
 <div id="editfuelrecordobject" class="hidden">
-  <div id="editdatepurchased">{{ editfuelrecordobj.date_formatted }}</div>
-  <div id="editcategory" >{{ editfuelrecordobj.category }}</div>
-  <div id="editlocation" >{{ editfuelrecordobj.location }}</div>
-  <div id="editamount" >{{ editfuelrecordobj.amount }}</div>
-  <div id="editdescription" >{{ editfuelrecordobj.description }}</div>
-  <div id="editpricepergallon" >{{ editfuelrecordobj.costPerGallon }}</div>
-  <div id="editfuelgrade" >{{ editfuelrecordobj.fuelGrade }}</div>
-  <div id="editodometerstart" >{{ editfuelrecordobj.odometerStart }}</div>
-  <div id="editodometerend" >{{ editfuelrecordobj.odometerEnd }}</div>
+  <div id="editdatepurchased">{{ editfuelrecordobj.date_formatted
+    }}</div>
+  <div id="editcategory">{{ editfuelrecordobj.category }}</div>
+  <div id="editlocation">{{ editfuelrecordobj.location }}</div>
+  <div id="editamount">{{ editfuelrecordobj.amount }}</div>
+  <div id="editdescription">{{ editfuelrecordobj.description }}</div>
+  <div id="editpricepergallon">{{ editfuelrecordobj.costPerGallon }}</div>
+  <div id="editfuelgrade">{{ editfuelrecordobj.fuelGrade }}</div>
+  <div id="editodometerstart">{{ editfuelrecordobj.odometerStart
+    }}</div>
+  <div id="editodometerend">{{ editfuelrecordobj.odometerEnd }}</div>
 </div>
-{% endif %}
-
-
-{% endblock %} 
-{% block externaljs %}
-<script type="text/javascript" src="/static/js/ext/bootstrap-datepicker.js"></script>
-<script src="/static/js/ext/jquery.validationEngine-en.js" type="text/javascript" ></script>
-<script src="/static/js/ext/jquery.validationEngine.js" type="text/javascript" ></script>
+{% endif %} {% endblock %} {% block externaljs %}
+<script type="text/javascript"
+  src="/static/js/ext/bootstrap-datepicker.js"></script>
+<script src="/static/js/ext/jquery.validationEngine-en.js"
+  type="text/javascript"></script>
+<script src="/static/js/ext/jquery.validationEngine.js"
+  type="text/javascript"></script>
 <script type="text/javascript" src="/static/js/addexpense.js"></script>
 {% endblock %}

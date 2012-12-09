@@ -1,11 +1,11 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="well" style="overflow: auto;">
+<div class="well trip-overflow">
   <h2>Trip Planner</h2>
 
   <div id="side-container">
    <input onclick="hideFromInput();" id="useCurrentLocation" type="checkbox" value="useCurrentLocation" class="pull-left" checked="checked"/>
-   <label for="useCurrentLocation" class="pull-left" style="padding-left: 5px; font-weight: bold; padding-right: 3px"> Use my location</label><br/><br/>
+   <label for="useCurrentLocation" class="pull-left trip-label-check"> Use my location</label><br/><br/>
     <ul>
       <li class="dir-label">From:</li>
       <li><input id="from-input" type=text value=""/></li>
@@ -18,19 +18,19 @@
     </div>
     <div id="dir-container"></div>
   </div>
-  <div id="map_canvas" style="width: 850px; height: 500px"></div>
+  <div id="map_canvas" class="trip-map-canvas"></div>
   <br />
-  <div class="pull-left" style="list-style-type: none">
+  <div class="pull-left trip-list">
     <form>
-      <div class="pull-left" style="margin-right:20px;">
+      <div class="pull-left trip-inline-form">
         <label for="num-miles-input">Number of Miles:</label> 
         <input id="num-miles-input" type="text" name="num-miles-input" readonly="readonly" />
       </div>
-      <div class="pull-left" style="margin-right:20px;">
+      <div class="pull-left trip-inline-form">
         <label for="avg-mpg-input">Average MPG:</label>
         <input id="avg-mpg-input" type="text" name="avg-mpg-input" /> 
       </div>
-      <div class="pull-left" style="margin-right:20px;">
+      <div class="pull-left trip-inline-form">
         <label for="avg-ppg-input">Estimated Price Per Gallon:</label>
         <input id="avg-ppg-input" type="text" name="avg-ppg-input" />
       </div>

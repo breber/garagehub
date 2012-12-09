@@ -1,38 +1,37 @@
-@media(min-width:980px) {
+@media ( min-width :980px) {
 	.top-margin {
 		padding-top: 80px;
 	}
-	
 	.container-fluid {
 		max-width: 1170px;
 	}
 }
 
-html,
-body {
+/* For the footer at the bottom of each page */
+html,body {
 	height: 100%;
 }
 
-/* Wrapper for page content to push down footer */
 #wrap {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	/* Negative indent footer by it's height */
 	margin: 0 auto -60px;
 }
 
-/* Set the fixed height of the footer here */
-#push,
-#footer {
+#push,#footer {
 	height: 60px;
 }
+
 #footer {
 	background-color: #f5f5f5;
 }
 
-/* Lastly, apply responsive CSS fixes as necessary */
-@media (max-width: 767px) {
+#footer .container p {
+	margin: 20px 0;
+}
+
+@media ( max-width : 767px) {
 	#footer {
 		margin-left: -20px;
 		margin-right: -20px;
@@ -41,11 +40,7 @@ body {
 	}
 }
 
-#footer .container .credit {
-	margin: 20px 0;
-}
-
-
+/* Generic Classes */
 .profile-link {
 	padding: 5px 10px !important;
 }
@@ -97,10 +92,6 @@ table.table .linkable {
 }
 
 /* For tripplanner.html */
-body {
-	font-size: 14px;
-}
-
 #map-container,#side-container,#side-container li {
 	float: left;
 }
@@ -145,6 +136,28 @@ body {
 #dir-container table {
 	font-size: 1em;
 	padding: 2px;
+}
+
+.trip-inline-form {
+	margin-right: 20px;
+}
+
+.trip-map-canvas {
+	width: 850px;
+	height: 500px
+}
+
+.trip-label-check {
+	padding-left: 5px;
+	font-weight: bold
+}
+
+.trip-list {
+	list-style-type: none
+}
+
+.trip-overflow {
+	overflow: auto
 }
 
 /* For news.html */
@@ -244,15 +257,15 @@ div.news-articlediv:hover {
 	margin-right: 20px;
 }
 
-.btn-add-edit-delete{
+.btn-add-edit-delete {
 	margin-top: 5px;
 	margin-bottom: 5px;
 	margin-left: 5px;
-	float:right;
-	clear:right;
+	float: right;
+	clear: right;
 }
 
-.alert-area{
+.alert-area {
 	clear: left;
 	clear: right;
 }
@@ -263,21 +276,22 @@ div.news-articlediv:hover {
 }
 
 /* For settings.html */
-.list-categories{
+.list-categories {
 	overflow: hidden;
 }
 
-.settings-category-1{
+.settings-category-1 {
 	clear: left;
 	float: left;
 	margin-right: 60px;
 }
-.settings-category-2{
+
+.settings-category-2 {
 	float: left;
 	margin-right: 60px;
 }
 
-.btn-edit-delete{
+.btn-edit-delete {
 	margin-top: 5px;
 	margin-bottom: 5px;
 	margin-right: 10px;
@@ -285,4 +299,11 @@ div.news-articlediv:hover {
 	clear: left;
 }
 
+/* For gasprices.html */
+.gas-map-canvas {
+	height: 300px;
+}
 
+.gas-inline-form {
+	margin-left: 20px;
+}

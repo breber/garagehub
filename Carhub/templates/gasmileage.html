@@ -75,13 +75,12 @@
     {% endif %}
     </td>
     {% if e.picture %}
-    <td><button type="button" class="btn btn-success receiptlink" value="/blob/{{ e.picture }}">Receipt</a></td>
+    <td><button type="button" class="btn btn-success receiptlink" value="/blob/{{ e.picture }}">Receipt</button></td>
     {% else %}
     <td>N/A</td>
     {% endif %}
-
-</tr>
-{% endfor %}
+  </tr>
+  {% endfor %}
 </tbody>
 </table>
 

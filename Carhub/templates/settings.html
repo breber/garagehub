@@ -1,120 +1,109 @@
 {% extends 'base.html' %} {% block externalcss %}
-<link rel="stylesheet" href="/static/css/dataTables.bootstrap.css"
-	type="text/css" />
+<link rel="stylesheet" href="/static/css/dataTables.bootstrap.css" type="text/css" />
 {% endblock %} {% block content %}
 
 <div class="well">
-	<h2>Settings</h2>
+  <h2>Settings</h2>
 
-	<div class="control-group">
-		<label class="control-label" for="username"><b>Username</b></label>
-		<div class="controls">
-			<input type="text" id="username" name="username" disabled="disabled"
-				value="{{ user.username }}" />
-		</div>
-	</div>
+  <div class="control-group">
+    <label class="control-label" for="username"><b>Username</b></label>
+    <div class="controls">
+      <input type="text" id="username" name="username" disabled="disabled" value="{{ user.username }}" />
+    </div>
+  </div>
 
-	<div class="control-group">
-		<label class="control-label" for="avatar"><b>Avatar</b></label>
-		<div class="controls">
-			<img src="{{ user.profilePic }}" /> <a href="http://gravatar.com">Chage
-				your avatar at Gravatar.com</a>
-		</div>
-		
-	</div>
+  <div class="control-group">
+    <label class="control-label" for="avatar"><b>Avatar</b></label>
+    <div class="controls">
+      <img src="{{ user.profilePic }}" /> <a href="http://gravatar.com">Change your avatar at Gravatar.com</a>
+    </div>
 
-	<div class="list-categories">
-	<label class="control-label"><b>Categories</b></label>
-		<div class="pull-left car-buttons controls">
-			<a id="editCategory" class="btn btn-inverse btn-edit-delete"><i class="icon-edit"></i>
-				Edit Category</a> 
-			<a id="deleteCategory" class="btn btn-danger btn-edit-delete"><i class="icon-remove"></i>
-				Delete Category</a>
-		</div>
+  </div>
 
-		<div class="settings-category-1">
-			{% if categories %}
-			<table
-				class="category-datatable table table-striped table-bordered dataTable DTTT_selectable table-hover"
-				id="expense-category-table">
-				<thead>
-					<tr>
-						<th>Expense</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for c in categories %}
-					<tr id="{{ c.key.id }}">
-						<td class="expense">{{ c.category }}</td>
-					</tr>
-					{% endfor %}
-					<tr id="add">
-						<td class="expense"><a id="addExpCategory"
-							class="btn btn-primary"><i class="icon-plus"></i> Add</a></td>
-					</tr>
-				</tbody>
-			</table>
-			{% endif %}
-		</div>
+  <div class="list-categories">
+    <label class="control-label"><b>Categories</b></label>
+    <div class="pull-left car-buttons controls">
+      <a id="editCategory" class="btn btn-inverse btn-edit-delete"><i
+        class="icon-edit"></i> Edit Category</a> <a id="deleteCategory"
+        class="btn btn-danger btn-edit-delete"><i
+        class="icon-remove"></i> Delete Category</a>
+    </div>
 
-		<div class="settings-category-2">
-			{% if maintcategories %}
-			<table
-				class="category-datatable table table-striped table-bordered dataTable DTTT_selectable table-hover"
-				id="maint-category-table">
-				<thead>
-					<tr>
-						<th>Maintenance</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for c in maintcategories %}
-					<tr id="{{ c.key.id }}">
-						<td class="maintenance">{{ c.category }}</td>
-					</tr>
-					{% endfor %}
-					<tr id="add">
-						<td class="maintenance"><a id="addMaintCategory"
-							class="btn btn-primary"><i class="icon-plus"></i> Add</a></td>
-					</tr>
-				</tbody>
-			</table>
-			{% endif %}
-		</div>
-	</div>
+    <div class="settings-category-1">
+      {% if categories %}
+      <table class="category-datatable table table-striped table-bordered DTTT_selectable table-hover" id="expense-category-table">
+        <thead>
+          <tr>
+            <th>Expense</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in categories %}
+          <tr id="{{ c.key.id }}">
+            <td class="expense">{{ c.category }}</td>
+          </tr>
+          {% endfor %}
+          <tr id="add">
+            <td class="expense">
+              <a id="addExpCategory" class="btn btn-primary"><i class="icon-plus"></i> Add</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      {% endif %}
+    </div>
 
-	<!-- TODO cant figure out how to have the well include the datatables -->
-
-
-
+    <div class="settings-category-2">
+      {% if maintcategories %}
+      <table class="category-datatable table table-striped table-bordered DTTT_selectable table-hover" id="maint-category-table">
+        <thead>
+          <tr>
+            <th>Maintenance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in maintcategories %}
+          <tr id="{{ c.key.id }}">
+            <td class="maintenance">{{ c.category }}</td>
+          </tr>
+          {% endfor %}
+          <tr id="add">
+            <td class="maintenance">
+              <a id="addMaintCategory" class="btn btn-primary"><i class="icon-plus"></i> Add</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      {% endif %}
+    </div>
+  </div>
 </div>
 
 <div id="editCategoryModal" class="modal hide fade">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">x</button>
-		<h3 id="modalheader"></h3>
-	</div>
-	<div class="modal-body">
-		<form method="post" id="saveForm">
-			<div>
-				<label for="categoryName">Name:</label> <input id="categoryName"
-					type="text" name="categoryName" />
-			</div>
-		</form>
-	</div>
-	<div class="modal-footer">
-		<a href="#" class="btn" data-dismiss="modal">Close</a> 
-		<input type="submit" class="btn btn-primary" autofocus="autofocus"
-			form="saveForm"></input>
-	</div>
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">x</button>
+    <h3 id="modalheader"></h3>
+  </div>
+  <div class="modal-body">
+    <form method="post" id="saveForm">
+      <div>
+        <label for="categoryName">Name:</label>
+        <input id="categoryName" type="text" name="categoryName" />
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn" data-dismiss="modal">Close</a>
+    <input type="submit" class="btn btn-primary" autofocus="autofocus" form="saveForm"></input>
+  </div>
 </div>
 
 
 {% endblock %} {% block externaljs %}
 <script type="text/javascript"
-	src="/static/js/ext/jquery.dataTables.min.js"></script>
+  src="/static/js/ext/jquery.dataTables.min.js"></script>
 <script type="text/javascript"
-	src="/static/js/ext/dataTables.bootstrap.js"></script>
+  src="/static/js/ext/dataTables.bootstrap.js"></script>
 <script type="text/javascript" src="/static/js/ext/TableTools.js"></script>
 <script type="text/javascript" src="/static/js/settings.js"></script>
 {% endblock %}

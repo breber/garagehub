@@ -61,12 +61,12 @@
               <ul class="dropdown-menu">
               	{% for notif in dateNotifications %}
               	<li><a href="/notifications/clear">
-              		{{ notif.vehicleName }}: Need {{ notif.category }} by {{ notif.date }}
+          		  {{ notif.vehicleName }}: Need {{ notif.category }} by {{ notif.date }}
               	</a></li>
               	{% endfor %}
               	{% for notif in mileNotifications %}
               	<li><a href="/notifications/clear">
-              		{{ notif.vehicleName }}: Need {{ notif.category }} at {{ notif.mileage }} miles
+          		  {{ notif.vehicleName }}: Need {{ notif.category }} at {{ notif.mileage }} miles
               	</a></li>
               	{% endfor %}
                 {% if totalNotifications %}

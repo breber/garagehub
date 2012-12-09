@@ -5,8 +5,8 @@
 {% block pagecontent %}
 
 <div class="btn-add-edit-delete">
-  <a id="maint-add"    class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/maintenance/add"><i class="icon-plus"></i> Add Record</a>
-  <a id="maint-edit"   class="btn btn-inverse btn-add-edit-delete" disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/edit/')"><i class="icon-edit"></i> Edit Record</a>
+  <a id="maint-add" class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/maintenance/add"><i class="icon-plus"></i> Add Record</a>
+  <a id="maint-edit" class="btn btn-inverse btn-add-edit-delete" disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/edit/')"><i class="icon-edit"></i> Edit Record</a>
   <a id="maint-delete" class="btn btn-danger btn-add-edit-delete"  disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/delete/')"><i class="icon-remove"></i> Delete Record</a>
 </div>
 <h2 class="expense-header">Maintenance Records</h2>

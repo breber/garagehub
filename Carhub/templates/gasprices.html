@@ -1,8 +1,7 @@
-{% extends 'base.html' %}
-{% block externalcss %}
-<link rel="stylesheet" href="/static/css/dataTables.bootstrap.css" type="text/css"/>
-{% endblock %}
-{% block content %}
+{% extends 'base.html' %} {% block externalcss %}
+<link rel="stylesheet" href="/static/css/dataTables.bootstrap.css"
+  type="text/css" />
+{% endblock %} {% block content %}
 
 <div class="well">
   <h2>Nearby Gas Prices</h2>
@@ -63,7 +62,20 @@
 
   <div class="row-fluid" id="tableWrapper">
     <div id="loading" class="center"><img id='theImg' src='/static/img/ajax-loader.gif' class="loading-image" /> Loading...</div>
-    <table class="table pagination table-striped table-bordered table-hover linkable" id="gaspricetable"></table>
+    <table class="table table-striped table-bordered table-hover hidden"
+      id="gaspricetable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Location</th>
+          <th>Price</th>
+          <th>Distance</th>
+          <th>Last Updated</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+        </tr>
+      </thead>
+    </table>
   </div>
   
   <hr>
@@ -75,14 +87,16 @@
   </div>
   
   <div id="modalMap" class="modal hide fade">
-  	<div id="map_canvas" class="gas-map-canvas"></div>
+    <div id="map_canvas" class="gas-map-canvas"></div>
   </div>
 </div>
 
 {% endblock %} {% block externaljs %}
 <script type="text/javascript"
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6rEVLWJAAQ6p3IObKwkyGoAVQ_GQZnIg&sensor=false"></script>
-<script type="text/javascript" src="/static/js/ext/jquery.dataTables.min.js"></script>  
+<script type="text/javascript"
+  src="/static/js/ext/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/static/js/ext/sprintf.js"></script>
 <script type="text/javascript" src="/static/js/gasprices.js"></script>
 
 {% endblock %}

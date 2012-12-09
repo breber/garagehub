@@ -5,8 +5,8 @@
 {% block pagecontent %}
 
 <div class="btn-add-edit-delete">
-  <a id="gasmileage-add"    class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/gasmileage/add"><i class="icon-plus"></i> Add Fuel Record</a>
-  <a id="gasmileage-edit"   class="btn btn-inverse btn-add-edit-delete" disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/gasmileage/edit/')"><i class="icon-edit"></i> Edit Record</a>
+  <a id="gasmileage-add" class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/gasmileage/add"><i class="icon-plus"></i> Add Fuel Record</a>
+  <a id="gasmileage-edit" class="btn btn-inverse btn-add-edit-delete" disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/gasmileage/edit/')"><i class="icon-edit"></i> Edit Record</a>
   <a id="gasmileage-delete" class="btn btn-danger btn-add-edit-delete"  disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/gasmileage/delete/')"><i class="icon-remove"></i> Delete Record</a>
 </div>
 
@@ -19,8 +19,11 @@
   <p>Record one <a href="/vehicle/{{ car.key.id }}/gasmileage/add">here</a>!</p>
 </div>
 {% else %}
-<h3 class="expense-subheader-1">Average MPG: {{ avgmpg }}</h3>
-<h3 class="expense-subheader-2">Miles Recorded: {{ milestotal }}</h3>
+<br>
+<div class="expense-subheader-1">
+  <h3>Average MPG: {{ avgmpg }}</h3>
+  <h3>Miles Recorded: {{ milestotal }}</h3>
+</div>
 
 <div id="alert-area"></div>
 
@@ -80,7 +83,6 @@
 </tr>
 {% endfor %}
 </tbody>
-
 </table>
 
 <div id="displayimage" class="modal hide fade img-modal">

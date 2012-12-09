@@ -4,7 +4,7 @@
 {% endblock %}
 {% block content %}
 
-<div class="well ">
+<div class="well">
   <h2>Nearby Gas Prices</h2>
 
   <form>
@@ -13,7 +13,7 @@
     <br />
 
     <section>
-      <div style="float: left;">
+      <div class="pull-left">
         <label for="zip">Zip Code:</label>
         <input type="text" name="zip" id="zip" disabled />
       </div>
@@ -56,7 +56,7 @@
     <br /> <br />
     <section>
       <div style="float: left; clear: both;">
-        <input type="button" class="btn" onclick="getGasPrices();" value="Get Gas" />
+        <input type="button" class="btn btn-primary" onclick="getGasPrices();" value="Get Gas" />
       </div>
     </section>
   </form>
@@ -65,11 +65,11 @@
     <div id="loading" class="center"><img id='theImg' src='/static/img/ajax-loader.gif' /> Loading...</div>
     <table class="table pagination table-striped table-bordered table-hover linkable" id="gaspricetable"></table>
   </div>
-  <hr />
-  <div>Data Powered by www.myGasFeed.com.</div>
-  
+  <br>
+  <div class="pull-right">Data Powered by www.myGasFeed.com.</div>
+  <br>
   <div id="modalMap" class="modal hide fade">
-  	<div id="map_canvas"  style="height: 300px;"></div>
+  	<div id="map_canvas" style="height: 300px;"></div>
   </div>
 </div>
 

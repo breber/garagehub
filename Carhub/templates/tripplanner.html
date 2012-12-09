@@ -4,8 +4,8 @@
   <h2>Trip Planner</h2>
 
   <div id="side-container">
-   <input onclick="hideFromInput();" id="useCurrentLocation" type="checkbox" value="useCurrentLocation" style = "float: left; " checked/>
-   <label for="useCurrentLocation" style = "float: left; padding-left: 5px; font-weight: bold; padding-right: 3px; text-align: left; "> Use my location</label><br/><br/>
+   <input onclick="hideFromInput();" id="useCurrentLocation" type="checkbox" value="useCurrentLocation" class="pull-left" checked="checked"/>
+   <label for="useCurrentLocation" class="pull-left" style="padding-left: 5px; font-weight: bold; padding-right: 3px"> Use my location</label><br/><br/>
     <ul>
       <li class="dir-label">From:</li>
       <li><input id="from-input" type=text value=""/></li>
@@ -13,37 +13,37 @@
       <li><input id="to-input" type=text value="Ames, IA" /></li>
     </ul>
     <div>
-      <input onclick="Demo.getDirections();" type="button" class="btn"
-        value="Go!" style="float: left" />
+      <input onclick="Demo.getDirections();" type="button" class="btn btn-primary pull-left"
+        value="Go!" />
     </div>
     <div id="dir-container"></div>
   </div>
   <div id="map_canvas" style="width: 850px; height: 500px"></div>
   <br />
-  <div style="list-style-type: none; float: left;">
-    <form >
-    <div style="float:left;margin-right:20px;">
-      <label for="num-miles-input">Number of Miles:</label> 
-      <input id="num-miles-input" type="text" name="num-miles-input" />
+  <div class="pull-left" style="list-style-type: none">
+    <form>
+      <div class="pull-left" style="margin-right:20px;">
+        <label for="num-miles-input">Number of Miles:</label> 
+        <input id="num-miles-input" type="text" name="num-miles-input" readonly="readonly" />
       </div>
-      <div style="float:left;margin-right:20px;">
-      <label for="avg-mpg-input">Average MPG:</label>
-      <input id="avg-mpg-input" type="text" name="avg-mpg-input" /> 
+      <div class="pull-left" style="margin-right:20px;">
+        <label for="avg-mpg-input">Average MPG:</label>
+        <input id="avg-mpg-input" type="text" name="avg-mpg-input" /> 
       </div>
-      <div style="float:left;margin-right:20px;">
-      <label for="avg-ppg-input">Estimated Price Per Gallon:</label>
-      <input id="avg-ppg-input" type="text" name="avg-ppg-input" />
+      <div class="pull-left" style="margin-right:20px;">
+        <label for="avg-ppg-input">Estimated Price Per Gallon:</label>
+        <input id="avg-ppg-input" type="text" name="avg-ppg-input" />
       </div>
     </form>
     <div>
-      <input onclick="calculateTripPrice();" type="button" class="btn"
-        value="Calculate Cost" style="float: left" />
+      <input onclick="calculateTripPrice();" type="button" class="btn btn-primary pull-left"
+        value="Calculate Cost" />
     </div>
     <br /> <br />
     <form>
-    <div style="float:left; clear:both;" margin-right:20px;">
-      Estimated Cost: <br />
-      <input id="est-cost-trip" type="text" name="est-cost-trip" /><br />
+      <div class="pull-left" style="clear:both;">
+        Estimated Cost: <br />
+        <input id="est-cost-trip" type="text" name="est-cost-trip" /><br />
       </div>
     </form>
   </div>

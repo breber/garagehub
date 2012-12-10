@@ -35,7 +35,6 @@ $(document).ready(function() {
 			} 
 			$('#category')[0].options[categoriesLength]=new Option($('#newCategory').val(), $('#newCategory').val(), false, true);
 		
-			prepareEmptyTextInput( $('#newCategory'), "Enter New Category");
 			// switch to category tab
 			$('#categorytab a:first').tab('show'); 
 		}

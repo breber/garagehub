@@ -56,7 +56,7 @@
     <p>Amount Spent</p>
     <div class="input-prepend">
       <span class="add-on">$</span>
-      <input class="span2" id="prependedInput" type="text" name="amount" id="amount" class="validate[required, custom[number]]">
+      <input type="text" name="amount" id="amount" class="span2 validate[required, custom[number]]">
     </div>
   </div>
   <div class="generic maintenance hidden">
@@ -68,7 +68,7 @@
     <p>Price Per Gallon</p>
     <div class="input-prepend">
       <span class="add-on">$</span>
-      <input class="span2" id="prependedInput" type="text" name="pricepergallon" id="pricepergallon" class="validate[required,custom[number]]">
+      <input type="text" name="pricepergallon" id="pricepergallon" class="span2 validate[required,custom[number]]">
     </div>
 
     <p>Fuel Grade</p>
@@ -162,16 +162,14 @@
 </div>
 {% endif %} {% if editfuelrecordobj %}
 <div id="editfuelrecordobject" class="hidden">
-  <div id="editdatepurchased">{{ editfuelrecordobj.date_formatted
-    }}</div>
+  <div id="editdatepurchased">{{ editfuelrecordobj.date_formatted }}</div>
   <div id="editcategory">{{ editfuelrecordobj.category }}</div>
   <div id="editlocation">{{ editfuelrecordobj.location }}</div>
   <div id="editamount">{{ editfuelrecordobj.amount }}</div>
   <div id="editdescription">{{ editfuelrecordobj.description }}</div>
   <div id="editpricepergallon">{{ editfuelrecordobj.costPerGallon }}</div>
   <div id="editfuelgrade">{{ editfuelrecordobj.fuelGrade }}</div>
-  <div id="editodometerstart">{{ editfuelrecordobj.odometerStart
-    }}</div>
+  <div id="editodometerstart">{{ editfuelrecordobj.odometerStart }}</div>
   <div id="editodometerend">{{ editfuelrecordobj.odometerEnd }}</div>
 </div>
 {% endif %} {% endblock %} {% block externaljs %}

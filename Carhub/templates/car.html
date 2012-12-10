@@ -1,10 +1,14 @@
 {% extends 'base_vehicle.html' %} 
 {% block pagecontent %}
 
-<div>
-  <h2 class="pull-left">{{ car.name }}</h2>
-  <div class="pull-right car-buttons">
-    <a href="#editCar" class="btn btn-primary" data-toggle="modal">Edit Vehicle</a>
+<div class="row-fluid">
+  <div class="span9">
+    <h2>{{ car.name }}</h2>
+  </div>
+  <div class="span3">
+    <div class="row-fluid">
+      <a href="#editCar" class="btn btn-inverse span12" data-toggle="modal"><i class="icon-edit icon-white"></i> Edit Vehicle</a>
+    </div>
   </div>
 </div>
 
@@ -48,7 +52,7 @@
   <div class="modal-footer">
     <form action="/vehicle/{{ car.key.id }}/delete" method="post" id="deleteForm" class="hidden"></form>
     <input type="submit" class="btn btn-danger" value="Delete" form="deleteForm"></input>
-    <a href="#" class="btn" data-dismiss="modal">Close</a>
+    <a href="#" class="btn btn-inverse" data-dismiss="modal">Close</a>
     <input type="submit" class="btn btn-primary" autofocus="autofocus" form="saveForm"></input>
   </div>
 </div>

@@ -32,7 +32,7 @@
           <select id="category" name="category">
             <option value="">Select a Category</option>
             {% for category in categories %}
-            <option>{{ category }}</option>
+            <option>{{ category.name }}</option>
             {% endfor %}
           </select>
         </div>
@@ -146,7 +146,7 @@
 {% if editexpenseobj %}
 <div id="editexpenseobject" class="hidden">
   <div id="editdatepurchased">{{ editexpenseobj.date_formatted }}</div>
-  <div id="editcategory">{{ editexpenseobj.category }}</div>
+  <div id="editcategory">{{ editexpenseobj.categoryname }}</div>
   <div id="editlocation">{{ editexpenseobj.location }}</div>
   <div id="editamount">{{ editexpenseobj.amount }}</div>
   <div id="editdescription">{{ editexpenseobj.description }}</div>
@@ -154,7 +154,7 @@
 {% endif %} {% if editmaintenanceobj %}
 <div id="editmaintenanceobject" class="hidden">
   <div id="editdatepurchased">{{ editmaintenanceobj.date_formatted }}</div>
-  <div id="editcategory">{{ editmaintenanceobj.category }}</div>
+  <div id="editcategory">{{ editmaintenanceobj.categoryname }}</div>
   <div id="editlocation">{{ editmaintenanceobj.location }}</div>
   <div id="editamount">{{ editmaintenanceobj.amount }}</div>
   <div id="editdescription">{{ editmaintenanceobj.description }}</div>
@@ -163,7 +163,6 @@
 {% endif %} {% if editfuelrecordobj %}
 <div id="editfuelrecordobject" class="hidden">
   <div id="editdatepurchased">{{ editfuelrecordobj.date_formatted }}</div>
-  <div id="editcategory">{{ editfuelrecordobj.category }}</div>
   <div id="editlocation">{{ editfuelrecordobj.location }}</div>
   <div id="editamount">{{ editfuelrecordobj.amount }}</div>
   <div id="editdescription">{{ editfuelrecordobj.description }}</div>

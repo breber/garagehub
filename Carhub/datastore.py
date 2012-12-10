@@ -438,12 +438,12 @@ def getCategoryById(userId, categoryType, categoryId):
         The BaseExpense
     """
     
-    if categoryType == "expense":
+    if categoryType == "expense" and categoryId:
         expenseCategory = models.ExpenseCategory.get_by_id(long(categoryId))
         
         if expenseCategory:
             return expenseCategory
-    if categoryType == "maintenance":
+    if categoryType == "maintenance" and categoryId:
         maintCategory = models.MaintenanceCategory.get_by_id(long(categoryId))
         
         if maintCategory:

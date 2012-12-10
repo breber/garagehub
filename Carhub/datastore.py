@@ -264,7 +264,7 @@ def getMostRecentMaintRecord(userId, vehicleId, category):
     
     return maintRecord 
 
-def getMaintenanceCategories(userId):
+def getMaintenanceCategoryStrings(userId):
     """Gets a list of user categories (strings)
     
     Args: 
@@ -356,7 +356,7 @@ def addDefaultMaintenanceCategoryModels():
     models.MaintenanceCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Car Wash").put()
     
 
-def getExpenseCategories(userId):
+def getExpenseCategoryStrings(userId):
     """Gets a list of user categories (strings)
     
     Args: 

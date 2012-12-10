@@ -94,7 +94,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
         datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
         
         # find out if new category has been added
-        ExpenseCatgories = datastore.getExpenseCategories(user.user_id())
+        ExpenseCatgories = datastore.getExpenseCategoryStrings(user.user_id())
         
         category = self.request.get("category", "Uncategorized")
         if not category in ExpenseCatgories:
@@ -206,7 +206,7 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
         datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
         
         category = self.request.get("category", "Uncategorized")
-        maintCategories = datastore.getMaintenanceCategories(user.user_id())
+        maintCategories = datastore.getMaintenanceCategoryStrings(user.user_id())
         
         if not (category in maintCategories):
             newCategoryObj = models.MaintenanceCategory()
@@ -289,7 +289,7 @@ class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
         context = utils.get_context()
         user = users.get_current_user()
         context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
-        context["categories"] = datastore.getExpenseCategories(user.user_id())
+        context["categories"] = datastore.getExpenseCategoryModels(user.user_id())
         context['userfuelrecords'] = datastore.getFuelRecords(user.user_id(), vehicleId, None, False)
         
         # Get latest fuel record

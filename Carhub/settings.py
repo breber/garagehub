@@ -42,9 +42,9 @@ class SettingsHandler(webapp2.RequestHandler):
         if user:
             if action == "add":
                 if pageType == "maintenance":
-                    categories = datastore.getMaintenanceCategoryModels(user.user_id())
+                    categories = datastore.getMaintenanceCategoryStrings(user.user_id())
                 else:
-                    categories = datastore.getExpenseCategories(user.user_id())
+                    categories = datastore.getExpenseCategoryStrings(user.user_id())
                     
                 newName = self.request.get("categoryName", None)
                 if newName and not newName in categories:
@@ -62,9 +62,9 @@ class SettingsHandler(webapp2.RequestHandler):
             if action == "edit":
                 # Edit record
                 if pageType == "maintenance":
-                    categories = datastore.getMaintenanceCategoryModels(user.user_id())
+                    categories = datastore.getMaintenanceCategoryStrings(user.user_id())
                 else:
-                    categories = datastore.getExpenseCategories(user.user_id())
+                    categories = datastore.getExpenseCategoryStrings(user.user_id())
                     
                 newName = self.request.get("categoryName", None)
                 category = datastore.getCategoryById(user.user_id(), pageType, categoryId)

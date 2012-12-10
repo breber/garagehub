@@ -26,7 +26,7 @@ handlers:
 - url: /cron/?.*
   script: admin.app
   login: admin
-  
+
 - url: /blob/?.*
   script: blob.app
   login: required
@@ -52,3 +52,6 @@ libraries:
 
 builtins:
 - deferred: on
+
+inbound_services:
+- warmup

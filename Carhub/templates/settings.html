@@ -17,64 +17,66 @@
     <div class="controls">
       <img src="{{ user.profilePic }}" /> <a href="http://gravatar.com">Change your avatar at Gravatar.com</a>
     </div>
-
   </div>
 
-  <div class="list-categories">
+  <div>
     <label class="control-label"><b>Categories</b></label>
-    <div class="pull-left car-buttons controls">
-      <a id="editCategory" class="btn btn-inverse btn-edit-delete"><i
-        class="icon-edit"></i> Edit Category</a> <a id="deleteCategory"
-        class="btn btn-danger btn-edit-delete"><i
-        class="icon-remove"></i> Delete Category</a>
-    </div>
-
-    <div class="settings-category-1">
-      {% if categories %}
-      <table class="category-datatable table table-striped table-bordered DTTT_selectable table-hover" id="expense-category-table">
-        <thead>
-          <tr>
-            <th>Expense</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for c in categories %}
-          <tr id="{{ c.key.id }}">
-            <td class="expense">{{ c.category }}</td>
-          </tr>
-          {% endfor %}
-          <tr id="add">
-            <td class="expense">
-              <a id="addExpCategory" class="btn btn-primary"><i class="icon-plus"></i> Add</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      {% endif %}
-    </div>
-
-    <div class="settings-category-2">
-      {% if maintcategories %}
-      <table class="category-datatable table table-striped table-bordered DTTT_selectable table-hover" id="maint-category-table">
-        <thead>
-          <tr>
-            <th>Maintenance</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for c in maintcategories %}
-          <tr id="{{ c.key.id }}">
-            <td class="maintenance">{{ c.category }}</td>
-          </tr>
-          {% endfor %}
-          <tr id="add">
-            <td class="maintenance">
-              <a id="addMaintCategory" class="btn btn-primary"><i class="icon-plus"></i> Add</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      {% endif %}
+    <div class="row-fluid">
+      <div class="span3">
+        <div class="row-fluid">
+          <a id="editCategory" class="btn btn-inverse span12 settings-btn"><i class="icon-edit icon-white"></i> Edit Category</a>
+        </div>
+        <div class="row-fluid">
+          <a id="deleteCategory" class="btn btn-danger span12 settings-btn"><i class="icon-remove icon-white"></i> Delete Category</a>
+        </div>
+      </div>
+      <div class="span3">
+        {% if categories %}
+        <table class="category-datatable table table-striped table-bordered DTTT_selectable table-hover" id="expense-category-table">
+          <thead>
+            <tr>
+              <th>Expense</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in categories %}
+            <tr id="{{ c.key.id }}">
+              <td class="expense">{{ c.category }}</td>
+            </tr>
+            {% endfor %}
+            <tr id="add">
+              <td class="expense">
+                <a id="addExpCategory" class="btn btn-primary"><i class="icon-plus"></i> Add</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        {% endif %}
+      </div>
+  
+      <div class="span3">
+        {% if maintcategories %}
+        <table class="category-datatable table table-striped table-bordered DTTT_selectable table-hover" id="maint-category-table">
+          <thead>
+            <tr>
+              <th>Maintenance</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in maintcategories %}
+            <tr id="{{ c.key.id }}">
+              <td class="maintenance">{{ c.category }}</td>
+            </tr>
+            {% endfor %}
+            <tr id="add">
+              <td class="maintenance">
+                <a id="addMaintCategory" class="btn btn-primary"><i class="icon-plus"></i> Add</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>
@@ -93,7 +95,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <a href="#" class="btn" data-dismiss="modal">Close</a>
+    <a href="#" class="btn btn-inverse" data-dismiss="modal">Close</a>
     <input type="submit" class="btn btn-primary" autofocus="autofocus" form="saveForm"></input>
   </div>
 </div>

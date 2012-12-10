@@ -255,27 +255,8 @@ div.news-articlediv:hover {
 }
 
 /* For settings.html */
-.list-categories {
-	overflow: hidden;
-}
-
-.settings-category-1 {
-	clear: left;
-	float: left;
-	margin-right: 60px;
-}
-
-.settings-category-2 {
-	float: left;
-	margin-right: 60px;
-}
-
-.btn-edit-delete {
-	margin-top: 5px;
-	margin-bottom: 5px;
-	margin-right: 10px;
-	float: left;
-	clear: left;
+.settings-btn {
+	margin: 5px 0px;
 }
 
 /* For gasprices.html */

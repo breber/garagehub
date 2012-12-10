@@ -27,9 +27,9 @@ handlers:
   script: admin.app
   login: admin
 
-- url: /blob/?.*
-  script: blob.app
-  login: required
+- url: /database/?.*
+  script: databaseupgrade.app
+  login: admin
 
 - url: /settings/?.*
   script: settings.app

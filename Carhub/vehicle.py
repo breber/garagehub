@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from google.appengine.api import users
+from google.appengine.api import images, users
 from google.appengine.ext import blobstore
 from google.appengine.ext.webapp import blobstore_handlers, template
 import datastore
@@ -80,11 +80,13 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
 
         fileChosen = self.request.get("file", None)
         recieptKey = None
+        imageUrl = None
         if fileChosen:
             upload_files = self.get_uploads('file')
             if len(upload_files) > 0:
                 blob_info = upload_files[0]
                 recieptKey = str(blob_info.key())
+                imageUrl = images.get_serving_url(blob_info.key(), 400)
         
         dateString = self.request.get("datePurchased", None)
         datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
@@ -125,6 +127,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 if oldImage:  # delete old picture
                     blobstore.BlobInfo.get(oldImage).delete()
                 expense.picture = recieptKey
+                expense.pictureurl = imageUrl
             expense.owner = user.user_id()
             expense.vehicle = long(vehicleId)
             expense.lastmodified = datetime.datetime.now()
@@ -182,16 +185,15 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self, vehicleId, pageName, maintenanceId):
         user = users.get_current_user()
         
-        logging.info("entered the Maintenance Expense post function")
-        
         fileChosen = self.request.get("file", None)
         recieptKey = None
+        imageUrl = None
         if fileChosen:
             upload_files = self.get_uploads('file')
             if len(upload_files) > 0:
                 blob_info = upload_files[0]
                 recieptKey = str(blob_info.key())
-            
+                imageUrl = images.get_serving_url(blob_info.key(), 400)
         
         dateString = self.request.get("datePurchased", None)
         datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
@@ -234,6 +236,8 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
                 if oldImage:  # delete old picture
                     blobstore.BlobInfo.get(oldImage).delete()
                 maintRec.picture = recieptKey
+                maintRec.pictureurl = imageUrl
+
             maintRec.owner = user.user_id()
             maintRec.vehicle = long(vehicleId)
             maintRec.lastmodified = datetime.datetime.now()
@@ -323,15 +327,15 @@ class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
         # TODO: handle what to do if the optional fields are not entered.
         user = users.get_current_user()
         
-        logging.info("entered the Gas Mileage Expense post function")
-        
         fileChosen = self.request.get("file", None)
         recieptKey = None
+        imageUrl = None
         if fileChosen:
             upload_files = self.get_uploads('file')
             if len(upload_files) > 0:
                 blob_info = upload_files[0]
                 recieptKey = str(blob_info.key())
+                imageUrl = images.get_serving_url(blob_info.key(), 400)
         
         dateString = self.request.get("datePurchased", None)
         datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
@@ -359,7 +363,6 @@ class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
                 odometerStart = int(odometerStart)
             else:
                 odometerStart = -1
-        
         
         odometerEnd = self.request.get("odometerEnd", None)
         if odometerEnd:
@@ -401,6 +404,7 @@ class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
                 if oldImage:  # delete old picture
                     blobstore.BlobInfo.get(oldImage).delete()
                 record.picture = recieptKey
+                record.pictureurl = imageUrl
             record.owner = user.user_id()
             record.vehicle = long(vehicleId)
             record.lastmodified = datetime.datetime.now()

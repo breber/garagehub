@@ -43,6 +43,11 @@ $(document).ready(function() {
 	// Setup keypress handler on the newCategory input
 	$("#newCategory").keypress(newCategoryKeyPress);
 	
+	// File type checker
+	$("#file").change(function(e) {
+		// TODO: check file type
+	});
+	
 	// try to load expense record to edit.
 	if(window.location.pathname.indexOf("edit") > -1){
 		editExpenseRecord();

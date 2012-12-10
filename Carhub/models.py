@@ -32,6 +32,7 @@ class BaseExpense(polymodel.PolyModel):
     description = ndb.StringProperty()
     amount = ndb.FloatProperty()
     picture = ndb.StringProperty()
+    pictureurl = ndb.StringProperty()
 
     def date_formatted(self):
         return utils.format_date(self.date)

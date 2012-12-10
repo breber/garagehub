@@ -15,9 +15,11 @@
     {% endif %}
   </div>
   <div class="span3">
+    {% if userexpenses %}
     <a id="record-add" class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/gasmileage/add"><i class="icon-plus"></i> Add Expense</a>
     <a id="record-edit" class="btn btn-inverse btn-add-edit-delete"><i class="icon-edit"></i> Edit Record</a>
     <a id="record-delete" class="btn btn-danger btn-add-edit-delete"><i class="icon-remove"></i> Delete Record</a>
+    {% endif %}
   </div>
 </div>
 <br>

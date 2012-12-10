@@ -77,10 +77,6 @@ html,body {
 }
 
 /* For car.html */
-.car-buttons {
-	padding: 5px;
-}
-
 .cartable {
 	table-layout: fixed;
 }

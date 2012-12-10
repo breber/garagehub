@@ -287,7 +287,7 @@ def getMaintenanceCategories(userId):
     
     for c in results:
         if not c.category in toRet:
-            toRet.append(c.category)
+            toRet.append(c.subcategory)
     
     toRet.sort()
     
@@ -347,15 +347,16 @@ def addDefaultMaintenanceCategoryModels():
         -
     """
     # TODO: Finalize these category defaults
-    models.MaintenanceCategory(owner="defaultMaintCategory", category="Oil Change").put()
+    models.MaintenanceCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Oil Change").put()
         
-    models.MaintenanceCategory(owner="defaultMaintCategory", category="Repair").put()
+    models.MaintenanceCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Repair").put()
     
-    models.MaintenanceCategory(owner="defaultMaintCategory", category="Recall").put()
+    models.MaintenanceCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Recall").put()
 
-    models.MaintenanceCategory(owner="defaultMaintCategory", category="Car Wash").put()
+    models.MaintenanceCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Car Wash").put()
+    
 
-def getUserExpenseCategories(userId):
+def getExpenseCategories(userId):
     """Gets a list of user categories (strings)
     
     Args: 
@@ -365,26 +366,23 @@ def getUserExpenseCategories(userId):
         A string list of categories for that user
     """
 
-    query = models.UserExpenseCategory().query(models.UserExpenseCategory.owner.IN([userId, "defaultCategory"]))
+    query = models.ExpenseCategory().query(models.ExpenseCategory.owner.IN([userId, "defaultCategory"]))
     results = ndb.get_multi(query.fetch(keys_only=True))
 
     if not results:
         addDefaultExpenseCategoryModels()
         
-        query = models.UserExpenseCategory().query(models.UserExpenseCategory.owner.IN([userId, "defaultCategory"]))
+        query = models.ExpenseCategory().query(models.ExpenseCategory.owner.IN([userId, "defaultCategory"]))
         results = ndb.get_multi(query.fetch(keys_only=True))
-
-    toRet = []
-    
+            
+    resultsExpenseOnly = []
     for c in results:
-        if not c.category in toRet:
-            toRet.append(c.category)
+        if c._class_name() == "ExpenseCategory":
+            resultsExpenseOnly.append(c.category)
     
-    toRet.sort()
-    
-    return toRet
+    return resultsExpenseOnly
 
-def getUserExpenseCategoryModels(userId, getDefaultCategories=True):
+def getExpenseCategoryModels(userId, getDefaultCategories=True):
     """Gets a list of user categories (models)
     
     Args: 
@@ -396,18 +394,23 @@ def getUserExpenseCategoryModels(userId, getDefaultCategories=True):
     """
 
     if getDefaultCategories:
-        query = models.UserExpenseCategory().query(models.UserExpenseCategory.owner.IN([userId, "defaultCategory"]))
+        query = models.ExpenseCategory().query(models.ExpenseCategory.owner.IN([userId, "defaultCategory"]))
     else:
-        query = models.UserExpenseCategory().query(models.UserExpenseCategory.owner.IN([userId]))
+        query = models.ExpenseCategory().query(models.ExpenseCategory.owner.IN([userId]))
     results = ndb.get_multi(query.fetch(keys_only=True))
 
     if not results and getDefaultCategories:
         addDefaultExpenseCategoryModels()
         
-        query = models.UserExpenseCategory().query(models.UserExpenseCategory.owner.IN([userId, "defaultCategory"]))
+        query = models.ExpenseCategory().query(models.ExpenseCategory.owner.IN([userId, "defaultCategory"]))
         results = ndb.get_multi(query.fetch(keys_only=True))
 
-    return results
+    resultsExpenseOnly = []
+    for c in results:
+        if c._class_name() == "ExpenseCategory":
+            resultsExpenseOnly.append(c)
+
+    return resultsExpenseOnly
 
 def getDefaultExpenseCategoryModels():
     """Gets a list of user categories (models)
@@ -419,13 +422,13 @@ def getDefaultExpenseCategoryModels():
         A list of default expense categories
     """
 
-    query = models.UserExpenseCategory().query(models.UserExpenseCategory.owner.IN(["defaultCategory"]))
+    query = models.ExpenseCategory().query(models.ExpenseCategory.owner.IN(["defaultCategory"]))
     results = ndb.get_multi(query.fetch(keys_only=True))
 
     if not results:
         addDefaultExpenseCategoryModels()
         
-        query = models.UserExpenseCategory().query(models.UserExpenseCategory.owner.IN(["defaultCategory"]))
+        query = models.ExpenseCategory().query(models.ExpenseCategory.owner.IN(["defaultCategory"]))
         results = ndb.get_multi(query.fetch(keys_only=True))
 
     return results
@@ -440,15 +443,16 @@ def addDefaultExpenseCategoryModels():
         -
     """
     # TODO: some of these seem duplicated with maintenance categories...
-    models.UserExpenseCategory(owner="defaultCategory", category="Maintenance").put()
+    models.ExpenseCategory(owner="defaultCategory", category="Maintenance").put()
         
-    models.UserExpenseCategory(owner="defaultCategory", category="Fuel Up").put()
+        #If you change this be sure to change the fuel record post function to be able to find it.
+    models.ExpenseCategory(owner="defaultCategory", category="Fuel Up").put()
     
-    models.UserExpenseCategory(owner="defaultCategory", category="Repair").put()
+    models.ExpenseCategory(owner="defaultCategory", category="Repair").put()
 
-    models.UserExpenseCategory(owner="defaultCategory", category="Uncategorized").put()
+    models.ExpenseCategory(owner="defaultCategory", category="Uncategorized").put()
 
-def getCategory(userId, categoryType, categoryId):
+def getCategoryById(userId, categoryType, categoryId):
     """Gets the BaseExpense for the given expenseId
     
     Args: 
@@ -460,7 +464,7 @@ def getCategory(userId, categoryType, categoryId):
     """
     
     if categoryType == "expense":
-        expenseCategory = models.UserExpenseCategory.get_by_id(long(categoryId))
+        expenseCategory = models.ExpenseCategory.get_by_id(long(categoryId))
         
         if expenseCategory:
             return expenseCategory
@@ -471,6 +475,35 @@ def getCategory(userId, categoryType, categoryId):
             return maintCategory
                                                
     return None
+
+def getCategoryByName(userId, categoryType, categoryName):
+    """Gets the BaseExpense for the given expenseId
+    
+    Args: 
+        vehicleId - The vehicle ID
+        expenseId - The expense ID
+    
+    Returns
+        The BaseExpense
+    """
+    
+    if categoryType == "expense":        
+        query = models.ExpenseCategory().query(models.ExpenseCategory.owner.IN([userId, "defaultCategory"]),
+                                               models.ExpenseCategory.category == categoryName)
+        #TODO: make sure there is only one no duplicates
+        expenseCategory = query.get()
+        return expenseCategory 
+        
+        
+    if categoryType == "maintenance":        
+        query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId, "defaultCategory"]),
+                                                   models.MaintenanceCategory.subcategory == categoryName)
+        #TODO: make sure there is only one no duplicates
+        maintCategory = query.get()
+        return maintCategory 
+                                               
+    return None
+
 
 def getListOfMakes():
     """Gets a list of vehicle makes (strings)

@@ -95,13 +95,17 @@ function getTotalDistance(result, index) {
 	    
 google.maps.event.addDomListener(window, 'load', Demo.init);
 
-$(document).ready(function()
-{
+$(document).ready(function() {
     $('#dir-container').click(function() {
     	  // Handler for .ready() called.
     	document.getElementById('num-miles-input').value = Math.round(getTotalDistance(Demo.dirRenderer.getDirections(), Demo.dirRenderer.getRouteIndex())/1609.344);
 		calculateTripPrice();
     });
+    
+    // Setup click handlers
+    $("#useCurrentLocation").click(hideFromInput);
+    $("#getdirections").click(Demo.getDirections);
+    $("#calculatecost").click(calculateTripPrice);
     
     hideFromInput();
 });

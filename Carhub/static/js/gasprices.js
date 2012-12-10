@@ -25,8 +25,11 @@ $(document).ready(function() {
 	$("#gaspricetable").hide();
 	$("#loading").hide();
 	
-	getGasPrices();
+	// Setup click handlers
+	$("#location").click(hideZipCode);
+	$("#fetchPrices").click(getGasPrices);
 	
+	getGasPrices();
 });
 
 //Work around for the map displaying grey areas on the modal load

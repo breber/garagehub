@@ -4,7 +4,7 @@
   <h2>Trip Planner</h2>
 
   <div id="side-container">
-   <input onclick="hideFromInput();" id="useCurrentLocation" type="checkbox" value="useCurrentLocation" class="pull-left" checked="checked"/>
+   <input id="useCurrentLocation" type="checkbox" value="useCurrentLocation" class="pull-left" checked="checked"/>
    <label for="useCurrentLocation" class="pull-left trip-label-check"> Use my location</label><br/><br/>
     <ul>
       <li class="dir-label">From:</li>
@@ -13,7 +13,7 @@
       <li><input id="to-input" type=text value="Ames, IA" /></li>
     </ul>
     <div>
-      <input onclick="Demo.getDirections();" type="button" class="btn btn-primary pull-left"
+      <input id="getdirections" type="button" class="btn btn-primary pull-left"
         value="Go!" />
     </div>
     <div id="dir-container"></div>
@@ -36,7 +36,7 @@
       </div>
     </form>
     <div>
-      <input onclick="calculateTripPrice();" type="button" class="btn btn-primary pull-left"
+      <input id="calculatecost" type="button" class="btn btn-primary pull-left"
         value="Calculate Cost" />
     </div>
     <br /> <br />

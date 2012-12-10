@@ -8,7 +8,7 @@
   <h2>Nearby Gas Prices</h2>
 
   <label class="checkbox">
-    <input onclick="hideZipCode();" type="checkbox" id="location" name="location" value="location" checked /> Detect my location
+    <input type="checkbox" id="location" name="location" value="location" checked /> Detect my location
   </label>
 
   <div class="row-fluid">
@@ -57,7 +57,7 @@
       <div id="alert" class="span12"></div>
     </div>
     <div class="span2">
-      <input type="button" class="btn btn-primary span12" onclick="getGasPrices();" value="Get Gas" />
+      <input type="button" class="btn btn-primary span12" id="fetchPrices" value="Get Gas" />
     </div>
   </div>
 

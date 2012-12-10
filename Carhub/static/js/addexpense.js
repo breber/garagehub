@@ -39,7 +39,9 @@ $(document).ready(function() {
 			$('#categorytab a:first').tab('show'); 
 		}
 	});
-
+	
+	// Setup keypress handler on the newCategory input
+	$("#newCategory").keypress(newCategoryKeyPress);
 	
 	// try to load expense record to edit.
 	if(window.location.pathname.indexOf("edit") > -1){
@@ -52,16 +54,10 @@ $(document).ready(function() {
 			editExpenseRecord();
 		}
 	}
-	
-	
 });
 
-function manualOdometerClick() {
-	$('#odometertab li:eq(1) a').tab('show');
-}
-
-function newCategoryKeyPress(e)
-{
+function newCategoryKeyPress(e) {
+	console.log("newCategoryKeyPress");
     // look for window.event in case event isn't passed in
     if (typeof e == 'undefined' && window.event) { e = window.event; }
     if (e.keyCode == 13)
@@ -121,8 +117,3 @@ function editFuelRecord() {
 		$('#odometerEnd').val(tmpOdometer);
 	}
 }
-
-
-
-
-

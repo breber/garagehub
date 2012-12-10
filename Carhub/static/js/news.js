@@ -11,7 +11,7 @@ function searchComplete(search) {
 		// iterate through search results array
 		$.each(search.results, function(index, element) {
 			var articleDiv = document.createElement('div');
-			articleDiv.setAttribute("class", "news-articlediv news-roundedcorners");
+			articleDiv.setAttribute("class", "news-articlediv news-roundedcorners linkable");
 			
 			// open article in new window when div is clicked
 			articleDiv.setAttribute("onclick", "window.open('" + element.unescapedUrl + "')");
@@ -19,7 +19,6 @@ function searchComplete(search) {
 			// link to news article
 			var aWrapper = document.createElement('div');
 			var a = document.createElement('a');
-			a.href = element.unescapedUrl;
 			a.innerHTML = element.unescapedUrl;
 			aWrapper.appendChild(a);			
 			

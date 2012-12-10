@@ -72,6 +72,11 @@ html,body {
 	padding: 8px 0;
 }
 
+.linkable {
+	cursor: pointer;
+	*cursor: hand;
+}
+
 .clear {
 	clear: both
 }
@@ -79,12 +84,6 @@ html,body {
 /* For car.html */
 .cartable {
 	table-layout: fixed;
-}
-
-/* For DataTables */
-table.table .linkable {
-	cursor: pointer;
-	*cursor: hand;
 }
 
 /* For tripplanner.html */

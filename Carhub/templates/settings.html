@@ -31,51 +31,75 @@
         </div>
       </div>
       <div class="span3">
-        {% if categories %}
         <table class="category-datatable table table-striped table-bordered DTTT_selectable table-hover" id="expense-category-table">
           <thead>
             <tr>
-              <th>Expense</th>
+              <th>User Expense Categories</th>
             </tr>
           </thead>
           <tbody>
+	        {% if categories %}
             {% for c in categories %}
             <tr id="{{ c.key.id }}">
               <td class="expense">{{ c.category }}</td>
             </tr>
             {% endfor %}
+	        {% endif %}
             <tr id="add">
               <td class="expense">
                 <a id="addExpCategory" class="btn btn-primary"><i class="icon-plus"></i> Add</a>
               </td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <th><b>Default Expense Categories</b></th>
+            </tr>
+	        {% if defaultcategories %}
+            {% for c in defaultcategories %}
+            <tr id="{{ c.key.id }}">
+              <td class="expense">{{ c.category }}</td>
+            </tr>
+            {% endfor %}
+	        {% endif %}
+	      </tfoot>
         </table>
-        {% endif %}
       </div>
   
       <div class="span3">
-        {% if maintcategories %}
         <table class="category-datatable table table-striped table-bordered DTTT_selectable table-hover" id="maint-category-table">
           <thead>
             <tr>
-              <th>Maintenance</th>
+              <th>User Maintenance Categories</th>
             </tr>
           </thead>
           <tbody>
+	        {% if maintcategories %}
             {% for c in maintcategories %}
             <tr id="{{ c.key.id }}">
               <td class="maintenance">{{ c.category }}</td>
             </tr>
             {% endfor %}
+	        {% endif %}
             <tr id="add">
               <td class="maintenance">
                 <a id="addMaintCategory" class="btn btn-primary"><i class="icon-plus"></i> Add</a>
               </td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <th><b>Default Maintenance Categories</b></th>
+            </tr>
+	        {% if defaultmaintcategories %}
+            {% for c in defaultmaintcategories %}
+            <tr id="{{ c.key.id }}">
+              <td class="expense">{{ c.category }}</td>
+            </tr>
+            {% endfor %}
+	        {% endif %}
+	      </tfoot>
         </table>
-        {% endif %}
       </div>
     </div>
   </div>

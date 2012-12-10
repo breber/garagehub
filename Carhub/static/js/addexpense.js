@@ -77,10 +77,7 @@ function editExpenseRecord() {
 	
 	$('#datePurchased').val( $('#editdatepurchased').text());
 	$('#category').val( $('#editcategory').text());
-	
 	$('#location').val( $('#editlocation').text());
-	
-	
 	$('#amount').val($('#editamount').text());
 	$('#description').val( $('#editdescription').text());	
 }

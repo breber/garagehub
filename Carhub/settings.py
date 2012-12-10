@@ -28,8 +28,10 @@ class SettingsHandler(webapp2.RequestHandler):
                 return
             
             # go to regular settings page
-            context["categories"] = datastore.getUserExpenseCategoryModels(user.user_id())
-            context["maintcategories"] = datastore.getMaintenanceCategoryModels(user.user_id())
+            context["categories"] = datastore.getUserExpenseCategoryModels(user.user_id(), False)
+            context["defaultcategories"] = datastore.getDefaultExpenseCategoryModels()
+            context["maintcategories"] = datastore.getMaintenanceCategoryModels(user.user_id(), False)
+            context["defaultmaintcategories"] = datastore.getDefaultMaintenanceCategoryModels()
             path = os.path.join(os.path.dirname(__file__), 'templates/settings.html')
             self.response.out.write(template.render(path, context))
        
@@ -40,7 +42,7 @@ class SettingsHandler(webapp2.RequestHandler):
         if user:
             if action == "add":
                 if pageType == "maintenance":
-                    categories = datastore.getUserExpenseCategories(user.user_id())
+                    categories = datastore.getMaintenanceCategoryModels(user.user_id())
                 else:
                     categories = datastore.getUserExpenseCategories(user.user_id())
                     
@@ -57,14 +59,21 @@ class SettingsHandler(webapp2.RequestHandler):
             
             if action == "edit":
                 # Edit record
+                if pageType == "maintenance":
+                    categories = datastore.getMaintenanceCategoryModels(user.user_id())
+                else:
+                    categories = datastore.getUserExpenseCategories(user.user_id())
+                    
+                newName = self.request.get("categoryName", None)
                 category = datastore.getCategory(user.user_id(), pageType, categoryId)
                 newName = self.request.get("categoryName", None)
                 logging.warn("New Name %s" % newName)
-                if category and newName:
+                if category and newName and not newName in categories:
                     category.category = newName
                     category.put()
                 else:
-                    logging.warn("No category object was edited. Couldn't find it.")
+                    #TODO: need a way to give user feedback about why the record was not edited
+                    logging.warn("No category object was edited. Couldn't find it. Or you can't rename it to a duplicate name")
     
         self.redirect("/settings")
                 

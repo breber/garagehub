@@ -1,82 +1,78 @@
-//Reference: https://developers.google.com/news-search/v1/devguide#hiworld 
+// Reference: https://developers.google.com/news-search/v1/devguide#hiworld 
 
-  // This code generates a "Raw Searcher" to handle search queries. The Raw 
-  // Searcher requires you to handle and draw the search results manually.
-  google.load('search', '1');
+// This code generates a "Raw Searcher" to handle search queries. The Raw 
+// Searcher requires you to handle and draw the search results manually.
+google.load('search', '1');
 
-  var newsSearch;
-  var carMake;
-  var carModel;
-  var carYear;
-
-  function searchComplete() {
-    // Check that we got results
-    document.getElementById('searchresults').innerHTML = '';
-    if (newsSearch.results && newsSearch.results.length > 0) {
-      
-    	// iterate through search results array
-    	for (var i = 0; i < newsSearch.results.length; i++) {
-        
-	        var articleDiv = document.createElement('div');
-	        articleDiv.setAttribute("class", "news-articlediv news-roundedcorners");
-	        
-	        // open article in new window when div is clicked
-	        articleDiv.setAttribute("onclick", "window.open('" + newsSearch.results[i].unescapedUrl + "')");
-	        
-	        // link to news article
-	        var a = document.createElement('a');
-	        a.href = newsSearch.results[i].unescapedUrl;
-	        a.innerHTML = newsSearch.results[i].unescapedUrl;
-	        a.setAttribute("class", "news-floatleft news-links");
+function searchComplete(search) {
+	// Check that we got results
+	$('#searchresults').empty();
+	if (search.results && search.results.length > 0) {
+		// iterate through search results array
+		$.each(search.results, function(index, element) {
+			var articleDiv = document.createElement('div');
+			articleDiv.setAttribute("class", "news-articlediv news-roundedcorners");
 			
-	        // link title
-	        var linkTitle = document.createElement('p');
-	        linkTitle.setAttribute("class", "news-articletitle");
-			linkTitle.innerHTML = newsSearch.results[i].title;
+			// open article in new window when div is clicked
+			articleDiv.setAttribute("onclick", "window.open('" + element.unescapedUrl + "')");
+			
+			// link to news article
+			var aWrapper = document.createElement('div');
+			var a = document.createElement('a');
+			a.href = element.unescapedUrl;
+			a.innerHTML = element.unescapedUrl;
+			aWrapper.appendChild(a);			
+			
+			// link title
+			var linkTitle = document.createElement('h4');
+			linkTitle.innerHTML = element.title;
 			articleDiv.appendChild(linkTitle);
-	        
-	        // publisher information
-	        var publishInfo = document.createElement('span');
-	        publishInfo.innerHTML = "<b>" + newsSearch.results[i].publisher + "</b>";
-	        publishInfo.setAttribute("class", "news-floatleft");
-	        articleDiv.appendChild(publishInfo);
+			
+			var publishWrapper = document.createElement('div');
+			
+			// publisher information
+			var publishInfo = document.createElement('span');
+			publishInfo.innerHTML = "<b>" + element.publisher + "</b>";
+			publishWrapper.appendChild(publishInfo);
+			
+			// published date
+			publishInfo = document.createElement('span');
+			var pubDate = new Date(element.publishedDate);
+			publishInfo.innerHTML = pubDate.toDateString();
+			publishInfo.setAttribute("class", "pull-right");
+			publishWrapper.appendChild(publishInfo);
+
+			articleDiv.appendChild(publishWrapper);
+			articleDiv.appendChild(aWrapper);
+			
+			document.getElementById('searchresults').appendChild(articleDiv);
+		});
+	} else {
+		var carMake = $('#carmake').val();
+		var carModel = $('#carmodel').val();
+		var carYear = $('#caryear').val();
+		var noResults = document.createElement('p');
+		noResults.innerHTML = "There is no recent news for the " + carYear + " " + carMake + " " + carModel + ".";
+		document.getElementById('searchresults').appendChild(noResults);
+	}
+}
+
+function onLoad() {
+	// Create a News Search instance.
+	var newsSearch = new google.search.NewsSearch();
+	var carMake = $('#carmake').val();
+	var carModel = $('#carmodel').val();
+	var carYear = $('#caryear').val();
+	// Set searchComplete as the callback function when a search is 
+	// complete. The newsSearch object will have results in it.
+	newsSearch.setSearchCompleteCallback(this, searchComplete, [newsSearch]);
+	newsSearch.setResultSetSize(8);
+	// Specify search queries
+	newsSearch.execute('"' + carYear + ' ' + carMake + ' ' + carModel + '"');
 	
-	        // published date
-	        publishInfo = document.createElement('span');
-	        var pubDate = new Date(newsSearch.results[i].publishedDate);
-	        publishInfo.innerHTML = pubDate.toDateString();
-	        publishInfo.setAttribute("class", "news-floatright");
-	        articleDiv.appendChild(publishInfo);
-	        articleDiv.appendChild(a);
-	
-	        document.getElementById('searchresults').appendChild(articleDiv);
-      	}
-    }
-    else {
-    	var noResults = document.createElement('p');
-    	noResults.innerHTML = "There is no recent news for the " + carYear + " " + carMake + " " + carModel + ".";
-    	document.getElementById('searchresults').appendChild(noResults);
-    }
-  };
+	// Include the required Google branding
+	google.search.Search.getBranding(document.getElementById('googleBranding'));
+}
 
-  
-  function onLoad() {
-    // Create a News Search instance.
-    newsSearch = new google.search.NewsSearch();
-    carMake = $('#carmake').val();
-    carModel = $('#carmodel').val();
-    carYear = $('#caryear').val();
-    // Set searchComplete as the callback function when a search is 
-    // complete. The newsSearch object will have results in it.
-    newsSearch.setSearchCompleteCallback(this, searchComplete, null);
-    newsSearch.setResultSetSize(8);
-    // Specify search queries
-    newsSearch.execute('"' + carYear + ' ' + carMake + ' ' + carModel + '"');
-    //newsSearch.execute('"2013 Toyota Prius"');
-
-    // Include the required Google branding
-    google.search.Search.getBranding(document.getElementById('googleBranding'));
-  };
-
-  // Set a callback to call your code when the page loads
-  google.setOnLoadCallback(onLoad);
+// Set a callback to call your code when the page loads
+google.setOnLoadCallback(onLoad);

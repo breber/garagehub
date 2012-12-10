@@ -157,32 +157,11 @@ table.table .linkable {
 }
 
 /* For news.html */
-.news-articletitle {
-	font-size: 18px;
-	float: left;
-	clear: both;
-	color: #034482;
-}
-
-.news-floatright {
-	float: right;
-	clear: right;
-}
-
-.news-floatleft {
-	float: left;
-	clear: left;
-}
-
-.news-links {
-	margin-top: 8px;
-}
-
 .news-roundedcorners {
-	-moz-border-radius: 20px;
-	-webkit-border-radius: 20px;
-	-khtml-border-radius: 20px;
-	border-radius: 20px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	border-radius: 10px;
 }
 
 div.news-articlediv {
@@ -192,7 +171,6 @@ div.news-articlediv {
 	margin-bottom: 10px;
 	padding: 10px;
 	border: 1px solid #034482;
-	box-shadow: -1px -1px 1px #034482;
 }
 
 div.news-articlediv:hover {

@@ -7,67 +7,70 @@
 <div class="well">
   <h2>Nearby Gas Prices</h2>
 
-  <form>
-    <input onclick="hideZipCode();" type="checkbox" id="location"
-      name="location" value="location" checked /> Detect my location <br />
-    <br />
+  <label class="checkbox">
+    <input onclick="hideZipCode();" type="checkbox" id="location" name="location" value="location" checked /> Detect my location
+  </label>
 
-    <section>
-      <div class="pull-left">
-        <label for="zip">Zip Code:</label>
-        <input type="text" name="zip" id="zip" disabled />
-      </div>
-      <div class="pull-left gas-inline-form">
-        <label for="radius">Search Radius:</label>
-        <select name="radius" id="radius">
-          <option value="1">1 Mile</option>
-          <option value="2">2 Miles</option>
-          <option value="3">3 Miles</option>
-          <option value="4">4 Miles</option>
-          <option SELECTED value="5">5 Miles</option>
-          <option value="6">6 Miles</option>
-          <option value="7">7 Miles</option>
-          <option value="8">8 Miles</option>
-          <option value="9">9 Miles</option>
-          <option value="10">10 Miles</option>
-          <option value="15">15 Miles</option>
-          <option value="20">20 Miles</option>
-          <option value="25">25 Miles</option>
-          <option value="30">30 Miles</option>
-        </select>
-      </div>
-      <div class="pull-left gas-inline-form">
-        <label for="grade">Fuel Grade:</label>
-        <select name="grade" id="grade">
-          <option value="reg">Regular</option>
-          <option value="mid">Mid</option>
-          <option value="pre">Premium</option>
-          <option value="diesel">Diesel</option>
-        </select>
-      </div>
-      <div class="pull-left gas-inline-form">
-        <label for="sort">Sort By:</label>
-        <select name="sort" id="sort">
-          <option value="price">Price</option>
-          <option value="distance">Distance</option>
-        </select>
-      </div>
-    </section>
-    <br /> <br />
-    <section>
-      <div class="pull-left clear">
-        <input type="button" class="btn btn-primary" onclick="getGasPrices();" value="Get Gas" />
-      </div>
-    </section>
-  </form>
-  <br /><br />
-  <div id="tableWrapper">
+  <div class="row-fluid">
+    <div class="span3">
+      <label for="zip">Zip Code:</label>
+      <input type="text" name="zip" id="zip" class="span12" disabled />
+    </div>
+    <div class="span3">
+      <label for="radius">Search Radius:</label>
+      <select name="radius" id="radius" class="span12">
+        <option value="1">1 Mile</option>
+        <option value="2">2 Miles</option>
+        <option value="3">3 Miles</option>
+        <option value="4">4 Miles</option>
+        <option SELECTED value="5">5 Miles</option>
+        <option value="6">6 Miles</option>
+        <option value="7">7 Miles</option>
+        <option value="8">8 Miles</option>
+        <option value="9">9 Miles</option>
+        <option value="10">10 Miles</option>
+        <option value="15">15 Miles</option>
+        <option value="20">20 Miles</option>
+        <option value="25">25 Miles</option>
+        <option value="30">30 Miles</option>
+      </select>
+    </div>
+    <div class="span3">
+      <label for="grade">Fuel Grade:</label>
+      <select name="grade" id="grade" class="span12">
+        <option value="reg">Regular</option>
+        <option value="mid">Mid</option>
+        <option value="pre">Premium</option>
+        <option value="diesel">Diesel</option>
+      </select>
+    </div>
+    <div class="span3">
+      <label for="sort">Sort By:</label>
+      <select name="sort" id="sort" class="span12">
+        <option value="price">Price</option>
+        <option value="distance">Distance</option>
+      </select>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span2 offset10">
+      <input type="button" class="btn btn-primary span12" onclick="getGasPrices();" value="Get Gas" />
+    </div>
+  </div>
+
+  <div class="row-fluid" id="tableWrapper">
     <div id="loading" class="center"><img id='theImg' src='/static/img/ajax-loader.gif' /> Loading...</div>
     <table class="table pagination table-striped table-bordered table-hover linkable" id="gaspricetable"></table>
   </div>
-  <br>
-  <div class="pull-right">Data Powered by www.myGasFeed.com.</div>
-  <br>
+  
+  <hr>
+  
+  <div class="row-fluid">
+    <div class="span4 offset8">
+      <span class="pull-right">Data Powered by www.myGasFeed.com.</span>
+    </div>
+  </div>
+  
   <div id="modalMap" class="modal hide fade">
   	<div id="map_canvas" class="gas-map-canvas"></div>
   </div>

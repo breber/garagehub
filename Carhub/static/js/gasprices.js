@@ -130,7 +130,7 @@ function useZipCode() {
 			}
 		});
 	} else {
-		alert('Please enter a zip code or use the Detect My Location option');
+		newAlert('Please enter a zip code or use the Detect My Location option');
 	}
 };
 
@@ -148,15 +148,15 @@ function getLocation(){
                                                errorHandler,
                                                options);
    } else {
-      alert("Sorry, your browser does not support geolocation.");
+	   newAlert("Sorry, your browser does not support geolocation.");
    }
 };
 
 function errorHandler(err) {
 	if (err.code == 1) {
-		alert("Error: Access is denied!");
+		newAlert("Error: Access is denied!");
 	} else if (err.code == 2) {
-		alert("Error: Position is unavailable!");
+		newAlert("Error: Position is unavailable!");
 	}
 };
 

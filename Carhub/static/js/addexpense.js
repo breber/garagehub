@@ -57,7 +57,6 @@ $(document).ready(function() {
 });
 
 function newCategoryKeyPress(e) {
-	console.log("newCategoryKeyPress");
     // look for window.event in case event isn't passed in
     if (typeof e == 'undefined' && window.event) { e = window.event; }
     if (e.keyCode == 13)

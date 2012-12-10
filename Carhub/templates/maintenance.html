@@ -56,7 +56,7 @@
     <td>{{ m.amount_formatted }}</td>
     <td>{{ m.odometer_formatted }}</td>
     {% if m.picture %}
-    <td><button type="button" class="btn btn-success receiptlink" value="/blob/{{ m.picture }}">Receipt</button></td>
+    <td><button type="button" class="btn btn-success receiptlink" value="{{ m.pictureurl }}">Receipt</button></td>
     {% else %}
     <td>N/A</td>
     {% endif %}

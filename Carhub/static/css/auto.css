@@ -220,11 +220,6 @@ div.news-articlediv:hover {
 	margin-right: 5px;
 }
 
-.stop-scrolling {
-	height: 100%;
-	overflow: hidden;
-}
-
 /* For addexpense.html */
 .btn-addcategory {
 	margin-bottom: 10px;
@@ -239,22 +234,6 @@ div.news-articlediv:hover {
 .img-modal {
 	width: auto;
 	height: auto;
-}
-
-.expense-header {
-	float: left;
-	clear: left;
-}
-
-.expense-subheader-1 {
-	float: left;
-	clear: left;
-	margin-right: 20px;
-}
-
-.expense-subheader-2 {
-	float: left;
-	margin-right: 20px;
 }
 
 .btn-add-edit-delete {

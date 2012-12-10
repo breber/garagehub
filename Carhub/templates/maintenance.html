@@ -4,26 +4,29 @@
 {% endblock %}
 {% block pagecontent %}
 
-<div class="btn-add-edit-delete">
-  <a id="maint-add" class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/maintenance/add"><i class="icon-plus"></i> Add Record</a>
-  <a id="maint-edit" class="btn btn-inverse btn-add-edit-delete" disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/edit/')"><i class="icon-edit"></i> Edit Record</a>
-  <a id="maint-delete" class="btn btn-danger btn-add-edit-delete"  disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/maintenance/delete/')"><i class="icon-remove"></i> Delete Record</a>
+<div class="row-fluid">
+  <div class="span9">
+    <h2>Maintenance Records</h2>
+    {% if not maintRecords %}
+    <p>You don't have any maintenance recorded yet.</p>
+    <p>Record one <a href="/vehicle/{{ car.key.id }}/maintenance/add">here</a>!</p>
+    {% endif %}
+  </div>
+  <div class="span3">
+    <a id="maint-add" class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/gasmileage/add"><i class="icon-plus"></i> Add Record</a>
+    <a id="maint-edit" class="btn btn-inverse btn-add-edit-delete" disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/gasmileage/edit/')"><i class="icon-edit"></i> Edit Record</a>
+    <a id="maint-delete" class="btn btn-danger btn-add-edit-delete"  disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/gasmileage/delete/')"><i class="icon-remove"></i> Delete Record</a>
+  </div>
 </div>
-<h2 class="expense-header">Maintenance Records</h2>
 
-{% if not maintRecords %}
-<br>
-<div class="expense-subheader-1">
-  <p>You don't have any maintenance recorded yet.</p>
-  <p>Record one <a href="/vehicle/{{ car.key.id }}/maintenance/add">here</a>!</p>
-</div>
-{% else %}
+{% if maintRecords %}
+
 <div id="alert-area"></div>
 
 {% if categories %} 
 
 {% for category in categories %}
-<h3 class="expense-subheader-1">{{ category }}</h3>
+<h3>{{ category }}</h3>
 <table class="maint-datatable table table-striped table-bordered dataTable DTTT_selectable table-hover" id="{{ category }}">
   <thead>
     <tr>

@@ -16,9 +16,15 @@
   </div>
   <div class="span3">
     {% if userexpenses %}
-    <a id="record-add" class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/gasmileage/add"><i class="icon-plus"></i> Add Expense</a>
-    <a id="record-edit" class="btn btn-inverse btn-add-edit-delete"><i class="icon-edit"></i> Edit Record</a>
-    <a id="record-delete" class="btn btn-danger btn-add-edit-delete"><i class="icon-remove"></i> Delete Record</a>
+    <div class="row-fluid">
+      <a id="record-add" class="btn btn-primary span12 expense-btn" href="/vehicle/{{ car.key.id }}/expenses/add"><i class="icon-plus icon-white"></i> Add Expense</a>
+    </div>
+    <div class="row-fluid">
+      <a id="record-edit" class="btn btn-inverse span12 expense-btn"><i class="icon-edit icon-white"></i> Edit Record</a>
+    </div>
+    <div class="row-fluid">
+      <a id="record-delete" class="btn btn-danger span12 expense-btn"><i class="icon-remove icon-white"></i> Delete Record</a>
+    </div>
     {% endif %}
   </div>
 </div>

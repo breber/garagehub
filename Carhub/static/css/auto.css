@@ -236,12 +236,8 @@ div.news-articlediv:hover {
 	height: auto;
 }
 
-.btn-add-edit-delete {
-	margin-top: 5px;
-	margin-bottom: 5px;
-	margin-left: 5px;
-	float: right;
-	clear: right;
+.expense-btn {
+	margin: 5px 0px;
 }
 
 /* For notifications.html */

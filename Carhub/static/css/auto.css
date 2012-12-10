@@ -244,11 +244,6 @@ div.news-articlediv:hover {
 	clear: right;
 }
 
-.alert-area {
-	clear: left;
-	clear: right;
-}
-
 /* For notifications.html */
 #notif-deleteButton {
 	margin-left: 10px;

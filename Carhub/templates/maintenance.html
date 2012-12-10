@@ -13,15 +13,15 @@
     {% endif %}
   </div>
   <div class="span3">
-    <a id="maint-add" class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/gasmileage/add"><i class="icon-plus"></i> Add Record</a>
-    <a id="maint-edit" class="btn btn-inverse btn-add-edit-delete" disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/gasmileage/edit/')"><i class="icon-edit"></i> Edit Record</a>
-    <a id="maint-delete" class="btn btn-danger btn-add-edit-delete"  disabled="disabled" onClick="editRecord('/vehicle/{{ car.key.id }}/gasmileage/delete/')"><i class="icon-remove"></i> Delete Record</a>
+    <a id="record-add" class="btn btn-primary btn-add-edit-delete" href="/vehicle/{{ car.key.id }}/gasmileage/add"><i class="icon-plus"></i> Add Record</a>
+    <a id="record-edit" class="btn btn-inverse btn-add-edit-delete"><i class="icon-edit"></i> Edit Record</a>
+    <a id="record-delete" class="btn btn-danger btn-add-edit-delete"><i class="icon-remove"></i> Delete Record</a>
   </div>
 </div>
 
 {% if maintRecords %}
 
-<div id="alert-area"></div>
+<div id="alert"></div>
 
 {% if categories %} 
 

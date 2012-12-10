@@ -162,16 +162,14 @@
 </div>
 {% endif %} {% if editfuelrecordobj %}
 <div id="editfuelrecordobject" class="hidden">
-  <div id="editdatepurchased">{{ editfuelrecordobj.date_formatted
-    }}</div>
+  <div id="editdatepurchased">{{ editfuelrecordobj.date_formatted }}</div>
   <div id="editcategory">{{ editfuelrecordobj.category }}</div>
   <div id="editlocation">{{ editfuelrecordobj.location }}</div>
   <div id="editamount">{{ editfuelrecordobj.amount }}</div>
   <div id="editdescription">{{ editfuelrecordobj.description }}</div>
   <div id="editpricepergallon">{{ editfuelrecordobj.costPerGallon }}</div>
   <div id="editfuelgrade">{{ editfuelrecordobj.fuelGrade }}</div>
-  <div id="editodometerstart">{{ editfuelrecordobj.odometerStart
-    }}</div>
+  <div id="editodometerstart">{{ editfuelrecordobj.odometerStart }}</div>
   <div id="editodometerend">{{ editfuelrecordobj.odometerEnd }}</div>
 </div>
 {% endif %} {% endblock %} {% block externaljs %}

@@ -40,7 +40,7 @@ class BaseExpense(polymodel.PolyModel):
     vehicle = ndb.IntegerProperty()
     date = ndb.DateProperty()
     lastmodified = ndb.DateTimeProperty()
-    category = ExpenseCategory()
+    category = ndb.IntegerProperty()
     location = ndb.StringProperty()
     description = ndb.StringProperty()
     amount = ndb.FloatProperty()

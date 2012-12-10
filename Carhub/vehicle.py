@@ -38,9 +38,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
             self.redirect("/")
         else:
             context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
-            context["categories"] = datastore.getExpenseCategories(user.user_id())
-            
-            
+            context["categories"] = datastore.getExpenseCategoryModels(user.user_id())
             
             if pageName == "add":
                 blobstore_url = self.request.url

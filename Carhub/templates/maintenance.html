@@ -48,7 +48,7 @@
   </thead>
   <tbody>
   {% for m in maintRecords %} 
-  {% if category.key.id == m.category %}
+  {% if category.key.id == m.categoryid %}
   <tr id="{{ m.key.id }}">
     <td>{{ m.date_formatted }}</td>
     <td>{{ m.location }}</td>

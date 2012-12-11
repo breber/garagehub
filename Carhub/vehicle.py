@@ -39,7 +39,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 context["upload_url"] = blobstore.create_upload_url(self.request.url)
                 context["editexpenseobj"] = baseExpense
                 
-                category = datastore.getCategoryById(user.user_id(), "expense", baseExpense.categoryid)
+                category = datastore.getCategoryById(user.user_id(), baseExpense.categoryid)
                 if not category:
                     # This will make the category for this object become Uncategorized since old object is gone
                     category = datastore.getCategoryByName(user.user_id(), "expense", "Uncategorized")
@@ -62,7 +62,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 expenseTotal = 0;
                 for expense in context['userexpenses']:
                     expenseTotal += expense.amount
-                    category = datastore.getCategoryById(user.user_id(), "expense", expense.categoryid)
+                    category = datastore.getCategoryById(user.user_id(), expense.categoryid)
                     if not category:
                         # This will make the category for this object become Uncategorized since old object is gone
                         category = datastore.getCategoryByName(user.user_id(), "expense", "Uncategorized")
@@ -162,7 +162,7 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
                 maintenanceRecord = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, maintenanceId)
                 context["editmaintenanceobj"] = maintenanceRecord
                 
-                category = datastore.getCategoryById(user.user_id(), "maintenance", maintenanceRecord.categoryid)
+                category = datastore.getCategoryById(user.user_id(), maintenanceRecord.categoryid)
                 if not category:
                     # This will make the category for this object become Uncategorized since old object is gone
                     category = datastore.getCategoryByName(user.user_id(), "expense", "Uncategorized")

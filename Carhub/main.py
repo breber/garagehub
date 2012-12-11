@@ -41,7 +41,7 @@ class NotificationHandler(webapp2.RequestHandler):
             userVehicles = datastore.getUserVehicleList(user.user_id())
             if len(userVehicles) > 0:
                 context["vehicles"] = userVehicles
-            userCategories = datastore.getMaintenanceCategories(user.user_id())
+            userCategories = datastore.getMaintenanceCategoryStrings(user.user_id())
             if len(userCategories) > 0:
                 context["categories"] = userCategories
         else:

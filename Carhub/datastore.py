@@ -452,7 +452,7 @@ def addDefaultExpenseCategoryModels():
 
     models.ExpenseCategory(owner="defaultCategory", category="Uncategorized").put()
 
-def getCategoryById(userId, categoryType, categoryId):
+def getCategoryById(userId, categoryId):
     """Gets the BaseExpense for the given expenseId
     
     Args: 
@@ -463,16 +463,11 @@ def getCategoryById(userId, categoryType, categoryId):
         The BaseExpense
     """
     
-    if categoryType == "expense" and categoryId:
+    if categoryId:
         expenseCategory = models.ExpenseCategory.get_by_id(long(categoryId))
         
         if expenseCategory:
             return expenseCategory
-    if categoryType == "maintenance" and categoryId:
-        maintCategory = models.MaintenanceCategory.get_by_id(long(categoryId))
-        
-        if maintCategory:
-            return maintCategory
                                                
     return None
 

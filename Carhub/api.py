@@ -41,7 +41,7 @@ class ExpenseCategoryHandler(webapp2.RequestHandler):
         toRet = {}
 
         for record in baseexpenses:
-            category = str(record.category)
+            category = datastore.getCategoryById(record.owner, record.categoryid)
             prev = 0
             if category in toRet.keys():
                 prev = toRet[category]

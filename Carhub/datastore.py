@@ -3,6 +3,7 @@ Created on Oct 17, 2012
 
 @author: breber
 '''
+from google.appengine.api import images
 from google.appengine.ext import blobstore, ndb
 import datetime
 import models
@@ -660,6 +661,7 @@ def deleteBaseExpense(userId, expense):
     if expense and expense.owner == userId:
         image = expense.picture
         if image:
+            images.delete_serving_url(image)
             blobstore.BlobInfo.get(image).delete()
         
         expense.key.delete()

@@ -125,6 +125,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
             if recieptKey:
                 oldImage = expense.picture
                 if oldImage:  # delete old picture
+                    images.delete_serving_url(oldImage)
                     blobstore.BlobInfo.get(oldImage).delete()
                 expense.picture = recieptKey
                 expense.pictureurl = imageUrl
@@ -234,6 +235,7 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
             if recieptKey:
                 oldImage = maintRec.picture
                 if oldImage:  # delete old picture
+                    images.delete_serving_url(oldImage)
                     blobstore.BlobInfo.get(oldImage).delete()
                 maintRec.picture = recieptKey
                 maintRec.pictureurl = imageUrl
@@ -402,6 +404,7 @@ class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
             if recieptKey:
                 oldImage = record.picture
                 if oldImage:  # delete old picture
+                    images.delete_serving_url(oldImage)
                     blobstore.BlobInfo.get(oldImage).delete()
                 record.picture = recieptKey
                 record.pictureurl = imageUrl

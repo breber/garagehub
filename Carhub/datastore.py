@@ -169,6 +169,30 @@ def getMilesLogged(userId, vehicleId):
    
     return utils.format_int(milesLogged)
 
+def getCostPerMilesLogged(userId, vehicleId):
+    """Gets the miles logged based on FuelRecords for the given vehicle ID
+    
+    Args: 
+        vehicleId - The vehicle ID
+    
+    Returns
+        The miles logged
+    """
+    fuelRecords = getFuelRecords(userId, vehicleId, None, False)
+    
+    milesLogged = 0
+    costTotal = 0
+    costPerMile = 0
+    for fuelRecord in fuelRecords:
+        if fuelRecord.odometerEnd != -1 and fuelRecord.odometerStart != -1:
+            milesLogged += (fuelRecord.odometerEnd - fuelRecord.odometerStart)  
+            costTotal += (fuelRecord.gallons * fuelRecord.costPerGallon) 
+            
+    if milesLogged > 0:
+        costPerMile = costTotal/milesLogged
+   
+    return utils.format_float(costPerMile)
+
 def getNFuelRecords(userId, vehicleId, numberToFetch=10, ascending=True):
     """Gets the FuelRecords for the given vehicle ID
     

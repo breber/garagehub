@@ -294,6 +294,7 @@ class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
 
         # add milestotal as a comma-delimited string
         context['milestotal'] = datastore.getMilesLogged(user.user_id(), vehicleId)
+        context['pricepermile'] = datastore.getCostPerMilesLogged(user.user_id(), vehicleId)
         
         if not vehicleId:
             self.redirect("/")

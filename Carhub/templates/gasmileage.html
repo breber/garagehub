@@ -8,8 +8,20 @@
   <div class="span9">
     <h2>Gas Mileage Tracker</h2>
     {% if userfuelrecords %}
-    <h3>Average MPG: {{ avgmpg }}</h3>
-    <h3>Miles Recorded: {{ milestotal }}</h3>
+    <div class="row-fluid">
+	    <div class="span4">
+	    	<h4>Average MPG: </h4>
+	    	<h4>{{ avgmpg }}</h4>
+	    </div>
+	    <div class="span4">
+	    	<h4>Miles Recorded: </h4>
+	    	<h4>{{ milestotal }}</h4>
+	    </div>
+	    <div class="span4">
+	    	<h4>Price Per Mile: </h4>
+	    	<h4>{{pricepermile}}</h4>
+	    </div>
+    </div>
     {% else %}
     <p>You don't have any fuel transactions recorded yet.</p>
     <p>Record one <a href="/vehicle/{{ car.key.id }}/gasmileage/add">here</a>!</p>

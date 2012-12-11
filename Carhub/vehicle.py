@@ -17,6 +17,7 @@ class VehicleExpenseEditDeleteHandler(webapp2.RequestHandler):
         expense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
         
         if expense:
+            logging.warn("VehicleExpenseEditDeleteHandler: %s" % expense._class_name())
             if expense._class_name() == "BaseExpense":
                 self.redirect("/vehicle/" + vehicleId + "/expenses/" + pageName + "/" + expenseId)
                 return
@@ -209,7 +210,7 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
             newCategoryObj.put()
 
         location = self.request.get("location", "")
-        amount = float(self.request.get("amount", None))
+        amount = float(self.request.get("amount", 0))
         description = self.request.get("description", "")
         odometer = self.request.get("odometerEnd", None)
         if odometer:
@@ -218,7 +219,7 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
             odometer = -1
         logging.info("Maintenance Info Obtained %s %s %s %s %f %d", datePurchased, category, location, description, amount, odometer)
         
-        if datePurchased and amount:
+        if datePurchased:
             maintRec = None
             if pageName == "edit":
                 maintRec = datastore.getBaseExpenseRecord(user.user_id(), long(vehicleId), maintenanceId)

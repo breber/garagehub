@@ -227,3 +227,8 @@ div.news-articlediv:hover {
 .gas-map-canvas {
 	height: 300px;
 }
+
+.adp-text{
+	width: 100%;
+	padding-left: 20px;
+}

@@ -4,7 +4,11 @@ function calculateTripPrice() {
     var mpg = document.getElementById('avg-mpg-input').value;
     var fuelCost = document.getElementById('avg-ppg-input').value;
     
-    var cost = miles / mpg * fuelCost;
+    
+    var cost = 0;
+    
+    if(miles > 0 && fuelCost > 0)
+    	cost = miles / mpg * fuelCost;
     
     document.getElementById('est-cost-trip').value = '$' + cost.toFixed(2);
     

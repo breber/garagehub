@@ -77,6 +77,7 @@ def getBaseExpenseRecords(userId, vehicleId, day_range=30, ascending=True):
         query = query.order(models.BaseExpense.date)
     else:
         query = query.order(-models.BaseExpense.date)
+
     return ndb.get_multi(query.fetch(keys_only=True))
 
 def getBaseExpenseRecord(userId, vehicleId, expenseId):
@@ -147,7 +148,6 @@ def getAvgGasMileage(userId, vehicleId):
     avgMpg = 0
     if milesLogged > 0:
         avgMpg = utils.format_float(milesLogged / gallonsTotal)
-  
    
     return avgMpg
 
@@ -307,14 +307,9 @@ def getMaintenanceCategoryModels(userId, getDefaultCategories=True):
         query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId, "defaultMaintCategory"]))
     else:
         query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId]))
+    
     results = ndb.get_multi(query.fetch(keys_only=True))
-
-    if not results and getDefaultCategories:
-        addDefaultMaintenanceCategoryModels()
-        
-        query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId, "defaultMaintCategory"]))
-        results = ndb.get_multi(query.fetch(keys_only=True))
-
+    
     return results
 
 def getDefaultMaintenanceCategoryModels():
@@ -379,7 +374,7 @@ def getExpenseCategoryStrings(userId):
     for c in results:
         if c._class_name() == "ExpenseCategory":
             resultsExpenseOnly.append(c.category)
-    
+            
     return resultsExpenseOnly
 
 def getExpenseCategoryModels(userId, getDefaultCategories=True):

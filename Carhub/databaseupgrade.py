@@ -23,6 +23,18 @@ import webapp2
 #        
 #        self.redirect("/")
 #
-#app = webapp2.WSGIApplication([ 
+
+class CategoryUpdate(webapp2.RequestHandler):
+    def get(self):
+        query = models.BaseExpense().query()
+        expenses = ndb.get_multi(query.fetch(keys_only=True))
+        
+        for e in expenses:
+            logging.warn("CategoryUpdate: %s" % e.category)
+
+        self.redirect("/")
+
+app = webapp2.WSGIApplication([ 
 #    ('/database/upgrade', DatabaseUpgrade),
-#], debug=True)
+    ('/database/updatecategories', CategoryUpdate),
+], debug=True)

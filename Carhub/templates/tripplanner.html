@@ -1,52 +1,65 @@
 {% extends 'base.html' %} {% block content %}
 
-<div class="well trip-overflow">
+<div class="well">
   <h2>Trip Planner</h2>
 
-  <div id="side-container">
-   <input id="useCurrentLocation" type="checkbox" value="useCurrentLocation" class="pull-left" checked="checked"/>
-   <label for="useCurrentLocation" class="pull-left trip-label-check"> Use my location</label><br/><br/>
-    <ul>
-      <li class="dir-label">From:</li>
-      <li><input id="from-input" type=text value=""/></li>
-      <li class="dir-label">To:</li>
-      <li><input id="to-input" type=text value="Ames, IA" /></li>
-    </ul>
-    <div>
-      <input id="getdirections" type="button" class="btn btn-primary pull-left"
-        value="Go!" />
+  <div class="row-fluid">
+    <div class="span3">
+      <label class="checkbox">
+        <input id="useCurrentLocation" type="checkbox" checked="checked"/> Use my location
+      </label>
+      <label>From:</label>
+      <input id="from-input" type=text value="" class="span12" />
+      <label>To:</label>
+      <input id="to-input" type=text value="Ames, IA" class="span12" />
+      <div class="row-fluid">
+        <button id="getdirections" class="btn btn-primary span12">Go!</button>      
+      </div>
+      <hr>
+      <div class="row-fluid">
+        <div id="dir-container"></div>
+      </div>
     </div>
-    <div id="dir-container"></div>
-  </div>
-  <div id="map_canvas" class="trip-map-canvas"></div>
-  <br />
-  <div class="pull-left trip-list">
-    <form>
-      <div class="pull-left trip-inline-form">
-        <label for="num-miles-input">Number of Miles:</label> 
-        <input id="num-miles-input" type="text" name="num-miles-input" readonly="readonly" />
+    
+    <div class="span9">
+      <div class="row-fluid">
+        <div id="map_canvas" class="trip-map-canvas"></div>
       </div>
-      <div class="pull-left trip-inline-form">
-        <label for="avg-mpg-input">Average MPG:</label>
-        <input id="avg-mpg-input" type="text" name="avg-mpg-input" /> 
+      <div class="row-fluid">
+        <div class="span12">
+          <hr>
+        </div>
       </div>
-      <div class="pull-left trip-inline-form">
-        <label for="avg-ppg-input">Estimated Price Per Gallon:</label>
-        <input id="avg-ppg-input" type="text" name="avg-ppg-input" />
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="span3">
+            <label for="num-miles-input">Number of Miles:</label> 
+            <input id="num-miles-input" type="text" class="span12" readonly="readonly" />
+          </div>
+          <div class="span3">
+            <label for="avg-mpg-input">Average MPG:</label>
+            <input id="avg-mpg-input" type="text" class="span12" /> 
+          </div>
+          <div class="span3">
+            <label for="avg-ppg-input">Estimated Price Per Gallon:</label>
+            <input id="avg-ppg-input" type="text" class="span12" />
+          </div>
+          <div class="span3">
+            <label>&nbsp;</label>
+            <button class="btn btn-primary span12" id="calculatecost">Calculate Cost</button>
+          </div>
+        </div>
       </div>
-    </form>
-    <div>
-      <input id="calculatecost" type="button" class="btn btn-primary pull-left"
-        value="Calculate Cost" />
+    
+      <div class="row-fluid">
+        <div class="span12">
+          <label for="est-cost-trip">Estimated Cost:</label>
+          <input id="est-cost-trip" type="text" class="span12" disabled/>
+        </div>
+      </div>
     </div>
-    <br /> <br />
-    <form>
-      <div class="pull-left clear">
-        Estimated Cost: <br />
-        <input id="est-cost-trip" type="text" name="est-cost-trip" /><br />
-      </div>
-    </form>
   </div>
+  
 </div>
 
 {% endblock %} {% block externaljs %}

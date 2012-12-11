@@ -77,10 +77,6 @@ html,body {
 	*cursor: hand;
 }
 
-.clear {
-	clear: both
-}
-
 /* For car.html */
 .cartable {
 	table-layout: fixed;

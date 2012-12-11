@@ -90,6 +90,7 @@ html,body {
 #dir-container {
 	padding: 2px 0px 2px 0px;
 	max-height: 600px;
+	overflow: auto;
 }
 
 #dir-container table {

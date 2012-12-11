@@ -18,7 +18,7 @@ class SettingsHandler(webapp2.RequestHandler):
         if user:
             if action == "delete":
                 # Delete record
-                category = datastore.getCategory(user.user_id(), pageType, categoryId)
+                category = datastore.getCategoryById(user.user_id(), pageType, categoryId)
                 if category:
                     category.key.delete()
                 else:
@@ -28,7 +28,7 @@ class SettingsHandler(webapp2.RequestHandler):
                 return
             
             # go to regular settings page
-            context["categories"] = datastore.getUserExpenseCategoryModels(user.user_id(), False)
+            context["categories"] = datastore.getExpenseCategoryModels(user.user_id(), False)
             context["defaultcategories"] = datastore.getDefaultExpenseCategoryModels()
             context["maintcategories"] = datastore.getMaintenanceCategoryModels(user.user_id(), False)
             context["defaultmaintcategories"] = datastore.getDefaultMaintenanceCategoryModels()
@@ -42,30 +42,32 @@ class SettingsHandler(webapp2.RequestHandler):
         if user:
             if action == "add":
                 if pageType == "maintenance":
-                    categories = datastore.getMaintenanceCategoryModels(user.user_id())
+                    categories = datastore.getMaintenanceCategoryStrings(user.user_id())
                 else:
-                    categories = datastore.getUserExpenseCategories(user.user_id())
+                    categories = datastore.getExpenseCategoryStrings(user.user_id())
                     
                 newName = self.request.get("categoryName", None)
                 if newName and not newName in categories:
                     # this is a new category, add it to the database
                     if pageType == "maintenance":
                         newCategoryObj = models.MaintenanceCategory()
+                        newCategoryObj.category = "Maintenance"
+                        newCategoryObj.subcategory = newName
                     else:
-                        newCategoryObj = models.UserExpenseCategory()
+                        newCategoryObj = models.ExpenseCategory()
+                        newCategoryObj.category = newName
                     newCategoryObj.owner = user.user_id()
-                    newCategoryObj.category = newName
                     newCategoryObj.put()
             
             if action == "edit":
                 # Edit record
                 if pageType == "maintenance":
-                    categories = datastore.getMaintenanceCategoryModels(user.user_id())
+                    categories = datastore.getMaintenanceCategoryStrings(user.user_id())
                 else:
-                    categories = datastore.getUserExpenseCategories(user.user_id())
+                    categories = datastore.getExpenseCategoryStrings(user.user_id())
                     
                 newName = self.request.get("categoryName", None)
-                category = datastore.getCategory(user.user_id(), pageType, categoryId)
+                category = datastore.getCategoryById(user.user_id(), pageType, categoryId)
                 newName = self.request.get("categoryName", None)
                 logging.warn("New Name %s" % newName)
                 if category and newName and not newName in categories:

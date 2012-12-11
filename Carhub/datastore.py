@@ -496,7 +496,7 @@ def getCategoryByName(userId, categoryType, categoryName):
         
         
     if categoryType == "maintenance":        
-        query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId, "defaultCategory"]),
+        query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId, "defaultMaintCategory"]),
                                                    models.MaintenanceCategory.subcategory == categoryName)
         #TODO: make sure there is only one no duplicates
         maintCategory = query.get()

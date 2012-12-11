@@ -39,7 +39,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 context["upload_url"] = blobstore.create_upload_url(self.request.url)
                 context["editexpenseobj"] = baseExpense
                 
-                category = datastore.getCategoryById(user.user_id(), "expense", baseExpense.category)
+                category = datastore.getCategoryById(user.user_id(), "expense", baseExpense.categoryid)
                 if not category:
                     # This will make the category for this object become Uncategorized since old object is gone
                     category = datastore.getCategoryByName(user.user_id(), "expense", "Uncategorized")
@@ -57,13 +57,12 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 self.redirect("/vehicle/" + vehicleId + "/expenses")
                 return
             else:
-                userExpenses = datastore.getAllExpenseRecords(user.user_id(), vehicleId, None, False)
-                context['userexpenses'] = userExpenses
+                context['userexpenses'] = datastore.getAllExpenseRecords(user.user_id(), vehicleId, None, False)
                 
                 expenseTotal = 0;
                 for expense in context['userexpenses']:
                     expenseTotal += expense.amount
-                    category = datastore.getCategoryById(user.user_id(), "expense", expense.category)
+                    category = datastore.getCategoryById(user.user_id(), "expense", expense.categoryid)
                     if not category:
                         # This will make the category for this object become Uncategorized since old object is gone
                         category = datastore.getCategoryByName(user.user_id(), "expense", "Uncategorized")
@@ -163,7 +162,7 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
                 maintenanceRecord = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, maintenanceId)
                 context["editmaintenanceobj"] = maintenanceRecord
                 
-                category = datastore.getCategoryById(user.user_id(), "Maintenance", maintenanceRecord.category)
+                category = datastore.getCategoryById(user.user_id(), "maintenance", maintenanceRecord.categoryid)
                 if not category:
                     # This will make the category for this object become Uncategorized since old object is gone
                     category = datastore.getCategoryByName(user.user_id(), "expense", "Uncategorized")

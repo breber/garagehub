@@ -157,7 +157,7 @@ function getLocation(){
 
 function errorHandler(err) {
 	if (err.code == 1) {
-		newAlert("Error: Access is denied!");
+		newAlert("Error: Access is denied! Please check your location settings.");
 	} else if (err.code == 2) {
 		newAlert("Error: Position is unavailable!");
 	}

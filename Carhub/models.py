@@ -29,7 +29,7 @@ class ExpenseCategory(polymodel.PolyModel):
     def name(self):
         return self.category
     
-class MaintenanceCategory(ExpenseCategory):
+class MaintenanceCategoryV2(ExpenseCategory):
     subcategory = ndb.StringProperty()
     
     def name(self):
@@ -107,3 +107,21 @@ class Notification(ndb.Model):
 
     def name(self):
         return "%s %s" % (self.vehicleName, self.category)
+
+
+# DEPRECATED
+# TODO: delete these
+
+class UserExpenseCategory(ndb.Model):
+    owner = ndb.StringProperty()
+    category = ndb.StringProperty()
+    
+    def name(self):
+        return self.category
+    
+class MaintenanceCategory(ndb.Model):
+    owner = ndb.StringProperty()
+    category = ndb.StringProperty()
+    
+    def name(self):
+        return self.category

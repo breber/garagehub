@@ -274,13 +274,13 @@ def getMaintenanceCategoryStrings(userId):
         A string list of categories for that user
     """
 
-    query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId, "defaultMaintCategory"]))
+    query = models.MaintenanceCategoryV2().query(models.MaintenanceCategoryV2.owner.IN([userId, "defaultMaintCategory"]))
     results = ndb.get_multi(query.fetch(keys_only=True))
 
     if not results:
         addDefaultMaintenanceCategoryModels()
         
-        query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId, "defaultMaintCategory"]))
+        query = models.MaintenanceCategoryV2().query(models.MaintenanceCategoryV2.owner.IN([userId, "defaultMaintCategory"]))
         results = ndb.get_multi(query.fetch(keys_only=True))
 
     toRet = []
@@ -304,9 +304,9 @@ def getMaintenanceCategoryModels(userId, getDefaultCategories=True):
         A list of categories for that user
     """
     if getDefaultCategories:
-        query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId, "defaultMaintCategory"]))
+        query = models.MaintenanceCategoryV2().query(models.MaintenanceCategoryV2.owner.IN([userId, "defaultMaintCategory"]))
     else:
-        query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId]))
+        query = models.MaintenanceCategoryV2().query(models.MaintenanceCategoryV2.owner.IN([userId]))
     
     results = ndb.get_multi(query.fetch(keys_only=True))
     
@@ -321,13 +321,13 @@ def getDefaultMaintenanceCategoryModels():
     Returns
         A list of categories for that user
     """
-    query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN(["defaultMaintCategory"]))
+    query = models.MaintenanceCategoryV2().query(models.MaintenanceCategoryV2.owner.IN(["defaultMaintCategory"]))
     results = ndb.get_multi(query.fetch(keys_only=True))
 
     if not results:
         addDefaultMaintenanceCategoryModels()
         
-        query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN(["defaultMaintCategory"]))
+        query = models.MaintenanceCategoryV2().query(models.MaintenanceCategoryV2.owner.IN(["defaultMaintCategory"]))
         results = ndb.get_multi(query.fetch(keys_only=True))
 
     return results
@@ -342,13 +342,13 @@ def addDefaultMaintenanceCategoryModels():
         -
     """
     # TODO: Finalize these category defaults
-    models.MaintenanceCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Oil Change").put()
+    models.MaintenanceCategoryV2(owner="defaultMaintCategory", category="Maintenance", subcategory="Oil Change").put()
         
-    models.MaintenanceCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Repair").put()
+    models.MaintenanceCategoryV2(owner="defaultMaintCategory", category="Maintenance", subcategory="Repair").put()
     
-    models.MaintenanceCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Recall").put()
+    models.MaintenanceCategoryV2(owner="defaultMaintCategory", category="Maintenance", subcategory="Recall").put()
 
-    models.MaintenanceCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Car Wash").put()
+    models.MaintenanceCategoryV2(owner="defaultMaintCategory", category="Maintenance", subcategory="Car Wash").put()
     
 
 def getExpenseCategoryStrings(userId):
@@ -486,8 +486,8 @@ def getCategoryByName(userId, categoryType, categoryName):
         
         
     if categoryType == "maintenance":        
-        query = models.MaintenanceCategory().query(models.MaintenanceCategory.owner.IN([userId, "defaultMaintCategory"]),
-                                                   models.MaintenanceCategory.subcategory == categoryName)
+        query = models.MaintenanceCategoryV2().query(models.MaintenanceCategoryV2.owner.IN([userId, "defaultMaintCategory"]),
+                                                     models.MaintenanceCategoryV2.subcategory == categoryName)
         #TODO: make sure there is only one no duplicates
         maintCategory = query.get()
         return maintCategory 

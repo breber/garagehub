@@ -12,11 +12,37 @@ import webapp2
 
 class CategoryUpdate(webapp2.RequestHandler):
     def get(self, update):
+        query = models.UserExpenseCategory().query()
+        userExpenseCategories = ndb.get_multi(query.fetch(keys_only=True))
+        
+        for e in userExpenseCategories:
+            if not e.owner == "defaultCategory":
+                logging.warn("CategoryUpdate: UserExpense: %s" % e.category)
+            
+                        
+                if update == "update":
+                    e.put()
+
+        query = models.MaintenanceCategory().query()
+        maintenanceCategories = ndb.get_multi(query.fetch(keys_only=True))
+        
+        for e in maintenanceCategories:
+            if not e.owner == "defaultMaintCategory":
+                logging.warn("CategoryUpdate: Maint: %s" % e.category)
+                
+                        
+                if update == "update":
+                    e.put()
+
+        self.redirect("/")
+
+class ExpenseUpdate(webapp2.RequestHandler):
+    def get(self, update):
         query = models.BaseExpense().query()
         expenses = ndb.get_multi(query.fetch(keys_only=True))
         
         for e in expenses:
-            logging.warn("CategoryUpdate: %s" % e.category)
+            logging.warn("ExpenseUpdate: %s" % e.category)
             if e._class_name() == "MaintenanceRecord":
                 category = datastore.getCategoryByName(e.owner, "maintenance", e.category)
             elif e._class_name() == "FuelRecord":
@@ -29,7 +55,7 @@ class CategoryUpdate(webapp2.RequestHandler):
 
             e.categoryid = category.key.id()
                         
-            logging.warn("CategoryUpdate: Found: %s" % category.category)
+            logging.warn("ExpenseUpdate: Found: %s" % category.category)
             if update == "update":
                 e.put()
 
@@ -37,4 +63,5 @@ class CategoryUpdate(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([ 
     ('/database/categories/?([^/]+)?', CategoryUpdate),
+    ('/database/expenses/?([^/]+)?', ExpenseUpdate),
 ], debug=True)

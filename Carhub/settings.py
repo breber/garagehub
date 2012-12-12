@@ -18,7 +18,7 @@ class SettingsHandler(webapp2.RequestHandler):
         if user:
             if action == "delete":
                 # Delete record
-                category = datastore.getCategoryById(user.user_id(), pageType, categoryId)
+                category = datastore.getCategoryById(user.user_id(), categoryId)
                 if category:
                     category.key.delete()
                 else:

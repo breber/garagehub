@@ -208,7 +208,7 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
         maintCategories = datastore.getMaintenanceCategoryStrings(user.user_id())
         
         if not (category in maintCategories):
-            newCategoryObj = models.MaintenanceCategoryV2()
+            newCategoryObj = models.ExpenseCategory()
             newCategoryObj.owner = user.user_id()
             newCategoryObj.category = "Maintenance"
             newCategoryObj.subcategory = category

@@ -50,7 +50,7 @@ class SettingsHandler(webapp2.RequestHandler):
                 if newName and not newName in categories:
                     # this is a new category, add it to the database
                     if pageType == "maintenance":
-                        newCategoryObj = models.MaintenanceCategoryV2()
+                        newCategoryObj = models.ExpenseCategory()
                         newCategoryObj.category = "Maintenance"
                         newCategoryObj.subcategory = newName
                     else:

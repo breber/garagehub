@@ -22,18 +22,16 @@ class UserVehicle(ndb.Model):
     def name(self):
         return "%s %s %s" % (self.year, self.make, self.model)
 
-class ExpenseCategory(polymodel.PolyModel):
+class ExpenseCategory(ndb.Model):
     owner = ndb.StringProperty()
     category = ndb.StringProperty()
-    
-    def name(self):
-        return self.category
-    
-class MaintenanceCategoryV2(ExpenseCategory):
     subcategory = ndb.StringProperty()
     
     def name(self):
-        return self.subcategory
+        if self.subcategory:
+            return self.subcategory
+
+        return self.category
     
 class BaseExpense(polymodel.PolyModel):
     owner = ndb.StringProperty()

@@ -53,6 +53,12 @@ html,body {
 	margin-right: 7px;
 }
 
+.loading-image {
+	height: 1em;
+	width: 1em;
+	margin-right: 1em;
+}
+
 .center {
 	margin-left: auto;
 	margin-right: auto;

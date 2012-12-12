@@ -443,7 +443,7 @@ def getCategoryById(userId, categoryId):
                                                
     return None
 
-def getCategoryByName(userId, categoryType, categoryName):
+def getCategoryByName(userId, categoryName, maintenanceOnly=False):
     """Gets the BaseExpense for the given expenseId
     
     Args: 
@@ -453,22 +453,17 @@ def getCategoryByName(userId, categoryType, categoryName):
     Returns
         The BaseExpense
     """
-    
-    if categoryType == "expense":        
-        query = models.ExpenseCategory().query(models.ExpenseCategory.owner.IN([userId, "defaultCategory"]),
-                                               models.ExpenseCategory.category == categoryName)
-        expenseCategory = query.get()
-        return expenseCategory 
-        
-        
-    if categoryType == "maintenance":
+    if maintenanceOnly:
         query = models.ExpenseCategory().query(models.ExpenseCategory.category == "Maintenance",
                                                models.ExpenseCategory.subcategory == categoryName,
                                                models.ExpenseCategory.owner.IN([userId, "defaultMaintCategory"]))
-        maintCategory = query.get()
-        return maintCategory 
-                                               
-    return None
+    else:
+        query = models.ExpenseCategory().query(ndb.AND(models.ExpenseCategory.owner.IN([userId, "defaultCategory", "defaultMaintCategory"]),
+                                                       ndb.OR(models.ExpenseCategory.category == categoryName,
+                                                              models.ExpenseCategory.subcategory == categoryName)))
+
+    category = query.get()
+    return category 
 
 
 def getListOfMakes():

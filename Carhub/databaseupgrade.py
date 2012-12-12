@@ -50,15 +50,13 @@ class ExpenseUpdate(webapp2.RequestHandler):
         
         for e in expenses:
             logging.warn("ExpenseUpdate: %s" % e.category)
-            if e._class_name() == "MaintenanceRecord":
-                category = datastore.getCategoryByName(e.owner, "maintenance", e.category)
-            elif e._class_name() == "FuelRecord":
-                category = datastore.getCategoryByName(e.owner, "expense", "Fuel Up")
+            if e._class_name() == "FuelRecord":
+                category = datastore.getCategoryByName(e.owner, "Fuel Up")
             else:
-                category = datastore.getCategoryByName(e.owner, "expense", e.category)
+                category = datastore.getCategoryByName(e.owner, e.category)
             
             if not category:
-                category = datastore.getCategoryByName(e.owner, "expense", "Uncategorized")
+                category = datastore.getCategoryByName(e.owner, "Uncategorized")
 
             e.categoryid = category.key.id()
                         

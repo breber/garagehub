@@ -6,11 +6,15 @@ function calculateTripPrice() {
     
     
     var cost = 0;
+    var costPerMile = 0;
     
-    if(miles > 0 && fuelCost > 0)
+    if(miles > 0 && fuelCost > 0){
     	cost = miles / mpg * fuelCost;
+    	costPerMile = cost/miles;
+    }
     
     document.getElementById('est-cost-trip').value = '$' + cost.toFixed(2);
+    document.getElementById('est-cost-per-mile').value = '$' + costPerMile.toFixed(2);
     
 }
 

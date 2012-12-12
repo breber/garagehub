@@ -13,8 +13,8 @@ function calculateTripPrice() {
     	costPerMile = cost/miles;
     }
     
-    document.getElementById('est-cost-trip').value = '$' + cost.toFixed(2);
-    document.getElementById('est-cost-per-mile').value = '$' + costPerMile.toFixed(2);
+    document.getElementById('est-cost-trip').value = cost.toFixed(2);
+    document.getElementById('est-cost-per-mile').value = costPerMile.toFixed(2);
     
 }
 

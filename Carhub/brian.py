@@ -76,7 +76,7 @@ class FetchCarsBrian(webapp2.RequestHandler):
                         toAdd.owner = userId
                         toAdd.date = datetime.datetime.fromtimestamp((maint["date"] / 1000))
                         toAdd.lastmodified = datetime.datetime.now()
-                        toAdd.categoryid = datastore.getCategoryByName(userId, "Uncategorized")
+                        toAdd.categoryid = datastore.getCategoryByName(userId, "Uncategorized", True)
                         toAdd.location = maint["vendor"]
                         toAdd.description = maint["title"]
                         toAdd.amount = maint["totalCost"]

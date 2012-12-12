@@ -345,6 +345,7 @@ def addDefaultMaintenanceCategoryModels():
     models.ExpenseCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Oil Change").put()
     models.ExpenseCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Repair").put()
     models.ExpenseCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Recall").put()
+    models.ExpenseCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Uncategorized").put()
 
 
 def getExpenseCategoryStrings(userId):

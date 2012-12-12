@@ -18,10 +18,13 @@ class CategoryUpdate(webapp2.RequestHandler):
         for e in userExpenseCategories:
             if not e.owner == "defaultCategory":
                 logging.warn("CategoryUpdate: UserExpense: %s" % e.category)
-            
-                        
+                newCategory = models.ExpenseCategory()
+                newCategory.category = e.category
+                newCategory.owner = e.owner
+                
+                logging.warn("CategoryUpdate: NewUserExpense: %s" % e.category)
                 if update == "update":
-                    e.put()
+                    newCategory.put()
 
         query = models.MaintenanceCategory().query()
         maintenanceCategories = ndb.get_multi(query.fetch(keys_only=True))
@@ -29,10 +32,14 @@ class CategoryUpdate(webapp2.RequestHandler):
         for e in maintenanceCategories:
             if not e.owner == "defaultMaintCategory":
                 logging.warn("CategoryUpdate: Maint: %s" % e.category)
+                newCategory = models.ExpenseCategory()
+                newCategory.category = "Maintenance"
+                newCategory.subcategory = e.category
+                newCategory.owner = e.owner
                 
-                        
+                logging.warn("CategoryUpdate: NewMaint: %s" % e.category)
                 if update == "update":
-                    e.put()
+                    newCategory.put()
 
         self.redirect("/")
 

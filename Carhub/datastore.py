@@ -343,13 +343,9 @@ def addDefaultMaintenanceCategoryModels():
     """Adds the default expense categories to the DB"""
     # TODO: Finalize these category defaults
     models.ExpenseCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Oil Change").put()
-        
     models.ExpenseCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Repair").put()
-    
     models.ExpenseCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Recall").put()
 
-    models.ExpenseCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Car Wash").put()
-    
 
 def getExpenseCategoryStrings(userId):
     """Gets a list of user categories (strings)
@@ -406,9 +402,6 @@ def getExpenseCategoryModels(userId, getDefaultCategories=True):
 def getDefaultExpenseCategoryModels():
     """Gets a list of user categories (models)
     
-    Args: 
-        -
-    
     Returns
         A list of default expense categories
     """
@@ -425,19 +418,10 @@ def getDefaultExpenseCategoryModels():
     return results
 
 def addDefaultExpenseCategoryModels():
-    """Adds the default expense categories to the DB
-    
-    Args: 
-        -
-    
-    Returns
-        -
-    """
+    """Adds the default expense categories to the DB"""
     # If you change this be sure to change the fuel record post function to be able to find it.
     models.ExpenseCategory(owner="defaultCategory", category="Fuel Up").put()
-    
-    models.ExpenseCategory(owner="defaultCategory", category="Repair").put()
-
+    models.ExpenseCategory(owner="defaultCategory", category="Car Wash").put()
     models.ExpenseCategory(owner="defaultCategory", category="Uncategorized").put()
 
 def getCategoryById(userId, categoryId):

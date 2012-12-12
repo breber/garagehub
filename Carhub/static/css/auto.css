@@ -98,6 +98,7 @@ html,body {
 #dir-container table {
 	font-size: 1em;
 	padding: 2px;
+	width: 100%;
 }
 
 .trip-map-canvas {

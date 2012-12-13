@@ -29,48 +29,50 @@ class SettingsHandler(webapp2.RequestHandler):
         context["defaultcategories"] = datastore.getDefaultExpenseCategoryModels()
         context["maintcategories"] = datastore.getMaintenanceCategoryModels(user.user_id(), False)
         context["defaultmaintcategories"] = datastore.getDefaultMaintenanceCategoryModels()
+
         path = os.path.join(os.path.dirname(__file__), 'templates/settings.html')
         self.response.out.write(template.render(path, context))
 
     def post(self, pageName, pageType, action, categoryId):
         user = users.get_current_user()
-
-        if action == "add":
-            if pageType == "maintenance":
-                categories = datastore.getMaintenanceCategoryStrings(user.user_id())
-            else:
-                categories = datastore.getExpenseCategoryStrings(user.user_id())
-                
-            newName = self.request.get("categoryName", None)
-            if newName and not newName in categories:
+        newName = self.request.get("categoryName", None)
+        maintenanceOnly = pageType == "maintenance"
+        
+        # The category with the new name
+        categoryNewName = datastore.getCategoryByName(user.user_id(), newName, maintenanceOnly)
+        
+        if action == "add" and newName:
+            if not categoryNewName:
                 # this is a new category, add it to the database
                 newCategoryObj = models.ExpenseCategory()
-                if pageType == "maintenance":
+                if maintenanceOnly:
                     newCategoryObj.category = "Maintenance"
                     newCategoryObj.subcategory = newName
                 else:
-                    newCategoryObj.category = newName
+                    newCategoryObj.category = newName   
 
                 newCategoryObj.owner = user.user_id()
                 newCategoryObj.put()
+            else:
+                logging.warn("User tried to add category that already exists")
         
-        if action == "edit":
+        elif action == "edit" and newName:
             # Edit record
-            if pageType == "maintenance":
-                categories = datastore.getMaintenanceCategoryStrings(user.user_id())
-            else:
-                categories = datastore.getExpenseCategoryStrings(user.user_id())
-                
-            newName = self.request.get("categoryName", None)
-            category = datastore.getCategoryById(user.user_id(), pageType, categoryId)
+            
+            # The category we are trying to edit
+            categoryToEdit = datastore.getCategoryById(user.user_id(), pageType, categoryId)
+            
+            # If we have a category for the given id and we don't have a category
+            # with the new name, update the category
+            if categoryToEdit and not categoryNewName:
+                if categoryToEdit.category == "Maintenance":
+                    categoryToEdit.subcategory = newName
+                else:
+                    categoryToEdit.category = newName
 
-            logging.warn("New Name %s" % newName)
-            if category and newName and not newName in categories:
-                # TODO: should this be category/subcategory based on whether it is a maintenance record?
-                category.category = newName
-                category.put()
+                categoryToEdit.put()
             else:
-                #TODO: need a way to give user feedback about why the record was not edited
+                # TODO: need a way to give user feedback about why the record was not edited
                 logging.warn("No category object was edited. Couldn't find it. Or you can't rename it to a duplicate name")
     
         self.redirect("/settings")
@@ -78,4 +80,3 @@ class SettingsHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/settings/?([^/]+)?/?([^/]+)?/?([^/]+)?/?(.+)?', SettingsHandler)
 ])
-

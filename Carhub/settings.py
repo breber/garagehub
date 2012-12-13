@@ -60,7 +60,7 @@ class SettingsHandler(webapp2.RequestHandler):
             # Edit record
             
             # The category we are trying to edit
-            categoryToEdit = datastore.getCategoryById(user.user_id(), pageType, categoryId)
+            categoryToEdit = datastore.getCategoryById(user.user_id(), categoryId)
             
             # If we have a category for the given id and we don't have a category
             # with the new name, update the category

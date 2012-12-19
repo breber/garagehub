@@ -1,7 +1,10 @@
 from google.appengine.api import users
+from google.appengine.ext import ndb
 import datastore
 import datetime
 import hashlib
+import json
+import time
 
 def get_context(list_vehicles=True):
     context = {}
@@ -58,3 +61,14 @@ def format_float(number):
 
 def format_date(timestamp):
     return timestamp.strftime("%Y/%m/%d")
+
+class ComplexEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime.datetime):
+            return time.mktime(obj.timetuple())
+        elif isinstance(obj, datetime.date):
+            return obj.strftime("%m/%d/%y")
+        elif isinstance(obj, ndb.Model):
+            return obj.to_dict()
+            
+        return json.JSONEncoder.default(self, obj)

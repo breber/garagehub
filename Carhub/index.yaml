@@ -49,3 +49,9 @@ indexes:
   - name: vehicle
   - name: odometerEnd
     direction: desc
+
+- kind: BaseExpense
+  properties:
+  - name: owner
+  - name: vehicle
+  - name: date

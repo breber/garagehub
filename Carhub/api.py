@@ -4,6 +4,28 @@ import datastore
 import json
 import webapp2
 
+class UserVehicleHandler(webapp2.RequestHandler):
+    def get(self, parameter1):
+        self.response.headerlist = [('Content-type', 'application/json')]
+        
+        user = users.get_current_user()
+        
+        if user:
+            results = datastore.getUserVehicleList(user.user_id())
+            
+            toRet = []
+            for record in results:
+                obj = {}
+                obj["make"] = record.make
+                obj["lastmodified"] = record.lastmodified.ctime()
+                obj["model"] = record.model
+                obj["year"] = record.year
+                obj["color"] = record.color
+                obj["plates"] = record.plates
+                toRet.append(obj)
+            
+            self.response.out.write(json.dumps(toRet))
+
 class ExpenseFuelHandler(webapp2.RequestHandler):
     def get(self, vehicleId, day_range):
         self.response.headerlist = [('Content-type', 'application/json')]
@@ -65,6 +87,7 @@ class ExpenseCategoryHandler(webapp2.RequestHandler):
             self.response.out.write(json.dumps(toRet1))
 
 app = webapp2.WSGIApplication([
+    ('/api/vehicles/?(.+?)?', UserVehicleHandler),
     ('/api/expense/fuel/([^/]+)/?(.+?)?', ExpenseFuelHandler),
     ('/api/expense/category/([^/]+)/?(.+?)?', ExpenseCategoryHandler)
 ])

@@ -41,6 +41,9 @@ class CategoryUpdate(webapp2.RequestHandler):
                 if update == "update":
                     newCategory.put()
 
+
+        datastore.getMaintenanceCategoryStrings("")
+        datastore.getExpenseCategoryStrings("")
         self.redirect("/")
 
 class ExpenseUpdate(webapp2.RequestHandler):

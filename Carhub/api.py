@@ -2,6 +2,7 @@
 from google.appengine.api import users
 import datastore
 import json
+import time
 import webapp2
 
 class UserVehicleHandler(webapp2.RequestHandler):
@@ -16,8 +17,9 @@ class UserVehicleHandler(webapp2.RequestHandler):
             toRet = []
             for record in results:
                 obj = {}
+                obj["id"] = record.key.id()
                 obj["make"] = record.make
-                obj["lastmodified"] = record.lastmodified.ctime()
+                obj["lastmodified"] = time.mktime(record.lastmodified.timetuple())
                 obj["model"] = record.model
                 obj["year"] = record.year
                 obj["color"] = record.color

@@ -7,6 +7,7 @@ def get_context(list_vehicles=True):
     context = {}
     context['loginurl'] = users.create_login_url("/")
     context['logouturl'] = users.create_logout_url("/")
+    context['currentYear'] = datetime.date.today().year
 
     user = users.get_current_user()
     if user:

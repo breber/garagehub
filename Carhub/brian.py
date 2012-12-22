@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from google.appengine.api import urlfetch, users
 from google.appengine.ext import ndb
+import datastore
 import datetime
 import json
 import models
@@ -42,7 +43,7 @@ class FetchCarsBrian(webapp2.RequestHandler):
                         toAdd.owner = userId
                         toAdd.date = datetime.datetime.fromtimestamp((fuel["date"] / 1000))
                         toAdd.lastmodified = datetime.datetime.now()
-                        toAdd.category = "Fuel Record"
+                        toAdd.categoryid = datastore.getCategoryByName(userId, "Fuel Up")
                         toAdd.location = fuel["vendor"]
                         toAdd.description = "Filled up with gas"
                         toAdd.gallons = fuel["gallons"]
@@ -75,7 +76,7 @@ class FetchCarsBrian(webapp2.RequestHandler):
                         toAdd.owner = userId
                         toAdd.date = datetime.datetime.fromtimestamp((maint["date"] / 1000))
                         toAdd.lastmodified = datetime.datetime.now()
-                        toAdd.category = "Generic Maintenance"
+                        toAdd.categoryid = datastore.getCategoryByName(userId, "Uncategorized", True)
                         toAdd.location = maint["vendor"]
                         toAdd.description = maint["title"]
                         toAdd.amount = maint["totalCost"]

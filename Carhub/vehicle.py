@@ -19,7 +19,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
             self.redirect("/")
         else:
             context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
-            context["categories"] = datastore.getUserExpenseCategories(user.user_id())
+            context["categories"] = datastore.getExpenseCategoryModels(user.user_id())
             
             if pageName == "add":
                 context["upload_url"] = blobstore.create_upload_url(self.request.url)
@@ -38,6 +38,15 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
 
                 context["upload_url"] = blobstore.create_upload_url(self.request.url)
                 context["editexpenseobj"] = baseExpense
+                
+                category = datastore.getCategoryById(user.user_id(), baseExpense.categoryid)
+                if not category:
+                    # This will make the category for this object become Uncategorized since old object is gone
+                    category = datastore.getCategoryByName(user.user_id(), "Uncategorized")
+                    baseExpense.categoryid = category.key.id()
+                    
+                baseExpense.categoryname = category.name()
+
 
                 path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
             elif pageName == "delete":
@@ -48,11 +57,18 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 self.redirect("/vehicle/" + vehicleId + "/expenses")
                 return
             else:
-                context['userexpenses'] = datastore.getAllExpenseRecords(user.user_id(), vehicleId, None, False) 
+                context['userexpenses'] = datastore.getAllExpenseRecords(user.user_id(), vehicleId, None, False)
                 
                 expenseTotal = 0;
                 for expense in context['userexpenses']:
                     expenseTotal += expense.amount
+                    category = datastore.getCategoryById(user.user_id(), expense.categoryid)
+                    if not category:
+                        # This will make the category for this object become Uncategorized since old object is gone
+                        category = datastore.getCategoryByName(user.user_id(), "Uncategorized")
+                        expense.categoryid = category.key.id()
+                        
+                    expense.categoryname = category.name()
                 
                 context['expensetotal'] = utils.format_float(expenseTotal)
 
@@ -76,23 +92,23 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
         dateString = self.request.get("datePurchased", None)
         datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
         
-        # TODO: do we need this? it doesn't appear to be used...
-        newCategory = self.request.get("newCategory", None)
-        
         # find out if new category has been added
-        userCatgories = datastore.getUserExpenseCategories(user.user_id())
+        expenseCategories = datastore.getExpenseCategoryStrings(user.user_id())
+        
         category = self.request.get("category", "Uncategorized")
-        if not category in userCatgories:
+        if not category in expenseCategories:
             # this is a new category, add it to the database
-            newCategoryObj = models.UserExpenseCategory()
+            newCategoryObj = models.ExpenseCategory()
             newCategoryObj.owner = user.user_id()
             newCategoryObj.category = category
             newCategoryObj.put()
+              
+        categoryObj = datastore.getCategoryByName(user.user_id(), category)
 
         location = self.request.get("location", "")
         amount = float(self.request.get("amount", None))
         description = self.request.get("description", "")
-        logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, category, location, description, amount)
+        logging.info("Expense Info Obtained %s %s %s %s %d", datePurchased, categoryObj.category, location, description, amount)
         
         if datePurchased and amount:
             expense = None
@@ -102,7 +118,7 @@ class VehicleExpenseHandler(blobstore_handlers.BlobstoreUploadHandler):
                 expense = models.BaseExpense()
 
             expense.date = datePurchased
-            expense.category = category
+            expense.categoryid = categoryObj.key.id()
             expense.location = location
             expense.amount = amount
             expense.description = description
@@ -132,7 +148,7 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
             self.response.out.write(template.render(path, context))
         else:
             context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
-            categories = datastore.getMaintenanceCategories(user.user_id())
+            categories = datastore.getMaintenanceCategoryModels(user.user_id())
             if len(categories) > 0:
                 context["categories"] = categories
             
@@ -145,6 +161,14 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
                 
                 maintenanceRecord = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, maintenanceId)
                 context["editmaintenanceobj"] = maintenanceRecord
+                
+                category = datastore.getCategoryById(user.user_id(), maintenanceRecord.categoryid)
+                if not category:
+                    # This will make the category for this object become Uncategorized since old object is gone
+                    category = datastore.getCategoryByName(user.user_id(), "Uncategorized")
+                    maintenanceRecord.categoryid = category.key.id()
+                    
+                maintenanceRecord.categoryname = category.name()
 
                 path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
             elif pageName == "delete":
@@ -181,13 +205,16 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
         datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
         
         category = self.request.get("category", "Uncategorized")
-        maintCategories = datastore.getMaintenanceCategories(user.user_id())
+        maintCategories = datastore.getMaintenanceCategoryStrings(user.user_id())
         
         if not (category in maintCategories):
-            newCategoryObj = models.MaintenanceCategory()
+            newCategoryObj = models.ExpenseCategory()
             newCategoryObj.owner = user.user_id()
-            newCategoryObj.category = category
+            newCategoryObj.category = "Maintenance"
+            newCategoryObj.subcategory = category
             newCategoryObj.put()
+            
+        categoryObj = datastore.getCategoryByName(user.user_id(), category, True)
 
         location = self.request.get("location", "")
         amount = float(self.request.get("amount", 0))
@@ -207,7 +234,7 @@ class VehicleMaintenanceHandler(blobstore_handlers.BlobstoreUploadHandler):
                 maintRec = models.MaintenanceRecord()
             
             maintRec.date = datePurchased
-            maintRec.category = category
+            maintRec.categoryid = categoryObj.key.id()
             maintRec.location = location
             maintRec.amount = amount
             maintRec.description = description
@@ -261,7 +288,7 @@ class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
         context = utils.get_context()
         user = users.get_current_user()
         context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
-        context["categories"] = datastore.getUserExpenseCategories(user.user_id())
+        context["categories"] = datastore.getExpenseCategoryModels(user.user_id())
         context['userfuelrecords'] = datastore.getFuelRecords(user.user_id(), vehicleId, None, False)
         
         # Get latest fuel record
@@ -366,8 +393,8 @@ class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
                 record = models.FuelRecord()
                 
             record.date = datePurchased
-            #TODO: this is the category for all Fuel Records, move to a constants file
-            record.category = "Fuel Record"
+            #TODO: this is relying upon the datastore already having the default records in.
+            record.category = datastore.getCategoryByName(user.user_id(), "Fuel Up").key.id()
             record.location = location
             record.amount = amount
             #TODO: this is the description for all fuel records, move to a constants file

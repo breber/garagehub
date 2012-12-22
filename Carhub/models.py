@@ -105,21 +105,3 @@ class Notification(ndb.Model):
 
     def name(self):
         return "%s %s" % (self.vehicleName, self.category)
-
-
-# DEPRECATED
-# TODO: delete these
-
-class UserExpenseCategory(ndb.Model):
-    owner = ndb.StringProperty()
-    category = ndb.StringProperty()
-    
-    def name(self):
-        return self.category
-    
-class MaintenanceCategory(ndb.Model):
-    owner = ndb.StringProperty()
-    category = ndb.StringProperty()
-    
-    def name(self):
-        return self.category

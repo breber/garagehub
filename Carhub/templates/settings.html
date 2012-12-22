@@ -77,7 +77,7 @@
 	        {% if maintcategories %}
             {% for c in maintcategories %}
             <tr id="{{ c.key.id }}">
-              <td class="maintenance">{{ c.category }}</td>
+              <td class="maintenance">{{ c.name }}</td>
             </tr>
             {% endfor %}
 	        {% endif %}
@@ -94,7 +94,7 @@
 	        {% if defaultmaintcategories %}
             {% for c in defaultmaintcategories %}
             <tr id="{{ c.key.id }}">
-              <td class="expense">{{ c.category }}</td>
+              <td class="expense">{{ c.name }}</td>
             </tr>
             {% endfor %}
 	        {% endif %}

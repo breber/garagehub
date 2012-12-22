@@ -13,71 +13,70 @@ class SettingsHandler(webapp2.RequestHandler):
         context = utils.get_context()
         user = users.get_current_user()
         
-        logging.warn("pageName = %s, pageType = %s" % (pageName, pageType))
+        if action == "delete":
+            # Delete record
+            category = datastore.getCategoryById(user.user_id(), categoryId)
+            if category:
+                category.key.delete()
+            else:
+                logging.warn("No category object was deleted. Couldn't find it.")
+
+            self.redirect("/settings")
+            return
         
-        if user:
-            if action == "delete":
-                # Delete record
-                category = datastore.getCategory(user.user_id(), pageType, categoryId)
-                if category:
-                    category.key.delete()
-                else:
-                    logging.warn("No category object was deleted. Couldn't find it.")
-    
-                self.redirect("/settings")
-                return
-            
-            # go to regular settings page
-            context["categories"] = datastore.getUserExpenseCategoryModels(user.user_id(), False)
-            context["defaultcategories"] = datastore.getDefaultExpenseCategoryModels()
-            context["maintcategories"] = datastore.getMaintenanceCategoryModels(user.user_id(), False)
-            context["defaultmaintcategories"] = datastore.getDefaultMaintenanceCategoryModels()
-            path = os.path.join(os.path.dirname(__file__), 'templates/settings.html')
-            self.response.out.write(template.render(path, context))
-       
-        else:
-            self.redirect("/")
+        # go to regular settings page
+        context["categories"] = datastore.getExpenseCategoryModels(user.user_id(), False)
+        context["defaultcategories"] = datastore.getDefaultExpenseCategoryModels()
+        context["maintcategories"] = datastore.getMaintenanceCategoryModels(user.user_id(), False)
+        context["defaultmaintcategories"] = datastore.getDefaultMaintenanceCategoryModels()
+
+        path = os.path.join(os.path.dirname(__file__), 'templates/settings.html')
+        self.response.out.write(template.render(path, context))
+
     def post(self, pageName, pageType, action, categoryId):
         user = users.get_current_user()
-        if user:
-            if action == "add":
-                if pageType == "maintenance":
-                    categories = datastore.getMaintenanceCategoryModels(user.user_id())
+        newName = self.request.get("categoryName", None)
+        maintenanceOnly = pageType == "maintenance"
+        
+        # The category with the new name
+        categoryNewName = datastore.getCategoryByName(user.user_id(), newName, maintenanceOnly)
+        
+        if action == "add" and newName:
+            if not categoryNewName:
+                # this is a new category, add it to the database
+                newCategoryObj = models.ExpenseCategory()
+                if maintenanceOnly:
+                    newCategoryObj.category = "Maintenance"
+                    newCategoryObj.subcategory = newName
                 else:
-                    categories = datastore.getUserExpenseCategories(user.user_id())
-                    
-                newName = self.request.get("categoryName", None)
-                if newName and not newName in categories:
-                    # this is a new category, add it to the database
-                    if pageType == "maintenance":
-                        newCategoryObj = models.MaintenanceCategory()
-                    else:
-                        newCategoryObj = models.UserExpenseCategory()
-                    newCategoryObj.owner = user.user_id()
-                    newCategoryObj.category = newName
-                    newCategoryObj.put()
+                    newCategoryObj.category = newName   
+
+                newCategoryObj.owner = user.user_id()
+                newCategoryObj.put()
+            else:
+                logging.warn("User tried to add category that already exists")
+        
+        elif action == "edit" and newName:
+            # Edit record
             
-            if action == "edit":
-                # Edit record
-                if pageType == "maintenance":
-                    categories = datastore.getMaintenanceCategoryModels(user.user_id())
+            # The category we are trying to edit
+            categoryToEdit = datastore.getCategoryById(user.user_id(), categoryId)
+            
+            # If we have a category for the given id and we don't have a category
+            # with the new name, update the category
+            if categoryToEdit and not categoryNewName:
+                if categoryToEdit.category == "Maintenance":
+                    categoryToEdit.subcategory = newName
                 else:
-                    categories = datastore.getUserExpenseCategories(user.user_id())
-                    
-                newName = self.request.get("categoryName", None)
-                category = datastore.getCategory(user.user_id(), pageType, categoryId)
-                newName = self.request.get("categoryName", None)
-                logging.warn("New Name %s" % newName)
-                if category and newName and not newName in categories:
-                    category.category = newName
-                    category.put()
-                else:
-                    #TODO: need a way to give user feedback about why the record was not edited
-                    logging.warn("No category object was edited. Couldn't find it. Or you can't rename it to a duplicate name")
+                    categoryToEdit.category = newName
+
+                categoryToEdit.put()
+            else:
+                # TODO: need a way to give user feedback about why the record was not edited
+                logging.warn("No category object was edited. Couldn't find it. Or you can't rename it to a duplicate name")
     
         self.redirect("/settings")
                 
 app = webapp2.WSGIApplication([
     ('/settings/?([^/]+)?/?([^/]+)?/?([^/]+)?/?(.+)?', SettingsHandler)
 ])
-

@@ -49,7 +49,13 @@
   {% for e in userexpenses %}
   <tr id="{{ e.key.id }}">
     <td>{{ e.date_formatted }}</td>
-    <td>{{ e.category }}</td>
+    
+    {% if e.category %}
+    <td>{{ e.categoryname }}</td>
+    {% else %}
+    <td>Uncategorized Fail</td>
+    {% endif %}
+    
     <td>{{ e.location }}</td>
     <td>{{ e.description }}</td>
     <td>{{ e.amount_formatted }}</td>

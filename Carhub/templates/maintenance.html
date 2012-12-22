@@ -34,7 +34,7 @@
 {% if categories %} 
 
 {% for category in categories %}
-<h3>{{ category }}</h3>
+<h3>{{ category.name }}</h3>
 <table class="maint-datatable table table-striped table-bordered dataTable DTTT_selectable table-hover" id="{{ category }}">
   <thead>
     <tr>
@@ -48,7 +48,7 @@
   </thead>
   <tbody>
   {% for m in maintRecords %} 
-  {% if category == m.category %}
+  {% if category.key.id == m.categoryid %}
   <tr id="{{ m.key.id }}">
     <td>{{ m.date_formatted }}</td>
     <td>{{ m.location }}</td>

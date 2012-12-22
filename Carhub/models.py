@@ -22,12 +22,24 @@ class UserVehicle(ndb.Model):
     def name(self):
         return "%s %s %s" % (self.year, self.make, self.model)
 
+class ExpenseCategory(ndb.Model):
+    owner = ndb.StringProperty()
+    category = ndb.StringProperty()
+    subcategory = ndb.StringProperty()
+    
+    def name(self):
+        if self.subcategory:
+            return self.subcategory
+
+        return self.category
+    
 class BaseExpense(polymodel.PolyModel):
     owner = ndb.StringProperty()
     vehicle = ndb.IntegerProperty()
     date = ndb.DateProperty()
     lastmodified = ndb.DateTimeProperty()
     category = ndb.StringProperty()
+    categoryid = ndb.IntegerProperty()
     location = ndb.StringProperty()
     description = ndb.StringProperty()
     amount = ndb.FloatProperty()
@@ -74,19 +86,6 @@ class FuelRecord(BaseExpense):
     def costPerGallon_formatted(self):
         return utils.format_float(self.costPerGallon)
 
-class UserExpenseCategory(ndb.Model):
-    owner = ndb.StringProperty()
-    category = ndb.StringProperty()
-    
-    def name(self):
-        return self.category
-    
-class MaintenanceCategory(ndb.Model):
-    owner = ndb.StringProperty()
-    category = ndb.StringProperty()
-    
-    def name(self):
-        return self.category
 
 class Notification(ndb.Model):
     owner = ndb.StringProperty()
@@ -106,3 +105,21 @@ class Notification(ndb.Model):
 
     def name(self):
         return "%s %s" % (self.vehicleName, self.category)
+
+
+# DEPRECATED
+# TODO: delete these
+
+class UserExpenseCategory(ndb.Model):
+    owner = ndb.StringProperty()
+    category = ndb.StringProperty()
+    
+    def name(self):
+        return self.category
+    
+class MaintenanceCategory(ndb.Model):
+    owner = ndb.StringProperty()
+    category = ndb.StringProperty()
+    
+    def name(self):
+        return self.category

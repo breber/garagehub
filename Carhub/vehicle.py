@@ -394,7 +394,7 @@ class VehicleGasMileageHandler(blobstore_handlers.BlobstoreUploadHandler):
                 
             record.date = datePurchased
             #TODO: this is relying upon the datastore already having the default records in.
-            record.category = datastore.getCategoryByName(user.user_id(), "Fuel Up").key.id()
+            record.categoryid = datastore.getCategoryByName(user.user_id(), "Fuel Up").key.id()
             record.location = location
             record.amount = amount
             #TODO: this is the description for all fuel records, move to a constants file

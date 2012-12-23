@@ -369,8 +369,15 @@ def getExpenseCategoryStrings(userId):
         query = models.ExpenseCategory().query(models.ExpenseCategory.category != "Maintenance",
                                                models.ExpenseCategory.owner.IN([userId, "defaultCategory"]))
         results = ndb.get_multi(query.fetch(keys_only=True))
-            
-    return results
+    
+    toRet = []
+    for r in results:
+        if r.subcategory:
+            toRet.append(r.subcategory)
+        else:
+            toRet.append(r.category)
+
+    return toRet
 
 def getExpenseCategoryModels(userId, getDefaultCategories=True):
     """Gets a list of user categories (models)

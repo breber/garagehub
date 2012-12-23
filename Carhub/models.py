@@ -38,7 +38,7 @@ class BaseExpense(polymodel.PolyModel):
     vehicle = ndb.IntegerProperty()
     date = ndb.DateProperty()
     lastmodified = ndb.DateTimeProperty()
-    category = ndb.StringProperty()
+    category = ndb.StringProperty() # TODO: remove this field
     categoryid = ndb.IntegerProperty()
     location = ndb.StringProperty()
     description = ndb.StringProperty()

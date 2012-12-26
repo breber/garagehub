@@ -67,7 +67,10 @@ class ComplexEncoder(json.JSONEncoder):
         if isinstance(obj, datetime.datetime):
             return time.mktime(obj.timetuple())
         elif isinstance(obj, datetime.date):
-            return obj.strftime("%m/%d/%y")
+            toRet = {}
+            toRet["timestamp"] = time.mktime(obj.timetuple())
+            toRet["str"] = obj.strftime("%m/%d/%y")
+            return toRet
         elif isinstance(obj, ndb.Model):
             toRet = obj.to_dict()
             toRet["id"] = obj.key.id()

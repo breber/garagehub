@@ -43,7 +43,7 @@ class FetchCarsBrian(webapp2.RequestHandler):
                         toAdd.owner = userId
                         toAdd.date = datetime.datetime.fromtimestamp((fuel["date"] / 1000))
                         toAdd.lastmodified = datetime.datetime.now()
-                        toAdd.categoryid = datastore.getCategoryByName(userId, "Fuel Up")
+                        toAdd.categoryid = datastore.getCategoryByName(userId, "Fuel Up").key.id()
                         toAdd.location = fuel["vendor"]
                         toAdd.description = "Filled up with gas"
                         toAdd.gallons = fuel["gallons"]
@@ -76,7 +76,7 @@ class FetchCarsBrian(webapp2.RequestHandler):
                         toAdd.owner = userId
                         toAdd.date = datetime.datetime.fromtimestamp((maint["date"] / 1000))
                         toAdd.lastmodified = datetime.datetime.now()
-                        toAdd.categoryid = datastore.getCategoryByName(userId, "Uncategorized", True)
+                        toAdd.categoryid = datastore.getCategoryByName(userId, "Uncategorized", True).key.id()
                         toAdd.location = maint["vendor"]
                         toAdd.description = maint["title"]
                         toAdd.amount = maint["totalCost"]

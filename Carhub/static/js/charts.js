@@ -56,7 +56,7 @@ function drawFuelChart(content) {
     $.each(content, function(index, item) {
         if (item.odometerStart !== -1) {
             var tmp = [];
-            tmp.push(item.date);
+            tmp.push(item.date.str);
             if (item.mpg !== undefined) {
                 tmp.push(item.mpg);
             } else {

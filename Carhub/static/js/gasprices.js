@@ -11,14 +11,14 @@ $(document).ready(function() {
 	$("#fetchPrices").click(getGasPrices);
 
 	datatablesObject = null;
-	
+
 	getGasPrices();
 });
 
 $("#gaspricetable tr td").live("click", function() {
 	var lat = $(this).parent().find('td').eq(5).text();
 	var lon = $(this).parent().find('td').eq(6).text();
-	
+
 	var mapOptions = {
 		zoom : 14,
 		center : new google.maps.LatLng(lat, lon),
@@ -28,12 +28,12 @@ $("#gaspricetable tr td").live("click", function() {
 
 	var latLng = new google.maps.LatLng(lat, lon); // Makes a latlng
 	addMarker(map, latLng);
-	
+
 	$('#modalMap').on('shown', function() {
 	    google.maps.event.trigger(map, "resize");
 		map.panTo(latLng);
 	});
-	
+
 	$("#modalMap").modal();
 });
 
@@ -106,7 +106,7 @@ function getLocation(){
    if (navigator.geolocation) {
 	  // 30 seconds
       var options = {timeout:30000};
-      navigator.geolocation.getCurrentPosition(useLocation, 
+      navigator.geolocation.getCurrentPosition(useLocation,
                                                errorHandler,
                                                options);
    } else {
@@ -136,11 +136,11 @@ function stopLoading() {
 
 function displayGasPrices(JSONGasFeed) {
     showLoading();
-    
+
     if (datatablesObject !== null) {
-    	datatablesObject.fnDestroy();	
+    	datatablesObject.fnDestroy();
     }
-    
+
     $.getJSON(JSONGasFeed,
         function(json) {
             var grade = $('#grade').val();
@@ -160,9 +160,9 @@ function displayGasPrices(JSONGasFeed) {
                 station["5"] = item.lat;
                 station["6"] = item.lng;
                 station["DT_RowClass"] = "linkable";
-                
+
                 if (item.price !== "N/A") {
-                    data.push(station);                    
+                    data.push(station);
                 }
             });
 
@@ -177,12 +177,12 @@ function displayGasPrices(JSONGasFeed) {
                 "aaData": data,
                 "aaSorting": [[ sortByColumn, 'asc' ]]
             } );
-            
+
             $('#gaspricetable td:nth-child(6)').hide();
             $('#gaspricetable th:nth-child(6)').hide();
             $('#gaspricetable td:nth-child(7)').hide();
             $('#gaspricetable th:nth-child(7)').hide();
-            
+
             stopLoading();
         }
     );

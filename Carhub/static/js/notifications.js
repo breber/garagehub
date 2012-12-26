@@ -1,7 +1,6 @@
 var editID;
 
 $(document).ready(function() {
-
 	$('#notif-datatable').dataTable({
 		"sDom" : "t",
 		"bPaginate" : false,
@@ -23,13 +22,13 @@ $(document).ready(function() {
 		});
 
 		$(event.target.parentNode).addClass('active');
-		
+
 		$('#notif-deleteButton').removeAttr('disabled');
 
 		// get key for record
 		editID = event.target.parentNode.id;
 	});
-	
+
 	$('#notif-deleteButton').click(function() {
 		if (editID) {
 			window.location = "/notifications/delete/" + editID;

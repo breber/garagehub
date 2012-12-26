@@ -36,7 +36,7 @@ $(document).ready(function() {
 		// get key for record
 		editID = event.target.parentNode.id;
 		if(editID != "add"){
-			$(event.target.parentNode).addClass('active');			
+			$(event.target.parentNode).addClass('active');
 		}
 
 		editText = event.target.childNodes[0].data;
@@ -50,7 +50,7 @@ $(document).ready(function() {
 	$('#editCategory').click(function() {
 		if(editID && editID != "add"){
 			$('#modalheader').text("Edit Category");
-			$('#categoryName').val(editText);			
+			$('#categoryName').val(editText);
 			$(saveForm).attr("action", "/settings/category/" + editCategoryType + "/edit/" + editID);
 			$('#editCategoryModal').modal();
 		}
@@ -58,20 +58,20 @@ $(document).ready(function() {
 
 	$('#addExpCategory').click(function() {
 		$('#modalheader').text("Add Expense Category");
-		$('#categoryName').val("");	
+		$('#categoryName').val("");
 		$(saveForm).attr("action", "/settings/category/expense/add");
 		$('#editCategoryModal').modal();
 	});
-	
+
 	$('#addMaintCategory').click(function() {
 		$('#modalheader').text("Add Maintenance Category");
-		$('#categoryName').val("");	
+		$('#categoryName').val("");
 		$(saveForm).attr("action", "/settings/category/maintenance/add");
 		$('#editCategoryModal').modal();
 	});
 
 	$('#deleteCategory').click(function() {
-		if(editID && editID != "add"){
+		if (editID && editID != "add") {
 			window.location = "/settings/category/" + editCategoryType + "/delete/" + editID;
 		}
 	});

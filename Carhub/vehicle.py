@@ -251,7 +251,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
     @staticmethod
     def handleRequest(request, user, obj):
         # Nothing to do...
-        print "TODO"
+        return
 
 class VehicleMaintenanceHandler(webapp2.RequestHandler):
     def get(self, vehicleId):

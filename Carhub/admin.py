@@ -15,13 +15,13 @@ class AdminHandler(webapp2.RequestHandler):
         """
         - If the logged in user is an admin, displays the admin page.
         - Otherwise, redirects to the root page
-        
-        Args: 
+
+        Args:
             method  (optional) - ignored for get requests
         """
         if users.is_current_user_admin():
             context = utils.get_context()
-            
+
             path = os.path.join(os.path.dirname(__file__), 'templates/admin.html')
             self.response.out.write(template.render(path, context))
         else:
@@ -29,8 +29,8 @@ class AdminHandler(webapp2.RequestHandler):
 
     def post(self, method):
         """Post request handler for the /admin/([^/])? path
-        
-        Args: 
+
+        Args:
             method  (optional) - the operation to perform
                 - fetchvehicleinfo - gets car data from Cars.com
                 - deletevehicles - delete all BaseVehicle entities
@@ -57,7 +57,7 @@ class AdminHandler(webapp2.RequestHandler):
             elif method == "clearmemcache":
                 # Clear memcache
                 memcache.Client().flush_all()
-        
+
         # Always redirect to admin
         self.redirect("/admin")
 
@@ -67,8 +67,8 @@ class CronHandler(webapp2.RequestHandler):
     def get(self, method):
         """
         Executes the defined cron job
-        
-        Args: 
+
+        Args:
             method - what cron job to run
         """
         if method == "fetch":

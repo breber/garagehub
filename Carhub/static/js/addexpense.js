@@ -3,11 +3,11 @@ var categoriesLength = -1;
 
 $(document).ready(function() {
 	// display input fields based on which record is being added
-	if(window.location.pathname.indexOf("gasmileage") > -1){
+	if ($("#editfuelrecordobject").length > 0) {
 		$('.gasmileage').removeClass( "hidden");
-	} else if(window.location.pathname.indexOf("maintenance") > -1){
+	} else if ($("#editmaintenanceobject").length > 0) {
 		$('.maintenance').removeClass( "hidden");
-	} else if(window.location.pathname.indexOf("expense") > -1){
+	} else if ($("#editexpenseobject").length > 0) {
 		$('.generic').removeClass( "hidden");
 	}
 	
@@ -49,13 +49,13 @@ $(document).ready(function() {
 	});
 	
 	// try to load expense record to edit.
-	if(window.location.pathname.indexOf("edit") > -1){
+	if (window.location.pathname.indexOf("edit") > -1) {
 		editExpenseRecord();
-		if(window.location.pathname.indexOf("gasmileage") > -1){
+		if ($("#editfuelrecordobject").length > 0) {
 			editFuelRecord();
-		} else if(window.location.pathname.indexOf("maintenance") > -1){
+		} else if ($("#editmaintenanceobject").length > 0) {
 			editMaintenanceRecord();
-		} else if(window.location.pathname.indexOf("expense") > -1){
+		} else if ($("#editexpenseobject").length > 0) {
 			editExpenseRecord();
 		}
 	}

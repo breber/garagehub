@@ -12,18 +12,18 @@ class FetchCarsBrian(webapp2.RequestHandler):
     def get(self):
         url = "http://nosec.auto-records.appspot.com/getRecords"
         result = urlfetch.fetch(url=url, payload=None, method=urlfetch.GET, deadline=30)
-        
+
         if result.status_code == 200:
             jsonResult = json.loads(result.content)
             debug = os.environ['SERVER_SOFTWARE'].startswith('Dev')
-            
+
             for vehicle in jsonResult:
                 if vehicle["emailAddress"] == "reber.brian@gmail.com":
                     userId = vehicle["userId"]
-                    
+
                     if debug:
                         userId = users.get_current_user().user_id()
-                    
+
                     veh = models.UserVehicle()
                     veh.make = vehicle["make"]
                     veh.model = vehicle["model"]
@@ -49,9 +49,9 @@ class FetchCarsBrian(webapp2.RequestHandler):
                         toAdd.gallons = fuel["gallons"]
                         toAdd.costPerGallon = fuel["costPerGallon"]
                         toAdd.amount = toAdd.gallons * toAdd.costPerGallon
-                        
+
                         fuelGrade = fuel["fuelGrade"]
-                        
+
                         if fuelGrade == 87:
                             toAdd.fuelGrade = "Regular"
                         elif fuelGrade == 89:
@@ -66,7 +66,7 @@ class FetchCarsBrian(webapp2.RequestHandler):
                             toAdd.mpg = (toAdd.odometerEnd - toAdd.odometerStart) / toAdd.gallons
                         else:
                             toAdd.mpg = -1
-                
+
                         toAdd.put()
 
                     maintRecords = vehicle["maintenanceRecords"]
@@ -82,23 +82,23 @@ class FetchCarsBrian(webapp2.RequestHandler):
                         toAdd.amount = maint["totalCost"]
                         toAdd.odometer = maint["odometer"]
                         toAdd.put()
-        
+
         self.redirect("/")
 
 class DeleteRecordsBrian(webapp2.RequestHandler):
     def get(self):
         query = models.BaseExpense.query(models.BaseExpense.owner == users.get_current_user().user_id())
         results = ndb.get_multi(query.fetch(keys_only=True))
-        
+
         for f in results:
             f.key.delete()
-        
+
         query = models.UserVehicle.query(models.UserVehicle.owner == users.get_current_user().user_id())
         results = ndb.get_multi(query.fetch(keys_only=True))
-        
+
         for v in results:
             v.key.delete()
-        
+
         self.redirect("/")
 
 app = webapp2.WSGIApplication([

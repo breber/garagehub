@@ -12,30 +12,30 @@ import webapp2
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         context = utils.get_context()
-        
+
         if users.get_current_user():
             path = os.path.join(os.path.dirname(__file__), 'templates/garage.html')
         else:
             path = os.path.join(os.path.dirname(__file__), 'templates/welcome.html')
-            
+
         self.response.out.write(template.render(path, context))
 
 class RawVehicleHandler(webapp2.RequestHandler):
     def get(self, make, model):
         self.response.headerlist = [('Content-type', 'application/json')]
-        
+
         if not model:
             modelList = datastore.getListOfModels(make)
             self.response.out.write(json.dumps(modelList))
         else:
             yearList = datastore.getListOfYears(make, model)
             self.response.out.write(json.dumps(yearList))
-            
+
 class NotificationHandler(webapp2.RequestHandler):
     def get(self, pageName, notifId):
         context = utils.get_context()
         user = users.get_current_user()
-        
+
         if pageName == "add":
             path = os.path.join(os.path.dirname(__file__), 'templates/addnotification.html')
             userVehicles = datastore.getUserVehicleList(user.user_id())
@@ -63,17 +63,17 @@ class NotificationHandler(webapp2.RequestHandler):
             path = os.path.join(os.path.dirname(__file__), 'templates/notifications.html')
 
         self.response.out.write(template.render(path, context))
-        
+
     def post(self, pageName, notifId):
         user = users.get_current_user()
         category = self.request.get("selectCategory", None)
         vehicleId = int(self.request.get("selectVehicle", 0))
-        
+
         newNotificationObj = datastore.getNotification(user.user_id(), vehicleId, category, None)
         if newNotificationObj:
             newNotificationObj.key.delete()
-            
-        newNotificationObj = models.Notification()    
+
+        newNotificationObj = models.Notification()
         newNotificationObj.owner = user.user_id()
         newNotificationObj.vehicle = vehicleId
         vehicleName = datastore.getUserVehicle(user.user_id(), vehicleId)
@@ -122,10 +122,10 @@ class NotificationHandler(webapp2.RequestHandler):
         else:
             recurringMonths = int(recurringMonths)
         newNotificationObj.recurringMonths = recurringMonths
-        
+
         deltaoneday = datetime.timedelta(days=1)
         newNotificationObj.dateLastSeen = datetime.date.today() - deltaoneday
-        
+
         if newRecurring:
             lastMaintRecord = datastore.getMostRecentMaintRecord(user.user_id(), vehicleId, category)
             if newDateBased:
@@ -153,11 +153,11 @@ class NotificationHandler(webapp2.RequestHandler):
                     newNotificationObj.date = datetime.datetime.strptime(dateString, "%Y-%m-%d")
             if newMileBased:
                 newNotificationObj.mileage = int(self.request.get("milesToNotify", 0))
-                
+
         newNotificationObj.put()
-        
+
         self.redirect("/notifications")
-        
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/notifications/?([^/]+)?/?(.+?)?', NotificationHandler),

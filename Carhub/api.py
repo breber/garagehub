@@ -23,7 +23,7 @@ class ExpenseFuelHandler(webapp2.RequestHandler):
         if day_range:
             results = datastore.getFuelRecords(user.user_id(), vehicleId, long(day_range))
         else:
-            results = datastore.getFuelRecords(user.user_id(), vehicleId)
+            results = datastore.getFuelRecords(user.user_id(), vehicleId, day_range=None)
         
         self.response.out.write(json.dumps(results, cls=utils.ComplexEncoder))
 

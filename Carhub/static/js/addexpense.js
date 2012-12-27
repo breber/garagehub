@@ -3,11 +3,11 @@ var categoriesLength = -1;
 
 $(document).ready(function() {
 	// display input fields based on which record is being added
-	if ($("#editfuelrecordobject").length > 0) {
+	if(window.location.pathname.indexOf("gasmileage") > -1){
 		$('.gasmileage').removeClass( "hidden");
-	} else if ($("#editmaintenanceobject").length > 0) {
+	} else if(window.location.pathname.indexOf("maintenance") > -1){
 		$('.maintenance').removeClass( "hidden");
-	} else if ($("#editexpenseobject").length > 0) {
+	} else if(window.location.pathname.indexOf("expense") > -1){
 		$('.generic').removeClass( "hidden");
 	}
 

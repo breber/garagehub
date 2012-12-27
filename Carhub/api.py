@@ -26,6 +26,19 @@ class ExpenseFuelHandler(webapp2.RequestHandler):
             results = datastore.getFuelRecords(user.user_id(), vehicleId, day_range=None)
         
         self.response.out.write(json.dumps(results, cls=utils.ComplexEncoder))
+        
+class ExpenseMaintenanceHandler(webapp2.RequestHandler):
+    def get(self, vehicleId, day_range):
+        self.response.headerlist = [('Content-type', 'application/json')]
+        
+        user = users.get_current_user()
+        
+        if day_range:
+            results = datastore.getMaintenanceRecords(user.user_id(), vehicleId, long(day_range))
+        else:
+            results = datastore.getMaintenanceRecords(user.user_id(), vehicleId, day_range=None)
+        
+        self.response.out.write(json.dumps(results, cls=utils.ComplexEncoder))
 
 class ExpenseCategoryHandler(webapp2.RequestHandler):
     def get(self, vehicleId, day_range):
@@ -59,5 +72,6 @@ class ExpenseCategoryHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/api/vehicles/?(.+?)?', UserVehicleHandler),
     ('/api/expense/fuel/([^/]+)/?(.+?)?', ExpenseFuelHandler),
+    ('/api/expense/maintenance/([^/]+)/?(.+?)?', ExpenseMaintenanceHandler),
     ('/api/expense/category/([^/]+)/?(.+?)?', ExpenseCategoryHandler)
 ])

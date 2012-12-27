@@ -1,21 +1,20 @@
 function calculateTripPrice() {
-	
+
     var miles = document.getElementById('num-miles-input').value;
     var mpg = document.getElementById('avg-mpg-input').value;
     var fuelCost = document.getElementById('avg-ppg-input').value;
-    
-    
+
+
     var cost = 0;
     var costPerMile = 0;
-    
-    if(miles > 0 && fuelCost > 0){
+
+    if (miles > 0 && fuelCost > 0) {
     	cost = miles / mpg * fuelCost;
     	costPerMile = cost/miles;
     }
-    
+
     document.getElementById('est-cost-trip').value = cost.toFixed(2);
     document.getElementById('est-cost-per-mile').value = costPerMile.toFixed(2);
-    
 }
 
 function hideFromInput() {
@@ -38,7 +37,7 @@ var Demo = {
 		  map: null,
 
 		  showDirections: function(dirResult, dirStatus) {
-			  
+
 		    if (dirStatus != google.maps.DirectionsStatus.OK) {
 		      alert('Directions failed. Please check input and enable HTML 5 location services.');
 		      return;
@@ -74,7 +73,7 @@ var Demo = {
 			    };
 			    Demo.dirService.route(dirRequest, Demo.showDirections);
 		    });
-		    
+
 		  },
 
 		  init: function() {
@@ -84,7 +83,7 @@ var Demo = {
 				        mapTypeId: google.maps.MapTypeId.ROADMAP
 				      };
 		    Demo.map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-  
+
 
     		    // Show directions onload
 		    Demo.getDirections();
@@ -100,7 +99,7 @@ function getTotalDistance(result, index) {
     }
     return meters;
 }
-	    
+
 google.maps.event.addDomListener(window, 'load', Demo.init);
 
 $(document).ready(function() {
@@ -109,11 +108,11 @@ $(document).ready(function() {
     	document.getElementById('num-miles-input').value = Math.round(getTotalDistance(Demo.dirRenderer.getDirections(), Demo.dirRenderer.getRouteIndex())/1609.344);
 		calculateTripPrice();
     });
-    
+
     // Setup click handlers
     $("#useCurrentLocation").click(hideFromInput);
     $("#getdirections").click(Demo.getDirections);
     $("#calculatecost").click(calculateTripPrice);
-    
+
     hideFromInput();
 });

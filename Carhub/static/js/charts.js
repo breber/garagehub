@@ -28,7 +28,7 @@ function fetchData(dateRange) {
     if (!(dateRange instanceof Number)) {
         dateRange = 120;
     }
-    
+
     $.getJSON("/api/expense/fuel/" + vehicleId[1] + "/" + dateRange, function(data) {
         drawFuelChart(data);
     });
@@ -60,7 +60,7 @@ function drawFuelChart(content) {
             if (item.mpg !== undefined) {
                 tmp.push(item.mpg);
             } else {
-                tmp.push((item.odometerEnd - item.odometerStart) / item.gallons);                
+                tmp.push((item.odometerEnd - item.odometerStart) / item.gallons);
             }
             tmp.push(item.costPerGallon);
 

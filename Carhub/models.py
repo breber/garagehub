@@ -26,13 +26,13 @@ class ExpenseCategory(ndb.Model):
     owner = ndb.StringProperty()
     category = ndb.StringProperty()
     subcategory = ndb.StringProperty()
-    
+
     def name(self):
         if self.subcategory:
             return self.subcategory
 
         return self.category
-    
+
 class BaseExpense(polymodel.PolyModel):
     owner = ndb.StringProperty()
     vehicle = ndb.IntegerProperty()
@@ -51,13 +51,13 @@ class BaseExpense(polymodel.PolyModel):
 
     def amount_formatted(self):
         return utils.format_float(self.amount)
-    
+
     def name(self):
         return "%s %s %s %s" % (self.date, self.location, self.category, self.amount)
 
 class MaintenanceRecord(BaseExpense):
     odometer = ndb.IntegerProperty()
-    
+
     def odometer_formatted(self):
         if utils.format_int(self.odometer) == "-1":
             return ""

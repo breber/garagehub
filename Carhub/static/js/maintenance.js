@@ -1,5 +1,3 @@
-var maintDatatables;
-
 $(document).ready(function() {
 	$('.maint-datatable').dataTable({
 		"sDom" : "t",
@@ -11,7 +9,7 @@ $(document).ready(function() {
 		"bAutoWidth" : false,
 		"aaSorting" : [ [ 0, 'desc' ] ]
 	});
-	
+
 	// Setup the handlers for the edit/delete buttons
 	setupHandlers();
 
@@ -22,7 +20,7 @@ $(document).ready(function() {
 				$(this.nTr).removeClass('active');
 			});
 		});
-		
+
 		$(event.target.parentNode).addClass('active');
 	});
 

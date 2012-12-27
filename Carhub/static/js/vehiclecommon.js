@@ -3,15 +3,14 @@ function getVehicleId() {
 }
 
 function newAlert(message) {
-	var alertDiv = 
+	var alertDiv =
 		"<div class='alert'>" +
 			"<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
 			"<strong>Warning!</strong> " + message +
 		"</div>";
-	
+
 	$("#alert").html(alertDiv);
 }
-
 
 // FOR maintenance, gasmileage and expenses
 
@@ -19,7 +18,7 @@ function setupHandlers() {
 	$("#record-edit").click(function() {
 		editRecord();
 	});
-	
+
 	$("#record-delete").click(function() {
 		deleteRecord();
 	});

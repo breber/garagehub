@@ -140,22 +140,19 @@ class VehicleExpenseEditHandler(blobstore_handlers.BlobstoreUploadHandler):
         if not vehicleId:
             self.redirect("/")
         else:
-            pageType = ExpenseType.parsePageName(pageName)
             context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
-            if pageType == ExpenseType.MAINTENANCE:
-                context["categories"] = datastore.getMaintenanceCategoryModels(user.user_id())
-            else:
-                context["categories"] = datastore.getExpenseCategoryModels(user.user_id())
             context["upload_url"] = blobstore.create_upload_url(self.request.url)
             baseExpense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
 
             # Perform redirection here if the expense is a specific type
             if baseExpense._class_name() == "MaintenanceRecord":
                 context["editmaintenanceobj"] = baseExpense
+                context["categories"] = datastore.getMaintenanceCategoryModels(user.user_id())
             elif baseExpense._class_name() == "FuelRecord":
                 context["editfuelrecordobj"] = baseExpense
             else:
                 context["editexpenseobj"] = baseExpense
+                context["categories"] = datastore.getExpenseCategoryModels(user.user_id())
 
             category = datastore.getCategoryById(user.user_id(), baseExpense.categoryid)
             if not category:
@@ -171,7 +168,7 @@ class VehicleExpenseEditHandler(blobstore_handlers.BlobstoreUploadHandler):
     def post(self, vehicleId, pageName, expenseId):
         user = users.get_current_user()
         if not expenseId:
-            self.redirect("/vehicle/%s/%s" % (vehicleId, expenseId))
+            self.redirect("/vehicle/%s/%s" % (vehicleId, pageName))
             return
 
         expense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
@@ -187,13 +184,8 @@ class VehicleExpenseEditHandler(blobstore_handlers.BlobstoreUploadHandler):
         if obj:
             obj.put()
 
-        # Redirect
-        if pageType == ExpenseType.MAINTENANCE:
-            self.redirect("/vehicle/%s/maintenance" % vehicleId)
-        elif pageType == ExpenseType.FUEL:
-            self.redirect("/vehicle/%s/gasmileage" % vehicleId)
-        else:
-            self.redirect("/vehicle/%s/expenses" % vehicleId)
+        # Redirect to the page that the user edited from
+        self.redirect("/vehicle/%s/%s" % (vehicleId, pageName))
 
 class VehicleExpenseDeleteHandler(webapp2.RequestHandler):
     def get(self, vehicleId, pageName, expenseId):

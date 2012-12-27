@@ -2,13 +2,15 @@
 var categoriesLength = -1;
 
 $(document).ready(function() {
-	// display input fields based on which record is being added
-	if(window.location.pathname.indexOf("gasmileage") > -1){
-		$('.gasmileage').removeClass( "hidden");
-	} else if(window.location.pathname.indexOf("maintenance") > -1){
-		$('.maintenance').removeClass( "hidden");
-	} else if(window.location.pathname.indexOf("expense") > -1){
-		$('.generic').removeClass( "hidden");
+	// For adding records: display input fields based on which record is being added
+	if (window.location.pathname.indexOf("add") > -1) {
+		if(window.location.pathname.indexOf("gasmileage") > -1){
+			$('.gasmileage').removeClass( "hidden");
+		} else if(window.location.pathname.indexOf("maintenance") > -1){
+			$('.maintenance').removeClass( "hidden");
+		} else if(window.location.pathname.indexOf("expense") > -1){
+			$('.generic').removeClass( "hidden");
+		}
 	}
 
 	// validation engine set up
@@ -48,31 +50,34 @@ $(document).ready(function() {
 		// TODO: check file type
 	});
 
-	// try to load expense record to edit.
+	// For editing: display correct fields and fill in values from record to be edited
 	if (window.location.pathname.indexOf("edit") > -1) {
 		editExpenseRecord();
 		if ($("#editfuelrecordobject").length > 0) {
+			$('.gasmileage').removeClass( "hidden");
 			editFuelRecord();
 		} else if ($("#editmaintenanceobject").length > 0) {
+			$('.maintenance').removeClass( "hidden");
 			editMaintenanceRecord();
 		} else if ($("#editexpenseobject").length > 0) {
+			$('.generic').removeClass( "hidden");
 			editExpenseRecord();
 		}
 	}
 });
 
 function newCategoryKeyPress(e) {
-    // look for window.event in case event isn't passed in
-    if (typeof e == 'undefined' && window.event) { e = window.event; }
-    if (e.keyCode == 13)
-    {
-        document.getElementById('categoryButton').click();
-    }
+	// look for window.event in case event isn't passed in
+	if (typeof e == 'undefined' && window.event) { e = window.event; }
+	if (e.keyCode == 13)
+	{
+		document.getElementById('categoryButton').click();
+	}
 }
 
 // Populate baseExpense fields based on record input
 function editExpenseRecord() {
-	//change header
+	// change header
 	$('.page-header').text("Edit Expense");
 
 	$('#datePurchased').val( $('#editdatepurchased').text());
@@ -82,9 +87,9 @@ function editExpenseRecord() {
 	$('#description').val( $('#editdescription').text());
 }
 
-//Populate Maintenance fields based on record input
+// Populate Maintenance fields based on record input
 function editMaintenanceRecord() {
-	//change header
+	// change header
 	$('.page-header').text("Edit Maintenance Record");
 
 	$('#datePurchased').val( $('#editdatepurchased').text());
@@ -95,9 +100,9 @@ function editMaintenanceRecord() {
 	$('#odometerEnd').val( $('#editodometer').text());
 }
 
-//Populate Fuel Record fields based on record input
+// Populate Fuel Record fields based on record input
 function editFuelRecord() {
-	//change header
+	// change header
 	$('.page-header').text("Edit Fuel Record");
 
 	$('#datePurchased').val( $('#editdatepurchased').text());

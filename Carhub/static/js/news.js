@@ -1,6 +1,6 @@
-// Reference: https://developers.google.com/news-search/v1/devguide#hiworld 
+// Reference: https://developers.google.com/news-search/v1/devguide#hiworld
 
-// This code generates a "Raw Searcher" to handle search queries. The Raw 
+// This code generates a "Raw Searcher" to handle search queries. The Raw
 // Searcher requires you to handle and draw the search results manually.
 google.load('search', '1');
 
@@ -12,28 +12,28 @@ function searchComplete(search) {
 		$.each(search.results, function(index, element) {
 			var articleDiv = document.createElement('div');
 			articleDiv.setAttribute("class", "news-articlediv news-roundedcorners linkable");
-			
+
 			// open article in new window when div is clicked
 			articleDiv.setAttribute("onclick", "window.open('" + element.unescapedUrl + "')");
-			
+
 			// link to news article
 			var aWrapper = document.createElement('div');
 			var a = document.createElement('a');
 			a.innerHTML = element.unescapedUrl;
-			aWrapper.appendChild(a);			
-			
+			aWrapper.appendChild(a);
+
 			// link title
 			var linkTitle = document.createElement('h4');
 			linkTitle.innerHTML = element.title;
 			articleDiv.appendChild(linkTitle);
-			
+
 			var publishWrapper = document.createElement('div');
-			
+
 			// publisher information
 			var publishInfo = document.createElement('span');
 			publishInfo.innerHTML = "<b>" + element.publisher + "</b>";
 			publishWrapper.appendChild(publishInfo);
-			
+
 			// published date
 			publishInfo = document.createElement('span');
 			var pubDate = new Date(element.publishedDate);
@@ -43,7 +43,7 @@ function searchComplete(search) {
 
 			articleDiv.appendChild(publishWrapper);
 			articleDiv.appendChild(aWrapper);
-			
+
 			document.getElementById('searchresults').appendChild(articleDiv);
 		});
 	} else {
@@ -62,13 +62,13 @@ function onLoad() {
 	var carMake = $('#carmake').val();
 	var carModel = $('#carmodel').val();
 	var carYear = $('#caryear').val();
-	// Set searchComplete as the callback function when a search is 
+	// Set searchComplete as the callback function when a search is
 	// complete. The newsSearch object will have results in it.
 	newsSearch.setSearchCompleteCallback(this, searchComplete, [newsSearch]);
 	newsSearch.setResultSetSize(8);
 	// Specify search queries
 	newsSearch.execute('"' + carYear + ' ' + carMake + ' ' + carModel + '"');
-	
+
 	// Include the required Google branding
 	google.search.Search.getBranding(document.getElementById('googleBranding'));
 }

@@ -12,7 +12,7 @@ $(document).ready(function() {
 
 	// Setup the handlers for the edit/delete buttons
 	setupHandlers();
-	
+
 	// make rows selectable
 	$('#gasmileagetable tbody').click(function(event) {
 		$(dTable.fnSettings().aoData).each(function() {

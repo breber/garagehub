@@ -9,7 +9,7 @@ $(document).ready(function() {
 		"bAutoWidth" : false,
 		"aaSorting" : [ [ 0, 'desc' ] ]
 	});
-	
+
 	// Setup the handlers for the edit/delete buttons
 	setupHandlers();
 

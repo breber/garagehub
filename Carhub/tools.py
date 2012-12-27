@@ -7,16 +7,15 @@ import webapp2
 class ToolsHandler(webapp2.RequestHandler):
     def get(self, pageName):
         context = utils.get_context()
-        
+
         if pageName == "gasprices":
             path = os.path.join(os.path.dirname(__file__), 'templates/gasprices.html')
         elif pageName == "tripplanner":
             path = os.path.join(os.path.dirname(__file__), 'templates/tripplanner.html')
         else:
             self.redirect("/")
-        
-        self.response.out.write(template.render(path, context))
 
+        self.response.out.write(template.render(path, context))
 
 app = webapp2.WSGIApplication([
     ('/tools/([^/]+)', ToolsHandler)

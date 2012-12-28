@@ -403,12 +403,16 @@ class VehicleHandler(webapp2.RequestHandler):
             make = self.request.get("make", None)
             model = self.request.get("model", None)
             year = self.request.get("year", None)
+            plates = self.request.get("licensePlates", None)
+            color = self.request.get("color", None)
 
             if make and model and year:
                 vehicle = models.UserVehicle()
                 vehicle.make = make
                 vehicle.model = model
                 vehicle.year = year
+                vehicle.color = color
+                vehicle.plates = plates
                 vehicle.owner = user.user_id()
                 vehicle.lastmodified = datetime.datetime.now()
 

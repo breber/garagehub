@@ -14,6 +14,10 @@ $().ready(function() {
                         $("#makes").html(optionString.join(""));
                         $("#models").html("<option>Select a model</option>");
                         $("#years").html("<option>Select a year</option>");
+                        
+                        $("#makes").removeAttr("disabled");
+                        $("#models").attr("disabled", "disabled");
+                        $("#years").attr("disabled", "disabled");
                     }
             );
         }
@@ -35,11 +39,16 @@ $().ready(function() {
 
                     $("#models").html(optionString.join(""));
                     $("#years").html("<option>Select a year</option>");
+                    
+                    $("#models").removeAttr("disabled");
+                    $("#years").attr("disabled", "disabled");
                 }
             );
         } else {
             $("#models").html("<option>Select a model</option>");
             $("#years").html("<option>Select a year</option>");
+            $("#models").attr("disabled", "disabled");
+            $("#years").attr("disabled", "disabled");
         }
     });
 
@@ -56,10 +65,12 @@ $().ready(function() {
                     });
 
                     $("#years").html(optionString.join(""));
+                    $("#years").removeAttr("disabled");
                 }
             );
         } else {
             $("#years").html("<option>Select a year</option>");
+            $("#years").attr("disabled", "disabled");
         }
     });
 });

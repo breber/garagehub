@@ -1,23 +1,23 @@
 $().ready(function() {
-	$("#addVehicle").on("show", function () {
-		if ($("#makes > option").length <= 1) {
-			$.get('/cars/raw',
-	                function(data) {
-	                    var optionString = [];
+    $("#addVehicle").on("show", function () {
+        if ($("#makes > option").length <= 1) {
+            $.get('/cars/raw',
+                    function(data) {
+                        var optionString = [];
 
-	                    optionString.push("<option>Select a make</option>");
+                        optionString.push("<option>Select a make</option>");
 
-	                    $.each(data, function(i) {
-	                        optionString.push("<option>" + data[i] + "</option>");
-	                    });
+                        $.each(data, function(i) {
+                            optionString.push("<option>" + data[i] + "</option>");
+                        });
 
-	                    $("#makes").html(optionString.join(""));
-	                    $("#models").html("<option>Select a model</option>");
-	                    $("#years").html("<option>Select a year</option>");
-	                }
-	            );
-		}
-	});
+                        $("#makes").html(optionString.join(""));
+                        $("#models").html("<option>Select a model</option>");
+                        $("#years").html("<option>Select a year</option>");
+                    }
+            );
+        }
+    });
 	
     // When the user chooses a new make, get the models
     // for the updated make

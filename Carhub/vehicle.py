@@ -377,12 +377,6 @@ class VehicleHandler(webapp2.RequestHandler):
         if not vehicleId:
             path = os.path.join(os.path.dirname(__file__), 'templates/garage.html')
 
-        # If the first path parameter is "add", show the add vehicle page
-        elif vehicleId == "add":
-            context["vehicles"] = datastore.getListOfMakes()
-
-            path = os.path.join(os.path.dirname(__file__), 'templates/addvehicle.html')
-
         # If we have a first path parameter, and it isn't add, use that as
         # the vehicle ID and show that vehicle's page
         else:
@@ -409,12 +403,16 @@ class VehicleHandler(webapp2.RequestHandler):
             make = self.request.get("make", None)
             model = self.request.get("model", None)
             year = self.request.get("year", None)
+            plates = self.request.get("licensePlates", None)
+            color = self.request.get("color", None)
 
             if make and model and year:
                 vehicle = models.UserVehicle()
                 vehicle.make = make
                 vehicle.model = model
                 vehicle.year = year
+                vehicle.color = color
+                vehicle.plates = plates
                 vehicle.owner = user.user_id()
                 vehicle.lastmodified = datetime.datetime.now()
 

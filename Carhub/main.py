@@ -24,7 +24,10 @@ class RawVehicleHandler(webapp2.RequestHandler):
     def get(self, make, model):
         self.response.headerlist = [('Content-type', 'application/json')]
 
-        if not model:
+        if not make:
+            modelList = datastore.getListOfMakes()
+            self.response.out.write(json.dumps(modelList))
+        elif not model:
             modelList = datastore.getListOfModels(make)
             self.response.out.write(json.dumps(modelList))
         else:
@@ -161,5 +164,5 @@ class NotificationHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/notifications/?([^/]+)?/?(.+?)?', NotificationHandler),
-    ('/cars/raw/([^/]+)?/?(.+?)?', RawVehicleHandler)
+    ('/cars/raw/?([^/]+)?/?(.+?)?', RawVehicleHandler)
 ], debug=True)

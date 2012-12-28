@@ -60,7 +60,7 @@ html,body {
 }
 
 .row-spacing {
-	margin-top: 1em;	
+	margin-top: 1em;
 }
 
 .center {
@@ -80,7 +80,6 @@ html,body {
 
 .linkable {
 	cursor: pointer;
-	*cursor: hand;
 }
 
 /* For car.html */
@@ -90,7 +89,7 @@ html,body {
 
 /* For tripplanner.html */
 #dir-container {
-	padding: 2px 0px 2px 0px;
+	padding: 2px 0px;
 	max-height: 600px;
 	overflow: auto;
 }
@@ -108,10 +107,7 @@ html,body {
 
 /* For news.html */
 .news-roundedcorners {
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	-khtml-border-radius: 10px;
-	border-radius: 10px;
+	border-radius: 4px;
 }
 
 div.news-articlediv {
@@ -164,11 +160,6 @@ div.news-articlediv:hover {
 	margin: 5px 0px;
 }
 
-/* For notifications.html */
-#notif-deleteButton {
-	margin-left: 10px;
-}
-
 /* For settings.html */
 .settings-btn {
 	margin: 5px 0px;
@@ -179,7 +170,7 @@ div.news-articlediv:hover {
 	height: 300px;
 }
 
-.adp-text{
+.adp-text {
 	width: 100%;
 	padding-left: 20px;
 	padding-right: 5px;

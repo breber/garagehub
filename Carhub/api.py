@@ -2,6 +2,7 @@
 from google.appengine.api import users
 import datastore
 import json
+import models
 import utils
 import webapp2
 
@@ -10,7 +11,11 @@ class UserVehicleHandler(webapp2.RequestHandler):
         self.response.headerlist = [('Content-type', 'application/json')]
 
         user = users.get_current_user()
-        results = datastore.getUserVehicleList(user.user_id())
+        
+        if parameter1 == "active":
+            results = models.UserVehicle.query(models.UserVehicle.owner == user.user_id()).fetch(keys_only=True)
+        else:
+            results = datastore.getUserVehicleList(user.user_id())
 
         self.response.out.write(json.dumps(results, cls=utils.ComplexEncoder))
 

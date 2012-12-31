@@ -75,5 +75,7 @@ class ComplexEncoder(json.JSONEncoder):
             toRet = obj.to_dict()
             toRet["id"] = obj.key.id()
             return toRet
+        elif isinstance(obj, ndb.Key):
+            return obj.id()
 
         return json.JSONEncoder.default(self, obj)

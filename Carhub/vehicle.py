@@ -100,6 +100,13 @@ class VehicleExpenseAddHandler(blobstore_handlers.BlobstoreUploadHandler):
         else:
             pageType = ExpenseType.parsePageName(pageName)
             context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
+            
+            if pageType == ExpenseType.FUEL:
+                # Get latest fuel record
+                latestFuel = datastore.getNFuelRecords(user.user_id(), vehicleId, 1, False)
+                if latestFuel and len(latestFuel) > 0:
+                    context["lastfuelrecord"] = latestFuel[0]
+                
             if pageType == ExpenseType.MAINTENANCE:
                 context["categories"] = datastore.getMaintenanceCategoryModels(user.user_id())
             else:
@@ -308,11 +315,6 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         else:
             context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
             context['userfuelrecords'] = datastore.getFuelRecords(user.user_id(), vehicleId, None, False)
-
-            # Get latest fuel record
-            latestFuel = datastore.getNFuelRecords(user.user_id(), vehicleId, 1, False)
-            if latestFuel and len(latestFuel) > 0:
-                context["lastfuelrecord"] = latestFuel[0]
 
             # add Average MPG as a comma-delimited string
             context['avgmpg'] = datastore.getAvgGasMileage(user.user_id(), vehicleId)

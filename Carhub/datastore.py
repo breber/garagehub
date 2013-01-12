@@ -8,6 +8,7 @@ from google.appengine.ext import blobstore, ndb
 import datetime
 import models
 import utils
+import logging
 
 def getUserVehicle(userId, vehicleId):
     """Gets the UserVehicle instance for the given ID
@@ -52,7 +53,7 @@ def getAllExpenseRecords(userId, vehicleId, day_range=30, ascending=True):
 
     return getBaseExpenseRecords(userId, vehicleId, day_range, ascending)
 
-def getBaseExpenseRecords(userId, vehicleId, day_range=30, ascending=True):
+def getBaseExpenseRecords(userId, vehicleId, day_range=30, ascending=True, polymorphic=True):
     """Gets the BaseExpense for the given vehicle ID
 
     Args:
@@ -77,8 +78,20 @@ def getBaseExpenseRecords(userId, vehicleId, day_range=30, ascending=True):
         query = query.order(models.BaseExpense.date)
     else:
         query = query.order(-models.BaseExpense.date)
-
-    return ndb.get_multi(query.fetch(keys_only=True))
+    
+    if polymorphic:
+        return ndb.get_multi(query.fetch(keys_only=True))
+    else:
+        # TODO: ideally we can get only the BaseExpenses using a query
+        records = ndb.get_multi(query.fetch(keys_only=True))
+        selectrecords = []
+        
+        for r in records:
+            logging.warn("class: %s" % r.__class__)
+            if r.__class__ == models.BaseExpense:
+                selectrecords.append(r)
+        
+        return selectrecords
 
 def getBaseExpenseRecord(userId, vehicleId, expenseId):
     """Gets the BaseExpense for the given expenseId

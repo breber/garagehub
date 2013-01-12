@@ -19,6 +19,19 @@ class UserVehicleHandler(webapp2.RequestHandler):
 
         self.response.out.write(json.dumps(results, cls=utils.ComplexEncoder))
 
+class ExpenseBaseExpenseHandler(webapp2.RequestHandler):
+    def get(self, vehicleId, day_range):
+        self.response.headerlist = [('Content-type', 'application/json')]
+
+        user = users.get_current_user()
+
+        if day_range:
+            results = datastore.getBaseExpenseRecords(user.user_id(), vehicleId, long(day_range), polymorphic=False)
+        else:
+            results = datastore.getBaseExpenseRecords(user.user_id(), vehicleId, day_range=None, polymorphic=False)
+            
+        self.response.out.write(json.dumps(results, cls=utils.ComplexEncoder))
+
 class ExpenseFuelHandler(webapp2.RequestHandler):
     def get(self, vehicleId, day_range):
         self.response.headerlist = [('Content-type', 'application/json')]
@@ -29,6 +42,7 @@ class ExpenseFuelHandler(webapp2.RequestHandler):
             results = datastore.getFuelRecords(user.user_id(), vehicleId, long(day_range))
         else:
             results = datastore.getFuelRecords(user.user_id(), vehicleId, day_range=None)
+            
         self.response.out.write(json.dumps(results, cls=utils.ComplexEncoder))
         
 class ExpenseMaintenanceHandler(webapp2.RequestHandler):
@@ -75,6 +89,7 @@ class ExpenseCategoryHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/api/vehicles/?(.+?)?', UserVehicleHandler),
+    ('/api/expense/base/([^/]+)/?(.+?)?', ExpenseBaseExpenseHandler),
     ('/api/expense/fuel/([^/]+)/?(.+?)?', ExpenseFuelHandler),
     ('/api/expense/maintenance/([^/]+)/?(.+?)?', ExpenseMaintenanceHandler),
     ('/api/expense/category/([^/]+)/?(.+?)?', ExpenseCategoryHandler)

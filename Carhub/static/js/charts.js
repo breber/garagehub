@@ -53,7 +53,7 @@ function drawFuelChart(content) {
     data.addColumn('number', '$/Gal');
 
     var arr = [];
-    $.each(content, function(index, item) {
+    $.each(content.records, function(index, item) {
         if (item.odometerStart !== -1) {
             var tmp = [];
             tmp.push(item.date.str);

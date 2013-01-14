@@ -87,11 +87,35 @@ def getBaseExpenseRecords(userId, vehicleId, day_range=30, ascending=True, polym
         selectrecords = []
         
         for r in records:
-            logging.warn("class: %s" % r.__class__)
             if r.__class__ == models.BaseExpense:
                 selectrecords.append(r)
         
         return selectrecords
+
+def getBaseExpenseRecordsIds(userId, vehicleId):
+    """Gets the BaseExpense for the given vehicle ID
+
+    Args:
+        vehicleId - The vehicle ID
+        day_range - The time range
+
+    Returns
+        The list of BaseExpense
+    """
+
+    query = models.BaseExpense().query(models.BaseExpense.owner == userId,
+                                       models.BaseExpense.vehicle == long(vehicleId))
+
+    
+    # TODO: ideally we can get only the BaseExpenses using a query
+    records = ndb.get_multi(query.fetch(keys_only=True))
+    selectrecords = []
+    
+    for r in records:
+        if r.__class__ == models.BaseExpense:
+            selectrecords.append(r.key.id())
+    
+    return selectrecords
 
 def getBaseExpenseRecord(userId, vehicleId, expenseId):
     """Gets the BaseExpense for the given expenseId

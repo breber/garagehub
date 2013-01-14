@@ -29,12 +29,11 @@ class ExpenseBaseExpenseHandler(webapp2.RequestHandler):
         else:
             results = datastore.getBaseExpenseRecords(user.user_id(), vehicleId, day_range=None, polymorphic=False)
             
-        # TODO: polymorphic...
-#        toRet = {}
-#        toRet["activeIds"] = models.B.query(models.UserVehicle.owner == user.user_id()).fetch(keys_only=True)
-#        toRet["vehicles"] = datastore.getUserVehicleList(user.user_id())
+        toRet = {}
+        toRet["activeIds"] = datastore.getBaseExpenseRecordsIds(user.user_id(), vehicleId)
+        toRet["records"] = results
             
-        self.response.out.write(json.dumps(results, cls=utils.ComplexEncoder))
+        self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
 
 class ExpenseFuelHandler(webapp2.RequestHandler):
     def get(self, vehicleId, day_range):

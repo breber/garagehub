@@ -15,7 +15,7 @@ $(document).ready(function() {
 	getGasPrices();
 });
 
-$("#gaspricetable tr td").live("click", function() {
+$(document).on("click", "#gaspricetable tr td", function() {
 	var lat = $(this).parent().find('td').eq(5).text();
 	var lon = $(this).parent().find('td').eq(6).text();
 

@@ -19,32 +19,24 @@ class UserVehicleHandler(webapp2.RequestHandler):
         self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
 
 class ExpenseBaseExpenseHandler(webapp2.RequestHandler):
-    def get(self, vehicleId, day_range):
+    def get(self, vehicle_id, last_modified=0):
         self.response.headerlist = [('Content-type', 'application/json')]
 
         user = users.get_current_user()
-
-        if day_range:
-            results = datastore.getBaseExpenseRecords(user.user_id(), vehicleId, long(day_range), polymorphic=False)
-        else:
-            results = datastore.getBaseExpenseRecords(user.user_id(), vehicleId, day_range=None, polymorphic=False)
+        results = datastore.getBaseExpenseRecords(user.user_id(), vehicle_id, long(last_modified), polymorphic=False)
             
         toRet = {}
-        toRet["activeIds"] = datastore.getBaseExpenseRecordsIds(user.user_id(), vehicleId)
+        toRet["activeIds"] = datastore.getBaseExpenseRecordsIds(user.user_id(), vehicle_id)
         toRet["records"] = results
             
         self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
 
 class ExpenseFuelHandler(webapp2.RequestHandler):
-    def get(self, vehicleId, day_range):
+    def get(self, vehicle_id, last_modified=0):
         self.response.headerlist = [('Content-type', 'application/json')]
 
         user = users.get_current_user()
-
-        if day_range:
-            results = datastore.getFuelRecords(user.user_id(), vehicleId, long(day_range))
-        else:
-            results = datastore.getFuelRecords(user.user_id(), vehicleId, day_range=None)
+        results = datastore.getFuelRecords(user.user_id(), vehicle_id, long(last_modified))
 
         toRet = {}
         toRet["activeIds"] = models.FuelRecord.query(models.FuelRecord.owner == user.user_id()).fetch(keys_only=True)
@@ -53,15 +45,11 @@ class ExpenseFuelHandler(webapp2.RequestHandler):
         self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
         
 class ExpenseMaintenanceHandler(webapp2.RequestHandler):
-    def get(self, vehicleId, day_range):
+    def get(self, vehicle_id, last_modified=0):
         self.response.headerlist = [('Content-type', 'application/json')]
         
         user = users.get_current_user()
-        
-        if day_range:
-            results = datastore.getMaintenanceRecords(user.user_id(), vehicleId, long(day_range))
-        else:
-            results = datastore.getMaintenanceRecords(user.user_id(), vehicleId, day_range=None)
+        results = datastore.getMaintenanceRecords(user.user_id(), vehicle_id, long(last_modified))
 
         toRet = {}
         toRet["activeIds"] = models.MaintenanceRecord.query(models.MaintenanceRecord.owner == user.user_id()).fetch(keys_only=True)
@@ -70,16 +58,12 @@ class ExpenseMaintenanceHandler(webapp2.RequestHandler):
         self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
 
 class ExpenseCategoryHandler(webapp2.RequestHandler):
-    def get(self, vehicleId, day_range):
+    def get(self, vehicle_id, last_modified=0):
         self.response.headerlist = [('Content-type', 'application/json')]
 
         user = users.get_current_user()
-
-        if day_range:
-            baseexpenses = datastore.getBaseExpenseRecords(user.user_id(), vehicleId, long(day_range))
-        else:
-            baseexpenses = datastore.getBaseExpenseRecords(user.user_id(), vehicleId)
-
+        baseexpenses = datastore.getBaseExpenseRecords(user.user_id(), vehicle_id, long(last_modified))
+        
         toRet = {}
 
         for record in baseexpenses:

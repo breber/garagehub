@@ -35,11 +35,11 @@ class RawVehicleHandler(webapp2.RequestHandler):
             self.response.out.write(json.dumps(yearList))
 
 class NotificationHandler(webapp2.RequestHandler):
-    def get(self, pageName, notifId):
+    def get(self, page_name, notifId):
         context = utils.get_context()
         user = users.get_current_user()
 
-        if pageName == "add":
+        if page_name == "add":
             path = os.path.join(os.path.dirname(__file__), 'templates/addnotification.html')
             userVehicles = datastore.getUserVehicleList(user.user_id())
             if len(userVehicles) > 0:
@@ -48,7 +48,7 @@ class NotificationHandler(webapp2.RequestHandler):
             if len(userCategories) > 0:
                 context["categories"] = userCategories
         else:
-            if pageName == "clear":
+            if page_name == "clear":
                 dateNotifications = datastore.getActiveDateNotifications(user.user_id())
                 for dn in dateNotifications:
                     dn.dateLastSeen = datetime.date.today()
@@ -57,7 +57,7 @@ class NotificationHandler(webapp2.RequestHandler):
                 for mn in mileNotifications:
                     mn.dateLastSeen = datetime.date.today()
                     mn.put()
-            elif pageName == "delete":
+            elif page_name == "delete":
                 notifToDelete = models.Notification.get_by_id(long(notifId))
                 notifToDelete.key.delete()
             notifications = datastore.getNotifications(user.user_id())
@@ -67,19 +67,19 @@ class NotificationHandler(webapp2.RequestHandler):
 
         self.response.out.write(template.render(path, context))
 
-    def post(self, pageName, notifId):
+    def post(self, page_name, notifId):
         user = users.get_current_user()
         category = self.request.get("selectCategory", None)
-        vehicleId = int(self.request.get("selectVehicle", 0))
+        vehicle_id = int(self.request.get("selectVehicle", 0))
 
-        newNotificationObj = datastore.getNotification(user.user_id(), vehicleId, category, None)
+        newNotificationObj = datastore.getNotification(user.user_id(), vehicle_id, category, None)
         if newNotificationObj:
             newNotificationObj.key.delete()
 
         newNotificationObj = models.Notification()
         newNotificationObj.owner = user.user_id()
-        newNotificationObj.vehicle = vehicleId
-        vehicleName = datastore.getUserVehicle(user.user_id(), vehicleId)
+        newNotificationObj.vehicle = vehicle_id
+        vehicleName = datastore.getUserVehicle(user.user_id(), vehicle_id)
         newNotificationObj.vehicleName = vehicleName.name()
         newNotificationObj.category = category
         recurring = self.request.get("frequencyRadio", False)
@@ -130,7 +130,7 @@ class NotificationHandler(webapp2.RequestHandler):
         newNotificationObj.dateLastSeen = datetime.date.today() - deltaoneday
 
         if newRecurring:
-            lastMaintRecord = datastore.getMostRecentMaintRecord(user.user_id(), vehicleId, category)
+            lastMaintRecord = datastore.getMostRecentMaintRecord(user.user_id(), vehicle_id, category)
             if newDateBased:
                 if lastMaintRecord:
                     lastRecordedDate = lastMaintRecord.date

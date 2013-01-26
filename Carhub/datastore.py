@@ -10,54 +10,54 @@ import models
 import utils
 import logging
 
-def getUserVehicle(userId, vehicleId):
+def getUserVehicle(user_id, vehicle_id):
     """Gets the UserVehicle instance for the given ID
 
     Args:
-        vehicleId - The vehicle ID
+        vehicle_id - The vehicle ID
 
     Returns
         The UserVehicle with the given ID, None otherwise
     """
 
-    car = models.UserVehicle.get_by_id(long(vehicleId))
+    car = models.UserVehicle.get_by_id(long(vehicle_id))
 
-    if car and car.owner == userId:
+    if car and car.owner == user_id:
         return car
     else:
         return None
 
-def getUserVehicleList(userId):
+def getUserVehicleList(user_id):
     """Gets a list of vehicles for the given user
 
     Args:
-        userId - The user ID
+        user_id - The user ID
 
     Returns
         The list of user's vehicles
     """
 
-    userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == userId)
+    userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == user_id)
     return ndb.get_multi(userVehiclesQuery.fetch(keys_only=True))
 
-def getAllExpenseRecords(userId, vehicleId, day_range=30, ascending=True):
+def getAllExpenseRecords(user_id, vehicle_id, day_range=30, ascending=True):
     """Gets all the Expenses (base, maintenance, and fuel) for the given vehicle ID
 
     Args:
-        vehicleId - The vehicle ID
+        vehicle_id - The vehicle ID
         day_range - The time range
 
     Returns
         The list of Expenses
     """
 
-    return getBaseExpenseRecords(userId, vehicleId, day_range, ascending)
+    return getBaseExpenseRecords(user_id, vehicle_id, day_range, ascending)
 
-def getBaseExpenseRecords(userId, vehicleId, day_range=30, ascending=True, polymorphic=True):
+def getBaseExpenseRecords(user_id, vehicle_id, day_range=30, ascending=True, polymorphic=True):
     """Gets the BaseExpense for the given vehicle ID
 
     Args:
-        vehicleId - The vehicle ID
+        vehicle_id - The vehicle ID
         day_range - The time range
 
     Returns
@@ -67,12 +67,12 @@ def getBaseExpenseRecords(userId, vehicleId, day_range=30, ascending=True, polym
     if day_range:
         delta = datetime.timedelta(days=day_range)
         date = datetime.datetime.now() - delta
-        query = models.BaseExpense().query(models.BaseExpense.owner == userId,
-                                           models.BaseExpense.vehicle == long(vehicleId),
+        query = models.BaseExpense().query(models.BaseExpense.owner == user_id,
+                                           models.BaseExpense.vehicle == long(vehicle_id),
                                            models.BaseExpense.date >= date)
     else:
-        query = models.BaseExpense().query(models.BaseExpense.owner == userId,
-                                           models.BaseExpense.vehicle == long(vehicleId))
+        query = models.BaseExpense().query(models.BaseExpense.owner == user_id,
+                                           models.BaseExpense.vehicle == long(vehicle_id))
 
     if ascending:
         query = query.order(models.BaseExpense.date)
@@ -92,19 +92,19 @@ def getBaseExpenseRecords(userId, vehicleId, day_range=30, ascending=True, polym
         
         return selectrecords
 
-def getBaseExpenseRecordsIds(userId, vehicleId):
+def getBaseExpenseRecordsIds(user_id, vehicle_id):
     """Gets the BaseExpense for the given vehicle ID
 
     Args:
-        vehicleId - The vehicle ID
+        vehicle_id - The vehicle ID
         day_range - The time range
 
     Returns
         The list of BaseExpense
     """
 
-    query = models.BaseExpense().query(models.BaseExpense.owner == userId,
-                                       models.BaseExpense.vehicle == long(vehicleId))
+    query = models.BaseExpense().query(models.BaseExpense.owner == user_id,
+                                       models.BaseExpense.vehicle == long(vehicle_id))
 
     
     # TODO: ideally we can get only the BaseExpenses using a query
@@ -117,30 +117,30 @@ def getBaseExpenseRecordsIds(userId, vehicleId):
     
     return selectrecords
 
-def getBaseExpenseRecord(userId, vehicleId, expenseId):
-    """Gets the BaseExpense for the given expenseId
+def getBaseExpenseRecord(user_id, vehicle_id, expense_id):
+    """Gets the BaseExpense for the given expense_id
 
     Args:
-        vehicleId - The vehicle ID
-        expenseId - The expense ID
+        vehicle_id - The vehicle ID
+        expense_id - The expense ID
 
     Returns
         The BaseExpense
     """
 
-    if expenseId:
-        baseExpense = models.BaseExpense.get_by_id(long(expenseId))
+    if expense_id:
+        baseExpense = models.BaseExpense.get_by_id(long(expense_id))
 
-        if baseExpense and str(baseExpense.owner) == str(userId) and str(baseExpense.vehicle) == str(vehicleId):
+        if baseExpense and str(baseExpense.owner) == str(user_id) and str(baseExpense.vehicle) == str(vehicle_id):
             return baseExpense
 
     return None
 
-def getFuelRecords(userId, vehicleId, day_range=30, ascending=True):
+def getFuelRecords(user_id, vehicle_id, day_range=30, ascending=True):
     """Gets the FuelRecords for the given vehicle ID
 
     Args:
-        vehicleId - The vehicle ID
+        vehicle_id - The vehicle ID
         day_range - The time range (None for all)
 
     Returns
@@ -150,12 +150,12 @@ def getFuelRecords(userId, vehicleId, day_range=30, ascending=True):
     if day_range:
         delta = datetime.timedelta(days=day_range)
         date = datetime.datetime.now() - delta
-        query = models.FuelRecord().query(models.FuelRecord.owner == userId,
-                                          models.FuelRecord.vehicle == long(vehicleId),
+        query = models.FuelRecord().query(models.FuelRecord.owner == user_id,
+                                          models.FuelRecord.vehicle == long(vehicle_id),
                                           models.FuelRecord.date >= date)
     else:
-        query = models.FuelRecord().query(models.FuelRecord.owner == userId,
-                                          models.FuelRecord.vehicle == long(vehicleId))
+        query = models.FuelRecord().query(models.FuelRecord.owner == user_id,
+                                          models.FuelRecord.vehicle == long(vehicle_id))
 
     if ascending:
         query = query.order(models.FuelRecord.date)
@@ -164,16 +164,16 @@ def getFuelRecords(userId, vehicleId, day_range=30, ascending=True):
 
     return ndb.get_multi(query.fetch(keys_only=True))
 
-def getAvgGasMileage(userId, vehicleId):
+def getAvgGasMileage(user_id, vehicle_id):
     """Gets the Average MPG based on FuelRecords for the given vehicle ID
 
     Args:
-        vehicleId - The vehicle ID
+        vehicle_id - The vehicle ID
 
     Returns
         The average mpg
     """
-    fuelRecords = getFuelRecords(userId, vehicleId, None, False)
+    fuelRecords = getFuelRecords(user_id, vehicle_id, None, False)
 
     milesLogged = 0
     gallonsTotal = 0
@@ -188,16 +188,16 @@ def getAvgGasMileage(userId, vehicleId):
 
     return avgMpg
 
-def getMilesLogged(userId, vehicleId):
+def getMilesLogged(user_id, vehicle_id):
     """Gets the miles logged based on FuelRecords for the given vehicle ID
 
     Args:
-        vehicleId - The vehicle ID
+        vehicle_id - The vehicle ID
 
     Returns
         The miles logged
     """
-    fuelRecords = getFuelRecords(userId, vehicleId, None, False)
+    fuelRecords = getFuelRecords(user_id, vehicle_id, None, False)
 
     milesLogged = 0
     for fuelRecord in fuelRecords:
@@ -206,16 +206,16 @@ def getMilesLogged(userId, vehicleId):
 
     return utils.format_int(milesLogged)
 
-def getCostPerMilesLogged(userId, vehicleId):
+def getCostPerMilesLogged(user_id, vehicle_id):
     """Gets the miles logged based on FuelRecords for the given vehicle ID
 
     Args:
-        vehicleId - The vehicle ID
+        vehicle_id - The vehicle ID
 
     Returns
         The miles logged
     """
-    fuelRecords = getFuelRecords(userId, vehicleId, None, False)
+    fuelRecords = getFuelRecords(user_id, vehicle_id, None, False)
 
     milesLogged = 0
     costTotal = 0
@@ -230,11 +230,11 @@ def getCostPerMilesLogged(userId, vehicleId):
 
     return utils.format_float(costPerMile)
 
-def getNFuelRecords(userId, vehicleId, numberToFetch=10, ascending=True):
+def getNFuelRecords(user_id, vehicle_id, numberToFetch=10, ascending=True):
     """Gets the FuelRecords for the given vehicle ID
 
     Args:
-        vehicleId - The vehicle ID
+        vehicle_id - The vehicle ID
         day_range - The time range
         numberToFetch - The number of records to fetch
 
@@ -242,8 +242,8 @@ def getNFuelRecords(userId, vehicleId, numberToFetch=10, ascending=True):
         The list of FuelRecords
     """
 
-    query = models.FuelRecord().query(models.FuelRecord.owner == userId,
-                                      models.FuelRecord.vehicle == long(vehicleId))
+    query = models.FuelRecord().query(models.FuelRecord.owner == user_id,
+                                      models.FuelRecord.vehicle == long(vehicle_id))
 
     if ascending:
         query = query.order(models.FuelRecord.date)
@@ -251,11 +251,11 @@ def getNFuelRecords(userId, vehicleId, numberToFetch=10, ascending=True):
         query = query.order(-models.FuelRecord.date)
     return ndb.get_multi(query.fetch(numberToFetch, keys_only=True))
 
-def getMaintenanceRecords(userId, vehicleId, day_range=30, ascending=True):
+def getMaintenanceRecords(user_id, vehicle_id, day_range=30, ascending=True):
     """Gets the MaintenanceRecords for the given vehicle ID
 
     Args:
-        vehicleId - The vehicle ID
+        vehicle_id - The vehicle ID
         day_range - The time range
 
     Returns
@@ -265,12 +265,12 @@ def getMaintenanceRecords(userId, vehicleId, day_range=30, ascending=True):
     if day_range:
         delta = datetime.timedelta(days=day_range)
         date = datetime.datetime.now() - delta
-        query = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == userId,
-                                                 models.MaintenanceRecord.vehicle == long(vehicleId),
+        query = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == user_id,
+                                                 models.MaintenanceRecord.vehicle == long(vehicle_id),
                                                  models.MaintenanceRecord.date >= date)
     else:
-        query = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == userId,
-                                                 models.MaintenanceRecord.vehicle == long(vehicleId))
+        query = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == user_id,
+                                                 models.MaintenanceRecord.vehicle == long(vehicle_id))
 
     if ascending:
         query = query.order(models.MaintenanceRecord.date)
@@ -279,20 +279,20 @@ def getMaintenanceRecords(userId, vehicleId, day_range=30, ascending=True):
 
     return ndb.get_multi(query.fetch(keys_only=True))
 
-def getMostRecentMaintRecord(userId, vehicleId, category):
+def getMostRecentMaintRecord(user_id, vehicle_id, category):
     """Gets most recent maintenance record for category
 
     Args:
-        userId - The user ID
-        vehicleId - The ID of the vehicle
+        user_id - The user ID
+        vehicle_id - The ID of the vehicle
         category - The maintenance category being queried
 
     Returns
         The most recent maintenance record for specified category
     """
 
-    query = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == userId,
-                                             models.MaintenanceRecord.vehicle == vehicleId,
+    query = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == user_id,
+                                             models.MaintenanceRecord.vehicle == vehicle_id,
                                              models.MaintenanceRecord.category == category)
 
     query = query.order(-models.MaintenanceRecord.date)
@@ -301,18 +301,18 @@ def getMostRecentMaintRecord(userId, vehicleId, category):
 
     return maintRecord
 
-def getMaintenanceCategoryStrings(userId):
+def getMaintenanceCategoryStrings(user_id):
     """Gets a list of user categories (strings)
 
     Args:
-        userId - The user ID
+        user_id - The user ID
 
     Returns
         A string list of categories for that user
     """
 
     query = models.ExpenseCategory().query(models.ExpenseCategory.category == "Maintenance",
-                                           models.ExpenseCategory.owner.IN([userId, "defaultMaintCategory"]))
+                                           models.ExpenseCategory.owner.IN([user_id, "defaultMaintCategory"]))
     results = ndb.get_multi(query.fetch(keys_only=True))
 
     if not results:
@@ -320,7 +320,7 @@ def getMaintenanceCategoryStrings(userId):
 
         # TODO: is this second query assignment necessary? should we be able to just refetch?
         query = models.ExpenseCategory().query(models.ExpenseCategory.category == "Maintenance",
-                                               models.ExpenseCategory.owner.IN([userId, "defaultMaintCategory"]))
+                                               models.ExpenseCategory.owner.IN([user_id, "defaultMaintCategory"]))
         results = ndb.get_multi(query.fetch(keys_only=True))
 
     toRet = []
@@ -333,18 +333,18 @@ def getMaintenanceCategoryStrings(userId):
 
     return toRet
 
-def getMaintenanceCategoryModels(userId, getDefaultCategories=True):
+def getMaintenanceCategoryModels(user_id, default_categories=True):
     """Gets a list of user categories (models)
 
     Args:
-        userId - The user ID
-        getDefaultCategories - whether or not to include defaults
+        user_id - The user ID
+        default_categories - whether or not to include defaults
 
     Returns
         A list of categories for that user
     """
-    users = [userId]
-    if getDefaultCategories:
+    users = [user_id]
+    if default_categories:
         users.append("defaultMaintCategory")
 
     query = models.ExpenseCategory().query(models.ExpenseCategory.category == "Maintenance",
@@ -357,7 +357,7 @@ def getDefaultMaintenanceCategoryModels():
     """Gets a list of user categories (models)
 
     Args:
-        userId - The user ID
+        user_id - The user ID
 
     Returns
         A list of categories for that user
@@ -385,18 +385,18 @@ def addDefaultMaintenanceCategoryModels():
     models.ExpenseCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Uncategorized").put()
 
 
-def getExpenseCategoryStrings(userId):
+def getExpenseCategoryStrings(user_id):
     """Gets a list of user categories (strings)
 
     Args:
-        userId - The user ID
+        user_id - The user ID
 
     Returns
         A string list of categories for that user
     """
 
     query = models.ExpenseCategory().query(models.ExpenseCategory.category != "Maintenance",
-                                           models.ExpenseCategory.owner.IN([userId, "defaultCategory"]))
+                                           models.ExpenseCategory.owner.IN([user_id, "defaultCategory"]))
     results = ndb.get_multi(query.fetch(keys_only=True))
 
     if not results:
@@ -404,7 +404,7 @@ def getExpenseCategoryStrings(userId):
 
         # TODO: is this second query assignment necessary? should we be able to just refetch?
         query = models.ExpenseCategory().query(models.ExpenseCategory.category != "Maintenance",
-                                               models.ExpenseCategory.owner.IN([userId, "defaultCategory"]))
+                                               models.ExpenseCategory.owner.IN([user_id, "defaultCategory"]))
         results = ndb.get_multi(query.fetch(keys_only=True))
 
     toRet = []
@@ -416,26 +416,26 @@ def getExpenseCategoryStrings(userId):
 
     return toRet
 
-def getExpenseCategoryModels(userId, getDefaultCategories=True):
+def getExpenseCategoryModels(user_id, default_categories=True):
     """Gets a list of user categories (models)
 
     Args:
-        userId - The user ID
-        getDefaultCategories - whether or not to include defaults
+        user_id - The user ID
+        default_categories - whether or not to include defaults
 
     Returns
         A list of categories for that user
     """
-    users = [userId]
+    users = [user_id]
 
-    if getDefaultCategories:
+    if default_categories:
         users.append("defaultCategory")
 
     query = models.ExpenseCategory().query(models.ExpenseCategory.category != "Maintenance",
                                            models.ExpenseCategory.owner.IN(users))
     results = ndb.get_multi(query.fetch(keys_only=True))
 
-    if not results and getDefaultCategories:
+    if not results and default_categories:
         addDefaultExpenseCategoryModels()
 
         query = models.ExpenseCategory().query(models.ExpenseCategory.category != "Maintenance",
@@ -469,12 +469,12 @@ def addDefaultExpenseCategoryModels():
     models.ExpenseCategory(owner="defaultCategory", category="Car Wash").put()
     models.ExpenseCategory(owner="defaultCategory", category="Uncategorized").put()
 
-def getCategoryById(userId, categoryId):
-    """Gets the BaseExpense for the given expenseId
+def getCategoryById(user_id, categoryId):
+    """Gets the BaseExpense for the given expense_id
 
     Args:
-        vehicleId - The vehicle ID
-        expenseId - The expense ID
+        vehicle_id - The vehicle ID
+        expense_id - The expense ID
 
     Returns
         The BaseExpense
@@ -488,12 +488,12 @@ def getCategoryById(userId, categoryId):
 
     return None
 
-def getCategoryByName(userId, categoryName, maintenanceOnly=False):
-    """Gets the BaseExpense for the given expenseId
+def getCategoryByName(user_id, categoryName, maintenanceOnly=False):
+    """Gets the BaseExpense for the given expense_id
 
     Args:
-        vehicleId - The vehicle ID
-        expenseId - The expense ID
+        vehicle_id - The vehicle ID
+        expense_id - The expense ID
 
     Returns
         The BaseExpense
@@ -501,9 +501,9 @@ def getCategoryByName(userId, categoryName, maintenanceOnly=False):
     if maintenanceOnly:
         query = models.ExpenseCategory().query(models.ExpenseCategory.category == "Maintenance",
                                                models.ExpenseCategory.subcategory == categoryName,
-                                               models.ExpenseCategory.owner.IN([userId, "defaultMaintCategory"]))
+                                               models.ExpenseCategory.owner.IN([user_id, "defaultMaintCategory"]))
     else:
-        query = models.ExpenseCategory().query(ndb.AND(models.ExpenseCategory.owner.IN([userId, "defaultCategory", "defaultMaintCategory"]),
+        query = models.ExpenseCategory().query(ndb.AND(models.ExpenseCategory.owner.IN([user_id, "defaultCategory", "defaultMaintCategory"]),
                                                        ndb.OR(models.ExpenseCategory.category == categoryName,
                                                               models.ExpenseCategory.subcategory == categoryName)))
 
@@ -572,12 +572,12 @@ def getListOfYears(make, model):
 
     return toRet
 
-def getNotification(userId, vehicleId, category, notifId):
+def getNotification(user_id, vehicle_id, category, notifId):
     """Gets the Notification for the given notifId
 
     Args:
-        userId - The user ID
-        vehicleId - The vehicle ID
+        user_id - The user ID
+        vehicle_id - The vehicle ID
         notifId - The unique notification ID
 
     Returns
@@ -587,45 +587,45 @@ def getNotification(userId, vehicleId, category, notifId):
     if notifId:
         notification = models.Notification.get_by_id(long(notifId))
 
-        if notification and str(notification.owner) == str(userId):
+        if notification and str(notification.owner) == str(user_id):
             return notification
 
-    elif vehicleId and category:
-        query = models.Notification().query(models.Notification.owner == userId,
-                                            models.Notification.vehicle == vehicleId,
+    elif vehicle_id and category:
+        query = models.Notification().query(models.Notification.owner == user_id,
+                                            models.Notification.vehicle == vehicle_id,
                                             models.Notification.category == category)
         notification = query.get()
 
         return notification
 
-def getNotifications(userId):
+def getNotifications(user_id):
     """Gets a list of user's notifications
 
     Args:
-        userId - The user ID
+        user_id - The user ID
 
     Returns
         A list of user's notifications
     """
 
-    query = models.Notification().query(models.Notification.owner == userId)
+    query = models.Notification().query(models.Notification.owner == user_id)
     results = ndb.get_multi(query.fetch(keys_only=True))
 
     sorted(results, key=lambda Notification:Notification.name())
 
     return results
 
-def getActiveDateNotifications(userId):
+def getActiveDateNotifications(user_id):
     """Gets a list of date notifications to display to user
 
     Args:
-        userId - The user's ID
+        user_id - The user's ID
 
     Returns
         A list of date notifications to display
     """
 
-    results = getNotifications(userId)
+    results = getNotifications(user_id)
 
     toRet = []
 
@@ -638,34 +638,34 @@ def getActiveDateNotifications(userId):
 
     return toRet
 
-def getActiveMileageNotifications(userId):
+def getActiveMileageNotifications(user_id):
     """Gets a list of mileage notifications to display to user
 
     Args:
-        userId - The user's ID
+        user_id - The user's ID
 
     Returns
         A list of mileage notifications to display
     """
 
-    results = getNotifications(userId)
+    results = getNotifications(user_id)
 
     toRet = []
 
     for r in results:
         if r.mileBased:
-            maxmileage = getLastRecordedMileage(userId, r.vehicle)
+            maxmileage = getLastRecordedMileage(user_id, r.vehicle)
             if (r.mileage - maxmileage) <= r.notifyMilesBefore:
                 toRet.append(r)
 
     return toRet
 
-def getLastRecordedMileage(userId, vehicleId):
+def getLastRecordedMileage(user_id, vehicle_id):
     """Gets the user's last recorded mileage for specified vehicle
 
     Args:
-        userId - The user's ID
-        vehicleId - The vehicle's mileage we are querying
+        user_id - The user's ID
+        vehicle_id - The vehicle's mileage we are querying
 
     Returns
         The last recorded mileage
@@ -674,15 +674,15 @@ def getLastRecordedMileage(userId, vehicleId):
     lastMaintMileage = 0
     lastFuelMileage = 0
 
-    maintRecordQuery = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == userId,
-                                                        models.MaintenanceRecord.vehicle == vehicleId)
+    maintRecordQuery = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == user_id,
+                                                        models.MaintenanceRecord.vehicle == vehicle_id)
     maintRecordQuery = maintRecordQuery.order(-models.MaintenanceRecord.odometer)
     lastMaintRecord = maintRecordQuery.get()
     if lastMaintRecord:
         lastMaintMileage = lastMaintRecord.odometer
 
-    mileageQuery = models.FuelRecord().query(models.FuelRecord.owner == userId,
-                                             models.FuelRecord.vehicle == vehicleId)
+    mileageQuery = models.FuelRecord().query(models.FuelRecord.owner == user_id,
+                                             models.FuelRecord.vehicle == vehicle_id)
     mileageQuery = mileageQuery.order(-models.FuelRecord.odometerEnd)
     lastFuelRecord = mileageQuery.get()
     if lastFuelRecord:
@@ -694,12 +694,12 @@ def getLastRecordedMileage(userId, vehicleId):
 
     return maxmileage
 
-def getTotalCost(userId, vehicleId):
+def getTotalCost(user_id, vehicle_id):
     """Gets the total spent on the specified vehicle
 
     Args:
-        userId - The user's ID
-        vehicleId - The vehicle's mileage we are querying
+        user_id - The user's ID
+        vehicle_id - The vehicle's mileage we are querying
 
     Returns
         The total spent on the specified vehicle
@@ -707,21 +707,21 @@ def getTotalCost(userId, vehicleId):
 
     totalCost = 0
 
-    baseExpenses = getBaseExpenseRecords(userId, vehicleId, None)
+    baseExpenses = getBaseExpenseRecords(user_id, vehicle_id, None)
 
     for b in baseExpenses:
         totalCost += b.amount
 
     return totalCost
 
-def deleteBaseExpense(userId, expense):
+def deleteBaseExpense(user_id, expense):
     """Deletes a BaseExpense
 
     Args:
-        userId - The user's ID
+        user_id - The user's ID
         expense - The expense to delete
     """
-    if expense and expense.owner == userId:
+    if expense and expense.owner == user_id:
         image = expense.picture
         if image:
             images.delete_serving_url(image)
@@ -729,18 +729,18 @@ def deleteBaseExpense(userId, expense):
 
         expense.key.delete()
 
-def deleteUserVehicle(userId, vehicleId):
+def deleteUserVehicle(user_id, vehicle_id):
     """Deletes a UserVehicle, along with any related records
 
     Args:
-        userId - The user's ID
-        vehicleId - The vehicle to delete
+        user_id - The user's ID
+        vehicle_id - The vehicle to delete
     """
-    vehicle = getUserVehicle(userId, vehicleId)
+    vehicle = getUserVehicle(user_id, vehicle_id)
     if vehicle:
-        expenseRecords = getAllExpenseRecords(userId, vehicleId, None)
+        expenseRecords = getAllExpenseRecords(user_id, vehicle_id, None)
         for r in expenseRecords:
-            deleteBaseExpense(userId, r)
+            deleteBaseExpense(user_id, r)
 
         # TODO: delete notifications
 

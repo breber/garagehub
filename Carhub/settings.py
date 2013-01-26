@@ -9,7 +9,7 @@ import logging
 import models
 
 class SettingsHandler(webapp2.RequestHandler):
-    def get(self, pageName, pageType, action, categoryId):
+    def get(self, page_name, pageType, action, categoryId):
         context = utils.get_context()
         user = users.get_current_user()
 
@@ -33,7 +33,7 @@ class SettingsHandler(webapp2.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'templates/settings.html')
         self.response.out.write(template.render(path, context))
 
-    def post(self, pageName, pageType, action, categoryId):
+    def post(self, page_name, pageType, action, categoryId):
         user = users.get_current_user()
         newName = self.request.get("categoryName", None)
         maintenanceOnly = pageType == "maintenance"

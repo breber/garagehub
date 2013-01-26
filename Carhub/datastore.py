@@ -321,7 +321,6 @@ def get_maintenance_categories(user_id, user_categories=True, default_categories
 
 def add_default_maintenance_categories():
     """Adds the default expense categories to the DB"""
-    # TODO: Finalize these category defaults
     models.ExpenseCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Oil Change").put()
     models.ExpenseCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Repair").put()
     models.ExpenseCategory(owner="defaultMaintCategory", category="Maintenance", subcategory="Recall").put()

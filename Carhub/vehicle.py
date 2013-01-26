@@ -45,7 +45,7 @@ def build_object(request, obj, expense_type, vehicle_id):
     description = request.request.get("description", "")
     category = request.request.get("category", "Uncategorized")
 
-    if datePurchased and amount:
+    if datePurchased and amount >= 0:
         categoryObj = None
         if expense_type != ExpenseType.FUEL:
             categoryObj = datastore.get_category_by_name(user.user_id(), category)

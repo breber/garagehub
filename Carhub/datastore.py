@@ -469,7 +469,7 @@ def addDefaultExpenseCategoryModels():
     models.ExpenseCategory(owner="defaultCategory", category="Car Wash").put()
     models.ExpenseCategory(owner="defaultCategory", category="Uncategorized").put()
 
-def getCategoryById(user_id, categoryId):
+def getCategoryById(user_id, category_id):
     """Gets the BaseExpense for the given expense_id
 
     Args:
@@ -480,15 +480,15 @@ def getCategoryById(user_id, categoryId):
         The BaseExpense
     """
 
-    if categoryId:
-        expenseCategory = models.ExpenseCategory.get_by_id(long(categoryId))
+    if category_id:
+        expenseCategory = models.ExpenseCategory.get_by_id(long(category_id))
 
         if expenseCategory:
             return expenseCategory
 
     return None
 
-def getCategoryByName(user_id, categoryName, maintenanceOnly=False):
+def getCategoryByName(user_id, categoryName, maintenance_only=False):
     """Gets the BaseExpense for the given expense_id
 
     Args:
@@ -498,7 +498,7 @@ def getCategoryByName(user_id, categoryName, maintenanceOnly=False):
     Returns
         The BaseExpense
     """
-    if maintenanceOnly:
+    if maintenance_only:
         query = models.ExpenseCategory().query(models.ExpenseCategory.category == "Maintenance",
                                                models.ExpenseCategory.subcategory == categoryName,
                                                models.ExpenseCategory.owner.IN([user_id, "defaultMaintCategory"]))
@@ -572,20 +572,20 @@ def getListOfYears(make, model):
 
     return toRet
 
-def getNotification(user_id, vehicle_id, category, notifId):
-    """Gets the Notification for the given notifId
+def getNotification(user_id, vehicle_id, category, notification_id):
+    """Gets the Notification for the given notification_id
 
     Args:
         user_id - The user ID
         vehicle_id - The vehicle ID
-        notifId - The unique notification ID
+        notification_id - The unique notification ID
 
     Returns
         The Notification
     """
 
-    if notifId:
-        notification = models.Notification.get_by_id(long(notifId))
+    if notification_id:
+        notification = models.Notification.get_by_id(long(notification_id))
 
         if notification and str(notification.owner) == str(user_id):
             return notification

@@ -9,13 +9,13 @@ import logging
 import models
 
 class SettingsHandler(webapp2.RequestHandler):
-    def get(self, page_name, pageType, action, categoryId):
+    def get(self, page_name, page_type, action, category_id):
         context = utils.get_context()
         user = users.get_current_user()
 
         if action == "delete":
             # Delete record
-            category = datastore.getCategoryById(user.user_id(), categoryId)
+            category = datastore.getCategoryById(user.user_id(), category_id)
             if category:
                 category.key.delete()
             else:
@@ -33,19 +33,19 @@ class SettingsHandler(webapp2.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'templates/settings.html')
         self.response.out.write(template.render(path, context))
 
-    def post(self, page_name, pageType, action, categoryId):
+    def post(self, page_name, page_type, action, category_id):
         user = users.get_current_user()
         newName = self.request.get("categoryName", None)
-        maintenanceOnly = pageType == "maintenance"
+        maintenance_only = page_type == "maintenance"
 
         # The category with the new name
-        categoryNewName = datastore.getCategoryByName(user.user_id(), newName, maintenanceOnly)
+        categoryNewName = datastore.getCategoryByName(user.user_id(), newName, maintenance_only)
 
         if action == "add" and newName:
             if not categoryNewName:
                 # this is a new category, add it to the database
                 newCategoryObj = models.ExpenseCategory()
-                if maintenanceOnly:
+                if maintenance_only:
                     newCategoryObj.category = "Maintenance"
                     newCategoryObj.subcategory = newName
                 else:
@@ -60,7 +60,7 @@ class SettingsHandler(webapp2.RequestHandler):
             # Edit record
 
             # The category we are trying to edit
-            categoryToEdit = datastore.getCategoryById(user.user_id(), categoryId)
+            categoryToEdit = datastore.getCategoryById(user.user_id(), category_id)
 
             # If we have a category for the given id and we don't have a category
             # with the new name, update the category

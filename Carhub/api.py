@@ -10,11 +10,11 @@ class UserVehicleHandler(webapp2.RequestHandler):
     def get(self, parameter1):
         self.response.headerlist = [('Content-type', 'application/json')]
 
-        user = users.get_current_user()
+        user_id = users.get_current_user().user_id()
             
         toRet = {}
-        toRet["activeIds"] = models.UserVehicle.query(models.UserVehicle.owner == user.user_id()).fetch(keys_only=True)
-        toRet["vehicles"] = datastore.getUserVehicleList(user.user_id())
+        toRet["activeIds"] = models.UserVehicle.query(models.UserVehicle.owner == user_id).fetch(keys_only=True)
+        toRet["vehicles"] = datastore.get_all_user_vehicles(user_id)
 
         self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
 
@@ -22,11 +22,11 @@ class ExpenseBaseExpenseHandler(webapp2.RequestHandler):
     def get(self, vehicle_id, last_modified=0):
         self.response.headerlist = [('Content-type', 'application/json')]
 
-        user = users.get_current_user()
-        results = datastore.getBaseExpenseRecords(user.user_id(), vehicle_id, long(last_modified), polymorphic=False)
+        user_id = users.get_current_user().user_id()
+        results = datastore.get_all_expense_records(user_id, vehicle_id, long(last_modified), polymorphic=False)
             
         toRet = {}
-        toRet["activeIds"] = datastore.getBaseExpenseRecordsIds(user.user_id(), vehicle_id)
+        toRet["activeIds"] = datastore.get_all_expense_records(user_id, vehicle_id, long(last_modified), polymorphic=False, keys_only=True)
         toRet["records"] = results
             
         self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
@@ -35,11 +35,11 @@ class ExpenseFuelHandler(webapp2.RequestHandler):
     def get(self, vehicle_id, last_modified=0):
         self.response.headerlist = [('Content-type', 'application/json')]
 
-        user = users.get_current_user()
-        results = datastore.getFuelRecords(user.user_id(), vehicle_id, long(last_modified))
+        user_id = users.get_current_user().user_id()
+        results = datastore.get_fuel_records(user_id, vehicle_id, long(last_modified))
 
         toRet = {}
-        toRet["activeIds"] = models.FuelRecord.query(models.FuelRecord.owner == user.user_id()).fetch(keys_only=True)
+        toRet["activeIds"] = models.FuelRecord.query(models.FuelRecord.owner == user_id).fetch(keys_only=True)
         toRet["records"] = results
 
         self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
@@ -48,11 +48,11 @@ class ExpenseMaintenanceHandler(webapp2.RequestHandler):
     def get(self, vehicle_id, last_modified=0):
         self.response.headerlist = [('Content-type', 'application/json')]
         
-        user = users.get_current_user()
-        results = datastore.getMaintenanceRecords(user.user_id(), vehicle_id, long(last_modified))
+        user_id = users.get_current_user().user_id()
+        results = datastore.get_maintenance_records(user_id, vehicle_id, long(last_modified))
 
         toRet = {}
-        toRet["activeIds"] = models.MaintenanceRecord.query(models.MaintenanceRecord.owner == user.user_id()).fetch(keys_only=True)
+        toRet["activeIds"] = models.MaintenanceRecord.query(models.MaintenanceRecord.owner == user_id).fetch(keys_only=True)
         toRet["records"] = results
 
         self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
@@ -61,13 +61,13 @@ class ExpenseCategoryHandler(webapp2.RequestHandler):
     def get(self, vehicle_id, last_modified=0):
         self.response.headerlist = [('Content-type', 'application/json')]
 
-        user = users.get_current_user()
-        baseexpenses = datastore.getBaseExpenseRecords(user.user_id(), vehicle_id, long(last_modified))
+        user_id = users.get_current_user().user_id()
+        baseexpenses = datastore.get_all_expense_records(user_id, vehicle_id, long(last_modified))
         
         toRet = {}
 
         for record in baseexpenses:
-            category = datastore.getCategoryById(record.owner, record.categoryid).category
+            category = datastore.get_category_by_id(record.owner, record.categoryid).category
             prev = 0
             if category in toRet.keys():
                 prev = toRet[category]

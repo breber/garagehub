@@ -25,13 +25,13 @@ class RawVehicleHandler(webapp2.RequestHandler):
         self.response.headerlist = [('Content-type', 'application/json')]
 
         if not make:
-            modelList = datastore.getListOfMakes()
+            modelList = datastore.get_makes()
             self.response.out.write(json.dumps(modelList))
         elif not model:
-            modelList = datastore.getListOfModels(make)
+            modelList = datastore.get_models(make)
             self.response.out.write(json.dumps(modelList))
         else:
-            yearList = datastore.getListOfYears(make, model)
+            yearList = datastore.get_years(make, model)
             self.response.out.write(json.dumps(yearList))
 
 class NotificationHandler(webapp2.RequestHandler):
@@ -41,26 +41,26 @@ class NotificationHandler(webapp2.RequestHandler):
 
         if page_name == "add":
             path = os.path.join(os.path.dirname(__file__), 'templates/addnotification.html')
-            userVehicles = datastore.getUserVehicleList(user.user_id())
+            userVehicles = datastore.get_all_user_vehicles(user.user_id())
             if len(userVehicles) > 0:
                 context["vehicles"] = userVehicles
-            userCategories = datastore.getMaintenanceCategoryStrings(user.user_id())
+            userCategories = datastore.get_maintenance_categories(user.user_id(), as_strings=True)
             if len(userCategories) > 0:
                 context["categories"] = userCategories
         else:
             if page_name == "clear":
-                dateNotifications = datastore.getActiveDateNotifications(user.user_id())
+                dateNotifications = datastore.get_active_date_notifications(user.user_id())
                 for dn in dateNotifications:
                     dn.dateLastSeen = datetime.date.today()
                     dn.put()
-                mileNotifications = datastore.getActiveMileageNotifications(user.user_id())
+                mileNotifications = datastore.get_active_mileage_notifications(user.user_id())
                 for mn in mileNotifications:
                     mn.dateLastSeen = datetime.date.today()
                     mn.put()
             elif page_name == "delete":
                 notifToDelete = models.Notification.get_by_id(long(notification_id))
                 notifToDelete.key.delete()
-            notifications = datastore.getNotifications(user.user_id())
+            notifications = datastore.get_notifications(user.user_id())
             if len(notifications) > 0:
                 context["notifications"] = notifications
             path = os.path.join(os.path.dirname(__file__), 'templates/notifications.html')
@@ -72,14 +72,14 @@ class NotificationHandler(webapp2.RequestHandler):
         category = self.request.get("selectCategory", None)
         vehicle_id = int(self.request.get("selectVehicle", 0))
 
-        newNotificationObj = datastore.getNotification(user.user_id(), vehicle_id, category, None)
+        newNotificationObj = datastore.get_notification(user.user_id(), vehicle_id, category, None)
         if newNotificationObj:
             newNotificationObj.key.delete()
 
         newNotificationObj = models.Notification()
         newNotificationObj.owner = user.user_id()
         newNotificationObj.vehicle = vehicle_id
-        vehicleName = datastore.getUserVehicle(user.user_id(), vehicle_id)
+        vehicleName = datastore.get_user_vehicle(user.user_id(), vehicle_id)
         newNotificationObj.vehicleName = vehicleName.name()
         newNotificationObj.category = category
         recurring = self.request.get("frequencyRadio", False)
@@ -130,7 +130,7 @@ class NotificationHandler(webapp2.RequestHandler):
         newNotificationObj.dateLastSeen = datetime.date.today() - deltaoneday
 
         if newRecurring:
-            lastMaintRecord = datastore.getMostRecentMaintRecord(user.user_id(), vehicle_id, category)
+            lastMaintRecord = datastore.get_n_maint_records(user.user_id(), vehicle_id, category, 1)
             if newDateBased:
                 if lastMaintRecord:
                     lastRecordedDate = lastMaintRecord.date

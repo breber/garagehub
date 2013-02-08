@@ -148,7 +148,7 @@
   <div id="editdatepurchased">{{ editexpenseobj.date_formatted }}</div>
   <div id="editcategory">{{ editexpenseobj.categoryname }}</div>
   <div id="editlocation">{{ editexpenseobj.location }}</div>
-  <div id="editamount">{{ editexpenseobj.amount }}</div>
+  <div id="editamount">{{ editexpenseobj.amount_formatted }}</div>
   <div id="editdescription">{{ editexpenseobj.description }}</div>
 </div>
 {% endif %} {% if editmaintenanceobj %}
@@ -156,7 +156,7 @@
   <div id="editdatepurchased">{{ editmaintenanceobj.date_formatted }}</div>
   <div id="editcategory">{{ editmaintenanceobj.categoryname }}</div>
   <div id="editlocation">{{ editmaintenanceobj.location }}</div>
-  <div id="editamount">{{ editmaintenanceobj.amount }}</div>
+  <div id="editamount">{{ editmaintenanceobj.amount_formatted }}</div>
   <div id="editdescription">{{ editmaintenanceobj.description }}</div>
   <div id="editodometer">{{ editmaintenanceobj.odometer }}</div>
 </div>
@@ -164,7 +164,7 @@
 <div id="editfuelrecordobject" class="hidden">
   <div id="editdatepurchased">{{ editfuelrecordobj.date_formatted }}</div>
   <div id="editlocation">{{ editfuelrecordobj.location }}</div>
-  <div id="editamount">{{ editfuelrecordobj.amount }}</div>
+  <div id="editamount">{{ editfuelrecordobj.amount_formatted }}</div>
   <div id="editdescription">{{ editfuelrecordobj.description }}</div>
   <div id="editpricepergallon">{{ editfuelrecordobj.costPerGallon }}</div>
   <div id="editfuelgrade">{{ editfuelrecordobj.fuelGrade }}</div>

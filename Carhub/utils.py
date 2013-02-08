@@ -21,13 +21,13 @@ def get_context(list_vehicles=True):
         context['user'] = userobj
 
         if list_vehicles:
-            userVehicles = datastore.getUserVehicleList(user.user_id())
+            userVehicles = datastore.get_all_user_vehicles(user.user_id())
 
             if len(userVehicles) > 0:
                 context['uservehicles'] = sorted(userVehicles, key=lambda UserVehicle:UserVehicle.name())
 
-            dateNotifications = datastore.getActiveDateNotifications(user.user_id())
-            mileNotifications = datastore.getActiveMileageNotifications(user.user_id())
+            dateNotifications = datastore.get_active_date_notifications(user.user_id())
+            mileNotifications = datastore.get_active_mileage_notifications(user.user_id())
             newNotifications = []
 
             for dn in dateNotifications:

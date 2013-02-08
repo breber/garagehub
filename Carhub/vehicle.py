@@ -15,17 +15,17 @@ class ExpenseType():
     OTHER = 3
 
     @staticmethod
-    def parsePageName(pageName):
-        if not pageName:
+    def parse_page_name(page_name):
+        if not page_name:
             return 0
-        if pageName == "maintenance":
+        if page_name == "maintenance":
             return ExpenseType.MAINTENANCE
-        elif pageName == "gasmileage":
+        elif page_name == "gasmileage":
             return ExpenseType.FUEL
         else:
             return ExpenseType.OTHER
 
-def buildObject(request, obj, expenseType, vehicleId):
+def build_object(request, obj, expense_type, vehicle_id):
     user = users.get_current_user()
 
     fileChosen = request.request.get("file", None)
@@ -45,15 +45,15 @@ def buildObject(request, obj, expenseType, vehicleId):
     description = request.request.get("description", "")
     category = request.request.get("category", "Uncategorized")
 
-    if datePurchased and amount:
+    if datePurchased and amount >= 0:
         categoryObj = None
-        if expenseType != ExpenseType.FUEL:
-            categoryObj = datastore.getCategoryByName(user.user_id(), category)
+        if expense_type != ExpenseType.FUEL:
+            categoryObj = datastore.get_category_by_name(user.user_id(), category)
             if not categoryObj:
                 # this is a new category, add it to the database
                 categoryObj = models.ExpenseCategory()
                 categoryObj.owner = user.user_id()
-                if expenseType == ExpenseType.MAINTENANCE:
+                if expense_type == ExpenseType.MAINTENANCE:
                     categoryObj.category = "Maintenance"
                     categoryObj.subcategory = category
                 else:
@@ -70,7 +70,7 @@ def buildObject(request, obj, expenseType, vehicleId):
             obj.pictureurl = imageUrl
 
         obj.owner = user.user_id()
-        obj.vehicle = long(vehicleId)
+        obj.vehicle = long(vehicle_id)
         obj.date = datePurchased
         obj.location = location
         obj.description = description
@@ -81,90 +81,90 @@ def buildObject(request, obj, expenseType, vehicleId):
             obj.categoryid = categoryObj.key.id()
 
     # Pass off record for more specific handling
-    if expenseType == ExpenseType.FUEL:
-        VehicleGasMileageHandler.handleRequest(request, user, obj)
-    elif expenseType == ExpenseType.MAINTENANCE:
-        VehicleMaintenanceHandler.handleRequest(request, user, obj)
+    if expense_type == ExpenseType.FUEL:
+        VehicleGasMileageHandler.handle_request(request, user, obj)
+    elif expense_type == ExpenseType.MAINTENANCE:
+        VehicleMaintenanceHandler.handle_request(request, user, obj)
     else:
-        VehicleExpenseHandler.handleRequest(request, user, obj)
+        VehicleExpenseHandler.handle_request(request, user, obj)
 
     return obj
 
 class VehicleExpenseAddHandler(blobstore_handlers.BlobstoreUploadHandler):
-    def get(self, vehicleId, pageName):
+    def get(self, vehicle_id, page_name):
         context = utils.get_context()
         user = users.get_current_user()
 
-        if not vehicleId:
+        if not vehicle_id:
             self.redirect("/")
         else:
-            pageType = ExpenseType.parsePageName(pageName)
-            context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
+            page_type = ExpenseType.parse_page_name(page_name)
+            context["car"] = datastore.get_user_vehicle(user.user_id(), vehicle_id)
             
-            if pageType == ExpenseType.FUEL:
+            if page_type == ExpenseType.FUEL:
                 # Get latest fuel record
-                latestFuel = datastore.getNFuelRecords(user.user_id(), vehicleId, 1, False)
+                latestFuel = datastore.get_n_fuel_records(user.user_id(), vehicle_id, 1, False)
                 if latestFuel and len(latestFuel) > 0:
                     context["lastfuelrecord"] = latestFuel[0]
                 
-            if pageType == ExpenseType.MAINTENANCE:
-                context["categories"] = datastore.getMaintenanceCategoryModels(user.user_id())
+            if page_type == ExpenseType.MAINTENANCE:
+                context["categories"] = datastore.get_maintenance_categories(user.user_id())
             else:
-                context["categories"] = datastore.getExpenseCategoryModels(user.user_id())
+                context["categories"] = datastore.get_expense_categories(user.user_id())
             context["upload_url"] = blobstore.create_upload_url(self.request.url)
 
             path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
             self.response.out.write(template.render(path, context))
 
-    def post(self, vehicleId, pageName):
-        pageType = ExpenseType.parsePageName(pageName)
+    def post(self, vehicle_id, page_name):
+        page_type = ExpenseType.parse_page_name(page_name)
 
-        if pageType == ExpenseType.MAINTENANCE:
+        if page_type == ExpenseType.MAINTENANCE:
             expense = models.MaintenanceRecord()
-        elif pageType == ExpenseType.FUEL:
+        elif page_type == ExpenseType.FUEL:
             expense = models.FuelRecord()
         else:
             expense = models.BaseExpense()
 
-        obj = buildObject(self, expense, pageType, vehicleId)
+        obj = build_object(self, expense, page_type, vehicle_id)
         if obj:
             obj.put()
 
         # Redirect
-        if pageType == ExpenseType.MAINTENANCE:
-            self.redirect("/vehicle/%s/maintenance" % vehicleId)
-        elif pageType == ExpenseType.FUEL:
-            self.redirect("/vehicle/%s/gasmileage" % vehicleId)
+        if page_type == ExpenseType.MAINTENANCE:
+            self.redirect("/vehicle/%s/maintenance" % vehicle_id)
+        elif page_type == ExpenseType.FUEL:
+            self.redirect("/vehicle/%s/gasmileage" % vehicle_id)
         else:
-            self.redirect("/vehicle/%s/expenses" % vehicleId)
+            self.redirect("/vehicle/%s/expenses" % vehicle_id)
 
 
 class VehicleExpenseEditHandler(blobstore_handlers.BlobstoreUploadHandler):
-    def get(self, vehicleId, pageName, expenseId):
+    def get(self, vehicle_id, page_name, expense_id):
         context = utils.get_context()
         user = users.get_current_user()
 
-        if not vehicleId:
+        if not vehicle_id:
             self.redirect("/")
         else:
-            context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
+            context["car"] = datastore.get_user_vehicle(user.user_id(), vehicle_id)
             context["upload_url"] = blobstore.create_upload_url(self.request.url)
-            baseExpense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
+            baseExpense = datastore.get_base_expense_record(user.user_id(), vehicle_id, expense_id)
 
             # Perform redirection here if the expense is a specific type
             if baseExpense._class_name() == "MaintenanceRecord":
                 context["editmaintenanceobj"] = baseExpense
-                context["categories"] = datastore.getMaintenanceCategoryModels(user.user_id())
+                context["categories"] = datastore.get_maintenance_categories(user.user_id())
             elif baseExpense._class_name() == "FuelRecord":
                 context["editfuelrecordobj"] = baseExpense
             else:
                 context["editexpenseobj"] = baseExpense
-                context["categories"] = datastore.getExpenseCategoryModels(user.user_id())
+                context["categories"] = datastore.get_expense_categories(user.user_id())
 
-            category = datastore.getCategoryById(user.user_id(), baseExpense.categoryid)
+            category = datastore.get_category_by_id(user.user_id(), baseExpense.categoryid)
             if not category:
                 # This will make the category for this object become Uncategorized since old object is gone
-                category = datastore.getCategoryByName(user.user_id(), "Uncategorized")
+                category = datastore.get_category_by_name(user.user_id(), "Uncategorized")
                 baseExpense.categoryid = category.key.id()
 
             baseExpense.categoryname = category.name()
@@ -172,71 +172,71 @@ class VehicleExpenseEditHandler(blobstore_handlers.BlobstoreUploadHandler):
             path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
             self.response.out.write(template.render(path, context))
 
-    def post(self, vehicleId, pageName, expenseId):
+    def post(self, vehicle_id, page_name, expense_id):
         user = users.get_current_user()
-        if not expenseId:
-            self.redirect("/vehicle/%s/%s" % (vehicleId, pageName))
+        if not expense_id:
+            self.redirect("/vehicle/%s/%s" % (vehicle_id, page_name))
             return
 
-        expense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
+        expense = datastore.get_base_expense_record(user.user_id(), vehicle_id, expense_id)
 
         if expense._class_name() == "MaintenanceRecord":
-            pageType = ExpenseType.MAINTENANCE
+            page_type = ExpenseType.MAINTENANCE
         elif expense._class_name() == "FuelRecord":
-            pageType = ExpenseType.FUEL
+            page_type = ExpenseType.FUEL
         else:
-            pageType = ExpenseType.OTHER
+            page_type = ExpenseType.OTHER
 
-        obj = buildObject(self, expense, pageType, vehicleId)
+        obj = build_object(self, expense, page_type, vehicle_id)
         if obj:
             obj.put()
 
         # Redirect to the page that the user edited from
-        self.redirect("/vehicle/%s/%s" % (vehicleId, pageName))
+        self.redirect("/vehicle/%s/%s" % (vehicle_id, page_name))
 
 class VehicleExpenseDeleteHandler(webapp2.RequestHandler):
-    def get(self, vehicleId, pageName, expenseId):
+    def get(self, vehicle_id, page_name, expense_id):
         user = users.get_current_user()
-        pageType = ExpenseType.parsePageName(pageName)
+        page_type = ExpenseType.parse_page_name(page_name)
 
-        if not vehicleId:
+        if not vehicle_id:
             self.redirect("/")
-        elif not pageName:
-            self.redirect("/vehicle/%s" % vehicleId)
-        elif not expenseId:
-            self.redirect("/vehicle/%s/%s" % (vehicleId, expenseId))
+        elif not page_name:
+            self.redirect("/vehicle/%s" % vehicle_id)
+        elif not expense_id:
+            self.redirect("/vehicle/%s/%s" % (vehicle_id, expense_id))
         else:
             # Delete record
-            baseExpense = datastore.getBaseExpenseRecord(user.user_id(), vehicleId, expenseId)
-            datastore.deleteBaseExpense(user.user_id(), baseExpense)
+            baseExpense = datastore.get_base_expense_record(user.user_id(), vehicle_id, expense_id)
+            datastore.delete_base_expense(user.user_id(), baseExpense)
 
             # Redirect
-            if pageType == ExpenseType.MAINTENANCE:
-                self.redirect("/vehicle/%s/maintenance" % vehicleId)
-            elif pageType == ExpenseType.FUEL:
-                self.redirect("/vehicle/%s/gasmileage" % vehicleId)
+            if page_type == ExpenseType.MAINTENANCE:
+                self.redirect("/vehicle/%s/maintenance" % vehicle_id)
+            elif page_type == ExpenseType.FUEL:
+                self.redirect("/vehicle/%s/gasmileage" % vehicle_id)
             else:
-                self.redirect("/vehicle/%s/expenses" % vehicleId)
+                self.redirect("/vehicle/%s/expenses" % vehicle_id)
 
 class VehicleExpenseHandler(webapp2.RequestHandler):
-    def get(self, vehicleId):
+    def get(self, vehicle_id):
         context = utils.get_context()
         user = users.get_current_user()
 
-        if not vehicleId:
+        if not vehicle_id:
             self.redirect("/")
         else:
-            context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
-            context["categories"] = datastore.getExpenseCategoryModels(user.user_id())
-            context['userexpenses'] = datastore.getAllExpenseRecords(user.user_id(), vehicleId, None, False)
+            context["car"] = datastore.get_user_vehicle(user.user_id(), vehicle_id)
+            context["categories"] = datastore.get_expense_categories(user.user_id())
+            context['userexpenses'] = datastore.get_all_expense_records(user.user_id(), vehicle_id, 0, False)
 
             expenseTotal = 0;
             for expense in context['userexpenses']:
                 expenseTotal += expense.amount
-                category = datastore.getCategoryById(user.user_id(), expense.categoryid)
+                category = datastore.get_category_by_id(user.user_id(), expense.categoryid)
                 if not category:
                     # This will make the category for this object become Uncategorized since old object is gone
-                    category = datastore.getCategoryByName(user.user_id(), "Uncategorized")
+                    category = datastore.get_category_by_name(user.user_id(), "Uncategorized")
                     expense.categoryid = category.key.id()
 
                 expense.categoryname = category.name()
@@ -248,27 +248,27 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
             self.response.out.write(template.render(path, context))
 
     @staticmethod
-    def handleRequest(request, user, obj):
+    def handle_request(request, user, obj):
         # Nothing to do...
         return
 
 class VehicleMaintenanceHandler(webapp2.RequestHandler):
-    def get(self, vehicleId):
+    def get(self, vehicle_id):
         context = utils.get_context()
         user = users.get_current_user()
 
-        if not vehicleId:
+        if not vehicle_id:
             self.redirect("/")
         else:
-            context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
-            context["categories"] = datastore.getMaintenanceCategoryModels(user.user_id())
-            context["maintRecords"] = datastore.getMaintenanceRecords(user.user_id(), vehicleId, None)
+            context["car"] = datastore.get_user_vehicle(user.user_id(), vehicle_id)
+            context["categories"] = datastore.get_maintenance_categories(user.user_id())
+            context["maintRecords"] = datastore.get_maintenance_records(user.user_id(), vehicle_id, None)
 
             path = os.path.join(os.path.dirname(__file__), 'templates/maintenance.html')
             self.response.out.write(template.render(path, context))
 
     @staticmethod
-    def handleRequest(request, user, obj):
+    def handle_request(request, user, obj):
         odometer = request.request.get("odometerEnd", None)
         if odometer:
             odometer = int(odometer)
@@ -279,10 +279,10 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
 
         # Notification stuff
         # TODO: rework the category stuff here...
-        category = datastore.getCategoryById(user.user_id(), obj.categoryid)
-        relevantNotif = datastore.getNotification(user.user_id(), long(obj.vehicle), category.category, None)
+        category = datastore.get_category_by_id(user.user_id(), obj.categoryid)
+        relevantNotif = datastore.get_notification(user.user_id(), long(obj.vehicle), category.category, None)
         if relevantNotif:
-            lastMaintRec = datastore.getMostRecentMaintRecord(user.user_id(), long(obj.vehicle), category.category)
+            lastMaintRec = datastore.get_n_maint_records(user.user_id(), long(obj.vehicle), category.category, 1)
 
             if obj.date == lastMaintRec.date:
                 if relevantNotif.recurring:
@@ -306,28 +306,28 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
                     relevantNotif.key.delete()
 
 class VehicleGasMileageHandler(webapp2.RequestHandler):
-    def get(self, vehicleId):
+    def get(self, vehicle_id):
         context = utils.get_context()
         user = users.get_current_user()
 
-        if not vehicleId:
+        if not vehicle_id:
             self.redirect("/")
         else:
-            context["car"] = datastore.getUserVehicle(user.user_id(), vehicleId)
-            context['userfuelrecords'] = datastore.getFuelRecords(user.user_id(), vehicleId, None, False)
+            context["car"] = datastore.get_user_vehicle(user.user_id(), vehicle_id)
+            context['userfuelrecords'] = datastore.get_fuel_records(user.user_id(), vehicle_id, None, False)
 
             # add Average MPG as a comma-delimited string
-            context['avgmpg'] = datastore.getAvgGasMileage(user.user_id(), vehicleId)
+            context['avgmpg'] = datastore.get_avg_gas_mileage(user.user_id(), vehicle_id)
 
             # add milestotal as a comma-delimited string
-            context['milestotal'] = datastore.getMilesLogged(user.user_id(), vehicleId)
-            context['pricepermile'] = datastore.getCostPerMilesLogged(user.user_id(), vehicleId)
+            context['milestotal'] = datastore.get_total_miles(user.user_id(), vehicle_id)
+            context['pricepermile'] = datastore.get_cost_per_mile(user.user_id(), vehicle_id)
             path = os.path.join(os.path.dirname(__file__), 'templates/gasmileage.html')
 
             self.response.out.write(template.render(path, context))
 
     @staticmethod
-    def handleRequest(request, user, obj):
+    def handle_request(request, user, obj):
         costPerGallon = float(request.request.get("pricepergallon", None))
         fuelGrade = request.request.get("grade")
         useOdometerLastRecord = request.request.get("sinceLastFuelRecord", False)
@@ -336,7 +336,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         lastFuelRecord = None
         if useOdometerLastRecord:
             # find the previous gas record and grab the odometer reading
-            latestFuel = datastore.getNFuelRecords(user.user_id(), obj.vehicle, 1, False)
+            latestFuel = datastore.get_n_fuel_records(user.user_id(), obj.vehicle, 1, False)
             if latestFuel and len(latestFuel) > 0:
                 lastFuelRecord = latestFuel[0]
                 odometerStart = lastFuelRecord.odometerEnd
@@ -360,7 +360,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             mpg = -1;
 
         if costPerGallon:
-            obj.categoryid = datastore.getCategoryByName(user.user_id(), "Fuel Up").key.id()
+            obj.categoryid = datastore.get_category_by_name(user.user_id(), "Fuel Up").key.id()
             obj.description = "Filled up with gas"
             obj.gallons = gallons
             obj.costPerGallon = costPerGallon
@@ -371,37 +371,37 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
 
 
 class VehicleHandler(webapp2.RequestHandler):
-    def get(self, vehicleId, pageName):
+    def get(self, vehicle_id, page_name):
         context = utils.get_context()
         currentUserId = users.get_current_user().user_id()
 
         # If the path doesn't contain a first parameter, just show the garage
-        if not vehicleId:
+        if not vehicle_id:
             path = os.path.join(os.path.dirname(__file__), 'templates/garage.html')
 
         # If we have a first path parameter, and it isn't add, use that as
         # the vehicle ID and show that vehicle's page
         else:
-            context["car"] = datastore.getUserVehicle(currentUserId, vehicleId)
-            context["latestMilage"] = utils.format_int(datastore.getLastRecordedMileage(currentUserId, long(vehicleId)))
-            context["totalCost"] = utils.format_float(datastore.getTotalCost(currentUserId, long(vehicleId)))
+            context["car"] = datastore.get_user_vehicle(currentUserId, vehicle_id)
+            context["latestMilage"] = utils.format_int(datastore.get_current_odometer(currentUserId, long(vehicle_id)))
+            context["totalCost"] = utils.format_float(datastore.get_total_cost(currentUserId, long(vehicle_id)))
 
             if not context["car"]:
                 self.redirect("/")
 
-            if pageName == "charts":
+            if page_name == "charts":
                 path = os.path.join(os.path.dirname(__file__), 'templates/charts.html')
-            elif pageName == "news":
+            elif page_name == "news":
                 path = os.path.join(os.path.dirname(__file__), 'templates/news.html')
             else:
                 path = os.path.join(os.path.dirname(__file__), 'templates/car.html')
 
         self.response.out.write(template.render(path, context))
 
-    def post(self, makeOption, model):
+    def post(self, make_option, model):
         user = users.get_current_user()
 
-        if makeOption == "add":
+        if make_option == "add":
             make = self.request.get("make", None)
             model = self.request.get("model", None)
             year = self.request.get("year", None)
@@ -420,7 +420,7 @@ class VehicleHandler(webapp2.RequestHandler):
 
                 vehicle.put()
         elif model == "update":
-            vehicle = datastore.getUserVehicle(user.user_id(), makeOption)
+            vehicle = datastore.get_user_vehicle(user.user_id(), make_option)
             if vehicle:
                 color = self.request.get("color", None)
                 plates = self.request.get("plates", None)
@@ -436,7 +436,7 @@ class VehicleHandler(webapp2.RequestHandler):
                 return
 
         elif model == "delete":
-            datastore.deleteUserVehicle(user.user_id(), makeOption)
+            datastore.delete_user_vehicle(user.user_id(), make_option)
 
         self.redirect("/")
 

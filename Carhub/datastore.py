@@ -8,7 +8,6 @@ from google.appengine.ext import blobstore, ndb
 import datetime
 import models
 import utils
-import logging
 
 def get_user_vehicle(user_id, vehicle_id):
     """Gets the UserVehicle instance for the given ID
@@ -39,19 +38,6 @@ def get_all_user_vehicles(user_id):
 
     userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == user_id)
     return ndb.get_multi(userVehiclesQuery.fetch(keys_only=True))
-
-def get_all_expense_records(user_id, vehicle_id, day_range=30, ascending=True):
-    """Gets all the Expenses (base, maintenance, and fuel) for the given vehicle ID
-
-    Args:
-        vehicle_id - The vehicle ID
-        day_range - The time range
-
-    Returns
-        The list of Expenses
-    """
-
-    return get_all_expense_records(user_id, vehicle_id, day_range, ascending)
 
 def get_all_expense_records(user_id, vehicle_id, day_range=30, ascending=True, polymorphic=True, keys_only=False):
     """Gets the BaseExpense for the given vehicle ID
@@ -356,7 +342,7 @@ def get_expense_categories(user_id, user_categories=True, default_categories=Tru
     else:
         toRet = []
 
-        for c in results:
+        for r in results:
             if r.subcategory and not r.subcategory in toRet:
                 toRet.append(r.subcategory)
             elif not r.category in toRet:

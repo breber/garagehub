@@ -19,31 +19,31 @@ class FetchCarsBrian(webapp2.RequestHandler):
 
             for vehicle in jsonResult:
                 if vehicle["emailAddress"] == "reber.brian@gmail.com":
-                    userId = vehicle["userId"]
+                    user_id = vehicle["userId"]
 
                     if debug:
-                        userId = users.get_current_user().user_id()
+                        user_id = users.get_current_user().user_id()
 
                     veh = models.UserVehicle()
                     veh.make = vehicle["make"]
                     veh.model = vehicle["model"]
-                    veh.owner = userId
+                    veh.owner = user_id
                     veh.year = vehicle["year"]
                     veh.color = vehicle["color"]
                     veh.plates = vehicle["licensePlate"]
                     veh.lastmodified = datetime.datetime.now()
                     veh.put()
 
-                    vehicleId = veh.key.id()
+                    vehicle_id = veh.key.id()
                     fuelRecords = vehicle["fuelRecords"]
                     prevOdometer = -1
                     for fuel in fuelRecords:
                         toAdd = models.FuelRecord()
-                        toAdd.vehicle = vehicleId
-                        toAdd.owner = userId
+                        toAdd.vehicle = vehicle_id
+                        toAdd.owner = user_id
                         toAdd.date = datetime.datetime.fromtimestamp((fuel["date"] / 1000))
                         toAdd.lastmodified = datetime.datetime.now()
-                        toAdd.categoryid = datastore.getCategoryByName(userId, "Fuel Up").key.id()
+                        toAdd.categoryid = datastore.get_category_by_name(user_id, "Fuel Up").key.id()
                         toAdd.location = fuel["vendor"]
                         toAdd.description = "Filled up with gas"
                         toAdd.gallons = fuel["gallons"]
@@ -72,11 +72,11 @@ class FetchCarsBrian(webapp2.RequestHandler):
                     maintRecords = vehicle["maintenanceRecords"]
                     for maint in maintRecords:
                         toAdd = models.MaintenanceRecord()
-                        toAdd.vehicle = vehicleId
-                        toAdd.owner = userId
+                        toAdd.vehicle = vehicle_id
+                        toAdd.owner = user_id
                         toAdd.date = datetime.datetime.fromtimestamp((maint["date"] / 1000))
                         toAdd.lastmodified = datetime.datetime.now()
-                        toAdd.categoryid = datastore.getCategoryByName(userId, "Uncategorized", True).key.id()
+                        toAdd.categoryid = datastore.get_category_by_name(user_id, "Uncategorized", True).key.id()
                         toAdd.location = maint["vendor"]
                         toAdd.description = maint["title"]
                         toAdd.amount = maint["totalCost"]

@@ -54,12 +54,12 @@ Created on Dec 10, 2012
 #        for e in expenses:
 #            logging.warn("ExpenseUpdate: %s" % e.category)
 #            if e._class_name() == "FuelRecord":
-#                category = datastore.getCategoryByName(e.owner, "Fuel Up")
+#                category = datastore.get_category_by_name(e.owner, "Fuel Up")
 #            else:
-#                category = datastore.getCategoryByName(e.owner, e.category)
+#                category = datastore.get_category_by_name(e.owner, e.category)
 #
 #            if not category:
-#                category = datastore.getCategoryByName(e.owner, "Uncategorized")
+#                category = datastore.get_category_by_name(e.owner, "Uncategorized")
 #
 #            e.categoryid = category.key.id()
 #

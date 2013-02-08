@@ -5,12 +5,12 @@ import utils
 import webapp2
 
 class ToolsHandler(webapp2.RequestHandler):
-    def get(self, pageName):
+    def get(self, page_name):
         context = utils.get_context()
 
-        if pageName == "gasprices":
+        if page_name == "gasprices":
             path = os.path.join(os.path.dirname(__file__), 'templates/gasprices.html')
-        elif pageName == "tripplanner":
+        elif page_name == "tripplanner":
             path = os.path.join(os.path.dirname(__file__), 'templates/tripplanner.html')
         else:
             self.redirect("/")

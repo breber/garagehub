@@ -48,7 +48,7 @@ def build_object(request, obj, expense_type, vehicle_id):
     if datePurchased and amount >= 0:
         categoryObj = None
         if expense_type != ExpenseType.FUEL:
-            categoryObj = datastore.get_category_by_name(user.user_id(), category)
+            categoryObj = datastore.get_category_by_name(user.user_id(), category, (expense_type == ExpenseType.MAINTENANCE))
             if not categoryObj:
                 # this is a new category, add it to the database
                 categoryObj = models.ExpenseCategory()

@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from google.appengine.api import users
 from google.appengine.ext import ndb
 import datastore

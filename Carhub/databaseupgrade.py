@@ -1,8 +1,4 @@
-'''
-Created on Dec 10, 2012
-
-@author: breber
-'''
+#!/usr/bin/env python
 
 #from google.appengine.ext import ndb
 #import datastore

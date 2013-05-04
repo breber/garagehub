@@ -1,8 +1,4 @@
-'''
-Created on Oct 17, 2012
-
-@author: breber
-'''
+#!/usr/bin/env python
 from google.appengine.api import urlfetch
 import json
 import logging

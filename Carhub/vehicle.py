@@ -100,13 +100,13 @@ class VehicleExpenseAddHandler(blobstore_handlers.BlobstoreUploadHandler):
         else:
             page_type = ExpenseType.parse_page_name(page_name)
             context["car"] = datastore.get_user_vehicle(user.user_id(), vehicle_id)
-            
+
             if page_type == ExpenseType.FUEL:
                 # Get latest fuel record
                 latestFuel = datastore.get_n_fuel_records(user.user_id(), vehicle_id, 1, False)
                 if latestFuel and len(latestFuel) > 0:
                     context["lastfuelrecord"] = latestFuel[0]
-                
+
             if page_type == ExpenseType.MAINTENANCE:
                 context["categories"] = datastore.get_maintenance_categories(user.user_id())
             else:

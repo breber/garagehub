@@ -1,8 +1,4 @@
-'''
-Created on Oct 17, 2012
-
-@author: breber
-'''
+#!/usr/bin/env python
 from google.appengine.api import images
 from google.appengine.ext import blobstore, ndb
 import datetime
@@ -64,7 +60,7 @@ def get_all_expense_records(user_id, vehicle_id, day_range=30, ascending=True, p
         query = query.order(models.BaseExpense.date)
     else:
         query = query.order(-models.BaseExpense.date)
-    
+
     if polymorphic:
         if keys_only:
             return query.fetch(keys_only=True)
@@ -74,14 +70,14 @@ def get_all_expense_records(user_id, vehicle_id, day_range=30, ascending=True, p
         # TODO: ideally we can get only the BaseExpenses using a query
         records = ndb.get_multi(query.fetch(keys_only=True))
         selectrecords = []
-        
+
         for r in records:
             if r.__class__ == models.BaseExpense:
                 if keys_only:
                     selectrecords.append(r.key.id())
                 else:
                     selectrecords.append(r)
-        
+
         return selectrecords
 
 def get_base_expense_record(user_id, vehicle_id, expense_id):
@@ -292,7 +288,7 @@ def get_maintenance_categories(user_id, user_categories=True, default_categories
     if default_categories and len(results) == 0:
         add_default_maintenance_categories()
         results = ndb.get_multi(query.fetch(keys_only=True))
-    
+
     if not as_strings:
         return results
     else:
@@ -301,7 +297,7 @@ def get_maintenance_categories(user_id, user_categories=True, default_categories
         for c in results:
             if not c.subcategory in toRet:
                 toRet.append(c.subcategory)
-                
+
         toRet.sort()
         return toRet
 
@@ -336,7 +332,7 @@ def get_expense_categories(user_id, user_categories=True, default_categories=Tru
     if default_categories and len(results) == 0:
         add_default_expense_categories()
         results = ndb.get_multi(query.fetch(keys_only=True))
-    
+
     if not as_strings:
         return results
     else:
@@ -347,13 +343,13 @@ def get_expense_categories(user_id, user_categories=True, default_categories=Tru
                 toRet.append(r.subcategory)
             elif not r.category in toRet:
                 toRet.append(r.category)
-                
+
         toRet.sort()
         return toRet
 
 def add_default_expense_categories():
     """Adds the default expense categories to the DB"""
-    
+
     # If you change this be sure to change the fuel record post function to be able to find it.
     models.ExpenseCategory(owner="defaultCategory", category="Fuel Up").put()
     models.ExpenseCategory(owner="defaultCategory", category="Car Wash").put()

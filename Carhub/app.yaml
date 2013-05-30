@@ -1,10 +1,14 @@
 application: car-hub
-version: python-1
+version: endpoints
 runtime: python27
 api_version: 1
 threadsafe: yes
 
 handlers:
+# Endpoints handler
+- url: /_ah/spi/.*
+  script: api.application
+
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico
@@ -41,10 +45,6 @@ handlers:
 
 - url: /vehicle/?.*
   script: vehicle.app
-  login: required
-
-- url: /api/?.*
-  script: api.app
   login: required
 
 - url: .*

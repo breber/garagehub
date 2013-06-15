@@ -1,4 +1,4 @@
-{% extends 'base_vehicle.html' %} 
+{% extends 'base_vehicle.html' %}
 {% block externalcss %}
 <link rel="stylesheet" href="/static/css/dataTables.bootstrap.css" type="text/css"/>
 {% endblock %}
@@ -31,7 +31,7 @@
 
 <div id="alert"></div>
 
-{% if categories %} 
+{% if categories %}
 
 {% for category in categories %}
 <h3>{{ category.name }}</h3>
@@ -47,7 +47,7 @@
     </tr>
   </thead>
   <tbody>
-  {% for m in maintRecords %} 
+  {% for m in maintRecords %}
   {% if category.key.id == m.categoryid %}
   <tr id="{{ m.key.id }}">
     <td>{{ m.date_formatted }}</td>

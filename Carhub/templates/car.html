@@ -1,4 +1,4 @@
-{% extends 'base_vehicle.html' %} 
+{% extends 'base_vehicle.html' %}
 {% block pagecontent %}
 
 <div class="row-fluid">
@@ -41,11 +41,11 @@
     <form action="/vehicle/{{ car.key.id }}/update" method="post" id="saveForm">
       <div>
         <label for="color">Color:</label>
-        <input id="color" type="text" name="color" value="{% if car.color %}{{ car.color }}{% endif %}" /> 
+        <input id="color" type="text" name="color" value="{% if car.color %}{{ car.color }}{% endif %}" />
       </div>
       <div>
         <label for="plates">License Plates:</label>
-        <input id="plates" type="text" name="plates" value="{% if car.plates %}{{ car.plates }}{% endif %}" /> 
+        <input id="plates" type="text" name="plates" value="{% if car.plates %}{{ car.plates }}{% endif %}" />
       </div>
     </form>
   </div>

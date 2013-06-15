@@ -30,7 +30,7 @@ $(document).on("click", "#gaspricetable tr td", function() {
 	addMarker(map, latLng);
 
 	$('#modalMap').on('shown', function() {
-	    google.maps.event.trigger(map, "resize");
+        google.maps.event.trigger(map, "resize");
 		map.panTo(latLng);
 	});
 
@@ -110,7 +110,7 @@ function getLocation(){
                                                errorHandler,
                                                options);
    } else {
-	   newAlert("Sorry, your browser does not support geolocation.");
+       newAlert("Sorry, your browser does not support geolocation.");
    }
 }
 
@@ -138,17 +138,17 @@ function displayGasPrices(JSONGasFeed) {
     showLoading();
 
     if (datatablesObject !== null) {
-    	datatablesObject.fnDestroy();
+        datatablesObject.fnDestroy();
     }
 
     $.getJSON(JSONGasFeed,
         function(json) {
             var grade = $('#grade').val();
-    		var sort = $("#sort").val();
-    		var sortByColumn = 2;
-    		if (sort === "distance") {
-    			sortByColumn = 3;
-    		}
+            var sort = $("#sort").val();
+            var sortByColumn = 2;
+            if (sort === "distance") {
+                sortByColumn = 3;
+            }
             var data = [];
             $.each(json.stations, function(i, item) {
                 var station = {};

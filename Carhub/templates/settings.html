@@ -38,13 +38,13 @@
             </tr>
           </thead>
           <tbody>
-	        {% if categories %}
+            {% if categories %}
             {% for c in categories %}
             <tr id="{{ c.key.id }}">
               <td class="expense">{{ c.category }}</td>
             </tr>
             {% endfor %}
-	        {% endif %}
+            {% endif %}
             <tr id="add">
               <td class="expense">
                 <a id="addExpCategory" class="btn btn-primary"><i class="icon-plus"></i> Add</a>
@@ -55,17 +55,17 @@
             <tr>
               <th><b>Default Expense Categories</b></th>
             </tr>
-	        {% if defaultcategories %}
+            {% if defaultcategories %}
             {% for c in defaultcategories %}
             <tr id="{{ c.key.id }}">
               <td class="expense">{{ c.category }}</td>
             </tr>
             {% endfor %}
-	        {% endif %}
-	      </tfoot>
+            {% endif %}
+          </tfoot>
         </table>
       </div>
-  
+
       <div class="span3">
         <table class="category-datatable table table-striped table-bordered DTTT_selectable table-hover" id="maint-category-table">
           <thead>
@@ -74,13 +74,13 @@
             </tr>
           </thead>
           <tbody>
-	        {% if maintcategories %}
+            {% if maintcategories %}
             {% for c in maintcategories %}
             <tr id="{{ c.key.id }}">
               <td class="maintenance">{{ c.name }}</td>
             </tr>
             {% endfor %}
-	        {% endif %}
+            {% endif %}
             <tr id="add">
               <td class="maintenance">
                 <a id="addMaintCategory" class="btn btn-primary"><i class="icon-plus"></i> Add</a>
@@ -91,14 +91,14 @@
             <tr>
               <th><b>Default Maintenance Categories</b></th>
             </tr>
-	        {% if defaultmaintcategories %}
+            {% if defaultmaintcategories %}
             {% for c in defaultmaintcategories %}
             <tr id="{{ c.key.id }}">
               <td class="expense">{{ c.name }}</td>
             </tr>
             {% endfor %}
-	        {% endif %}
-	      </tfoot>
+            {% endif %}
+          </tfoot>
         </table>
       </div>
     </div>

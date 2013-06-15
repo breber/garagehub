@@ -14,7 +14,7 @@ $().ready(function() {
                         $("#makes").html(optionString.join(""));
                         $("#models").html("<option>Select a model</option>");
                         $("#years").html("<option>Select a year</option>");
-                        
+
                         $("#makes").removeAttr("disabled");
                         $("#models").attr("disabled", "disabled");
                         $("#years").attr("disabled", "disabled");
@@ -22,7 +22,7 @@ $().ready(function() {
             );
         }
     });
-	
+
     // When the user chooses a new make, get the models
     // for the updated make
     $("#makes").change(function() {
@@ -39,7 +39,7 @@ $().ready(function() {
 
                     $("#models").html(optionString.join(""));
                     $("#years").html("<option>Select a year</option>");
-                    
+
                     $("#models").removeAttr("disabled");
                     $("#years").attr("disabled", "disabled");
                 }

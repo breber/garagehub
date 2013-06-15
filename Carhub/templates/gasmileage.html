@@ -1,4 +1,4 @@
-{% extends 'base_vehicle.html' %} 
+{% extends 'base_vehicle.html' %}
 {% block externalcss %}
 <link rel="stylesheet" href="/static/css/dataTables.bootstrap.css" type="text/css"/>
 {% endblock %}
@@ -9,18 +9,18 @@
     <h2>Gas Mileage Tracker</h2>
     {% if userfuelrecords %}
     <div class="row-fluid">
-	    <div class="span4">
-	    	<h4>Average MPG: </h4>
-	    	<h4>{{ avgmpg }}</h4>
-	    </div>
-	    <div class="span4">
-	    	<h4>Miles Recorded: </h4>
-	    	<h4>{{ milestotal }}</h4>
-	    </div>
-	    <div class="span4">
-	    	<h4>Price Per Mile: </h4>
-	    	<h4>{{ pricepermile }}</h4>
-	    </div>
+      <div class="span4">
+        <h4>Average MPG: </h4>
+        <h4>{{ avgmpg }}</h4>
+      </div>
+      <div class="span4">
+        <h4>Miles Recorded: </h4>
+        <h4>{{ milestotal }}</h4>
+      </div>
+      <div class="span4">
+        <h4>Price Per Mile: </h4>
+        <h4>{{ pricepermile }}</h4>
+      </div>
     </div>
     {% else %}
     <p>You don't have any fuel transactions recorded yet.</p>
@@ -84,7 +84,7 @@
 
     <td>
     {% if e.odometerStart == -1 %}
-    N/A - 
+    N/A -
     {% else %}
     {{ e.odometerStart_formatted }} -
     {% endif %}

@@ -224,6 +224,11 @@ class _EndpointsQueryInfo(object):
       attr_name = prop._code_name
       current_value = getattr(entity, attr_name)
 
+      if prop._repeated:
+        if current_value != []:
+          raise ValueError('No queries on repeated values are allowed.')
+        continue
+
       # Only filter for non-null values
       if current_value is not None:
         self._AddFilter(prop == current_value)
@@ -453,8 +458,8 @@ class EndpointsMetaModel(ndb.MetaModel):
 
     cls._FixUpAliasProperties()
 
-    cls._VerifyMessageFieldsSchema(classdict)
-    cls._VerifyProtoMapping(classdict)
+    cls._VerifyMessageFieldsSchema()
+    cls._VerifyProtoMapping()
 
   def _FixUpAliasProperties(cls):
     """Updates the alias properties map and verifies each alias property.
@@ -476,7 +481,7 @@ class EndpointsMetaModel(ndb.MetaModel):
         prop._FixUp(attr_name)
         cls._alias_properties[prop._name] = prop
 
-  def _VerifyMessageFieldsSchema(cls, classdict):
+  def _VerifyMessageFieldsSchema(cls):
     """Verifies that the preset message fields correspond to actual properties.
 
     If no message fields schema was set on the class, sets the schema using the
@@ -486,16 +491,14 @@ class EndpointsMetaModel(ndb.MetaModel):
        MessageFieldsSchema and sets that as the value of _message_fields_schema
        on the class.
 
-    Args:
-      classdict: A dictionary of new attributes defined on the class (not on
-          any subclass).
-
     Raises:
       TypeError: if a message fields schema was set on the class that is not a
           list, tuple, dictionary, or MessageFieldsSchema instance.
     """
-    message_fields_schema = classdict.get('_message_fields_schema')
-    if message_fields_schema is None:
+    message_fields_schema = getattr(cls, '_message_fields_schema', None)
+    # Also need to check we aren't re-using from EndpointsModel
+    base_schema = getattr(BASE_MODEL_CLASS, '_message_fields_schema', None)
+    if message_fields_schema is None or message_fields_schema == base_schema:
       message_fields_schema = cls._DefaultFields()
     elif not isinstance(message_fields_schema,
                         (list, tuple, dict, MessageFieldsSchema)):
@@ -508,7 +511,7 @@ class EndpointsMetaModel(ndb.MetaModel):
     cls._message_fields_schema = MessageFieldsSchema(message_fields_schema,
                                                      name=cls.__name__)
 
-  def _VerifyProtoMapping(cls, classdict):
+  def _VerifyProtoMapping(cls):
     """Verifies that each property on the class has an associated proto mapping.
 
     First checks if there is a _custom_property_to_proto dictionary present and
@@ -518,10 +521,6 @@ class EndpointsMetaModel(ndb.MetaModel):
     checking for a message field attribute, and then by trying to infer based
     on property subclass.
 
-    Args:
-      classdict: A dictionary of new attributes defined on the class (not on
-          any subclass).
-
     Raises:
       TypeError: if a key from _custom_property_to_proto is not a valid NBD
           property. (We don't allow EndpointsAliasProperty here because it
@@ -530,7 +529,7 @@ class EndpointsMetaModel(ndb.MetaModel):
           inference from a superclass, no appropriate mapping is found in
           _property_to_proto.
     """
-    custom_property_to_proto = classdict.get('_custom_property_to_proto')
+    custom_property_to_proto = getattr(cls, '_custom_property_to_proto', None)
     if isinstance(custom_property_to_proto, dict):
       for key, value in custom_property_to_proto.iteritems():
         if not utils.IsSubclass(key, ndb.Property):
@@ -719,8 +718,11 @@ class EndpointsModel(ndb.Model):
       value = getattr(entity, attr_name)
       if value is not None:
         # Only overwrite null values
-        current_value = getattr(self, attr_name)
-        if current_value is None:
+        if isinstance(prop, EndpointsAliasProperty):
+          value_set = getattr(self, attr_name) is not None
+        else:
+          value_set = prop._name in self._values
+        if not value_set:
           setattr(self, attr_name, value)
 
   def UpdateFromKey(self, key):
@@ -1077,11 +1079,11 @@ class EndpointsModel(ndb.Model):
 
       # Since we are using getattr rather than checking self._values, this will
       # also work for properties which have a default set
-      value = getattr(self, name)
+      value = getattr(self, value_property._code_name)
       if value is None:
         continue
 
-      if getattr(proto_model, name).repeated:
+      if field.repeated:
         if not isinstance(value, (list, tuple)):
           error_msg = ('Property %s is a repeated field and its value should '
                        'be a list or tuple. Received: %s' % (name, value))
@@ -1149,13 +1151,14 @@ class EndpointsModel(ndb.Model):
       else:
         to_add = FromValue(value_property, value)
 
+      local_name = value_property._code_name
       if isinstance(value_property, EndpointsAliasProperty):
-        alias_args.append((name, to_add))
+        alias_args.append((local_name, to_add))
       else:
-        entity_kwargs[name] = to_add
+        entity_kwargs[local_name] = to_add
 
     # Will not throw exception if a required property is not included. This
-    # sort of exception if only thrown when attempting to put the entity.
+    # sort of exception is only thrown when attempting to put the entity.
     entity = cls(**entity_kwargs)
 
     # Set alias properties, will fail on an alias property if that

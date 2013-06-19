@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/heVjNeAFFCneg4eyRLGlByhfu8E\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/AbgwhwTWNVvAuYOYbmr_ZKoNbpY\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -13,9 +13,9 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://endpoints.car-hub.appspot.com/_ah/api/carhub/v1/",
+ "baseUrl": "https://car-hub.appspot.com/_ah/api/carhub/v1/",
  "basePath": "/_ah/api/carhub/v1/",
- "rootUrl": "https://endpoints.car-hub.appspot.com/_ah/api/",
+ "rootUrl": "https://car-hub.appspot.com/_ah/api/",
  "servicePath": "carhub/v1/",
  "batchPath": "batch",
  "parameters": {

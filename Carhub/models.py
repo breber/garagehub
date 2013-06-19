@@ -1,5 +1,9 @@
-from google.appengine.ext import ndb
+from google.appengine.ext import endpoints, ndb
 from google.appengine.ext.ndb import polymodel
+
+from protorpc import remote
+from endpoints_proto_datastore.ndb import EndpointsModel
+
 import utils
 
 class ServerResponseString(ndb.Model):
@@ -10,7 +14,7 @@ class BaseVehicle(ndb.Model):
     model = ndb.StringProperty()
     years = ndb.StringProperty()
 
-class UserVehicle(ndb.Model):
+class UserVehicle(EndpointsModel):
     make = ndb.StringProperty()
     model = ndb.StringProperty()
     owner = ndb.StringProperty()

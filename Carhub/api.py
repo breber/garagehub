@@ -1,103 +1,18 @@
-#!/usr/bin/env python
-from google.appengine.api import users
-import datastore
-import json
-import models
-import utils
-import webapp2
+from google.appengine.ext import endpoints
+from protorpc import remote
+from models import *
 
-class UserVehicleHandler(webapp2.RequestHandler):
-    def get(self, parameter1):
-        self.response.headerlist = [('Content-type', 'application/json')]
+CLIENT_ID = '280486107933.apps.googleusercontent.com'
 
-        user_id = users.get_current_user().user_id()
+@endpoints.api(name='carhub',version='v1',
+               description='CarHub API',
+               hostname='car-hub.appspot.com',
+               audiences=[CLIENT_ID, endpoints.API_EXPLORER_CLIENT_ID],
+               allowed_client_ids=[CLIENT_ID, endpoints.API_EXPLORER_CLIENT_ID])
+class CarHubApi(remote.Service):
 
-        toRet = {}
-        toRet["activeIds"] = models.UserVehicle.query(models.UserVehicle.owner == user_id).fetch(keys_only=True)
-        toRet["vehicles"] = datastore.get_all_user_vehicles(user_id)
+    @UserVehicle.query_method(path='vehicles', name='vehicles.list')
+    def VehiclesList(self, query):
+        return query
 
-        self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
-
-class ExpenseBaseExpenseHandler(webapp2.RequestHandler):
-    def get(self, vehicle_id, last_modified=0):
-        self.response.headerlist = [('Content-type', 'application/json')]
-
-        if not last_modified:
-            last_modified = "0"
-
-        user_id = users.get_current_user().user_id()
-        results = datastore.get_all_expense_records(user_id, vehicle_id, long(last_modified), polymorphic=False)
-
-        toRet = {}
-        toRet["activeIds"] = datastore.get_all_expense_records(user_id, vehicle_id, long(last_modified), polymorphic=False, keys_only=True)
-        toRet["records"] = results
-
-        self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
-
-class ExpenseFuelHandler(webapp2.RequestHandler):
-    def get(self, vehicle_id, last_modified=0):
-        self.response.headerlist = [('Content-type', 'application/json')]
-
-        if not last_modified:
-            last_modified = "0"
-
-        user_id = users.get_current_user().user_id()
-        results = datastore.get_fuel_records(user_id, vehicle_id, long(last_modified))
-
-        toRet = {}
-        toRet["activeIds"] = models.FuelRecord.query(models.FuelRecord.owner == user_id).fetch(keys_only=True)
-        toRet["records"] = results
-
-        self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
-
-class ExpenseMaintenanceHandler(webapp2.RequestHandler):
-    def get(self, vehicle_id, last_modified=0):
-        self.response.headerlist = [('Content-type', 'application/json')]
-
-        if not last_modified:
-            last_modified = "0"
-
-        user_id = users.get_current_user().user_id()
-        results = datastore.get_maintenance_records(user_id, vehicle_id, long(last_modified))
-
-        toRet = {}
-        toRet["activeIds"] = models.MaintenanceRecord.query(models.MaintenanceRecord.owner == user_id).fetch(keys_only=True)
-        toRet["records"] = results
-
-        self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
-
-class ExpenseCategoryHandler(webapp2.RequestHandler):
-    def get(self, vehicle_id, last_modified=0):
-        self.response.headerlist = [('Content-type', 'application/json')]
-
-        if not last_modified:
-            last_modified = "0"
-
-        user_id = users.get_current_user().user_id()
-        baseexpenses = datastore.get_all_expense_records(user_id, vehicle_id, long(last_modified))
-
-        toRet = {}
-
-        for record in baseexpenses:
-            category = datastore.get_category_by_id(record.owner, record.categoryid).category
-            prev = 0
-            if category in toRet.keys():
-                prev = toRet[category]
-            toRet[category] = prev + record.amount
-
-        toRet1 = []
-        for cat in toRet.keys():
-            category = []
-            category.append(cat)
-            category.append(toRet[cat])
-            toRet1.append(category)
-
-        self.response.out.write(json.dumps(toRet1))
-
-app = webapp2.WSGIApplication([
-    ('/api/vehicles/?(.+?)?', UserVehicleHandler),
-    ('/api/expense/base/([^/]+)/?(.+?)?', ExpenseBaseExpenseHandler),
-    ('/api/expense/fuel/([^/]+)/?(.+?)?', ExpenseFuelHandler),
-    ('/api/expense/maintenance/([^/]+)/?(.+?)?', ExpenseMaintenanceHandler),
-    ('/api/expense/category/([^/]+)/?(.+?)?', ExpenseCategoryHandler)
-])
+application = endpoints.api_server([CarHubApi], restricted=False)

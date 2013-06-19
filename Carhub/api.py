@@ -6,7 +6,7 @@ CLIENT_ID = '280486107933.apps.googleusercontent.com'
 
 @endpoints.api(name='carhub',version='v1',
                description='CarHub API',
-               hostname='endpoints.car-hub.appspot.com',
+               hostname='car-hub.appspot.com',
                audiences=[CLIENT_ID, endpoints.API_EXPLORER_CLIENT_ID],
                allowed_client_ids=[CLIENT_ID, endpoints.API_EXPLORER_CLIENT_ID])
 class CarHubApi(remote.Service):

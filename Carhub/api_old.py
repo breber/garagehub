@@ -8,9 +8,10 @@ import webapp2
 
 class UserVehicleHandler(webapp2.RequestHandler):
     def get(self, parameter1):
+        context = utils.get_context()
         self.response.headerlist = [('Content-type', 'application/json')]
 
-        user_id = users.get_current_user().user_id()
+        user_id = context['user']['userId']
 
         toRet = {}
         toRet["activeIds"] = models.UserVehicle.query(models.UserVehicle.owner == user_id).fetch(keys_only=True)
@@ -20,12 +21,13 @@ class UserVehicleHandler(webapp2.RequestHandler):
 
 class ExpenseBaseExpenseHandler(webapp2.RequestHandler):
     def get(self, vehicle_id, last_modified=0):
+        context = utils.get_context()
         self.response.headerlist = [('Content-type', 'application/json')]
 
         if not last_modified:
             last_modified = "0"
 
-        user_id = users.get_current_user().user_id()
+        user_id = context['user']['userId']
         results = datastore.get_all_expense_records(user_id, vehicle_id, long(last_modified), polymorphic=False)
 
         toRet = {}
@@ -36,12 +38,13 @@ class ExpenseBaseExpenseHandler(webapp2.RequestHandler):
 
 class ExpenseFuelHandler(webapp2.RequestHandler):
     def get(self, vehicle_id, last_modified=0):
+        context = utils.get_context()
         self.response.headerlist = [('Content-type', 'application/json')]
 
         if not last_modified:
             last_modified = "0"
 
-        user_id = users.get_current_user().user_id()
+        user_id = context['user']['userId']
         results = datastore.get_fuel_records(user_id, vehicle_id, long(last_modified))
 
         toRet = {}
@@ -52,12 +55,13 @@ class ExpenseFuelHandler(webapp2.RequestHandler):
 
 class ExpenseMaintenanceHandler(webapp2.RequestHandler):
     def get(self, vehicle_id, last_modified=0):
+        context = utils.get_context()
         self.response.headerlist = [('Content-type', 'application/json')]
 
         if not last_modified:
             last_modified = "0"
 
-        user_id = users.get_current_user().user_id()
+        user_id = context['user']['userId']
         results = datastore.get_maintenance_records(user_id, vehicle_id, long(last_modified))
 
         toRet = {}
@@ -68,12 +72,13 @@ class ExpenseMaintenanceHandler(webapp2.RequestHandler):
 
 class ExpenseCategoryHandler(webapp2.RequestHandler):
     def get(self, vehicle_id, last_modified=0):
+        context = utils.get_context()
         self.response.headerlist = [('Content-type', 'application/json')]
 
         if not last_modified:
             last_modified = "0"
 
-        user_id = users.get_current_user().user_id()
+        user_id = context['user']['userId']
         baseexpenses = datastore.get_all_expense_records(user_id, vehicle_id, long(last_modified))
 
         toRet = {}

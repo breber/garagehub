@@ -6,10 +6,12 @@ import datetime
 import json
 import models
 import os
+import utils
 import webapp2
 
 class FetchCarsBrian(webapp2.RequestHandler):
     def get(self):
+        context = utils.get_context(False)
         url = "http://nosec.auto-records.appspot.com/getRecords"
         result = urlfetch.fetch(url=url, payload=None, method=urlfetch.GET, deadline=30)
 
@@ -22,7 +24,7 @@ class FetchCarsBrian(webapp2.RequestHandler):
                     user_id = vehicle["userId"]
 
                     if debug:
-                        user_id = users.get_current_user().user_id()
+                        user_id = context['user']['userId']
 
                     veh = models.UserVehicle()
                     veh.make = vehicle["make"]
@@ -87,13 +89,14 @@ class FetchCarsBrian(webapp2.RequestHandler):
 
 class DeleteRecordsBrian(webapp2.RequestHandler):
     def get(self):
-        query = models.BaseExpense.query(models.BaseExpense.owner == users.get_current_user().user_id())
+        context = utils.get_context(False)
+        query = models.BaseExpense.query(models.BaseExpense.owner == context['user']['userId'])
         results = ndb.get_multi(query.fetch(keys_only=True))
 
         for f in results:
             f.key.delete()
 
-        query = models.UserVehicle.query(models.UserVehicle.owner == users.get_current_user().user_id())
+        query = models.UserVehicle.query(models.UserVehicle.owner == context['user']['userId'])
         results = ndb.get_multi(query.fetch(keys_only=True))
 
         for v in results:

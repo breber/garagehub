@@ -18,13 +18,13 @@ def update_userid(old, new):
             exp.put()
 
     # Update maintenance categories
-    maint_cat = datastore.get_maintenance_categories(user_id, default_categories=False)
+    maint_cat = datastore.get_maintenance_categories(old, default_categories=False)
     for cat in maint_cat:
         cat.owner = new
         cat.put()
 
     # Update expense categories
-    exp_cat = datastore.get_expense_categories(user_id, default_categories=False)
+    exp_cat = datastore.get_expense_categories(old, default_categories=False)
     for cat in exp_cat:
         cat.owner = new
         cat.put()

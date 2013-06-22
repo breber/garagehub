@@ -13,7 +13,7 @@ class MainHandler(webapp2.RequestHandler):
     def get(self):
         context = utils.get_context()
 
-        if users.get_current_user():
+        if context['user']:
             path = os.path.join(os.path.dirname(__file__), 'templates/garage.html')
         else:
             path = os.path.join(os.path.dirname(__file__), 'templates/welcome.html')
@@ -37,30 +37,30 @@ class RawVehicleHandler(webapp2.RequestHandler):
 class NotificationHandler(webapp2.RequestHandler):
     def get(self, page_name, notification_id):
         context = utils.get_context()
-        user = users.get_current_user()
+        userid = context['user']['userId']
 
         if page_name == "add":
             path = os.path.join(os.path.dirname(__file__), 'templates/addnotification.html')
-            userVehicles = datastore.get_all_user_vehicles(user.user_id())
+            userVehicles = datastore.get_all_user_vehicles(userid)
             if len(userVehicles) > 0:
                 context["vehicles"] = userVehicles
-            userCategories = datastore.get_maintenance_categories(user.user_id(), as_strings=True)
+            userCategories = datastore.get_maintenance_categories(userid, as_strings=True)
             if len(userCategories) > 0:
                 context["categories"] = userCategories
         else:
             if page_name == "clear":
-                dateNotifications = datastore.get_active_date_notifications(user.user_id())
+                dateNotifications = datastore.get_active_date_notifications(userid)
                 for dn in dateNotifications:
                     dn.dateLastSeen = datetime.date.today()
                     dn.put()
-                mileNotifications = datastore.get_active_mileage_notifications(user.user_id())
+                mileNotifications = datastore.get_active_mileage_notifications(userid)
                 for mn in mileNotifications:
                     mn.dateLastSeen = datetime.date.today()
                     mn.put()
             elif page_name == "delete":
                 notifToDelete = models.Notification.get_by_id(long(notification_id))
                 notifToDelete.key.delete()
-            notifications = datastore.get_notifications(user.user_id())
+            notifications = datastore.get_notifications(userid)
             if len(notifications) > 0:
                 context["notifications"] = notifications
             path = os.path.join(os.path.dirname(__file__), 'templates/notifications.html')
@@ -68,18 +68,20 @@ class NotificationHandler(webapp2.RequestHandler):
         self.response.out.write(template.render(path, context))
 
     def post(self, page_name, notification_id):
-        user = users.get_current_user()
+        context = utils.get_context()
+        userid = context['user']['userId']
+
         category = self.request.get("selectCategory", None)
         vehicle_id = int(self.request.get("selectVehicle", 0))
 
-        newNotificationObj = datastore.get_notification(user.user_id(), vehicle_id, category, None)
+        newNotificationObj = datastore.get_notification(userid, vehicle_id, category, None)
         if newNotificationObj:
             newNotificationObj.key.delete()
 
         newNotificationObj = models.Notification()
-        newNotificationObj.owner = user.user_id()
+        newNotificationObj.owner = userid
         newNotificationObj.vehicle = vehicle_id
-        vehicleName = datastore.get_user_vehicle(user.user_id(), vehicle_id)
+        vehicleName = datastore.get_user_vehicle(userid, vehicle_id)
         newNotificationObj.vehicleName = vehicleName.name()
         newNotificationObj.category = category
         recurring = self.request.get("frequencyRadio", False)
@@ -130,7 +132,7 @@ class NotificationHandler(webapp2.RequestHandler):
         newNotificationObj.dateLastSeen = datetime.date.today() - deltaoneday
 
         if newRecurring:
-            lastMaintRecord = datastore.get_n_maint_records(user.user_id(), vehicle_id, category, 1)
+            lastMaintRecord = datastore.get_n_maint_records(userid, vehicle_id, category, 1)
             if newDateBased:
                 if lastMaintRecord:
                     lastRecordedDate = lastMaintRecord.date

@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/AbgwhwTWNVvAuYOYbmr_ZKoNbpY\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/kKd_UqZvnChyq2j8RqRlutm6Q7g\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -77,6 +77,9 @@
    "id": "UserVehicle",
    "type": "object",
    "properties": {
+    "appengine_id": {
+     "type": "string"
+    },
     "color": {
      "type": "string"
     },

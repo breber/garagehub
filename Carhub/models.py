@@ -1,8 +1,8 @@
 from google.appengine.ext import endpoints, ndb
 from google.appengine.ext.ndb import polymodel
 
-from protorpc import remote
-from endpoints_proto_datastore.ndb import EndpointsModel
+from protorpc import remote, messages
+from endpoints_proto_datastore.ndb import EndpointsModel, EndpointsAliasProperty
 
 import utils
 
@@ -28,6 +28,10 @@ class UserVehicle(EndpointsModel):
     color = ndb.StringProperty()
     plates = ndb.StringProperty()
     lastmodified = ndb.DateTimeProperty()
+
+    @EndpointsAliasProperty(property_type=messages.StringField)
+    def appengine_id(self):
+        return str(self.key.id())
 
     def name(self):
         return "%s %s %s" % (self.year, self.make, self.model)

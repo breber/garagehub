@@ -8,8 +8,21 @@ ANDROID_CLIENT_ID = '280486107933.apps.googleusercontent.com'
 ANDROID_DEBUG_CLIENT_ID = '280486107933-4r3v4nis34qimv27bc3pb8vppk38nvho.apps.googleusercontent.com'
 CLIENT_ID = '280486107933-fkp13pk6dv84vdkumqu1vj5hh0o74he3.apps.googleusercontent.com'
 
+# TODO: this probably isn't the best solution, but it should work for now
 def get_user_by_auth(uid):
-    return User.query(User.google_oauth == uid).get()
+    user = User.query(User.google_oauth == uid).get()
+
+    if user:
+        return user
+    else:
+        current_user = endpoints.get_current_user()
+        user_by_email = User.query(User.email_address == current_user.email()).get()
+
+        if user_by_email:
+            user_by_email.google_oauth = uid
+            user_by_email.put()
+
+        return user_by_email
 
 @endpoints.api(name='carhub',version='v1',
                description='CarHub API',

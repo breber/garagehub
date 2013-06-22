@@ -6,6 +6,11 @@ from endpoints_proto_datastore.ndb import EndpointsModel
 
 import utils
 
+class User(ndb.Model):
+    email_address = ndb.StringProperty()
+    is_admin = ndb.BooleanProperty(default=False)
+    google_openid = ndb.StringProperty()
+
 class ServerResponseString(ndb.Model):
     response = ndb.TextProperty()
 

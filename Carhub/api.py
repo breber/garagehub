@@ -16,6 +16,7 @@ class CarHubApi(remote.Service):
 
     @UserVehicle.query_method(user_required=True, path='vehicles', name='vehicles.list')
     def VehiclesList(self, query):
+        logging.warn("Type: %s" % type(endpoints.get_current_user()))
         logging.warn("User: %s" % endpoints.get_current_user())
         return query.filter(UserVehicle.owner == endpoints.get_current_user().user_id())
 

@@ -5,6 +5,7 @@ import datastore
 import datetime
 import hashlib
 import json
+import models
 import time
 
 def get_context(list_vehicles=True):
@@ -13,22 +14,36 @@ def get_context(list_vehicles=True):
     context['logouturl'] = users.create_logout_url("/")
     context['currentYear'] = datetime.date.today().year
 
-    user = users.get_current_user()
+    user = None
+
+    google_openid = users.get_current_user()
+    if google_openid:
+        user = models.User.query(models.User.google_openid == google_openid.user_id()).get()
+
+        if not user:
+            key = models.User(google_openid = google_openid.user_id(),
+                              email_address = google_openid.email(),
+                              is_admin = users.is_current_user_admin()).put()
+            user = models.User.get_by_id(key.id())
+
+            # Update all records in database with new id
+            databaseupgrade.update_userid(google_openid.user_id(), str(user.key.id()))
+
     if user:
         userobj = {}
-        userobj['isAdmin'] = users.is_current_user_admin()
-        userobj['username'] = user.nickname()
-        userobj['profilePic'] = "http://www.gravatar.com/avatar/%s?s=40" % hashlib.md5(user.email()).hexdigest()
+        userobj['isAdmin'] = user.is_admin
+        userobj['username'] = user.email_address # TODO: use name from service provider
+        userobj['profilePic'] = "http://www.gravatar.com/avatar/%s?s=40" % hashlib.md5(user.email_address).hexdigest() # TODO: use image from service provider
         context['user'] = userobj
 
         if list_vehicles:
-            userVehicles = datastore.get_all_user_vehicles(user.user_id())
+            userVehicles = datastore.get_all_user_vehicles(str(user.key.id()))
 
             if len(userVehicles) > 0:
                 context['uservehicles'] = sorted(userVehicles, key=lambda UserVehicle:UserVehicle.name())
 
-            dateNotifications = datastore.get_active_date_notifications(user.user_id())
-            mileNotifications = datastore.get_active_mileage_notifications(user.user_id())
+            dateNotifications = datastore.get_active_date_notifications(str(user.key.id()))
+            mileNotifications = datastore.get_active_mileage_notifications(str(user.key.id()))
             newNotifications = []
 
             for dn in dateNotifications:

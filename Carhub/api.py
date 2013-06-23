@@ -68,8 +68,7 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
-    # TODO: restrict these by specific vehicle
-    @BaseExpense.query_method(user_required=True, path='expense/list', name='expense.list')
+    @BaseExpense.query_method(user_required=True, path='expense/list/{vehicle}', name='expense.list', http_method='GET', query_fields=('vehicle',))
     def ExpenseList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -79,8 +78,7 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
-    # TODO: restrict these by specific vehicle
-    @MaintenanceRecord.query_method(user_required=True, path='maintenance/list', name='maintenance.list')
+    @MaintenanceRecord.query_method(user_required=True, path='maintenance/list/{vehicle}', name='maintenance.list', http_method='GET', query_fields=('vehicle',))
     def MaintenanceList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)

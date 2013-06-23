@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/fpQkuy352N5UZQeqqUILoyAFnkM\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/1SecOduohb6-jk28K-SrOtf16QM\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -227,8 +227,19 @@
    "methods": {
     "list": {
      "id": "carhub.expense.list",
-     "path": "expense/list",
+     "path": "expense/list/{vehicle}",
      "httpMethod": "GET",
+     "parameters": {
+      "vehicle": {
+       "type": "integer",
+       "required": true,
+       "format": "int32",
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "vehicle"
+     ],
      "response": {
       "$ref": "BaseExpenseCollection"
      },
@@ -242,8 +253,19 @@
    "methods": {
     "list": {
      "id": "carhub.maintenance.list",
-     "path": "maintenance/list",
+     "path": "maintenance/list/{vehicle}",
      "httpMethod": "GET",
+     "parameters": {
+      "vehicle": {
+       "type": "integer",
+       "required": true,
+       "format": "int32",
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "vehicle"
+     ],
      "response": {
       "$ref": "MaintenanceRecordCollection"
      },

@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/CVh6I9xVPYGFiPhf7BS6_X70hUw\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/fpQkuy352N5UZQeqqUILoyAFnkM\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -13,10 +13,10 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://car-hub.appspot.com/_ah/api/carhub/v1/vehicles/",
- "basePath": "/_ah/api/carhub/v1/vehicles/",
+ "baseUrl": "https://car-hub.appspot.com/_ah/api/carhub/v1/",
+ "basePath": "/_ah/api/carhub/v1/",
  "rootUrl": "https://car-hub.appspot.com/_ah/api/",
- "servicePath": "carhub/v1/vehicles/",
+ "servicePath": "carhub/v1/",
  "batchPath": "batch",
  "parameters": {
   "alt": {
@@ -73,13 +73,116 @@
   }
  },
  "schemas": {
+  "BaseExpense": {
+   "id": "BaseExpense",
+   "type": "object",
+   "properties": {
+    "amount": {
+     "type": "number",
+     "format": "double"
+    },
+    "categoryid": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "date": {
+     "type": "string"
+    },
+    "description": {
+     "type": "string"
+    },
+    "lastmodified": {
+     "type": "string"
+    },
+    "location": {
+     "type": "string"
+    },
+    "pictureurl": {
+     "type": "string"
+    },
+    "server_id": {
+     "type": "string"
+    },
+    "vehicle": {
+     "type": "integer",
+     "format": "int32"
+    }
+   }
+  },
+  "BaseExpenseCollection": {
+   "id": "BaseExpenseCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "BaseExpense"
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
+  "MaintenanceRecord": {
+   "id": "MaintenanceRecord",
+   "type": "object",
+   "properties": {
+    "amount": {
+     "type": "number",
+     "format": "double"
+    },
+    "categoryid": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "date": {
+     "type": "string"
+    },
+    "description": {
+     "type": "string"
+    },
+    "lastmodified": {
+     "type": "string"
+    },
+    "location": {
+     "type": "string"
+    },
+    "odometer": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "pictureurl": {
+     "type": "string"
+    },
+    "server_id": {
+     "type": "string"
+    },
+    "vehicle": {
+     "type": "integer",
+     "format": "int32"
+    }
+   }
+  },
+  "MaintenanceRecordCollection": {
+   "id": "MaintenanceRecordCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "MaintenanceRecord"
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
   "UserVehicle": {
    "id": "UserVehicle",
    "type": "object",
    "properties": {
-    "appengine_id": {
-     "type": "string"
-    },
     "color": {
      "type": "string"
     },
@@ -92,10 +195,10 @@
     "model": {
      "type": "string"
     },
-    "owner": {
+    "plates": {
      "type": "string"
     },
-    "plates": {
+    "server_id": {
      "type": "string"
     },
     "year": {
@@ -120,11 +223,41 @@
   }
  },
  "resources": {
-  "vehicles": {
+  "expense": {
+   "methods": {
+    "list": {
+     "id": "carhub.expense.list",
+     "path": "expense/list",
+     "httpMethod": "GET",
+     "response": {
+      "$ref": "BaseExpenseCollection"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    }
+   }
+  },
+  "maintenance": {
+   "methods": {
+    "list": {
+     "id": "carhub.maintenance.list",
+     "path": "maintenance/list",
+     "httpMethod": "GET",
+     "response": {
+      "$ref": "MaintenanceRecordCollection"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    }
+   }
+  },
+  "vehicle": {
    "methods": {
     "delete": {
-     "id": "carhub.vehicles.delete",
-     "path": "delete",
+     "id": "carhub.vehicle.delete",
+     "path": "vehicle/delete",
      "httpMethod": "POST",
      "request": {
       "$ref": "UserVehicle"
@@ -137,8 +270,8 @@
      ]
     },
     "list": {
-     "id": "carhub.vehicles.list",
-     "path": "list",
+     "id": "carhub.vehicle.list",
+     "path": "vehicle/list",
      "httpMethod": "GET",
      "response": {
       "$ref": "UserVehicleCollection"
@@ -148,8 +281,8 @@
      ]
     },
     "store": {
-     "id": "carhub.vehicles.store",
-     "path": "store",
+     "id": "carhub.vehicle.store",
+     "path": "vehicle/store",
      "httpMethod": "POST",
      "request": {
       "$ref": "UserVehicle"

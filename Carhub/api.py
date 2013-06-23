@@ -31,8 +31,8 @@ def get_user_by_auth(uid):
                allowed_client_ids=[ANDROID_CLIENT_ID, ANDROID_DEBUG_CLIENT_ID, CLIENT_ID, endpoints.API_EXPLORER_CLIENT_ID])
 class CarHubApi(remote.Service):
 
-    @UserVehicle.query_method(user_required=True, path='vehicles/list', name='vehicles.list')
-    def VehiclesList(self, query):
+    @UserVehicle.query_method(user_required=True, path='vehicle/list', name='vehicle.list')
+    def VehicleList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
 
@@ -41,7 +41,7 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
-    @UserVehicle.method(user_required=True, path='vehicles/store', http_method='POST', name='vehicles.store')
+    @UserVehicle.method(user_required=True, path='vehicle/store', http_method='POST', name='vehicle.store')
     def VehicleStore(self, vehicle):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -53,7 +53,7 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
-    @UserVehicle.method(user_required=True, path='vehicles/delete', http_method='POST', name='vehicles.delete')
+    @UserVehicle.method(user_required=True, path='vehicle/delete', http_method='POST', name='vehicle.delete')
     def VehicleDelete(self, vehicle):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -65,6 +65,28 @@ class CarHubApi(remote.Service):
                 return True
 
             return False
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    # TODO: restrict these by specific vehicle
+    @BaseExpense.query_method(user_required=True, path='expense/list', name='expense.list')
+    def ExpenseList(self, query):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            return query.filter(BaseExpense.owner == str(user.key.id()))
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    # TODO: restrict these by specific vehicle
+    @MaintenanceRecord.query_method(user_required=True, path='maintenance/list', name='maintenance.list')
+    def MaintenanceList(self, query):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            return query.filter(MaintenanceRecord.owner == str(user.key.id()))
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 

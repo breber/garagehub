@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/kKd_UqZvnChyq2j8RqRlutm6Q7g\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/CVh6I9xVPYGFiPhf7BS6_X70hUw\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -13,10 +13,10 @@
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
  "protocol": "rest",
- "baseUrl": "https://car-hub.appspot.com/_ah/api/carhub/v1/",
- "basePath": "/_ah/api/carhub/v1/",
+ "baseUrl": "https://car-hub.appspot.com/_ah/api/carhub/v1/vehicles/",
+ "basePath": "/_ah/api/carhub/v1/vehicles/",
  "rootUrl": "https://car-hub.appspot.com/_ah/api/",
- "servicePath": "carhub/v1/",
+ "servicePath": "carhub/v1/vehicles/",
  "batchPath": "batch",
  "parameters": {
   "alt": {
@@ -122,12 +122,40 @@
  "resources": {
   "vehicles": {
    "methods": {
+    "delete": {
+     "id": "carhub.vehicles.delete",
+     "path": "delete",
+     "httpMethod": "POST",
+     "request": {
+      "$ref": "UserVehicle"
+     },
+     "response": {
+      "$ref": "UserVehicle"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
     "list": {
      "id": "carhub.vehicles.list",
-     "path": "vehicles",
+     "path": "list",
      "httpMethod": "GET",
      "response": {
       "$ref": "UserVehicleCollection"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
+    "store": {
+     "id": "carhub.vehicles.store",
+     "path": "store",
+     "httpMethod": "POST",
+     "request": {
+      "$ref": "UserVehicle"
+     },
+     "response": {
+      "$ref": "UserVehicle"
      },
      "scopes": [
       "https://www.googleapis.com/auth/userinfo.email"

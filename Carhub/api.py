@@ -31,13 +31,40 @@ def get_user_by_auth(uid):
                allowed_client_ids=[ANDROID_CLIENT_ID, ANDROID_DEBUG_CLIENT_ID, CLIENT_ID, endpoints.API_EXPLORER_CLIENT_ID])
 class CarHubApi(remote.Service):
 
-    @UserVehicle.query_method(user_required=True, path='vehicles', name='vehicles.list')
+    @UserVehicle.query_method(user_required=True, path='vehicles/list', name='vehicles.list')
     def VehiclesList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
 
         if user:
             return query.filter(UserVehicle.owner == str(user.key.id()))
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    @UserVehicle.method(user_required=True, path='vehicles/store', http_method='POST', name='vehicles.store')
+    def VehicleStore(self, vehicle):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            vehicle.owner = str(user.key.id())
+            vehicle.put()
+            return vehicle
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    @UserVehicle.method(user_required=True, path='vehicles/delete', http_method='POST', name='vehicles.delete')
+    def VehicleDelete(self, vehicle):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            server_vehicle = UserVehicle.get_by_id(vehicle.key.id())
+            if server_vehicle and server_vehicle.owner == str(user.key.id()):
+                server_vehicle.key.delete()
+                return True
+
+            return False
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 

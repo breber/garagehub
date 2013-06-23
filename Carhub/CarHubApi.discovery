@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/gQB8_re9a-PcPGj7s7y7IlvQyZk\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/pOY0HOAv7SCoNO-14YPRShb1wDs\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -372,6 +372,10 @@
      "path": "fuel/list/{vehicle}",
      "httpMethod": "GET",
      "parameters": {
+      "order": {
+       "type": "string",
+       "location": "query"
+      },
       "vehicle": {
        "type": "integer",
        "required": true,

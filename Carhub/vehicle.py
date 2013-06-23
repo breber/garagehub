@@ -83,11 +83,11 @@ def build_object(request, obj, expense_type, vehicle_id):
 
     # Pass off record for more specific handling
     if expense_type == ExpenseType.FUEL:
-        VehicleGasMileageHandler.handle_request(request, user, obj)
+        VehicleGasMileageHandler.handle_request(request, user_id, obj)
     elif expense_type == ExpenseType.MAINTENANCE:
-        VehicleMaintenanceHandler.handle_request(request, user, obj)
+        VehicleMaintenanceHandler.handle_request(request, user_id, obj)
     else:
-        VehicleExpenseHandler.handle_request(request, user, obj)
+        VehicleExpenseHandler.handle_request(request, user_id, obj)
 
     return obj
 
@@ -251,7 +251,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
             self.response.out.write(template.render(path, context))
 
     @staticmethod
-    def handle_request(request, user, obj):
+    def handle_request(request, user_id, obj):
         # Nothing to do...
         return
 
@@ -271,7 +271,7 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
             self.response.out.write(template.render(path, context))
 
     @staticmethod
-    def handle_request(request, user, obj):
+    def handle_request(request, user_id, obj):
         odometer = request.request.get("odometerEnd", None)
         if odometer:
             odometer = int(odometer)
@@ -330,7 +330,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             self.response.out.write(template.render(path, context))
 
     @staticmethod
-    def handle_request(request, user, obj):
+    def handle_request(request, user_id, obj):
         costPerGallon = float(request.request.get("pricepergallon", None))
         fuelGrade = request.request.get("grade")
         useOdometerLastRecord = request.request.get("sinceLastFuelRecord", False)

@@ -68,6 +68,8 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
+
+
     @BaseExpense.query_method(user_required=True, path='expense/list/{vehicle}', name='expense.list', http_method='GET', query_fields=('vehicle',))
     def ExpenseList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
@@ -78,6 +80,35 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
+    @BaseExpense.method(user_required=True, path='expense/store', http_method='POST', name='expense.store')
+    def ExpenseStore(self, expense):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            expense.owner = str(user.key.id())
+            expense.put()
+            return expense
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    @BaseExpense.method(user_required=True, path='expense/delete', http_method='POST', name='expense.delete')
+    def ExpenseDelete(self, expense):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            server_expense = BaseExpense.get_by_id(expense.key.id())
+            if server_expense and server_expense.owner == str(user.key.id()):
+                server_expense.key.delete()
+                return True
+
+            return False
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+
+
     @MaintenanceRecord.query_method(user_required=True, path='maintenance/list/{vehicle}', name='maintenance.list', http_method='GET', query_fields=('vehicle',))
     def MaintenanceList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
@@ -85,6 +116,72 @@ class CarHubApi(remote.Service):
 
         if user:
             return query.filter(MaintenanceRecord.owner == str(user.key.id()))
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    @MaintenanceRecord.method(user_required=True, path='maintenance/store', http_method='POST', name='maintenance.store')
+    def MaintenanceStore(self, maintenance):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            maintenance.owner = str(user.key.id())
+            maintenance.put()
+            return maintenance
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    @MaintenanceRecord.method(user_required=True, path='maintenance/delete', http_method='POST', name='maintenance.delete')
+    def MaintenanceDelete(self, maintenance):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            server_maintenance = MaintenanceRecord.get_by_id(maintenance.key.id())
+            if server_maintenance and server_maintenance.owner == str(user.key.id()):
+                server_maintenance.key.delete()
+                return True
+
+            return False
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+
+
+    @FuelRecord.query_method(user_required=True, path='fuel/list/{vehicle}', name='fuel.list', http_method='GET', query_fields=('vehicle',))
+    def FuelList(self, query):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            return query.filter(FuelRecord.owner == str(user.key.id()))
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    @FuelRecord.method(user_required=True, path='fuel/store', http_method='POST', name='fuel.store')
+    def FuelStore(self, fuel):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            fuel.owner = str(user.key.id())
+            fuel.put()
+            return fuel
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    @FuelRecord.method(user_required=True, path='fuel/delete', http_method='POST', name='fuel.delete')
+    def FuelDelete(self, fuel):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            server_fuel = FuelRecord.get_by_id(fuel.key.id())
+            if server_fuel and server_fuel.owner == str(user.key.id()):
+                server_fuel.key.delete()
+                return True
+
+            return False
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 

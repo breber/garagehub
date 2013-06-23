@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/1SecOduohb6-jk28K-SrOtf16QM\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/gQB8_re9a-PcPGj7s7y7IlvQyZk\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -124,6 +124,80 @@
     }
    }
   },
+  "FuelRecord": {
+   "id": "FuelRecord",
+   "type": "object",
+   "properties": {
+    "amount": {
+     "type": "number",
+     "format": "double"
+    },
+    "categoryid": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "costPerGallon": {
+     "type": "number",
+     "format": "double"
+    },
+    "date": {
+     "type": "string"
+    },
+    "description": {
+     "type": "string"
+    },
+    "fuelGrade": {
+     "type": "string"
+    },
+    "gallons": {
+     "type": "number",
+     "format": "double"
+    },
+    "lastmodified": {
+     "type": "string"
+    },
+    "location": {
+     "type": "string"
+    },
+    "mpg": {
+     "type": "number",
+     "format": "double"
+    },
+    "odometerEnd": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "odometerStart": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "pictureurl": {
+     "type": "string"
+    },
+    "server_id": {
+     "type": "string"
+    },
+    "vehicle": {
+     "type": "integer",
+     "format": "int32"
+    }
+   }
+  },
+  "FuelRecordCollection": {
+   "id": "FuelRecordCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "FuelRecord"
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
   "MaintenanceRecord": {
    "id": "MaintenanceRecord",
    "type": "object",
@@ -225,6 +299,20 @@
  "resources": {
   "expense": {
    "methods": {
+    "delete": {
+     "id": "carhub.expense.delete",
+     "path": "expense/delete",
+     "httpMethod": "POST",
+     "request": {
+      "$ref": "BaseExpense"
+     },
+     "response": {
+      "$ref": "BaseExpense"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
     "list": {
      "id": "carhub.expense.list",
      "path": "expense/list/{vehicle}",
@@ -246,11 +334,93 @@
      "scopes": [
       "https://www.googleapis.com/auth/userinfo.email"
      ]
+    },
+    "store": {
+     "id": "carhub.expense.store",
+     "path": "expense/store",
+     "httpMethod": "POST",
+     "request": {
+      "$ref": "BaseExpense"
+     },
+     "response": {
+      "$ref": "BaseExpense"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    }
+   }
+  },
+  "fuel": {
+   "methods": {
+    "delete": {
+     "id": "carhub.fuel.delete",
+     "path": "fuel/delete",
+     "httpMethod": "POST",
+     "request": {
+      "$ref": "FuelRecord"
+     },
+     "response": {
+      "$ref": "FuelRecord"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
+    "list": {
+     "id": "carhub.fuel.list",
+     "path": "fuel/list/{vehicle}",
+     "httpMethod": "GET",
+     "parameters": {
+      "vehicle": {
+       "type": "integer",
+       "required": true,
+       "format": "int32",
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "vehicle"
+     ],
+     "response": {
+      "$ref": "FuelRecordCollection"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
+    "store": {
+     "id": "carhub.fuel.store",
+     "path": "fuel/store",
+     "httpMethod": "POST",
+     "request": {
+      "$ref": "FuelRecord"
+     },
+     "response": {
+      "$ref": "FuelRecord"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
     }
    }
   },
   "maintenance": {
    "methods": {
+    "delete": {
+     "id": "carhub.maintenance.delete",
+     "path": "maintenance/delete",
+     "httpMethod": "POST",
+     "request": {
+      "$ref": "MaintenanceRecord"
+     },
+     "response": {
+      "$ref": "MaintenanceRecord"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
     "list": {
      "id": "carhub.maintenance.list",
      "path": "maintenance/list/{vehicle}",
@@ -268,6 +438,20 @@
      ],
      "response": {
       "$ref": "MaintenanceRecordCollection"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
+    "store": {
+     "id": "carhub.maintenance.store",
+     "path": "maintenance/store",
+     "httpMethod": "POST",
+     "request": {
+      "$ref": "MaintenanceRecord"
+     },
+     "response": {
+      "$ref": "MaintenanceRecord"
      },
      "scopes": [
       "https://www.googleapis.com/auth/userinfo.email"

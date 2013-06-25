@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/-gXX7gTRZm7oy6b6ctel4nV6_QA\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/vt5yGPCqhobwchywBD7GsbA-3XM\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -318,6 +318,14 @@
      "path": "expense/list/{vehicle}",
      "httpMethod": "GET",
      "parameters": {
+      "modified_since": {
+       "type": "string",
+       "location": "query"
+      },
+      "order": {
+       "type": "string",
+       "location": "query"
+      },
       "pageToken": {
        "type": "string",
        "location": "query"
@@ -442,6 +450,14 @@
      "path": "maintenance/list/{vehicle}",
      "httpMethod": "GET",
      "parameters": {
+      "modified_since": {
+       "type": "string",
+       "location": "query"
+      },
+      "order": {
+       "type": "string",
+       "location": "query"
+      },
       "pageToken": {
        "type": "string",
        "location": "query"

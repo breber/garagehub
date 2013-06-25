@@ -35,6 +35,19 @@ def get_all_user_vehicles(user_id):
     userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == user_id)
     return ndb.get_multi(userVehiclesQuery.fetch(keys_only=True))
 
+def get_user_favorites(user_id):
+    """Gets a list of favorites for the given user
+
+    Args:
+        user_id - The user ID
+
+    Returns
+        The list of user's favorites
+    """
+
+    userFavoritesQuery = models.UserFavorites.query(models.UserFavorites.owner == user_id)
+    return ndb.get_multi(userFavoritesQuery.fetch(keys_only=True))
+
 def get_all_expense_records(user_id, vehicle_id, day_range=30, ascending=True, polymorphic=True, keys_only=False):
     """Gets the BaseExpense for the given vehicle ID
 

@@ -163,8 +163,27 @@ class NotificationHandler(webapp2.RequestHandler):
 
         self.redirect("/notifications")
 
+class UserFavoritesHandler(webapp2.RequestHandler):
+    def get(self):
+        context = utils.get_context()
+        userid = context['user']['userId']
+        datastore.get_user_favorites(userid)
+        
+        self.redirect("/")
+        
+    def post(self):
+        context = utils.get_context()
+        userid = context['user']['userId']
+        
+        favorites = models.UserFavorites()
+        favorites.owner = userid
+        favorites.gas_station_id = self.request.get("stationid", 0)
+        
+        favorites.put()
+
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/userfavorites/gasstation', UserFavoritesHandler),
     ('/notifications/?([^/]+)?/?(.+?)?', NotificationHandler),
     ('/cars/raw/?([^/]+)?/?(.+?)?', RawVehicleHandler)
 ], debug=True)

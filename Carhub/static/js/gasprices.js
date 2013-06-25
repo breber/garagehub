@@ -24,10 +24,12 @@ $(document).ready(function() {
 	getGasPrices();
 });
 
-
-
 function favoriteHandler() {
-	alert("Favorite Handler");
+	//alert("Favorite Handler");
+	var id = $("#hiddenId").text();
+	$.post("/userfavorites/gasstation", { stationid: id}, function(data) {
+		//Can do something here on response
+	});
 	
 }
 
@@ -40,9 +42,9 @@ function updateHandler(name, location) {
 function updateSubmitHandler() {
 	//alert("post");
 	//TODO fix this so it works
-	$.post("http://api.mygasfeed.com/locations/price/zax22arsix.json", { price: "3.63", fueltype: "2", stationid: "1" }, function(data) {
-		  alert(data);
-	});
+//	$.post("http://api.mygasfeed.com/locations/price/zax22arsix.json", { price: "3.63", fueltype: "2", stationid: "1" }, function(data) {
+//		  alert(data);
+//	});
 	
 }
 
@@ -54,12 +56,15 @@ function updateCloseHandler() {
 $(document).on("click", "#gaspricetable tr td", function() {
 	var lat = $(this).parent().find('td').eq(5).text();
 	var lon = $(this).parent().find('td').eq(6).text();
+	var id = $(this).parent().find('td').eq(7).text();
 	var name = $(this).parent().find('td').eq(0).text();
 	var location = $(this).parent().find('td').eq(1).text();
 	$('#stationNameModal').empty();
 	$('#stationNameModal').append(name+' - '+location);
 	$('#stationNamePriceModal').empty();
 	$('#stationNamePriceModal').append(name+' - '+location);
+	$('#hiddenId').empty();
+	$('#hiddenId').append(id);
 
 	var mapOptions = {
 		zoom : 14,

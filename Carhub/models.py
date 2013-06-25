@@ -19,6 +19,10 @@ class BaseVehicle(ndb.Model):
     make = ndb.StringProperty()
     model = ndb.StringProperty()
     years = ndb.StringProperty()
+    
+class UserFavorites(ndb.Model):
+    owner = ndb.StringProperty()
+    gas_station_id = ndb.StringProperty()
 
 class UserVehicle(EndpointsModel):
     _message_fields_schema = ('server_id', 'make', 'model', 'year', 'color', 'plates', 'lastmodified')

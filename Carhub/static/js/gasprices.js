@@ -9,15 +9,57 @@ $(document).ready(function() {
 	// Setup click handlers
 	$("#location").click(hideZipCode);
 	$("#fetchPrices").click(getGasPrices);
-
+	
+	//Favorite Handler
+	$("#saveAsFavorite").click(favoriteHandler);
+	
+	//Update Handler
+	$("#priceUpdate").click(updateHandler);
+	$("#priceUpdateClose").click(updateCloseHandler);
+	$("#priceUpdateSubmit").click(updateSubmitHandler);
+	
+	
 	datatablesObject = null;
 
 	getGasPrices();
 });
 
+
+
+function favoriteHandler() {
+	alert("Favorite Handler");
+	
+}
+
+function updateHandler(name, location) {
+	//modalPriceUpdate
+	$("#modalMap").hide();
+	$("#modalPriceUpdate").modal();
+}
+
+function updateSubmitHandler() {
+	//alert("post");
+	//TODO fix this so it works
+	$.post("http://api.mygasfeed.com/locations/price/zax22arsix.json", { price: "3.63", fueltype: "2", stationid: "1" }, function(data) {
+		  alert(data);
+	});
+	
+}
+
+function updateCloseHandler() {
+	//modalPriceUpdate
+	$("#modalMap").modal();
+}
+
 $(document).on("click", "#gaspricetable tr td", function() {
 	var lat = $(this).parent().find('td').eq(5).text();
 	var lon = $(this).parent().find('td').eq(6).text();
+	var name = $(this).parent().find('td').eq(0).text();
+	var location = $(this).parent().find('td').eq(1).text();
+	$('#stationNameModal').empty();
+	$('#stationNameModal').append(name+' - '+location);
+	$('#stationNamePriceModal').empty();
+	$('#stationNamePriceModal').append(name+' - '+location);
 
 	var mapOptions = {
 		zoom : 14,
@@ -159,6 +201,7 @@ function displayGasPrices(JSONGasFeed) {
                 station["4"] = item.date;
                 station["5"] = item.lat;
                 station["6"] = item.lng;
+                station["7"] = item.id;
                 station["DT_RowClass"] = "linkable";
 
                 if (item.price !== "N/A") {
@@ -182,7 +225,8 @@ function displayGasPrices(JSONGasFeed) {
             $('#gaspricetable th:nth-child(6)').hide();
             $('#gaspricetable td:nth-child(7)').hide();
             $('#gaspricetable th:nth-child(7)').hide();
-
+            $('#gaspricetable td:nth-child(8)').hide();
+            $('#gaspricetable th:nth-child(8)').hide();
             stopLoading();
         }
     );

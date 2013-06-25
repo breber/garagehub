@@ -70,7 +70,7 @@ class CarHubApi(remote.Service):
 
 
 
-    @BaseExpense.query_method(user_required=True, path='expense/list/{vehicle}', name='expense.list', http_method='GET', query_fields=('vehicle',))
+    @BaseExpense.query_method(user_required=True, path='expense/list/{vehicle}', name='expense.list', http_method='GET', query_fields=('vehicle', 'pageToken'))
     def ExpenseList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -109,7 +109,7 @@ class CarHubApi(remote.Service):
 
 
 
-    @MaintenanceRecord.query_method(user_required=True, path='maintenance/list/{vehicle}', name='maintenance.list', http_method='GET', query_fields=('vehicle',))
+    @MaintenanceRecord.query_method(user_required=True, path='maintenance/list/{vehicle}', name='maintenance.list', http_method='GET', query_fields=('vehicle', 'pageToken'))
     def MaintenanceList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -148,7 +148,7 @@ class CarHubApi(remote.Service):
 
 
 
-    @FuelRecord.query_method(user_required=True, path='fuel/list/{vehicle}', name='fuel.list', http_method='GET', query_fields=('vehicle', 'order'))
+    @FuelRecord.query_method(user_required=True, path='fuel/list/{vehicle}', name='fuel.list', http_method='GET', query_fields=('vehicle', 'order', 'pageToken'))
     def FuelList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)

@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/pOY0HOAv7SCoNO-14YPRShb1wDs\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/xVpQSSOw2PhrsuPICWi1G6c_yzI\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -318,6 +318,10 @@
      "path": "expense/list/{vehicle}",
      "httpMethod": "GET",
      "parameters": {
+      "pageToken": {
+       "type": "string",
+       "location": "query"
+      },
       "vehicle": {
        "type": "integer",
        "required": true,
@@ -376,6 +380,10 @@
        "type": "string",
        "location": "query"
       },
+      "pageToken": {
+       "type": "string",
+       "location": "query"
+      },
       "vehicle": {
        "type": "integer",
        "required": true,
@@ -430,6 +438,10 @@
      "path": "maintenance/list/{vehicle}",
      "httpMethod": "GET",
      "parameters": {
+      "pageToken": {
+       "type": "string",
+       "location": "query"
+      },
       "vehicle": {
        "type": "integer",
        "required": true,

@@ -148,7 +148,7 @@ class CarHubApi(remote.Service):
 
 
 
-    @FuelRecord.query_method(user_required=True, path='fuel/list/{vehicle}', name='fuel.list', http_method='GET', query_fields=('vehicle', 'order', 'pageToken'))
+    @FuelRecord.query_method(user_required=True, path='fuel/list/{vehicle}', name='fuel.list', http_method='GET', query_fields=('vehicle', 'order', 'pageToken', 'modified_since'))
     def FuelList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)

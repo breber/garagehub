@@ -19,7 +19,7 @@ class BaseVehicle(ndb.Model):
     make = ndb.StringProperty()
     model = ndb.StringProperty()
     years = ndb.StringProperty()
-    
+
 class UserFavorites(ndb.Model):
     owner = ndb.StringProperty()
     gas_station_id = ndb.StringProperty()
@@ -71,6 +71,23 @@ class BaseExpense(EndpointsModel, polymodel.PolyModel):
     @EndpointsAliasProperty(property_type=messages.StringField)
     def server_id(self):
         return str(self.key.id())
+
+    def modified_since_set(self, value):
+        from endpoints_proto_datastore import utils
+        import datetime
+
+        try:
+            modified_since = utils.DatetimeValueFromString(value)
+            if not isinstance(modified_since, datetime.datetime):
+                raise TypeError('Not a datetime stamp.')
+        except TypeError:
+            raise endpoints.BadRequestException('Invalid timestamp for modifiedSince.')
+
+        self._endpoints_query_info._filters.add(BaseExpense.lastmodified >= modified_since)
+
+    @EndpointsAliasProperty(setter=modified_since_set)
+    def modified_since(self):
+        raise endpoints.BadRequestException('modifiedSince value should never be accessed.')
 
     def date_formatted(self):
         return utils.format_date(self.date)

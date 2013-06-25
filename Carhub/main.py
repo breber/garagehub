@@ -173,13 +173,14 @@ class UserFavoritesHandler(webapp2.RequestHandler):
         
     def post(self):
         context = utils.get_context()
-        userid = context['user']['userId']
-        
-        favorites = models.UserFavorites()
-        favorites.owner = userid
-        favorites.gas_station_id = self.request.get("stationid", 0)
-        
-        favorites.put()
+        if context['user']['userId']:
+            userid = context['user']['userId']
+            
+            favorites = models.UserFavorites()
+            favorites.owner = userid
+            favorites.gas_station_id = self.request.get("stationid", 0)
+            
+            favorites.put()
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),

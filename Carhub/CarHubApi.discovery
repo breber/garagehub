@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/vt5yGPCqhobwchywBD7GsbA-3XM\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/cX5yFH1tzHKhdBfwUbWjQp3QROc\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -73,57 +73,6 @@
   }
  },
  "schemas": {
-  "BaseExpense": {
-   "id": "BaseExpense",
-   "type": "object",
-   "properties": {
-    "amount": {
-     "type": "number",
-     "format": "double"
-    },
-    "categoryid": {
-     "type": "integer",
-     "format": "int32"
-    },
-    "date": {
-     "type": "string"
-    },
-    "description": {
-     "type": "string"
-    },
-    "lastmodified": {
-     "type": "string"
-    },
-    "location": {
-     "type": "string"
-    },
-    "pictureurl": {
-     "type": "string"
-    },
-    "server_id": {
-     "type": "string"
-    },
-    "vehicle": {
-     "type": "integer",
-     "format": "int32"
-    }
-   }
-  },
-  "BaseExpenseCollection": {
-   "id": "BaseExpenseCollection",
-   "type": "object",
-   "properties": {
-    "items": {
-     "type": "array",
-     "items": {
-      "$ref": "BaseExpense"
-     }
-    },
-    "nextPageToken": {
-     "type": "string"
-    }
-   }
-  },
   "FuelRecord": {
    "id": "FuelRecord",
    "type": "object",
@@ -253,6 +202,57 @@
     }
    }
   },
+  "UserExpenseRecord": {
+   "id": "UserExpenseRecord",
+   "type": "object",
+   "properties": {
+    "amount": {
+     "type": "number",
+     "format": "double"
+    },
+    "categoryid": {
+     "type": "integer",
+     "format": "int32"
+    },
+    "date": {
+     "type": "string"
+    },
+    "description": {
+     "type": "string"
+    },
+    "lastmodified": {
+     "type": "string"
+    },
+    "location": {
+     "type": "string"
+    },
+    "pictureurl": {
+     "type": "string"
+    },
+    "server_id": {
+     "type": "string"
+    },
+    "vehicle": {
+     "type": "integer",
+     "format": "int32"
+    }
+   }
+  },
+  "UserExpenseRecordCollection": {
+   "id": "UserExpenseRecordCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "UserExpenseRecord"
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
   "UserVehicle": {
    "id": "UserVehicle",
    "type": "object",
@@ -304,10 +304,10 @@
      "path": "expense/delete",
      "httpMethod": "POST",
      "request": {
-      "$ref": "BaseExpense"
+      "$ref": "UserExpenseRecord"
      },
      "response": {
-      "$ref": "BaseExpense"
+      "$ref": "UserExpenseRecord"
      },
      "scopes": [
       "https://www.googleapis.com/auth/userinfo.email"
@@ -341,7 +341,7 @@
       "vehicle"
      ],
      "response": {
-      "$ref": "BaseExpenseCollection"
+      "$ref": "UserExpenseRecordCollection"
      },
      "scopes": [
       "https://www.googleapis.com/auth/userinfo.email"
@@ -352,10 +352,10 @@
      "path": "expense/store",
      "httpMethod": "POST",
      "request": {
-      "$ref": "BaseExpense"
+      "$ref": "UserExpenseRecord"
      },
      "response": {
-      "$ref": "BaseExpense"
+      "$ref": "UserExpenseRecord"
      },
      "scopes": [
       "https://www.googleapis.com/auth/userinfo.email"

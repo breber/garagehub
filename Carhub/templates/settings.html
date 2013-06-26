@@ -40,7 +40,7 @@
           <tbody>
             {% if categories %}
             {% for c in categories %}
-            <tr id="{{ c.key.id }}">
+            <tr id="{{ c.key.id() }}">
               <td class="expense">{{ c.category }}</td>
             </tr>
             {% endfor %}
@@ -57,7 +57,7 @@
             </tr>
             {% if defaultcategories %}
             {% for c in defaultcategories %}
-            <tr id="{{ c.key.id }}">
+            <tr id="{{ c.key.id() }}">
               <td class="expense">{{ c.category }}</td>
             </tr>
             {% endfor %}
@@ -76,8 +76,8 @@
           <tbody>
             {% if maintcategories %}
             {% for c in maintcategories %}
-            <tr id="{{ c.key.id }}">
-              <td class="maintenance">{{ c.name }}</td>
+            <tr id="{{ c.key.id() }}">
+              <td class="maintenance">{{ c.name() }}</td>
             </tr>
             {% endfor %}
             {% endif %}
@@ -93,8 +93,8 @@
             </tr>
             {% if defaultmaintcategories %}
             {% for c in defaultmaintcategories %}
-            <tr id="{{ c.key.id }}">
-              <td class="expense">{{ c.name }}</td>
+            <tr id="{{ c.key.id() }}">
+              <td class="expense">{{ c.name() }}</td>
             </tr>
             {% endfor %}
             {% endif %}

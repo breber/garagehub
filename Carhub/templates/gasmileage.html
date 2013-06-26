@@ -24,13 +24,13 @@
     </div>
     {% else %}
     <p>You don't have any fuel transactions recorded yet.</p>
-    <p>Record one <a href="/vehicle/{{ car.key.id }}/gasmileage/add">here</a>!</p>
+    <p>Record one <a href="/vehicle/{{ car.key.id() }}/gasmileage/add">here</a>!</p>
     {% endif %}
   </div>
   <div class="span3">
     {% if userfuelrecords %}
     <div class="row-fluid">
-      <a id="record-add" class="btn btn-primary span12 expense-btn" href="/vehicle/{{ car.key.id }}/gasmileage/add"><i class="icon-plus icon-white"></i> Add Fuel Record</a>
+      <a id="record-add" class="btn btn-primary span12 expense-btn" href="/vehicle/{{ car.key.id() }}/gasmileage/add"><i class="icon-plus icon-white"></i> Add Fuel Record</a>
     </div>
     <div class="row-fluid">
       <a id="record-edit" class="btn btn-inverse span12 expense-btn"><i class="icon-edit icon-white"></i> Edit Record</a>
@@ -62,17 +62,17 @@
   </thead>
   <tbody>
   {% for e in userfuelrecords %}
-  <tr id="{{ e.key.id }}">
-    <td>{{ e.date_formatted }}</td>
+  <tr id="{{ e.key.id() }}">
+    <td>{{ e.date_formatted() }}</td>
 
     {% if e.odometerEnd != -1 and e.odometerStart != -1 and e.gallons > 0 and e.odometerEnd >= e.odometerStart %}
-    <td>{{ e.mpg_formatted }}</td>
+    <td>{{ e.mpg_formatted() }}</td>
     {% else %}
     <td>N/A</td>
     {% endif %}
 
-    <td>{{ e.amount_formatted }}</td>
-    <td>{{ e.costPerGallon_formatted }}</td>
+    <td>{{ e.amount_formatted() }}</td>
+    <td>{{ e.costPerGallon_formatted() }}</td>
 
     {% if e.location == "" %}
     <td>N/A</td>
@@ -86,12 +86,12 @@
     {% if e.odometerStart == -1 %}
     N/A -
     {% else %}
-    {{ e.odometerStart_formatted }} -
+    {{ e.odometerStart_formatted() }} -
     {% endif %}
     {% if e.odometerEnd == -1 %}
     N/A
     {% else %}
-    {{ e.odometerEnd_formatted }}
+    {{ e.odometerEnd_formatted() }}
     {% endif %}
     </td>
     {% if e.picture %}

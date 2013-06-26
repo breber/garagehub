@@ -22,7 +22,7 @@
 	</thead>
 	{% if notifications %}
 		{% for notif in notifications %}
-		<tr id="{{ notif.key.id }}">
+		<tr id="{{ notif.key.id() }}">
 			<td>{{ notif.vehicleName }}</td>
 			<td>{{ notif.category }}</td>
 			<td>

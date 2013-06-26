@@ -192,6 +192,10 @@ class DashboardHandler(webapp2.RequestHandler):
             user_id = context['user']['userId']
             results = datastore.get_user_favorites(user_id)
             
+            notifications = datastore.get_notifications(user_id)
+            if len(notifications) > 0:
+                context["notifications"] = notifications 
+                
             toRet = ''
             for v in results:
                 toRet=v.gas_station_id

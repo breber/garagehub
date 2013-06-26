@@ -1,3 +1,4 @@
+from datetime import datetime
 from google.appengine.ext import endpoints, ndb
 from google.appengine.ext.ndb import polymodel
 
@@ -73,12 +74,9 @@ class BaseExpense(EndpointsModel, polymodel.PolyModel):
         return str(self.key.id())
 
     def modified_since_set(self, value):
-        from endpoints_proto_datastore import utils
-        import datetime
-
         try:
-            modified_since = utils.DatetimeValueFromString(value)
-            if not isinstance(modified_since, datetime.datetime):
+            modified_since = datetime.ctime(long(value))
+            if not isinstance(modified_since, datetime):
                 raise TypeError('Not a datetime stamp.')
         except TypeError:
             raise endpoints.BadRequestException('Invalid timestamp for modifiedSince.')

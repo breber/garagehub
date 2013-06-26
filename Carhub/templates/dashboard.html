@@ -24,7 +24,7 @@
           </tr>
         </thead>
         {% for v in uservehicles %}
-        <tr id="{{ v.key.id }}" class="linkable">
+        <tr id="{{ v.key.id() }}" class="linkable">
           <td>{{ v.year }}</td>
           <td>{{ v.make }}</td>
           <td>{{ v.model }}</td>

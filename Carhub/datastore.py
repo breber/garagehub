@@ -32,7 +32,7 @@ def get_all_user_vehicles(user_id):
         The list of user's vehicles
     """
 
-    userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == user_id,)
+    userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == user_id)
     return ndb.get_multi(userVehiclesQuery.fetch(keys_only=True))
 
 def get_user_favorites(user_id, numberToFetch=10, ascending=True):
@@ -61,39 +61,31 @@ def get_all_expense_records(user_id, vehicle_id, day_range=30, ascending=True, p
         The list of BaseExpense
     """
 
+    if polymorphic:
+        clazz = models.BaseExpense
+    else:
+        clazz = models.UserExpenseRecord
+
     if day_range:
         delta = datetime.timedelta(days=day_range)
         date = datetime.datetime.now() - delta
-        query = models.BaseExpense().query(models.BaseExpense.owner == user_id,
-                                           models.BaseExpense.vehicle == long(vehicle_id),
-                                           models.BaseExpense.date >= date)
+        query = clazz().query(clazz.owner == user_id,
+                              clazz.vehicle == long(vehicle_id),
+                              clazz.date >= date)
     else:
-        query = models.BaseExpense().query(models.BaseExpense.owner == user_id,
-                                           models.BaseExpense.vehicle == long(vehicle_id))
+        query = clazz().query(clazz.owner == user_id,
+                              clazz.vehicle == long(vehicle_id))
 
     if ascending:
-        query = query.order(models.BaseExpense.date)
+        query = query.order(clazz.date)
     else:
-        query = query.order(-models.BaseExpense.date)
+        query = query.order(-clazz.date)
 
-    if polymorphic:
-        if keys_only:
-            return query.fetch(keys_only=True)
-        else:
-            return ndb.get_multi(query.fetch(keys_only=True))
+
+    if keys_only:
+        return query.fetch(keys_only=True)
     else:
-        # TODO: ideally we can get only the BaseExpenses using a query
-        records = ndb.get_multi(query.fetch(keys_only=True))
-        selectrecords = []
-
-        for r in records:
-            if r.__class__ == models.BaseExpense:
-                if keys_only:
-                    selectrecords.append(r.key.id())
-                else:
-                    selectrecords.append(r)
-
-        return selectrecords
+        return ndb.get_multi(query.fetch(keys_only=True))
 
 def get_base_expense_record(user_id, vehicle_id, expense_id):
     """Gets the BaseExpense for the given expense_id

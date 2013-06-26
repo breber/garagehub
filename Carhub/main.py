@@ -1,25 +1,31 @@
 #!/usr/bin/env python
 from google.appengine.api import users
-from google.appengine.ext.webapp import template
+from webapp2_extras import jinja2
 import datetime
 import datastore
 import json
 import models
-import os
 import utils
 import webapp2
 import logging
 
 class MainHandler(webapp2.RequestHandler):
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, template_args):
+          self.response.write(self.jinja2.render_template(filename, **template_args))
+
     def get(self):
         context = utils.get_context()
 
         if context['user']:
-            path = os.path.join(os.path.dirname(__file__), 'templates/garage.html')
+            path = 'garage.html'
         else:
-            path = os.path.join(os.path.dirname(__file__), 'templates/welcome.html')
+            path = 'welcome.html'
 
-        self.response.out.write(template.render(path, context))
+        self.render_template(path, context)
 
 class RawVehicleHandler(webapp2.RequestHandler):
     def get(self, make, model):
@@ -36,12 +42,19 @@ class RawVehicleHandler(webapp2.RequestHandler):
             self.response.out.write(json.dumps(yearList))
 
 class NotificationHandler(webapp2.RequestHandler):
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, template_args):
+          self.response.write(self.jinja2.render_template(filename, **template_args))
+
     def get(self, page_name, notification_id):
         context = utils.get_context()
         userid = context['user']['userId']
 
         if page_name == "add":
-            path = os.path.join(os.path.dirname(__file__), 'templates/addnotification.html')
+            path = 'addnotification.html'
             userVehicles = datastore.get_all_user_vehicles(userid)
             if len(userVehicles) > 0:
                 context["vehicles"] = userVehicles
@@ -64,9 +77,9 @@ class NotificationHandler(webapp2.RequestHandler):
             notifications = datastore.get_notifications(userid)
             if len(notifications) > 0:
                 context["notifications"] = notifications
-            path = os.path.join(os.path.dirname(__file__), 'templates/notifications.html')
+            path = 'notifications.html'
 
-        self.response.out.write(template.render(path, context))
+        self.render_template(path, context)
 
     def post(self, page_name, notification_id):
         context = utils.get_context()
@@ -169,22 +182,29 @@ class UserFavoritesHandler(webapp2.RequestHandler):
         context = utils.get_context()
         userid = context['user']['userId']
         datastore.get_user_favorites(userid)
-        
+
         self.redirect("/")
-        
+
     def post(self):
         context = utils.get_context()
         if context['user']['userId']:
             userid = context['user']['userId']
-            
+
             favorites = models.UserFavorites()
             favorites.owner = userid
             favorites.gas_station_id = self.request.get("stationid", 0)
             favorites.date = datetime.datetime.now()
-            
+
             favorites.put()
-            
+
 class DashboardHandler(webapp2.RequestHandler):
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, template_args):
+          self.response.write(self.jinja2.render_template(filename, **template_args))
+
     def get(self):
         context = utils.get_context()
 
@@ -195,19 +215,18 @@ class DashboardHandler(webapp2.RequestHandler):
             notifications = datastore.get_notifications(user_id)
             if len(notifications) > 0:
                 context["notifications"] = notifications 
-                
+
             toRet = ''
             for v in results:
                 toRet=v.gas_station_id
                 logging.info(toRet)
-            
-            context["FavoriteStationId"] = toRet
-            path = os.path.join(os.path.dirname(__file__), 'templates/dashboard.html')
-        else:
-            path = os.path.join(os.path.dirname(__file__), 'templates/welcome.html')
 
-        self.response.out.write(template.render(path, context))
-        
+            context["FavoriteStationId"] = toRet
+            path = 'dashboard.html'
+        else:
+            path = 'welcome.html'
+
+        self.render_template(path, context)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),

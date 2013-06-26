@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 from google.appengine.api import images, users
 from google.appengine.ext import blobstore
-from google.appengine.ext.webapp import blobstore_handlers, template
+from google.appengine.ext.webapp import blobstore_handlers
+from webapp2_extras import jinja2
 import datastore
 import datetime
 import models
-import os
 import utils
 import webapp2
 
@@ -92,6 +92,13 @@ def build_object(request, obj, expense_type, vehicle_id):
     return obj
 
 class VehicleExpenseAddHandler(blobstore_handlers.BlobstoreUploadHandler):
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, template_args):
+          self.response.write(self.jinja2.render_template(filename, **template_args))
+
     def get(self, vehicle_id, page_name):
         context = utils.get_context()
         user_id = context['user']['userId']
@@ -114,8 +121,7 @@ class VehicleExpenseAddHandler(blobstore_handlers.BlobstoreUploadHandler):
                 context["categories"] = datastore.get_expense_categories(user_id)
             context["upload_url"] = blobstore.create_upload_url(self.request.url)
 
-            path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
-            self.response.out.write(template.render(path, context))
+            self.render_template('addexpense.html', context)
 
     def post(self, vehicle_id, page_name):
         page_type = ExpenseType.parse_page_name(page_name)
@@ -125,7 +131,7 @@ class VehicleExpenseAddHandler(blobstore_handlers.BlobstoreUploadHandler):
         elif page_type == ExpenseType.FUEL:
             expense = models.FuelRecord()
         else:
-            expense = models.BaseExpense()
+            expense = models.UserExpenseRecord()
 
         obj = build_object(self, expense, page_type, vehicle_id)
         if obj:
@@ -141,6 +147,13 @@ class VehicleExpenseAddHandler(blobstore_handlers.BlobstoreUploadHandler):
 
 
 class VehicleExpenseEditHandler(blobstore_handlers.BlobstoreUploadHandler):
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, template_args):
+          self.response.write(self.jinja2.render_template(filename, **template_args))
+
     def get(self, vehicle_id, page_name, expense_id):
         context = utils.get_context()
         user_id = context['user']['userId']
@@ -170,8 +183,7 @@ class VehicleExpenseEditHandler(blobstore_handlers.BlobstoreUploadHandler):
 
             baseExpense.categoryname = category.name()
 
-            path = os.path.join(os.path.dirname(__file__), 'templates/addexpense.html')
-            self.response.out.write(template.render(path, context))
+            self.render_template('addexpense.html', context)
 
     def post(self, vehicle_id, page_name, expense_id):
         context = utils.get_context()
@@ -222,6 +234,13 @@ class VehicleExpenseDeleteHandler(webapp2.RequestHandler):
                 self.redirect("/vehicle/%s/expenses" % vehicle_id)
 
 class VehicleExpenseHandler(webapp2.RequestHandler):
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, template_args):
+          self.response.write(self.jinja2.render_template(filename, **template_args))
+
     def get(self, vehicle_id):
         context = utils.get_context()
         user_id = context['user']['userId']
@@ -246,9 +265,7 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
 
             context['expensetotal'] = utils.format_float(expenseTotal)
 
-            path = os.path.join(os.path.dirname(__file__), 'templates/expenses.html')
-
-            self.response.out.write(template.render(path, context))
+            self.render_template('expenses.html', context)
 
     @staticmethod
     def handle_request(request, user_id, obj):
@@ -256,6 +273,13 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
         return
 
 class VehicleMaintenanceHandler(webapp2.RequestHandler):
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, template_args):
+          self.response.write(self.jinja2.render_template(filename, **template_args))
+
     def get(self, vehicle_id):
         context = utils.get_context()
         user_id = context['user']['userId']
@@ -267,8 +291,7 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
             context["categories"] = datastore.get_maintenance_categories(user_id)
             context["maintRecords"] = datastore.get_maintenance_records(user_id, vehicle_id, None)
 
-            path = os.path.join(os.path.dirname(__file__), 'templates/maintenance.html')
-            self.response.out.write(template.render(path, context))
+            self.render_template('maintenance.html', context)
 
     @staticmethod
     def handle_request(request, user_id, obj):
@@ -309,6 +332,13 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
                     relevantNotif.key.delete()
 
 class VehicleGasMileageHandler(webapp2.RequestHandler):
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, template_args):
+          self.response.write(self.jinja2.render_template(filename, **template_args))
+
     def get(self, vehicle_id):
         context = utils.get_context()
         user_id = context['user']['userId']
@@ -325,9 +355,8 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
             # add milestotal as a comma-delimited string
             context['milestotal'] = datastore.get_total_miles(user_id, vehicle_id)
             context['pricepermile'] = datastore.get_cost_per_mile(user_id, vehicle_id)
-            path = os.path.join(os.path.dirname(__file__), 'templates/gasmileage.html')
 
-            self.response.out.write(template.render(path, context))
+            self.render_template('gasmileage.html', context)
 
     @staticmethod
     def handle_request(request, user_id, obj):
@@ -374,13 +403,20 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
 
 
 class VehicleHandler(webapp2.RequestHandler):
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, template_args):
+          self.response.write(self.jinja2.render_template(filename, **template_args))
+
     def get(self, vehicle_id, page_name):
         context = utils.get_context()
         user_id = context['user']['userId']
 
         # If the path doesn't contain a first parameter, just show the garage
         if not vehicle_id:
-            path = os.path.join(os.path.dirname(__file__), 'templates/garage.html')
+            path = 'garage.html'
 
         # If we have a first path parameter, and it isn't add, use that as
         # the vehicle ID and show that vehicle's page
@@ -393,13 +429,13 @@ class VehicleHandler(webapp2.RequestHandler):
                 self.redirect("/")
 
             if page_name == "charts":
-                path = os.path.join(os.path.dirname(__file__), 'templates/charts.html')
+                path = 'charts.html'
             elif page_name == "news":
-                path = os.path.join(os.path.dirname(__file__), 'templates/news.html')
+                path = 'news.html'
             else:
-                path = os.path.join(os.path.dirname(__file__), 'templates/car.html')
+                path = 'car.html'
 
-        self.response.out.write(template.render(path, context))
+        self.render_template(path, context)
 
     def post(self, make_option, model):
         context = utils.get_context()

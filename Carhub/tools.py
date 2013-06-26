@@ -1,21 +1,28 @@
 #!/usr/bin/env python
-from google.appengine.ext.webapp import template
-import os
+from webapp2_extras import jinja2
 import utils
 import webapp2
 
 class ToolsHandler(webapp2.RequestHandler):
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, template_args):
+          self.response.write(self.jinja2.render_template(filename, **template_args))
+
     def get(self, page_name):
         context = utils.get_context()
 
         if page_name == "gasprices":
-            path = os.path.join(os.path.dirname(__file__), 'templates/gasprices.html')
+            path = 'gasprices.html'
         elif page_name == "tripplanner":
-            path = os.path.join(os.path.dirname(__file__), 'templates/tripplanner.html')
+            path = 'tripplanner.html'
         else:
             self.redirect("/")
+            return
 
-        self.response.out.write(template.render(path, context))
+        self.render_template(path, context)
 
 app = webapp2.WSGIApplication([
     ('/tools/([^/]+)', ToolsHandler)

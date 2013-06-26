@@ -14,7 +14,7 @@
 			<select id="selectVehicle" name="selectVehicle">
 				{% if vehicles %}
 					{% for v in vehicles %}
-						<option value="{{ v.key.id }}">{{ v.name }}</option>
+						<option value="{{ v.key.id() }}">{{ v.name() }}</option>
 					{% endfor %}
 				{% endif %}
 			</select>

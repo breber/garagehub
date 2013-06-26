@@ -31,7 +31,9 @@ def get_user_by_auth(uid):
                allowed_client_ids=[ANDROID_CLIENT_ID, ANDROID_DEBUG_CLIENT_ID, CLIENT_ID, endpoints.API_EXPLORER_CLIENT_ID])
 class CarHubApi(remote.Service):
 
-    @UserVehicle.query_method(user_required=True, path='vehicle/list', name='vehicle.list')
+    @UserVehicle.query_method(user_required=True,
+                              path='vehicle/list',
+                              name='vehicle.list')
     def VehicleList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -41,7 +43,10 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
-    @UserVehicle.method(user_required=True, path='vehicle/store', http_method='POST', name='vehicle.store')
+    @UserVehicle.method(user_required=True,
+                        path='vehicle/store',
+                        http_method='POST',
+                        name='vehicle.store')
     def VehicleStore(self, vehicle):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -53,7 +58,10 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
-    @UserVehicle.method(user_required=True, path='vehicle/delete', http_method='POST', name='vehicle.delete')
+    @UserVehicle.method(user_required=True,
+                        path='vehicle/delete',
+                        http_method='POST',
+                        name='vehicle.delete')
     def VehicleDelete(self, vehicle):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -70,17 +78,24 @@ class CarHubApi(remote.Service):
 
 
 
-    @BaseExpense.query_method(user_required=True, path='expense/list/{vehicle}', name='expense.list', http_method='GET', query_fields=('vehicle', 'order', 'pageToken', 'modified_since'))
+    @UserExpenseRecord.query_method(user_required=True,
+                                    path='expense/list/{vehicle}',
+                                    name='expense.list',
+                                    http_method='GET',
+                                    query_fields=('vehicle', 'order', 'pageToken', 'modified_since'))
     def ExpenseList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
 
         if user:
-            return query.filter(BaseExpense.owner == str(user.key.id()))
+            return query.filter(UserExpenseRecord.owner == str(user.key.id()))
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
-    @BaseExpense.method(user_required=True, path='expense/store', http_method='POST', name='expense.store')
+    @UserExpenseRecord.method(user_required=True,
+                              path='expense/store',
+                              http_method='POST',
+                              name='expense.store')
     def ExpenseStore(self, expense):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -92,13 +107,16 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
-    @BaseExpense.method(user_required=True, path='expense/delete', http_method='POST', name='expense.delete')
+    @UserExpenseRecord.method(user_required=True,
+                              path='expense/delete',
+                              http_method='POST',
+                              name='expense.delete')
     def ExpenseDelete(self, expense):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
 
         if user:
-            server_expense = BaseExpense.get_by_id(expense.key.id())
+            server_expense = UserExpenseRecord.get_by_id(expense.key.id())
             if server_expense and server_expense.owner == str(user.key.id()):
                 server_expense.key.delete()
                 return True
@@ -109,7 +127,11 @@ class CarHubApi(remote.Service):
 
 
 
-    @MaintenanceRecord.query_method(user_required=True, path='maintenance/list/{vehicle}', name='maintenance.list', http_method='GET', query_fields=('vehicle', 'order', 'pageToken', 'modified_since'))
+    @MaintenanceRecord.query_method(user_required=True,
+                                    path='maintenance/list/{vehicle}',
+                                    name='maintenance.list',
+                                    http_method='GET',
+                                    query_fields=('vehicle', 'order', 'pageToken', 'modified_since'))
     def MaintenanceList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -119,7 +141,10 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
-    @MaintenanceRecord.method(user_required=True, path='maintenance/store', http_method='POST', name='maintenance.store')
+    @MaintenanceRecord.method(user_required=True,
+                              path='maintenance/store',
+                              http_method='POST',
+                              name='maintenance.store')
     def MaintenanceStore(self, maintenance):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -131,7 +156,10 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
-    @MaintenanceRecord.method(user_required=True, path='maintenance/delete', http_method='POST', name='maintenance.delete')
+    @MaintenanceRecord.method(user_required=True,
+                              path='maintenance/delete',
+                              http_method='POST',
+                              name='maintenance.delete')
     def MaintenanceDelete(self, maintenance):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -148,7 +176,11 @@ class CarHubApi(remote.Service):
 
 
 
-    @FuelRecord.query_method(user_required=True, path='fuel/list/{vehicle}', name='fuel.list', http_method='GET', query_fields=('vehicle', 'order', 'pageToken', 'modified_since'))
+    @FuelRecord.query_method(user_required=True,
+                             path='fuel/list/{vehicle}',
+                             name='fuel.list',
+                             http_method='GET',
+                             query_fields=('vehicle', 'order', 'pageToken', 'modified_since'))
     def FuelList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -158,7 +190,10 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
-    @FuelRecord.method(user_required=True, path='fuel/store', http_method='POST', name='fuel.store')
+    @FuelRecord.method(user_required=True,
+                       path='fuel/store',
+                       http_method='POST',
+                       name='fuel.store')
     def FuelStore(self, fuel):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -170,7 +205,10 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
-    @FuelRecord.method(user_required=True, path='fuel/delete', http_method='POST', name='fuel.delete')
+    @FuelRecord.method(user_required=True,
+                       path='fuel/delete',
+                       http_method='POST',
+                       name='fuel.delete')
     def FuelDelete(self, fuel):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)

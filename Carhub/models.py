@@ -125,6 +125,9 @@ class BaseExpense(EndpointsModel, polymodel.PolyModel):
 
         return result
 
+class UserExpenseRecord(BaseExpense):
+    _message_fields_schema = ('server_id', 'vehicle', 'date', 'lastmodified', 'categoryid', 'location', 'description', 'amount', 'pictureurl')
+
 class MaintenanceRecord(BaseExpense):
     _message_fields_schema = ('server_id', 'vehicle', 'date', 'lastmodified', 'categoryid', 'location', 'description', 'amount', 'pictureurl', 'odometer')
 

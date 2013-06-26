@@ -125,7 +125,7 @@ class VehicleExpenseAddHandler(blobstore_handlers.BlobstoreUploadHandler):
         elif page_type == ExpenseType.FUEL:
             expense = models.FuelRecord()
         else:
-            expense = models.BaseExpense()
+            expense = models.UserExpenseRecord()
 
         obj = build_object(self, expense, page_type, vehicle_id)
         if obj:

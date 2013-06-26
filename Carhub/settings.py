@@ -1,14 +1,20 @@
 #!/usr/bin/env python
 from google.appengine.api import users
-from google.appengine.ext.webapp import template
-import os
-import utils
-import webapp2
+from webapp2_extras import jinja2
 import datastore
 import logging
 import models
+import utils
+import webapp2
 
 class SettingsHandler(webapp2.RequestHandler):
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, template_args):
+          self.response.write(self.jinja2.render_template(filename, **template_args))
+
     def get(self, page_name, page_type, action, category_id):
         context = utils.get_context()
         user_id = context['user']['userId']
@@ -30,8 +36,7 @@ class SettingsHandler(webapp2.RequestHandler):
         context["maintcategories"] = datastore.get_maintenance_categories(user_id, default_categories=False)
         context["defaultmaintcategories"] = datastore.get_maintenance_categories(user_id, user_categories=False)
 
-        path = os.path.join(os.path.dirname(__file__), 'templates/settings.html')
-        self.response.out.write(template.render(path, context))
+        self.render_template('settings.html', context)
 
     def post(self, page_name, page_type, action, category_id):
         context = utils.get_context()

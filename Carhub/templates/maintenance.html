@@ -9,13 +9,13 @@
     <h2>Maintenance Records</h2>
     {% if not maintRecords %}
     <p>You don't have any maintenance recorded yet.</p>
-    <p>Record one <a href="/vehicle/{{ car.key.id }}/maintenance/add">here</a>!</p>
+    <p>Record one <a href="/vehicle/{{ car.key.id() }}/maintenance/add">here</a>!</p>
     {% endif %}
   </div>
   <div class="span3">
     {% if maintRecords %}
     <div class="row-fluid">
-      <a id="record-add" class="btn btn-primary span12 expense-btn" href="/vehicle/{{ car.key.id }}/maintenance/add"><i class="icon-plus icon-white"></i> Add Record</a>
+      <a id="record-add" class="btn btn-primary span12 expense-btn" href="/vehicle/{{ car.key.id() }}/maintenance/add"><i class="icon-plus icon-white"></i> Add Record</a>
     </div>
     <div class="row-fluid">
       <a id="record-edit" class="btn btn-inverse span12 expense-btn"><i class="icon-edit icon-white"></i> Edit Record</a>
@@ -34,7 +34,7 @@
 {% if categories %}
 
 {% for category in categories %}
-<h3>{{ category.name }}</h3>
+<h3>{{ category.name() }}</h3>
 <table class="maint-datatable table table-striped table-bordered dataTable DTTT_selectable table-hover" id="{{ category }}">
   <thead>
     <tr>
@@ -48,13 +48,13 @@
   </thead>
   <tbody>
   {% for m in maintRecords %}
-  {% if category.key.id == m.categoryid %}
-  <tr id="{{ m.key.id }}">
-    <td>{{ m.date_formatted }}</td>
+  {% if category.key.id() == m.categoryid %}
+  <tr id="{{ m.key.id() }}">
+    <td>{{ m.date_formatted() }}</td>
     <td>{{ m.location }}</td>
     <td>{{ m.description }}</td>
-    <td>{{ m.amount_formatted }}</td>
-    <td>{{ m.odometer_formatted }}</td>
+    <td>{{ m.amount_formatted() }}</td>
+    <td>{{ m.odometer_formatted() }}</td>
     {% if m.picture %}
     <td><button type="button" class="btn btn-success receiptlink" value="{{ m.pictureurl }}">Receipt</button></td>
     {% else %}

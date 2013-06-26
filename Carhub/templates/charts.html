@@ -16,7 +16,7 @@
   <div id="loading" class="center row-fluid row-spacing"><img src='/static/img/ajax-loader.gif' class="loading-image" /> Loading...</div>
   <div id="empty" class="row-fluid row-spacing hidden">
     <p>You don't have any recent expenses recorded.</p>
-    <p>Record some <a href="/vehicle/{{ car.key.id }}/expenses/add">here</a>!</p>
+    <p>Record some <a href="/vehicle/{{ car.key.id() }}/expenses/add">here</a>!</p>
   </div>
   <div id="charts" class="row-fluid row-spacing hidden">
     <div id="fuel_chart_div"></div>

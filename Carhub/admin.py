@@ -1,15 +1,21 @@
 #!/usr/bin/env python
 from google.appengine.api import memcache, users
 from google.appengine.ext import deferred
-from google.appengine.ext.webapp import template
+from webapp2_extras import jinja2
 import fetchbase
 import models
-import os
 import utils
 import webapp2
 
 class AdminHandler(webapp2.RequestHandler):
     """The request handler for the /admin/([^/]+)? path """
+
+    @webapp2.cached_property
+    def jinja2(self):
+        return jinja2.get_jinja2(app=self.app)
+
+    def render_template(self, filename, template_args):
+          self.response.write(self.jinja2.render_template(filename, **template_args))
 
     def get(self, method):
         """
@@ -22,8 +28,7 @@ class AdminHandler(webapp2.RequestHandler):
         if users.is_current_user_admin():
             context = utils.get_context()
 
-            path = os.path.join(os.path.dirname(__file__), 'templates/admin.html')
-            self.response.out.write(template.render(path, context))
+            self.render_template('admin.html', context)
         else:
             self.redirect("/")
 

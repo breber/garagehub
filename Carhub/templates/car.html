@@ -3,7 +3,7 @@
 
 <div class="row-fluid">
   <div class="span9">
-    <h2>{{ car.name }}</h2>
+    <h2>{{ car.name() }}</h2>
   </div>
   <div class="span3">
     <div class="row-fluid">
@@ -38,7 +38,7 @@
     <h3>Update Vehicle</h3>
   </div>
   <div class="modal-body">
-    <form action="/vehicle/{{ car.key.id }}/update" method="post" id="saveForm">
+    <form action="/vehicle/{{ car.key.id() }}/update" method="post" id="saveForm">
       <div>
         <label for="color">Color:</label>
         <input id="color" type="text" name="color" value="{% if car.color %}{{ car.color }}{% endif %}" />
@@ -50,7 +50,7 @@
     </form>
   </div>
   <div class="modal-footer">
-    <form action="/vehicle/{{ car.key.id }}/delete" method="post" id="deleteForm" class="hidden"></form>
+    <form action="/vehicle/{{ car.key.id() }}/delete" method="post" id="deleteForm" class="hidden"></form>
     <input type="submit" class="btn btn-danger" value="Delete" form="deleteForm"></input>
     <a href="#" class="btn" data-dismiss="modal">Close</a>
     <input type="submit" class="btn btn-primary" autofocus="autofocus" form="saveForm" value="Submit"></input>

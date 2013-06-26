@@ -32,10 +32,10 @@ def get_all_user_vehicles(user_id):
         The list of user's vehicles
     """
 
-    userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == user_id)
+    userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == user_id,)
     return ndb.get_multi(userVehiclesQuery.fetch(keys_only=True))
 
-def get_user_favorites(user_id):
+def get_user_favorites(user_id, numberToFetch=10, ascending=True):
     """Gets a list of favorites for the given user
 
     Args:
@@ -45,8 +45,10 @@ def get_user_favorites(user_id):
         The list of user's favorites
     """
 
-    userFavoritesQuery = models.UserFavorites.query(models.UserFavorites.owner == user_id)
-    return ndb.get_multi(userFavoritesQuery.fetch(keys_only=True))
+    query = models.UserFavorites.query(models.UserFavorites.owner == user_id)
+    query = query.order(models.UserFavorites.date)
+
+    return ndb.get_multi(query.fetch(numberToFetch, keys_only=True))
 
 def get_all_expense_records(user_id, vehicle_id, day_range=30, ascending=True, polymorphic=True, keys_only=False):
     """Gets the BaseExpense for the given vehicle ID

@@ -24,6 +24,7 @@ class BaseVehicle(ndb.Model):
 class UserFavorites(ndb.Model):
     owner = ndb.StringProperty()
     gas_station_id = ndb.StringProperty()
+    date = ndb.DateTimeProperty()
 
 class UserVehicle(EndpointsModel):
     _message_fields_schema = ('server_id', 'make', 'model', 'year', 'color', 'plates', 'lastmodified')

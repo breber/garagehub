@@ -8,6 +8,7 @@ import models
 import os
 import utils
 import webapp2
+import logging
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -179,11 +180,34 @@ class UserFavoritesHandler(webapp2.RequestHandler):
             favorites = models.UserFavorites()
             favorites.owner = userid
             favorites.gas_station_id = self.request.get("stationid", 0)
+            favorites.date = datetime.datetime.now()
             
             favorites.put()
+            
+class DashboardHandler(webapp2.RequestHandler):
+    def get(self):
+        context = utils.get_context()
+
+        if context['user']:
+            user_id = context['user']['userId']
+            results = datastore.get_user_favorites(user_id)
+            
+            toRet = ''
+            for v in results:
+                toRet=v.gas_station_id
+                logging.info(toRet)
+            
+            context["FavoriteStationId"] = toRet
+            path = os.path.join(os.path.dirname(__file__), 'templates/dashboard.html')
+        else:
+            path = os.path.join(os.path.dirname(__file__), 'templates/welcome.html')
+
+        self.response.out.write(template.render(path, context))
+        
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/dashboard', DashboardHandler),
     ('/userfavorites/gasstation', UserFavoritesHandler),
     ('/notifications/?([^/]+)?/?(.+?)?', NotificationHandler),
     ('/cars/raw/?([^/]+)?/?(.+?)?', RawVehicleHandler)

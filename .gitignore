@@ -2,5 +2,6 @@
 .DS_Store
 *.pyc
 .pydevproject
+.project
 index.yaml
 CarHubApi.zip

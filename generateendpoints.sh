@@ -6,6 +6,7 @@ endpointscfg.py get_client_lib java -o . -f rest api.CarHubApi
 
 # Unzip the generated zip
 mv CarHubApi.zip /tmp/CarHubApi.zip
+cd /tmp/
 unzip CarHubApi.zip
 
 # Remove existing Jars from the libs folder of Android app

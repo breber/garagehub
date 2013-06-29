@@ -1,7 +1,6 @@
 # Python stuff
 .DS_Store
 *.pyc
-Carhub/.pydevproject
-Carhub/index.yaml
-
-Carhub/CarHubApi.zip
+.pydevproject
+index.yaml
+CarHubApi.zip

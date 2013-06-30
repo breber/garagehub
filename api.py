@@ -78,6 +78,20 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
+    @endpoints.method(UnusedRequest,
+                      ActiveRecords,
+                      path='vehicle/active',
+                      name='vehicle.active',
+                      http_method='GET')
+    def VehicleActive(self, request):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        query = UserVehicle.query(UserVehicle.owner == str(user.key.id()))
+
+        items = [str(entity.id()) for entity in query.fetch(keys_only=True)]
+        return ActiveRecords(active=items)
+
 
 
     @UserExpenseRecord.query_method(user_required=True,
@@ -128,6 +142,21 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
+    @endpoints.method(VehicleRequest,
+                      ActiveRecords,
+                      path='expense/active',
+                      name='expense.active',
+                      http_method='GET')
+    def ExpenseActive(self, request):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        query = UserExpenseRecord.query(UserExpenseRecord.owner == str(user.key.id()),
+                                        UserExpenseRecord.vehicle == request.vehicle)
+
+        items = [str(entity.id()) for entity in query.fetch(keys_only=True)]
+        return ActiveRecords(active=items)
+
 
 
     @MaintenanceRecord.query_method(user_required=True,
@@ -177,6 +206,21 @@ class CarHubApi(remote.Service):
             return False
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
+
+    @endpoints.method(VehicleRequest,
+                      ActiveRecords,
+                      path='maintenance/active',
+                      name='maintenance.active',
+                      http_method='GET')
+    def MaintenanceActive(self, request):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        query = MaintenanceRecord.query(MaintenanceRecord.owner == str(user.key.id()),
+                                        MaintenanceRecord.vehicle == request.vehicle)
+
+        items = [str(entity.id()) for entity in query.fetch(keys_only=True)]
+        return ActiveRecords(active=items)
 
 
 
@@ -229,6 +273,21 @@ class CarHubApi(remote.Service):
             return False
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
+
+    @endpoints.method(VehicleRequest,
+                      ActiveRecords,
+                      path='fuel/active',
+                      name='fuel.active',
+                      http_method='GET')
+    def FuelActive(self, request):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        query = FuelRecord.query(FuelRecord.owner == str(user.key.id()),
+                                 FuelRecord.vehicle == request.vehicle)
+
+        items = [str(entity.id()) for entity in query.fetch(keys_only=True)]
+        return ActiveRecords(active=items)
 
 
 

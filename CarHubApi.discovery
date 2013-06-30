@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/DHfBJJySRcuAf4IzIgcIsGKQSBk\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/lNXn1A3uFe-J1i9-ddYMm1frcS4\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -232,6 +232,18 @@
     }
    }
   },
+  "ModelsActiveRecords": {
+   "id": "ModelsActiveRecords",
+   "type": "object",
+   "properties": {
+    "active": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   }
+  },
   "UserExpenseRecord": {
    "id": "UserExpenseRecord",
    "type": "object",
@@ -350,6 +362,28 @@
   },
   "expense": {
    "methods": {
+    "active": {
+     "id": "carhub.expense.active",
+     "path": "expense/active",
+     "httpMethod": "GET",
+     "parameters": {
+      "vehicle": {
+       "type": "string",
+       "required": true,
+       "format": "int64",
+       "location": "query"
+      }
+     },
+     "parameterOrder": [
+      "vehicle"
+     ],
+     "response": {
+      "$ref": "ModelsActiveRecords"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
     "delete": {
      "id": "carhub.expense.delete",
      "path": "expense/delete",
@@ -416,6 +450,28 @@
   },
   "fuel": {
    "methods": {
+    "active": {
+     "id": "carhub.fuel.active",
+     "path": "fuel/active",
+     "httpMethod": "GET",
+     "parameters": {
+      "vehicle": {
+       "type": "string",
+       "required": true,
+       "format": "int64",
+       "location": "query"
+      }
+     },
+     "parameterOrder": [
+      "vehicle"
+     ],
+     "response": {
+      "$ref": "ModelsActiveRecords"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
     "delete": {
      "id": "carhub.fuel.delete",
      "path": "fuel/delete",
@@ -482,6 +538,28 @@
   },
   "maintenance": {
    "methods": {
+    "active": {
+     "id": "carhub.maintenance.active",
+     "path": "maintenance/active",
+     "httpMethod": "GET",
+     "parameters": {
+      "vehicle": {
+       "type": "string",
+       "required": true,
+       "format": "int64",
+       "location": "query"
+      }
+     },
+     "parameterOrder": [
+      "vehicle"
+     ],
+     "response": {
+      "$ref": "ModelsActiveRecords"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
     "delete": {
      "id": "carhub.maintenance.delete",
      "path": "maintenance/delete",
@@ -548,6 +626,23 @@
   },
   "vehicle": {
    "methods": {
+    "active": {
+     "id": "carhub.vehicle.active",
+     "path": "vehicle/active",
+     "httpMethod": "GET",
+     "parameters": {
+      "unused": {
+       "type": "string",
+       "location": "query"
+      }
+     },
+     "response": {
+      "$ref": "ModelsActiveRecords"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
     "delete": {
      "id": "carhub.vehicle.delete",
      "path": "vehicle/delete",

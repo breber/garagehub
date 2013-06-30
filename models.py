@@ -188,3 +188,13 @@ class Notification(ndb.Model):
 
     def name(self):
         return "%s %s" % (self.vehicleName, self.category)
+
+# API specific messages
+class UnusedRequest(messages.Message):
+    unused = messages.StringField(1, required=False)
+
+class VehicleRequest(messages.Message):
+    vehicle = messages.IntegerField(1, required=True)
+
+class ActiveRecords(messages.Message):
+    active = messages.StringField(1, repeated=True)

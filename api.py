@@ -230,7 +230,8 @@ class CarHubApi(remote.Service):
     @ExpenseCategory.query_method(user_required=True,
                                   path='category/list',
                                   name='category.list',
-                                  http_method='GET')
+                                  http_method='GET',
+                                  query_fields=('pageToken',))
     def CategoryList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
@@ -238,7 +239,7 @@ class CarHubApi(remote.Service):
         if user:
             users = [str(user.key.id()), "defaultCategory", "defaultMaintCategory"]
 
-            return query.filter(ExpenseCategory.owner.IN(users))
+            return query.filter(ExpenseCategory.owner.IN(users)).order(ExpenseCategory._key)
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 

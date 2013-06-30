@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/tT2qR3O4YNAE6DxHWq_PSTGp-8U\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/DHfBJJySRcuAf4IzIgcIsGKQSBk\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -333,6 +333,12 @@
      "id": "carhub.category.list",
      "path": "category/list",
      "httpMethod": "GET",
+     "parameters": {
+      "pageToken": {
+       "type": "string",
+       "location": "query"
+      }
+     },
      "response": {
       "$ref": "ExpenseCategoryCollection"
      },

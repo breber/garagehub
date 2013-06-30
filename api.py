@@ -2,6 +2,7 @@ from google.appengine.ext import endpoints
 from protorpc import remote
 from models import *
 import auth_util
+import datetime
 import logging
 
 ANDROID_CLIENT_ID = '280486107933.apps.googleusercontent.com'
@@ -53,6 +54,7 @@ class CarHubApi(remote.Service):
 
         if user:
             vehicle.owner = str(user.key.id())
+            vehicle.lastmodified = datetime.datetime.now()
             vehicle.put()
             return vehicle
         else:
@@ -102,6 +104,7 @@ class CarHubApi(remote.Service):
 
         if user:
             expense.owner = str(user.key.id())
+            expense.lastmodified = datetime.datetime.now()
             expense.put()
             return expense
         else:
@@ -151,6 +154,7 @@ class CarHubApi(remote.Service):
 
         if user:
             maintenance.owner = str(user.key.id())
+            maintenance.lastmodified = datetime.datetime.now()
             maintenance.put()
             return maintenance
         else:
@@ -202,6 +206,7 @@ class CarHubApi(remote.Service):
             fuel.categoryid = datastore.get_category_by_name(user_id, "Fuel Up").key.id()
             fuel.description = "Filled up with gas"
             fuel.owner = str(user.key.id())
+            fuel.lastmodified = datetime.datetime.now()
             fuel.put()
             return fuel
         else:

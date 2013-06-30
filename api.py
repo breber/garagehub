@@ -199,6 +199,8 @@ class CarHubApi(remote.Service):
         user = get_user_by_auth(auth_user_id)
 
         if user:
+            fuel.categoryid = datastore.get_category_by_name(user_id, "Fuel Up").key.id()
+            fuel.description = "Filled up with gas"
             fuel.owner = str(user.key.id())
             fuel.put()
             return fuel
@@ -220,6 +222,23 @@ class CarHubApi(remote.Service):
                 return True
 
             return False
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+
+
+    @ExpenseCategory.query_method(user_required=True,
+                                  path='category/list',
+                                  name='category.list',
+                                  http_method='GET')
+    def CategoryList(self, query):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            users = [str(user.key.id()), "defaultCategory", "defaultMaintCategory"]
+
+            return query.filter(ExpenseCategory.owner.IN(users))
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 

@@ -44,10 +44,16 @@ class UserVehicle(EndpointsModel):
     def name(self):
         return "%s %s %s" % (self.year, self.make, self.model)
 
-class ExpenseCategory(ndb.Model):
+class ExpenseCategory(EndpointsModel):
+    _message_fields_schema = ('server_id', 'category', 'subcategory')
+
     owner = ndb.StringProperty()
     category = ndb.StringProperty()
     subcategory = ndb.StringProperty()
+
+    @EndpointsAliasProperty(property_type=messages.StringField)
+    def server_id(self):
+        return str(self.key.id())
 
     def name(self):
         if self.subcategory:

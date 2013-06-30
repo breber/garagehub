@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/cX5yFH1tzHKhdBfwUbWjQp3QROc\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/tT2qR3O4YNAE6DxHWq_PSTGp-8U\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -73,6 +73,36 @@
   }
  },
  "schemas": {
+  "ExpenseCategory": {
+   "id": "ExpenseCategory",
+   "type": "object",
+   "properties": {
+    "category": {
+     "type": "string"
+    },
+    "server_id": {
+     "type": "string"
+    },
+    "subcategory": {
+     "type": "string"
+    }
+   }
+  },
+  "ExpenseCategoryCollection": {
+   "id": "ExpenseCategoryCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "$ref": "ExpenseCategory"
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
   "FuelRecord": {
    "id": "FuelRecord",
    "type": "object",
@@ -297,6 +327,21 @@
   }
  },
  "resources": {
+  "category": {
+   "methods": {
+    "list": {
+     "id": "carhub.category.list",
+     "path": "category/list",
+     "httpMethod": "GET",
+     "response": {
+      "$ref": "ExpenseCategoryCollection"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    }
+   }
+  },
   "expense": {
    "methods": {
     "delete": {

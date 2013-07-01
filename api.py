@@ -85,6 +85,8 @@ class CarHubApi(remote.Service):
                       http_method='GET')
     def VehicleActive(self, request):
         auth_user_id = auth_util.get_google_plus_user_id()
+        if auth_user_id is None:
+            raise endpoints.UnauthorizedException('Invalid token.')
         user = get_user_by_auth(auth_user_id)
 
         query = UserVehicle.query(UserVehicle.owner == str(user.key.id()))
@@ -129,7 +131,7 @@ class CarHubApi(remote.Service):
                               path='expense/update/{key}',
                               http_method='POST',
                               name='expense.update')
-    def ExpenseStore(self, request):
+    def ExpenseUpdate(self, request):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
 
@@ -184,6 +186,8 @@ class CarHubApi(remote.Service):
                       http_method='GET')
     def ExpenseActive(self, request):
         auth_user_id = auth_util.get_google_plus_user_id()
+        if auth_user_id is None:
+            raise endpoints.UnauthorizedException('Invalid token.')
         user = get_user_by_auth(auth_user_id)
 
         query = UserExpenseRecord.query(UserExpenseRecord.owner == str(user.key.id()),
@@ -229,7 +233,7 @@ class CarHubApi(remote.Service):
                               path='maintenance/update/{key}',
                               http_method='POST',
                               name='maintenance.update')
-    def MaintenanceStore(self, request):
+    def MaintenanceUpdate(self, request):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
 
@@ -284,6 +288,8 @@ class CarHubApi(remote.Service):
                       http_method='GET')
     def MaintenanceActive(self, request):
         auth_user_id = auth_util.get_google_plus_user_id()
+        if auth_user_id is None:
+            raise endpoints.UnauthorizedException('Invalid token.')
         user = get_user_by_auth(auth_user_id)
 
         query = MaintenanceRecord.query(MaintenanceRecord.owner == str(user.key.id()),
@@ -327,11 +333,11 @@ class CarHubApi(remote.Service):
             raise endpoints.UnauthorizedException('Unknown user.')
 
     @FuelRecord.method(user_required=True,
-                              request_message=FuelRecord.ProtoModel(),
-                              path='fuel/update/{key}',
-                              http_method='POST',
-                              name='fuel.update')
-    def FuelStore(self, request):
+                       request_message=FuelRecord.ProtoModel(),
+                       path='fuel/update/{key}',
+                       http_method='POST',
+                       name='fuel.update')
+    def FuelUpdate(self, request):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
 
@@ -386,6 +392,8 @@ class CarHubApi(remote.Service):
                       http_method='GET')
     def FuelActive(self, request):
         auth_user_id = auth_util.get_google_plus_user_id()
+        if auth_user_id is None:
+            raise endpoints.UnauthorizedException('Invalid token.')
         user = get_user_by_auth(auth_user_id)
 
         query = FuelRecord.query(FuelRecord.owner == str(user.key.id()),

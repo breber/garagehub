@@ -2,6 +2,7 @@ from google.appengine.ext import endpoints
 from protorpc import remote
 from models import *
 import auth_util
+import datastore
 import datetime
 import logging
 
@@ -359,6 +360,8 @@ class CarHubApi(remote.Service):
                 to_store._key = existing._key
 
             # Fill in required fields
+            fuel.categoryid = datastore.get_category_by_name(user_id, "Fuel Up").key.id()
+            fuel.description = "Filled up with gas"
             to_store.owner = str(user.key.id())
             to_store.lastmodified = datetime.datetime.now()
             to_store.put()

@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/lNXn1A3uFe-J1i9-ddYMm1frcS4\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/fuFHHenO-PCUd3JxVH7bir0fcUo\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -384,6 +384,20 @@
       "https://www.googleapis.com/auth/userinfo.email"
      ]
     },
+    "add": {
+     "id": "carhub.expense.add",
+     "path": "expense/add",
+     "httpMethod": "POST",
+     "request": {
+      "$ref": "UserExpenseRecord"
+     },
+     "response": {
+      "$ref": "UserExpenseRecord"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
     "delete": {
      "id": "carhub.expense.delete",
      "path": "expense/delete",
@@ -432,10 +446,13 @@
       "https://www.googleapis.com/auth/userinfo.email"
      ]
     },
-    "store": {
-     "id": "carhub.expense.store",
-     "path": "expense/store",
+    "update": {
+     "id": "carhub.expense.update",
+     "path": "expense/update/{key}",
      "httpMethod": "POST",
+     "parameterOrder": [
+      "key"
+     ],
      "request": {
       "$ref": "UserExpenseRecord"
      },
@@ -467,6 +484,20 @@
      ],
      "response": {
       "$ref": "ModelsActiveRecords"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
+    "add": {
+     "id": "carhub.fuel.add",
+     "path": "fuel/add",
+     "httpMethod": "POST",
+     "request": {
+      "$ref": "FuelRecord"
+     },
+     "response": {
+      "$ref": "FuelRecord"
      },
      "scopes": [
       "https://www.googleapis.com/auth/userinfo.email"
@@ -520,10 +551,13 @@
       "https://www.googleapis.com/auth/userinfo.email"
      ]
     },
-    "store": {
-     "id": "carhub.fuel.store",
-     "path": "fuel/store",
+    "update": {
+     "id": "carhub.fuel.update",
+     "path": "fuel/update/{key}",
      "httpMethod": "POST",
+     "parameterOrder": [
+      "key"
+     ],
      "request": {
       "$ref": "FuelRecord"
      },
@@ -555,6 +589,20 @@
      ],
      "response": {
       "$ref": "ModelsActiveRecords"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
+    "add": {
+     "id": "carhub.maintenance.add",
+     "path": "maintenance/add",
+     "httpMethod": "POST",
+     "request": {
+      "$ref": "MaintenanceRecord"
+     },
+     "response": {
+      "$ref": "MaintenanceRecord"
      },
      "scopes": [
       "https://www.googleapis.com/auth/userinfo.email"
@@ -608,10 +656,13 @@
       "https://www.googleapis.com/auth/userinfo.email"
      ]
     },
-    "store": {
-     "id": "carhub.maintenance.store",
-     "path": "maintenance/store",
+    "update": {
+     "id": "carhub.maintenance.update",
+     "path": "maintenance/update/{key}",
      "httpMethod": "POST",
+     "parameterOrder": [
+      "key"
+     ],
      "request": {
       "$ref": "MaintenanceRecord"
      },

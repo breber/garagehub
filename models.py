@@ -82,7 +82,7 @@ class BaseExpense(EndpointsModel, polymodel.PolyModel):
 
     def modified_since_set(self, value):
         try:
-            modified_since = datetime.ctime(long(value))
+            modified_since = datetime.fromtimestamp(long(value) / 1000)
             if not isinstance(modified_since, datetime):
                 raise TypeError('Not a datetime stamp.')
         except TypeError:

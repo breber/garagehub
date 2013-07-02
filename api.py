@@ -129,7 +129,7 @@ class CarHubApi(remote.Service):
 
     @UserExpenseRecord.method(user_required=True,
                               request_message=UserExpenseRecord.ProtoModel(),
-                              path='expense/update/{key}',
+                              path='expense/update/{server_id}',
                               http_method='POST',
                               name='expense.update')
     def ExpenseUpdate(self, request):
@@ -231,7 +231,7 @@ class CarHubApi(remote.Service):
 
     @MaintenanceRecord.method(user_required=True,
                               request_message=MaintenanceRecord.ProtoModel(),
-                              path='maintenance/update/{key}',
+                              path='maintenance/update/{server_id}',
                               http_method='POST',
                               name='maintenance.update')
     def MaintenanceUpdate(self, request):
@@ -335,7 +335,7 @@ class CarHubApi(remote.Service):
 
     @FuelRecord.method(user_required=True,
                        request_message=FuelRecord.ProtoModel(),
-                       path='fuel/update/{key}',
+                       path='fuel/update/{server_id}',
                        http_method='POST',
                        name='fuel.update')
     def FuelUpdate(self, request):
@@ -360,8 +360,8 @@ class CarHubApi(remote.Service):
                 to_store._key = existing._key
 
             # Fill in required fields
-            fuel.categoryid = datastore.get_category_by_name(str(user.key.id()), "Fuel Up").key.id()
-            fuel.description = "Filled up with gas"
+            to_store.categoryid = datastore.get_category_by_name(str(user.key.id()), "Fuel Up").key.id()
+            to_store.description = "Filled up with gas"
             to_store.owner = str(user.key.id())
             to_store.lastmodified = datetime.datetime.now()
             to_store.put()

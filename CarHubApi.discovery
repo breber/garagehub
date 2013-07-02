@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/fuFHHenO-PCUd3JxVH7bir0fcUo\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/JmX6dM9DVGbc_WsIVc5ZrAPYGr8\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -448,10 +448,17 @@
     },
     "update": {
      "id": "carhub.expense.update",
-     "path": "expense/update/{key}",
+     "path": "expense/update/{server_id}",
      "httpMethod": "POST",
+     "parameters": {
+      "server_id": {
+       "type": "string",
+       "required": true,
+       "location": "path"
+      }
+     },
      "parameterOrder": [
-      "key"
+      "server_id"
      ],
      "request": {
       "$ref": "UserExpenseRecord"
@@ -553,10 +560,17 @@
     },
     "update": {
      "id": "carhub.fuel.update",
-     "path": "fuel/update/{key}",
+     "path": "fuel/update/{server_id}",
      "httpMethod": "POST",
+     "parameters": {
+      "server_id": {
+       "type": "string",
+       "required": true,
+       "location": "path"
+      }
+     },
      "parameterOrder": [
-      "key"
+      "server_id"
      ],
      "request": {
       "$ref": "FuelRecord"
@@ -658,10 +672,17 @@
     },
     "update": {
      "id": "carhub.maintenance.update",
-     "path": "maintenance/update/{key}",
+     "path": "maintenance/update/{server_id}",
      "httpMethod": "POST",
+     "parameters": {
+      "server_id": {
+       "type": "string",
+       "required": true,
+       "location": "path"
+      }
+     },
      "parameterOrder": [
-      "key"
+      "server_id"
      ],
      "request": {
       "$ref": "MaintenanceRecord"

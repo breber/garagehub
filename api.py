@@ -324,7 +324,7 @@ class CarHubApi(remote.Service):
         user = get_user_by_auth(auth_user_id)
 
         if user:
-            fuel.categoryid = datastore.get_category_by_name(user_id, "Fuel Up").key.id()
+            fuel.categoryid = datastore.get_category_by_name(str(user.key.id()), "Fuel Up").key.id()
             fuel.description = "Filled up with gas"
             fuel.owner = str(user.key.id())
             fuel.lastmodified = datetime.datetime.now()
@@ -360,7 +360,7 @@ class CarHubApi(remote.Service):
                 to_store._key = existing._key
 
             # Fill in required fields
-            fuel.categoryid = datastore.get_category_by_name(user_id, "Fuel Up").key.id()
+            fuel.categoryid = datastore.get_category_by_name(str(user.key.id()), "Fuel Up").key.id()
             fuel.description = "Filled up with gas"
             to_store.owner = str(user.key.id())
             to_store.lastmodified = datetime.datetime.now()

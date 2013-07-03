@@ -1,6 +1,6 @@
 {
  "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/JmX6dM9DVGbc_WsIVc5ZrAPYGr8\"",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/Vm5T1gBW-CfMCGL6TYR1qkL6aBw\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -715,6 +715,20 @@
       "https://www.googleapis.com/auth/userinfo.email"
      ]
     },
+    "add": {
+     "id": "carhub.vehicle.add",
+     "path": "vehicle/add",
+     "httpMethod": "POST",
+     "request": {
+      "$ref": "UserVehicle"
+     },
+     "response": {
+      "$ref": "UserVehicle"
+     },
+     "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+     ]
+    },
     "delete": {
      "id": "carhub.vehicle.delete",
      "path": "vehicle/delete",
@@ -740,10 +754,20 @@
       "https://www.googleapis.com/auth/userinfo.email"
      ]
     },
-    "store": {
-     "id": "carhub.vehicle.store",
-     "path": "vehicle/store",
+    "update": {
+     "id": "carhub.vehicle.update",
+     "path": "vehicle/update/{server_id}",
      "httpMethod": "POST",
+     "parameters": {
+      "server_id": {
+       "type": "string",
+       "required": true,
+       "location": "path"
+      }
+     },
+     "parameterOrder": [
+      "server_id"
+     ],
      "request": {
       "$ref": "UserVehicle"
      },

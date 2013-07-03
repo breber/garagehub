@@ -46,10 +46,10 @@ class CarHubApi(remote.Service):
             raise endpoints.UnauthorizedException('Unknown user.')
 
     @UserVehicle.method(user_required=True,
-                        path='vehicle/store',
+                        path='vehicle/add',
                         http_method='POST',
-                        name='vehicle.store')
-    def VehicleStore(self, vehicle):
+                        name='vehicle.add')
+    def VehicleAdd(self, vehicle):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
 
@@ -58,6 +58,41 @@ class CarHubApi(remote.Service):
             vehicle.lastmodified = datetime.datetime.now()
             vehicle.put()
             return vehicle
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    @UserVehicle.method(user_required=True,
+                        request_message=UserVehicle.ProtoModel(),
+                        path='vehicle/update/{server_id}',
+                        http_method='POST',
+                        name='vehicle.update')
+    def VehicleUpdate(self, request):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            try:
+                # Check if we have an existing record
+                id_as_long = long(request.server_id)
+                existing = UserVehicle.get_by_id(id_as_long)
+            except AttributeError:
+                logging.warn("AttributeError...")
+                existing = None
+
+            # Build the record we are going to store
+            request.server_id = None
+            to_store = UserVehicle.FromMessage(request)
+
+            # Use the same key if we have one
+            if existing:
+                to_store._key = existing._key
+
+            # Fill in required fields
+            to_store.owner = str(user.key.id())
+            to_store.lastmodified = datetime.datetime.now()
+            to_store.put()
+
+            return to_store
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 

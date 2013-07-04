@@ -22,6 +22,7 @@ def get_user_by_auth(uid):
 
         if not user_by_email:
             user_by_email = User()
+            user_by_email.email_address = current_user.email()
 
         user_by_email.google_oauth = uid
         user_by_email.put()

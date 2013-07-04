@@ -22,10 +22,17 @@ def get_context(list_vehicles=True):
         user = models.User.query(models.User.google_openid == google_openid.user_id()).get()
 
         if not user:
-            key = models.User(google_openid = google_openid.user_id(),
-                              email_address = google_openid.email(),
-                              is_admin = users.is_current_user_admin()).put()
-            user = models.User.get_by_id(key.id())
+            user_by_email = models.User.query(models.User.email_address == google_openid.email()).get()
+            if user_by_email:
+                user_by_email.google_openid = google_openid.user_id()
+                user_by_email.is_admin = users.is_current_user_admin()
+                user_by_email.put()
+                user = user_by_email
+            if not user_by_email:
+                key = models.User(google_openid = google_openid.user_id(),
+                                  email_address = google_openid.email(),
+                                  is_admin = users.is_current_user_admin()).put()
+                user = models.User.get_by_id(key.id())
 
             # Update all records in database with new id
             databaseupgrade.update_userid(google_openid.user_id(), str(user.key.id()))

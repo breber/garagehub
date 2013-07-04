@@ -87,7 +87,7 @@ class FetchBaseVehicles:
                     yearsStr = model["yrs"]
 
                     # Get the list of years we currently have in the database
-                    prevYears = self.getYears(prevJson, modelStr, yearsStr)
+                    prevYears = self.getYears(prevJson, makeString, modelStr)
 
                     # If we didn't find years, or the previous doesn't
                     # match the current, then build a new Vehicle and
@@ -130,11 +130,11 @@ class FetchBaseVehicles:
             makeString = makeObj["n"]
 
             if makeString == make:
-                for model in modelsArr:
-                    modelString = model["dn"]
+                for modelObj in modelsArr:
+                    modelString = modelObj["dn"]
 
                     if modelString == model:
-                        return model["yrs"]
+                        return modelObj["yrs"]
 
         return None
 

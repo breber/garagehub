@@ -88,16 +88,15 @@ class NotificationHandler(webapp2.RequestHandler):
         category = self.request.get("selectCategory", None)
         vehicle_id = int(self.request.get("selectVehicle", 0))
 
-        newNotificationObj = datastore.get_notification(userid, vehicle_id, category, None)
+        category_id = datastore.get_category_by_name(userid, category).key.id()
+        newNotificationObj = datastore.get_notification(userid, vehicle_id, category_id, None)
         if newNotificationObj:
             newNotificationObj.key.delete()
 
         newNotificationObj = models.Notification()
         newNotificationObj.owner = userid
         newNotificationObj.vehicle = vehicle_id
-        vehicleName = datastore.get_user_vehicle(userid, vehicle_id)
-        newNotificationObj.vehicleName = vehicleName.name()
-        newNotificationObj.category = category
+        newNotificationObj.categoryid = category_id
         recurring = self.request.get("frequencyRadio", False)
         newRecurring = False
         if recurring == 'False':
@@ -146,7 +145,7 @@ class NotificationHandler(webapp2.RequestHandler):
         newNotificationObj.dateLastSeen = datetime.date.today() - deltaoneday
 
         if newRecurring:
-            lastMaintRecord = datastore.get_n_maint_records(userid, vehicle_id, category, 1)
+            lastMaintRecord = datastore.get_n_maint_records(userid, vehicle_id, category_id, 1)
             if newDateBased:
                 if lastMaintRecord:
                     lastRecordedDate = lastMaintRecord.date
@@ -211,14 +210,14 @@ class DashboardHandler(webapp2.RequestHandler):
         if context['user']:
             user_id = context['user']['userId']
             results = datastore.get_user_favorites(user_id)
-            
+
             notifications = datastore.get_notifications(user_id)
             if len(notifications) > 0:
-                context["notifications"] = notifications 
+                context["notifications"] = notifications
 
             toRet = ''
             for v in results:
-                toRet=v.gas_station_id
+                toRet = v.gas_station_id
                 logging.info(toRet)
 
             context["FavoriteStationId"] = toRet

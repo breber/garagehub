@@ -24,8 +24,8 @@
   {% if notifications %}
   {% for notif in notifications %}
   <tr id="{{ notif.key.id() }}">
-    <td>{{ notif.vehicleName }}</td>
-    <td>{{ notif.category }}</td>
+    <td>{{ notif.get_vehicle().name() }}</td>
+    <td>{{ notif.get_category().name() }}</td>
     <td>
     {% if notif.recurring %}
     {% if notif.dateBased %}

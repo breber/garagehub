@@ -304,11 +304,9 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
         obj.odometer = odometer
 
         # Notification stuff
-        # TODO: rework the category stuff here...
-        category = datastore.get_category_by_id(user_id, obj.categoryid)
-        relevantNotif = datastore.get_notification(user_id, long(obj.vehicle), category.category, None)
+        relevantNotif = datastore.get_notification(user_id, long(obj.vehicle), obj.categoryid, None)
         if relevantNotif:
-            lastMaintRec = datastore.get_n_maint_records(user_id, long(obj.vehicle), category.category, 1)
+            lastMaintRec = datastore.get_n_maint_records(user_id, long(obj.vehicle), category.categoryid, 1)
 
             if obj.date == lastMaintRec.date:
                 if relevantNotif.recurring:

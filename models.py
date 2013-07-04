@@ -68,7 +68,6 @@ class BaseExpense(EndpointsModel, polymodel.PolyModel):
     vehicle = EndpointsVariantIntegerProperty(variant=messages.Variant.INT32)
     date = ndb.DateProperty()
     lastmodified = ndb.DateTimeProperty()
-    category = ndb.StringProperty() # TODO: remove this field
     categoryid = EndpointsVariantIntegerProperty(variant=messages.Variant.INT32)
     location = ndb.StringProperty()
     description = ndb.StringProperty()
@@ -173,8 +172,7 @@ class FuelRecord(BaseExpense):
 class Notification(ndb.Model):
     owner = ndb.StringProperty()
     vehicle = ndb.IntegerProperty()
-    vehicleName = ndb.StringProperty()
-    category = ndb.StringProperty()
+    categoryid = ndb.IntegerProperty()
     recurring = ndb.BooleanProperty()
     dateBased = ndb.BooleanProperty()
     mileBased = ndb.BooleanProperty()
@@ -186,8 +184,16 @@ class Notification(ndb.Model):
     recurringMonths = ndb.IntegerProperty()
     dateLastSeen = ndb.DateProperty()
 
+    def get_vehicle(self):
+        import datastore
+        return datastore.get_user_vehicle(self.owner, self.vehicle)
+
+    def get_category(self):
+        import datastore
+        return datastore.get_category_by_id(self.owner, self.categoryid)
+
     def name(self):
-        return "%s %s" % (self.vehicleName, self.category)
+        return "%s %s" % (self.get_vehicle().name(), self.get_category().name())
 
 # API specific messages
 class UnusedRequest(messages.Message):

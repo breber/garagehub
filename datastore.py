@@ -249,7 +249,7 @@ def get_maintenance_records(user_id, vehicle_id, day_range=30, ascending=True):
 
     return ndb.get_multi(query.fetch(keys_only=True))
 
-def get_n_maint_records(user_id, vehicle_id, category, numberToFetch=10, ascending=True):
+def get_n_maint_records(user_id, vehicle_id, category_id, numberToFetch=10, ascending=True):
     """Gets the Maintenance Records for the given vehicle ID
 
     Args:
@@ -263,7 +263,7 @@ def get_n_maint_records(user_id, vehicle_id, category, numberToFetch=10, ascendi
 
     query = models.MaintenanceRecord().query(models.MaintenanceRecord.owner == user_id,
                                              models.MaintenanceRecord.vehicle == long(vehicle_id),
-                                             models.MaintenanceRecord.category == category)
+                                             models.MaintenanceRecord.categoryid == category_id)
 
     if ascending:
         query = query.order(models.FuelRecord.date)
@@ -465,7 +465,7 @@ def get_years(make, model):
 
     return toRet
 
-def get_notification(user_id, vehicle_id, category, notification_id):
+def get_notification(user_id, vehicle_id, category_id, notification_id):
     """Gets the Notification for the given notification_id
 
     Args:
@@ -483,10 +483,10 @@ def get_notification(user_id, vehicle_id, category, notification_id):
         if notification and str(notification.owner) == str(user_id):
             return notification
 
-    elif vehicle_id and category:
+    elif vehicle_id and category_id:
         query = models.Notification().query(models.Notification.owner == user_id,
                                             models.Notification.vehicle == vehicle_id,
-                                            models.Notification.category == category)
+                                            models.Notification.categoryid == category_id)
         notification = query.get()
 
         return notification
@@ -504,7 +504,8 @@ def get_notifications(user_id):
     query = models.Notification().query(models.Notification.owner == user_id)
     results = ndb.get_multi(query.fetch(keys_only=True))
 
-    sorted(results, key=lambda Notification:Notification.name())
+    if results:
+        sorted(results, key=lambda Notification:Notification.name())
 
     return results
 

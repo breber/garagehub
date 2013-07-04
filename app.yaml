@@ -35,10 +35,6 @@ handlers:
   script: admin.app
   login: admin
 
-- url: /database/?.*
-  script: databaseupgrade.app
-  login: admin
-
 - url: /settings/?.*
   script: settings.app
   login: required

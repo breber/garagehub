@@ -1,4 +1,5 @@
 CARHUB_MOBILE=$(pwd)/../CarHubMobile/CarHubMobile
+CARHUB_IOS=$(pwd)/../carhub-ios
 LIB_VERSION=1.15.0-rc
 
 # Generate the Java client library
@@ -37,3 +38,20 @@ popd # /tmp/
 # Clean up after ourselves
 rm /tmp/CarHubApi.zip
 rm -rf /tmp/carhub
+
+# Generate for iOS
+if [ -d $CARHUB_IOS ]; then
+    endpointscfg.py gen_discovery_doc -o . -f rpc api.CarHubApi
+
+    svn checkout \
+        http://google-api-objectivec-client.googlecode.com/svn/trunk/ \
+        google-api-objectivec-client-read-only
+
+    pushd google-api-objectivec-client-read-only/Source/Tools/ServiceGenerator/
+    xcodebuild -project ServiceGenerator.xcodeproj
+    popd
+    ./google-api-objectivec-client-read-only/Source/Tools/ServiceGenerator/build/Release/ServiceGenerator \
+        CarHubApi.discovery --outputDir $CARHUB_IOS/CarHubApi/
+
+    rm -rf google-api-objectivec-client-read-only
+fi

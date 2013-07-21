@@ -1,6 +1,6 @@
 {
- "kind": "discovery#restDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/Vm5T1gBW-CfMCGL6TYR1qkL6aBw\"",
+ "kind": "discovery#rpcDescription",
+ "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/iTtg-62Kbq2wQXybTXBeCYinsl8\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -12,12 +12,10 @@
   "x16": "http://www.google.com/images/icons/product/search-16.gif",
   "x32": "http://www.google.com/images/icons/product/search-32.gif"
  },
- "protocol": "rest",
- "baseUrl": "https://car-hub.appspot.com/_ah/api/carhub/v1/",
- "basePath": "/_ah/api/carhub/v1/",
+ "protocol": "rpc",
  "rootUrl": "https://car-hub.appspot.com/_ah/api/",
- "servicePath": "carhub/v1/",
- "batchPath": "batch",
+ "rpcUrl": "https://car-hub.appspot.com/_ah/api/rpc",
+ "rpcPath": "/_ah/api/rpc",
  "parameters": {
   "alt": {
    "type": "string",
@@ -338,447 +336,417 @@
    }
   }
  },
- "resources": {
-  "category": {
-   "methods": {
-    "list": {
-     "id": "carhub.category.list",
-     "path": "category/list",
-     "httpMethod": "GET",
-     "parameters": {
-      "pageToken": {
-       "type": "string",
-       "location": "query"
-      }
-     },
-     "response": {
-      "$ref": "ExpenseCategoryCollection"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
+ "methods": {
+  "carhub.category.list": {
+   "id": "carhub.category.list",
+   "allowGet": true,
+   "parameters": {
+    "pageToken": {
+     "type": "string"
     }
-   }
+   },
+   "returns": {
+    "$ref": "ExpenseCategoryCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
   },
-  "expense": {
-   "methods": {
-    "active": {
-     "id": "carhub.expense.active",
-     "path": "expense/active",
-     "httpMethod": "GET",
-     "parameters": {
-      "vehicle": {
-       "type": "string",
-       "required": true,
-       "format": "int64",
-       "location": "query"
-      }
-     },
-     "parameterOrder": [
-      "vehicle"
-     ],
-     "response": {
-      "$ref": "ModelsActiveRecords"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "add": {
-     "id": "carhub.expense.add",
-     "path": "expense/add",
-     "httpMethod": "POST",
-     "request": {
-      "$ref": "UserExpenseRecord"
-     },
-     "response": {
-      "$ref": "UserExpenseRecord"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "delete": {
-     "id": "carhub.expense.delete",
-     "path": "expense/delete",
-     "httpMethod": "POST",
-     "request": {
-      "$ref": "UserExpenseRecord"
-     },
-     "response": {
-      "$ref": "UserExpenseRecord"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "list": {
-     "id": "carhub.expense.list",
-     "path": "expense/list/{vehicle}",
-     "httpMethod": "GET",
-     "parameters": {
-      "modified_since": {
-       "type": "string",
-       "location": "query"
-      },
-      "order": {
-       "type": "string",
-       "location": "query"
-      },
-      "pageToken": {
-       "type": "string",
-       "location": "query"
-      },
-      "vehicle": {
-       "type": "integer",
-       "required": true,
-       "format": "int32",
-       "location": "path"
-      }
-     },
-     "parameterOrder": [
-      "vehicle"
-     ],
-     "response": {
-      "$ref": "UserExpenseRecordCollection"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "update": {
-     "id": "carhub.expense.update",
-     "path": "expense/update/{server_id}",
-     "httpMethod": "POST",
-     "parameters": {
-      "server_id": {
-       "type": "string",
-       "required": true,
-       "location": "path"
-      }
-     },
-     "parameterOrder": [
-      "server_id"
-     ],
-     "request": {
-      "$ref": "UserExpenseRecord"
-     },
-     "response": {
-      "$ref": "UserExpenseRecord"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
+  "carhub.expense.active": {
+   "id": "carhub.expense.active",
+   "allowGet": true,
+   "parameters": {
+    "vehicle": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
     }
-   }
+   },
+   "parameterOrder": [
+    "vehicle"
+   ],
+   "returns": {
+    "$ref": "ModelsActiveRecords"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
   },
-  "fuel": {
-   "methods": {
-    "active": {
-     "id": "carhub.fuel.active",
-     "path": "fuel/active",
-     "httpMethod": "GET",
-     "parameters": {
-      "vehicle": {
-       "type": "string",
-       "required": true,
-       "format": "int64",
-       "location": "query"
-      }
-     },
-     "parameterOrder": [
-      "vehicle"
-     ],
-     "response": {
-      "$ref": "ModelsActiveRecords"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "add": {
-     "id": "carhub.fuel.add",
-     "path": "fuel/add",
-     "httpMethod": "POST",
-     "request": {
-      "$ref": "FuelRecord"
-     },
-     "response": {
-      "$ref": "FuelRecord"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "delete": {
-     "id": "carhub.fuel.delete",
-     "path": "fuel/delete",
-     "httpMethod": "POST",
-     "request": {
-      "$ref": "FuelRecord"
-     },
-     "response": {
-      "$ref": "FuelRecord"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "list": {
-     "id": "carhub.fuel.list",
-     "path": "fuel/list/{vehicle}",
-     "httpMethod": "GET",
-     "parameters": {
-      "modified_since": {
-       "type": "string",
-       "location": "query"
-      },
-      "order": {
-       "type": "string",
-       "location": "query"
-      },
-      "pageToken": {
-       "type": "string",
-       "location": "query"
-      },
-      "vehicle": {
-       "type": "integer",
-       "required": true,
-       "format": "int32",
-       "location": "path"
-      }
-     },
-     "parameterOrder": [
-      "vehicle"
-     ],
-     "response": {
-      "$ref": "FuelRecordCollection"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "update": {
-     "id": "carhub.fuel.update",
-     "path": "fuel/update/{server_id}",
-     "httpMethod": "POST",
-     "parameters": {
-      "server_id": {
-       "type": "string",
-       "required": true,
-       "location": "path"
-      }
-     },
-     "parameterOrder": [
-      "server_id"
-     ],
-     "request": {
-      "$ref": "FuelRecord"
-     },
-     "response": {
-      "$ref": "FuelRecord"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
+  "carhub.expense.add": {
+   "id": "carhub.expense.add",
+   "parameters": {
+    "resource": {
+     "$ref": "UserExpenseRecord"
     }
-   }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "UserExpenseRecord"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
   },
-  "maintenance": {
-   "methods": {
-    "active": {
-     "id": "carhub.maintenance.active",
-     "path": "maintenance/active",
-     "httpMethod": "GET",
-     "parameters": {
-      "vehicle": {
-       "type": "string",
-       "required": true,
-       "format": "int64",
-       "location": "query"
-      }
-     },
-     "parameterOrder": [
-      "vehicle"
-     ],
-     "response": {
-      "$ref": "ModelsActiveRecords"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "add": {
-     "id": "carhub.maintenance.add",
-     "path": "maintenance/add",
-     "httpMethod": "POST",
-     "request": {
-      "$ref": "MaintenanceRecord"
-     },
-     "response": {
-      "$ref": "MaintenanceRecord"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "delete": {
-     "id": "carhub.maintenance.delete",
-     "path": "maintenance/delete",
-     "httpMethod": "POST",
-     "request": {
-      "$ref": "MaintenanceRecord"
-     },
-     "response": {
-      "$ref": "MaintenanceRecord"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "list": {
-     "id": "carhub.maintenance.list",
-     "path": "maintenance/list/{vehicle}",
-     "httpMethod": "GET",
-     "parameters": {
-      "modified_since": {
-       "type": "string",
-       "location": "query"
-      },
-      "order": {
-       "type": "string",
-       "location": "query"
-      },
-      "pageToken": {
-       "type": "string",
-       "location": "query"
-      },
-      "vehicle": {
-       "type": "integer",
-       "required": true,
-       "format": "int32",
-       "location": "path"
-      }
-     },
-     "parameterOrder": [
-      "vehicle"
-     ],
-     "response": {
-      "$ref": "MaintenanceRecordCollection"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "update": {
-     "id": "carhub.maintenance.update",
-     "path": "maintenance/update/{server_id}",
-     "httpMethod": "POST",
-     "parameters": {
-      "server_id": {
-       "type": "string",
-       "required": true,
-       "location": "path"
-      }
-     },
-     "parameterOrder": [
-      "server_id"
-     ],
-     "request": {
-      "$ref": "MaintenanceRecord"
-     },
-     "response": {
-      "$ref": "MaintenanceRecord"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
+  "carhub.expense.delete": {
+   "id": "carhub.expense.delete",
+   "parameters": {
+    "resource": {
+     "$ref": "UserExpenseRecord"
     }
-   }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "UserExpenseRecord"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
   },
-  "vehicle": {
-   "methods": {
-    "active": {
-     "id": "carhub.vehicle.active",
-     "path": "vehicle/active",
-     "httpMethod": "GET",
-     "parameters": {
-      "unused": {
-       "type": "string",
-       "location": "query"
-      }
-     },
-     "response": {
-      "$ref": "ModelsActiveRecords"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
+  "carhub.expense.list": {
+   "id": "carhub.expense.list",
+   "allowGet": true,
+   "parameters": {
+    "modified_since": {
+     "type": "string"
     },
-    "add": {
-     "id": "carhub.vehicle.add",
-     "path": "vehicle/add",
-     "httpMethod": "POST",
-     "request": {
-      "$ref": "UserVehicle"
-     },
-     "response": {
-      "$ref": "UserVehicle"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
+    "order": {
+     "type": "string"
     },
-    "delete": {
-     "id": "carhub.vehicle.delete",
-     "path": "vehicle/delete",
-     "httpMethod": "POST",
-     "request": {
-      "$ref": "UserVehicle"
-     },
-     "response": {
-      "$ref": "UserVehicle"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
+    "pageToken": {
+     "type": "string"
     },
-    "list": {
-     "id": "carhub.vehicle.list",
-     "path": "vehicle/list",
-     "httpMethod": "GET",
-     "response": {
-      "$ref": "UserVehicleCollection"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
-    },
-    "update": {
-     "id": "carhub.vehicle.update",
-     "path": "vehicle/update/{server_id}",
-     "httpMethod": "POST",
-     "parameters": {
-      "server_id": {
-       "type": "string",
-       "required": true,
-       "location": "path"
-      }
-     },
-     "parameterOrder": [
-      "server_id"
-     ],
-     "request": {
-      "$ref": "UserVehicle"
-     },
-     "response": {
-      "$ref": "UserVehicle"
-     },
-     "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-     ]
+    "vehicle": {
+     "type": "integer",
+     "required": true,
+     "format": "int32"
     }
-   }
+   },
+   "parameterOrder": [
+    "vehicle"
+   ],
+   "returns": {
+    "$ref": "UserExpenseRecordCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.expense.update": {
+   "id": "carhub.expense.update",
+   "parameters": {
+    "resource": {
+     "$ref": "UserExpenseRecord"
+    },
+    "server_id": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "resource",
+    "server_id"
+   ],
+   "returns": {
+    "$ref": "UserExpenseRecord"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.fuel.active": {
+   "id": "carhub.fuel.active",
+   "allowGet": true,
+   "parameters": {
+    "vehicle": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "vehicle"
+   ],
+   "returns": {
+    "$ref": "ModelsActiveRecords"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.fuel.add": {
+   "id": "carhub.fuel.add",
+   "parameters": {
+    "resource": {
+     "$ref": "FuelRecord"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "FuelRecord"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.fuel.delete": {
+   "id": "carhub.fuel.delete",
+   "parameters": {
+    "resource": {
+     "$ref": "FuelRecord"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "FuelRecord"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.fuel.list": {
+   "id": "carhub.fuel.list",
+   "allowGet": true,
+   "parameters": {
+    "modified_since": {
+     "type": "string"
+    },
+    "order": {
+     "type": "string"
+    },
+    "pageToken": {
+     "type": "string"
+    },
+    "vehicle": {
+     "type": "integer",
+     "required": true,
+     "format": "int32"
+    }
+   },
+   "parameterOrder": [
+    "vehicle"
+   ],
+   "returns": {
+    "$ref": "FuelRecordCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.fuel.update": {
+   "id": "carhub.fuel.update",
+   "parameters": {
+    "resource": {
+     "$ref": "FuelRecord"
+    },
+    "server_id": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "resource",
+    "server_id"
+   ],
+   "returns": {
+    "$ref": "FuelRecord"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.maintenance.active": {
+   "id": "carhub.maintenance.active",
+   "allowGet": true,
+   "parameters": {
+    "vehicle": {
+     "type": "string",
+     "required": true,
+     "format": "int64"
+    }
+   },
+   "parameterOrder": [
+    "vehicle"
+   ],
+   "returns": {
+    "$ref": "ModelsActiveRecords"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.maintenance.add": {
+   "id": "carhub.maintenance.add",
+   "parameters": {
+    "resource": {
+     "$ref": "MaintenanceRecord"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "MaintenanceRecord"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.maintenance.delete": {
+   "id": "carhub.maintenance.delete",
+   "parameters": {
+    "resource": {
+     "$ref": "MaintenanceRecord"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "MaintenanceRecord"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.maintenance.list": {
+   "id": "carhub.maintenance.list",
+   "allowGet": true,
+   "parameters": {
+    "modified_since": {
+     "type": "string"
+    },
+    "order": {
+     "type": "string"
+    },
+    "pageToken": {
+     "type": "string"
+    },
+    "vehicle": {
+     "type": "integer",
+     "required": true,
+     "format": "int32"
+    }
+   },
+   "parameterOrder": [
+    "vehicle"
+   ],
+   "returns": {
+    "$ref": "MaintenanceRecordCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.maintenance.update": {
+   "id": "carhub.maintenance.update",
+   "parameters": {
+    "resource": {
+     "$ref": "MaintenanceRecord"
+    },
+    "server_id": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "resource",
+    "server_id"
+   ],
+   "returns": {
+    "$ref": "MaintenanceRecord"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.vehicle.active": {
+   "id": "carhub.vehicle.active",
+   "allowGet": true,
+   "parameters": {
+    "unused": {
+     "type": "string"
+    }
+   },
+   "returns": {
+    "$ref": "ModelsActiveRecords"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.vehicle.add": {
+   "id": "carhub.vehicle.add",
+   "parameters": {
+    "resource": {
+     "$ref": "UserVehicle"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "UserVehicle"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.vehicle.delete": {
+   "id": "carhub.vehicle.delete",
+   "parameters": {
+    "resource": {
+     "$ref": "UserVehicle"
+    }
+   },
+   "parameterOrder": [
+    "resource"
+   ],
+   "returns": {
+    "$ref": "UserVehicle"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.vehicle.list": {
+   "id": "carhub.vehicle.list",
+   "allowGet": true,
+   "returns": {
+    "$ref": "UserVehicleCollection"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "carhub.vehicle.update": {
+   "id": "carhub.vehicle.update",
+   "parameters": {
+    "resource": {
+     "$ref": "UserVehicle"
+    },
+    "server_id": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "resource",
+    "server_id"
+   ],
+   "returns": {
+    "$ref": "UserVehicle"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
   }
  }
 }

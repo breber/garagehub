@@ -124,9 +124,12 @@ class CarHubApi(remote.Service):
                       name='vehicle.active',
                       http_method='GET')
     def VehicleActive(self, request):
-        auth_user_id = auth_util.get_google_plus_user_id()
-        if auth_user_id is None:
+        current_user = endpoints.get_current_user()
+        if current_user is None:
             raise endpoints.UnauthorizedException('Invalid token.')
+
+        auth_user_id = auth_util.get_google_plus_user_id()
+
         user = get_user_by_auth(auth_user_id)
 
         query = UserVehicle.query(UserVehicle.owner == str(user.key.id()))
@@ -225,9 +228,12 @@ class CarHubApi(remote.Service):
                       name='expense.active',
                       http_method='GET')
     def ExpenseActive(self, request):
-        auth_user_id = auth_util.get_google_plus_user_id()
-        if auth_user_id is None:
+        current_user = endpoints.get_current_user()
+        if current_user is None:
             raise endpoints.UnauthorizedException('Invalid token.')
+
+        auth_user_id = auth_util.get_google_plus_user_id()
+
         user = get_user_by_auth(auth_user_id)
 
         query = UserExpenseRecord.query(UserExpenseRecord.owner == str(user.key.id()),
@@ -327,9 +333,12 @@ class CarHubApi(remote.Service):
                       name='maintenance.active',
                       http_method='GET')
     def MaintenanceActive(self, request):
-        auth_user_id = auth_util.get_google_plus_user_id()
-        if auth_user_id is None:
+        current_user = endpoints.get_current_user()
+        if current_user is None:
             raise endpoints.UnauthorizedException('Invalid token.')
+
+        auth_user_id = auth_util.get_google_plus_user_id()
+
         user = get_user_by_auth(auth_user_id)
 
         query = MaintenanceRecord.query(MaintenanceRecord.owner == str(user.key.id()),
@@ -433,9 +442,12 @@ class CarHubApi(remote.Service):
                       name='fuel.active',
                       http_method='GET')
     def FuelActive(self, request):
-        auth_user_id = auth_util.get_google_plus_user_id()
-        if auth_user_id is None:
+        current_user = endpoints.get_current_user()
+        if current_user is None:
             raise endpoints.UnauthorizedException('Invalid token.')
+
+        auth_user_id = auth_util.get_google_plus_user_id()
+
         user = get_user_by_auth(auth_user_id)
 
         query = FuelRecord.query(FuelRecord.owner == str(user.key.id()),

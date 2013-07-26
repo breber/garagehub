@@ -1,5 +1,5 @@
 $().ready(function() {
-    $("#addVehicle").on("show", function () {
+    $("#addVehicle").on("show.bs.modal", function () {
         if ($("#makes > option").length <= 1) {
             $.get('/cars/raw',
                     function(data) {

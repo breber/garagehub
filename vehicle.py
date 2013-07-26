@@ -97,7 +97,8 @@ class VehicleExpenseAddHandler(blobstore_handlers.BlobstoreUploadHandler):
         return jinja2.get_jinja2(app=self.app)
 
     def render_template(self, filename, template_args):
-          self.response.write(self.jinja2.render_template(filename, **template_args))
+        template_args['page'] = filename
+        self.response.write(self.jinja2.render_template(filename, **template_args))
 
     def get(self, vehicle_id, page_name):
         context = utils.get_context()
@@ -152,7 +153,8 @@ class VehicleExpenseEditHandler(blobstore_handlers.BlobstoreUploadHandler):
         return jinja2.get_jinja2(app=self.app)
 
     def render_template(self, filename, template_args):
-          self.response.write(self.jinja2.render_template(filename, **template_args))
+        template_args['page'] = filename
+        self.response.write(self.jinja2.render_template(filename, **template_args))
 
     def get(self, vehicle_id, page_name, expense_id):
         context = utils.get_context()
@@ -239,7 +241,8 @@ class VehicleExpenseHandler(webapp2.RequestHandler):
         return jinja2.get_jinja2(app=self.app)
 
     def render_template(self, filename, template_args):
-          self.response.write(self.jinja2.render_template(filename, **template_args))
+        template_args['page'] = filename
+        self.response.write(self.jinja2.render_template(filename, **template_args))
 
     def get(self, vehicle_id):
         context = utils.get_context()
@@ -278,7 +281,8 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
         return jinja2.get_jinja2(app=self.app)
 
     def render_template(self, filename, template_args):
-          self.response.write(self.jinja2.render_template(filename, **template_args))
+        template_args['page'] = filename
+        self.response.write(self.jinja2.render_template(filename, **template_args))
 
     def get(self, vehicle_id):
         context = utils.get_context()
@@ -335,7 +339,8 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         return jinja2.get_jinja2(app=self.app)
 
     def render_template(self, filename, template_args):
-          self.response.write(self.jinja2.render_template(filename, **template_args))
+        template_args['page'] = filename
+        self.response.write(self.jinja2.render_template(filename, **template_args))
 
     def get(self, vehicle_id):
         context = utils.get_context()
@@ -360,23 +365,13 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
     def handle_request(request, user_id, obj):
         costPerGallon = float(request.request.get("pricepergallon", None))
         fuelGrade = request.request.get("grade")
-        useOdometerLastRecord = request.request.get("sinceLastFuelRecord", False)
+        odometerStart = request.request.get("odometerStart", None)
         odometerEnd = request.request.get("odometerEnd", None)
 
-        lastFuelRecord = None
-        if useOdometerLastRecord:
-            # find the previous gas record and grab the odometer reading
-            latestFuel = datastore.get_n_fuel_records(user_id, obj.vehicle, 1, False)
-            if latestFuel and len(latestFuel) > 0:
-                lastFuelRecord = latestFuel[0]
-                odometerStart = lastFuelRecord.odometerEnd
-        if not lastFuelRecord:
-            # try to get from manual odometer start entry
-            odometerStart = request.request.get("odometerStart", None)
-            if odometerStart and odometerStart != "Enter Odometer Start":
-                odometerStart = int(odometerStart)
-            else:
-                odometerStart = -1
+        if odometerStart:
+            odometerStart = int(odometerStart)
+        else:
+            odometerStart = -1
 
         if odometerEnd:
             odometerEnd = int(odometerEnd)
@@ -406,7 +401,8 @@ class VehicleHandler(webapp2.RequestHandler):
         return jinja2.get_jinja2(app=self.app)
 
     def render_template(self, filename, template_args):
-          self.response.write(self.jinja2.render_template(filename, **template_args))
+        template_args['page'] = filename
+        self.response.write(self.jinja2.render_template(filename, **template_args))
 
     def get(self, vehicle_id, page_name):
         context = utils.get_context()

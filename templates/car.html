@@ -1,14 +1,12 @@
 {% extends 'base_vehicle.html' %}
 {% block pagecontent %}
 
-<div class="row-fluid">
-  <div class="span9">
+<div class="row">
+  <div class="col col-lg-9">
     <h2>{{ car.name() }}</h2>
   </div>
-  <div class="span3">
-    <div class="row-fluid">
-      <a href="#editCar" class="btn btn-inverse span12" data-toggle="modal"><i class="icon-edit icon-white"></i> Edit Vehicle</a>
-    </div>
+  <div class="col col-lg-3">
+    <a href="#editCar" class="btn btn-primary btn-block" data-toggle="modal"><i class="glyphicon glyphicon-edit"></i> Edit Vehicle</a>
   </div>
 </div>
 
@@ -32,28 +30,32 @@
   </tr>
 </table>
 
-<div id="editCar" class="modal hide fade">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal">x</button>
-    <h3>Update Vehicle</h3>
-  </div>
-  <div class="modal-body">
-    <form action="/vehicle/{{ car.key.id() }}/update" method="post" id="saveForm">
-      <div>
-        <label for="color">Color:</label>
-        <input id="color" type="text" name="color" value="{% if car.color %}{{ car.color }}{% endif %}" />
+<div id="editCar" class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">x</button>
+        <h3>Update Vehicle</h3>
       </div>
-      <div>
-        <label for="plates">License Plates:</label>
-        <input id="plates" type="text" name="plates" value="{% if car.plates %}{{ car.plates }}{% endif %}" />
+      <div class="modal-body">
+        <form action="/vehicle/{{ car.key.id() }}/update" method="post" id="saveForm">
+          <div class="form-group">
+            <label for="color">Color:</label>
+            <input id="color" type="text" class="form-control" name="color" value="{% if car.color %}{{ car.color }}{% endif %}" />
+          </div>
+          <div class="form-group">
+            <label for="plates">License Plates:</label>
+            <input id="plates" type="text"class="form-control" name="plates" value="{% if car.plates %}{{ car.plates }}{% endif %}" />
+          </div>
+        </form>
       </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <form action="/vehicle/{{ car.key.id() }}/delete" method="post" id="deleteForm" class="hidden"></form>
-    <input type="submit" class="btn btn-danger" value="Delete" form="deleteForm"></input>
-    <a href="#" class="btn" data-dismiss="modal">Close</a>
-    <input type="submit" class="btn btn-primary" autofocus="autofocus" form="saveForm" value="Submit"></input>
+      <div class="modal-footer">
+        <form action="/vehicle/{{ car.key.id() }}/delete" method="post" id="deleteForm" class="hidden"></form>
+        <input type="submit" class="btn btn-danger" value="Delete" form="deleteForm"></input>
+        <a href="#" class="btn btn-default" data-dismiss="modal">Close</a>
+        <input type="submit" class="btn btn-primary" autofocus="autofocus" form="saveForm" value="Submit"></input>
+      </div>
+    </div>
   </div>
 </div>
 

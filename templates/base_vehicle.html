@@ -1,28 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="container-fluid center-block">
-  <div class="row-fluid">
-    <div class="well span3 sidebar">
-      <ul class="nav nav-list">
-        <li class="nav-header">Navigate</li>
-        <li><a href="/vehicle/{{ car.key.id() }}">{{ car.name() }}</a></li>
+<div class="center-block">
+  <div class="row">
+    <div class="col col-lg-3">
+      <ul class="nav sidebar">
         <li>
-          <ul>
-            <li><a href="/vehicle/{{ car.key.id() }}/expenses">Expense Manager</a></li>
-            <li><a href="/vehicle/{{ car.key.id() }}/maintenance">Maintenance Records</a></li>
-            <li><a href="/vehicle/{{ car.key.id() }}/gasmileage">Gas Mileage Tracking</a></li>
-            <li><a href="/vehicle/{{ car.key.id() }}/charts">Charts</a></li>
-            <li><a href="/vehicle/{{ car.key.id() }}/news">News</a></li>
+          <a href="/vehicle/{{ car.key.id() }}">{{ car.name() }}</a>
+          <ul class="nav">
+            <li {% if page == "expenses.html" %}class="active"{% endif %}><a href="/vehicle/{{ car.key.id() }}/expenses">Expense Manager</a></li>
+            <li {% if page == "maintenance.html" %}class="active"{% endif %}><a href="/vehicle/{{ car.key.id() }}/maintenance">Maintenance Records</a></li>
+            <li {% if page == "gasmileage.html" %}class="active"{% endif %}><a href="/vehicle/{{ car.key.id() }}/gasmileage">Gas Mileage Tracking</a></li>
+            <li {% if page == "charts.html" %}class="active"{% endif %}><a href="/vehicle/{{ car.key.id() }}/charts">Charts</a></li>
+            <li {% if page == "news.html" %}class="active"{% endif %}><a href="/vehicle/{{ car.key.id() }}/news">News</a></li>
           </ul>
         </li>
       </ul>
     </div>
 
-    <div class="well span9">
+    <div class="col col-lg-9">
       {% block pagecontent %}{% endblock %}
     </div>
   </div>
+  <br>
 </div>
 
 {% endblock %}

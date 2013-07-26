@@ -44,7 +44,6 @@ function updateSubmitHandler() {
 //	$.post("http://api.mygasfeed.com/locations/price/zax22arsix.json", { price: "3.63", fueltype: "2", stationid: "1" }, function(data) {
 //        alert(data);
 //	});
-
 }
 
 function updateCloseHandler() {
@@ -75,9 +74,9 @@ $(document).on("click", "#gaspricetable tr td", function() {
 	var latLng = new google.maps.LatLng(lat, lon); // Makes a latlng
 	addMarker(map, latLng);
 
-	$('#modalMap').on('shown', function() {
-        google.maps.event.trigger(map, "resize");
-		map.panTo(latLng);
+	$('#modalMap').on('shown.bs.modal', function() {
+    google.maps.event.trigger(map, "resize");
+    map.panTo(latLng);
 	});
 
 	$("#modalMap").modal();

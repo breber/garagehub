@@ -9,16 +9,16 @@ $(document).ready(function() {
 	// Setup click handlers
 	$("#location").click(hideZipCode);
 	$("#fetchPrices").click(getGasPrices);
-	
+
 	//Favorite Handler
 	$("#saveAsFavorite").click(favoriteHandler);
-	
+
 	//Update Handler
 	$("#priceUpdate").click(updateHandler);
 	$("#priceUpdateClose").click(updateCloseHandler);
 	$("#priceUpdateSubmit").click(updateSubmitHandler);
-	
-	
+
+
 	datatablesObject = null;
 
 	getGasPrices();
@@ -30,7 +30,6 @@ function favoriteHandler() {
 	$.post("/userfavorites/gasstation", { stationid: id}, function(data) {
 		//Can do something here on response
 	});
-	
 }
 
 function updateHandler(name, location) {
@@ -43,9 +42,9 @@ function updateSubmitHandler() {
 	//alert("post");
 	//TODO fix this so it works
 //	$.post("http://api.mygasfeed.com/locations/price/zax22arsix.json", { price: "3.63", fueltype: "2", stationid: "1" }, function(data) {
-//		  alert(data);
+//        alert(data);
 //	});
-	
+
 }
 
 function updateCloseHandler() {

@@ -38,9 +38,9 @@ function displayGasPrices(JSONGasFeed) {
         function(json) {
             var data = [];
             var item = json.details;
-            
+
             $('#stationInfo').empty();
-        	$('#stationInfo').append('<h4>' + item.station_name+' - '+ item.address+' </h4><h5> Regular Price: '+ item.reg_price+' </h5><h5>Mid Price: '+ item.mid_price+' </h5><h5>Premium Price: '+ item.pre_price + '</h5>');
+            $('#stationInfo').append('<h4>' + item.station_name+' - '+ item.address+' </h4><h5> Regular Price: '+ item.reg_price+' </h5><h5>Mid Price: '+ item.mid_price+' </h5><h5>Premium Price: '+ item.pre_price + '</h5>');
 
             stopLoading();
         }

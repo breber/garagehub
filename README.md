@@ -1,9 +1,4 @@
 # README #
-================
-
-## Setting up Eclipse ##
-
-* Download the [Google AppEngine SDK for Python](https://developers.google.com/appengine/downloads#Google_App_Engine_SDK_for_Python)
 
 ## Repository Layout ##
 

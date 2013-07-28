@@ -73,7 +73,7 @@ function drawFuelChart(content) {
 
     var options = {
         title : 'Average Gas Milage',
-        backgroundColor : '#f5f5f5',
+        // backgroundColor : '#f5f5f5',
         series : [ {
             visibleInLegend : true
         }, {
@@ -107,7 +107,7 @@ function drawCategoryChart(content) {
 
     var options = {
         title : 'Categorized Expenditures',
-        backgroundColor : '#f5f5f5',
+        // backgroundColor : '#f5f5f5',
     };
 
     stopLoading();

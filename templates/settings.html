@@ -8,7 +8,7 @@
   <div class="control-group">
     <label class="control-label" for="username"><b>Username</b></label>
     <div class="controls">
-      <input type="text" id="username" name="username" disabled="disabled" value="{{ user.username }}" />
+      <input type="text" id="username" class="form-control" name="username" disabled="disabled" value="{{ user.username }}" />
     </div>
   </div>
 
@@ -21,16 +21,12 @@
 
   <div>
     <label class="control-label"><b>Categories</b></label>
-    <div class="row-fluid">
-      <div class="span3">
-        <div class="row-fluid">
-          <a id="editCategory" class="btn btn-inverse span12 settings-btn"><i class="icon-edit icon-white"></i> Edit Category</a>
-        </div>
-        <div class="row-fluid">
-          <a id="deleteCategory" class="btn btn-danger span12 settings-btn"><i class="icon-remove icon-white"></i> Delete Category</a>
-        </div>
+    <div class="row">
+      <div class="col-lg-3">
+        <a id="editCategory" class="btn btn-default col-lg-12 btn-block"><i class="glyphicon glyphicon-edit"></i> Edit Category</a>
+        <a id="deleteCategory" class="btn btn-danger col-lg-12 btn-block"><i class="glyphicon glyphicon-remove"></i> Delete Category</a>
       </div>
-      <div class="span3">
+      <div class="col-lg-3">
         <table class="category-datatable table table-striped table-bordered DTTT_selectable table-hover" id="expense-category-table">
           <thead>
             <tr>
@@ -47,7 +43,7 @@
             {% endif %}
             <tr id="add">
               <td class="expense">
-                <a id="addExpCategory" class="btn btn-primary"><i class="icon-plus"></i> Add</a>
+                <a id="addExpCategory" class="btn btn-primary col-lg-12"><i class="glyphicon glyphicon-plus"></i> Add</a>
               </td>
             </tr>
           </tbody>
@@ -66,7 +62,7 @@
         </table>
       </div>
 
-      <div class="span3">
+      <div class="col-lg-3">
         <table class="category-datatable table table-striped table-bordered DTTT_selectable table-hover" id="maint-category-table">
           <thead>
             <tr>
@@ -83,7 +79,7 @@
             {% endif %}
             <tr id="add">
               <td class="maintenance">
-                <a id="addMaintCategory" class="btn btn-primary"><i class="icon-plus"></i> Add</a>
+                <a id="addMaintCategory" class="btn btn-primary col-lg-12"><i class="glyphicon glyphicon-plus"></i> Add</a>
               </td>
             </tr>
           </tbody>

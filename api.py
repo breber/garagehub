@@ -19,11 +19,11 @@ def get_user_by_auth(uid):
         return user
     else:
         current_user = endpoints.get_current_user()
-        user_by_email = User.query(User.email_address == current_user.email()).get()
+        user_by_email = User.query(User.email_address == current_user.email().lower()).get()
 
         if not user_by_email:
             user_by_email = User()
-            user_by_email.email_address = current_user.email()
+            user_by_email.email_address = current_user.email().lower()
 
         user_by_email.google_oauth = uid
         user_by_email.put()

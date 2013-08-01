@@ -41,6 +41,20 @@ class UserVehicle(EndpointsModel):
     def server_id(self):
         return str(self.key.id())
 
+    def modified_since_set(self, value):
+        try:
+            modified_since = datetime.fromtimestamp(long(value) / 1000)
+            if not isinstance(modified_since, datetime):
+                raise TypeError('Not a datetime stamp.')
+        except TypeError:
+            raise endpoints.BadRequestException('Invalid timestamp for modifiedSince.')
+
+        self._endpoints_query_info._filters.add(UserVehicle.lastmodified >= modified_since)
+
+    @EndpointsAliasProperty(setter=modified_since_set)
+    def modified_since(self):
+        raise endpoints.BadRequestException('modifiedSince value should never be accessed.')
+
     def name(self):
         return "%s %s %s" % (self.year, self.make, self.model)
 

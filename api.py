@@ -39,7 +39,8 @@ class CarHubApi(remote.Service):
 
     @UserVehicle.query_method(user_required=True,
                               path='vehicle/list',
-                              name='vehicle.list')
+                              name='vehicle.list',
+                              query_fields=('order', 'pageToken', 'modified_since'))
     def VehicleList(self, query):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)

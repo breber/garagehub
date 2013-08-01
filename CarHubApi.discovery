@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"s1omim4x8ymp9_6H8kBMkfEDqpo/iTtg-62Kbq2wQXybTXBeCYinsl8\"",
+ "etag": "\"nPbVolg1F8jpPe9kkErPtt8mpZE/44vI4gKsyCCEzSR_v3uesYml07U\"",
  "discoveryVersion": "v1",
  "id": "carhub:v1",
  "name": "carhub",
@@ -719,6 +719,17 @@
   "carhub.vehicle.list": {
    "id": "carhub.vehicle.list",
    "allowGet": true,
+   "parameters": {
+    "modified_since": {
+     "type": "string"
+    },
+    "order": {
+     "type": "string"
+    },
+    "pageToken": {
+     "type": "string"
+    }
+   },
    "returns": {
     "$ref": "UserVehicleCollection"
    },

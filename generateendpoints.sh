@@ -1,12 +1,12 @@
 CARHUB_MOBILE=$(pwd)/../CarHubMobile/CarHubMobile
 CARHUB_IOS=$(pwd)/../carhub-ios
-LIB_VERSION=1.15.0-rc
+LIB_VERSION=1.16.0-rc
 
 # Generate the Java client library
 endpointscfg.py get_client_lib java -o . -f rest api.CarHubApi
 
 # Unzip the generated zip
-mv CarHubApi.zip /tmp/CarHubApi.zip
+mv carhub-v1.zip /tmp/CarHubApi.zip
 pushd /tmp/
 yes | unzip CarHubApi.zip
 pushd carhub
@@ -51,7 +51,7 @@ if [ -d $CARHUB_IOS ]; then
     xcodebuild -project ServiceGenerator.xcodeproj
     popd
     ./google-api-objectivec-client-read-only/Source/Tools/ServiceGenerator/build/Release/ServiceGenerator \
-        CarHubApi.discovery --outputDir $CARHUB_IOS/CarHubApi/
+        carhub-v1.discovery --outputDir $CARHUB_IOS/CarHubApi/
 
     rm -rf google-api-objectivec-client-read-only
 fi

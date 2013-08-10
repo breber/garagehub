@@ -79,10 +79,10 @@ class BaseExpense(EndpointsModel, polymodel.PolyModel):
     _message_fields_schema = ('server_id', 'vehicle', 'date', 'lastmodified', 'categoryid', 'location', 'description', 'amount', 'pictureurl')
 
     owner = ndb.StringProperty()
-    vehicle = EndpointsVariantIntegerProperty(variant=messages.Variant.INT32)
+    vehicle = ndb.IntegerProperty()
     date = ndb.DateProperty()
     lastmodified = ndb.DateTimeProperty()
-    categoryid = EndpointsVariantIntegerProperty(variant=messages.Variant.INT32)
+    categoryid = ndb.IntegerProperty()
     location = ndb.StringProperty()
     description = ndb.StringProperty()
     amount = ndb.FloatProperty()

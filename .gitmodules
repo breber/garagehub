@@ -1,0 +1,3 @@
+[submodule "carhub_keys"]
+	path = carhub_keys
+	url = ssh://git@bitbucket.org/breber/carhub-keys.git

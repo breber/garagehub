@@ -44,10 +44,10 @@ Copy the `static/css/carhub.less` from our repository into the `less` folder of 
 
 ## External Libraries
 
-* Datables @ 1.9.4
-* Datables Bootstrap @ DataTables/Plugins@cbe8320d3a
-* Bootstrap Datepicker @ eternicode/bootstrap-datepicker@eed4bfd127
-* jQuery Validation Engine @ posabsolute/jQuery-Validation-Engine@95f72042c6
-* jQuery @ 2.0.3
-* JS sprintf @ alexei/sprintf.js@0260e01c71
-* TableTools @ 1.9.4
+* Datables: 1.9.4
+* Datables Bootstrap: DataTables/Plugins@cbe8320d3a09c727c50500a0f35e7783ca2c02c5
+* Bootstrap Datepicker: eternicode/bootstrap-datepicker@eed4bfd127bad8ff8806db345cdef1194a43f091
+* jQuery Validation Engine: posabsolute/jQuery-Validation-Engine@95f72042c61e4d8b8f1f3fe1a8451f2dbc9ebf9c
+* jQuery: 2.0.3
+* JS sprintf: alexei/sprintf.js@0260e01c7162ee3e9c76ca9bd24c4a1377c185e8
+* TableTools: 1.9.4

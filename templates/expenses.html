@@ -17,7 +17,7 @@
   <div class="col-lg-3">
     {% if userexpenses %}
     <a id="record-add" class="btn btn-primary btn-block expense-btn" href="/vehicle/{{ car.key.id() }}/expenses/add"><i class="glyphicon glyphicon-plus"></i> Add Expense</a>
-    <a id="record-edit" class="btn btn-default btn-block expense-btn"><i class="glyphicon glyphicon-edit"></i> Edit Record</a>
+    <a id="record-edit" class="btn btn-info btn-block expense-btn"><i class="glyphicon glyphicon-edit"></i> Edit Record</a>
     <a id="record-delete" class="btn btn-danger btn-block expense-btn"><i class="glyphicon glyphicon-remove"></i> Delete Record</a>
     {% endif %}
   </div>
@@ -81,6 +81,6 @@
 {% endif %} {% endblock %} {% block externaljs %}
 <script type="text/javascript" src="/static/js/ext/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="/static/js/ext/dataTables.bootstrap.js"></script>
-<script type="text/javascript" src="/static/js/ext/TableTools.js"></script>
+<script type="text/javascript" src="/static/js/ext/TableTools.min.js"></script>
 <script type="text/javascript" src="/static/js/expenses.js"></script>
 {% endblock %}

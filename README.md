@@ -41,3 +41,13 @@ Copy the `static/css/carhub.less` from our repository into the `less` folder of 
 * [Google API Console](https://code.google.com/apis/console/)
 * [Bootstrap](http://getbootstrap.com)
 * [jQuery](http://jquery.com/)
+
+## External Libraries
+
+* Datables @ 1.9.4
+* Datables Bootstrap @ DataTables/Plugins@cbe8320d3a
+* Bootstrap Datepicker @ eternicode/bootstrap-datepicker@eed4bfd127
+* jQuery Validation Engine @ posabsolute/jQuery-Validation-Engine@95f72042c6
+* jQuery @ 2.0.3
+* JS sprintf @ alexei/sprintf.js@0260e01c71
+* TableTools @ 1.9.4

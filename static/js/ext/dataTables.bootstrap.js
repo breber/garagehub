@@ -1,11 +1,13 @@
 /* Set the defaults for DataTables initialisation */
 $.extend( true, $.fn.dataTable.defaults, {
-	"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+	"sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
 	"sPaginationType": "bootstrap",
 	"oLanguage": {
 		"sLengthMenu": "_MENU_ records per page"
 	}
 } );
+
+
 
 
 /* Default class modification */
@@ -23,8 +25,10 @@ $.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
 		"iLength":        oSettings._iDisplayLength,
 		"iTotal":         oSettings.fnRecordsTotal(),
 		"iFilteredTotal": oSettings.fnRecordsDisplay(),
-		"iPage":          Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
-		"iTotalPages":    Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
+		"iPage":          oSettings._iDisplayLength === -1 ?
+			0 : Math.ceil( oSettings._iDisplayStart / oSettings._iDisplayLength ),
+		"iTotalPages":    oSettings._iDisplayLength === -1 ?
+			0 : Math.ceil( oSettings.fnRecordsDisplay() / oSettings._iDisplayLength )
 	};
 };
 
@@ -41,8 +45,8 @@ $.extend( $.fn.dataTableExt.oPagination, {
 				}
 			};
 
-			$(nPaging).addClass('pagination').append(
-				'<ul>'+
+			$(nPaging).append(
+				'<ul class="pagination">'+
 					'<li class="prev disabled"><a href="#">&larr; '+oLang.sPrevious+'</a></li>'+
 					'<li class="next disabled"><a href="#">'+oLang.sNext+' &rarr; </a></li>'+
 				'</ul>'
@@ -116,7 +120,7 @@ if ( $.fn.DataTable.TableTools ) {
 	$.extend( true, $.fn.DataTable.TableTools.classes, {
 		"container": "DTTT btn-group",
 		"buttons": {
-			"normal": "btn",
+			"normal": "btn btn-default",
 			"disabled": "disabled"
 		},
 		"collection": {
@@ -143,4 +147,3 @@ if ( $.fn.DataTable.TableTools ) {
 		}
 	} );
 }
-

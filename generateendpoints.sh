@@ -1,6 +1,6 @@
 CARHUB_MOBILE=$(pwd)/../CarHubMobile/CarHubMobile
 CARHUB_IOS=$(pwd)/../carhub-ios
-LIB_VERSION=1.16.0-rc
+LIB_VERSION=1.17.0-rc
 
 # Generate the Java client library
 endpointscfg.py get_client_lib java -o . -f rest api.CarHubApi
@@ -27,10 +27,10 @@ cp libs/google-http-client-gson-$LIB_VERSION.jar $CARHUB_MOBILE/CarHub/libs/
 cp libs/google-oauth-client-$LIB_VERSION.jar $CARHUB_MOBILE/CarHub/libs/
 
 # Get the java files out of the generated Jar
-mv car-hub-carhub*.jar car-hub-carhub.zip
+mv *.jar car-hub-carhub.zip
 unzip car-hub-carhub.zip
 
-cp -R com/google/* $CARHUB_MOBILE/CarHub/src/main/java/com/google/
+cp -R com/appspot/* $CARHUB_MOBILE/CarHub/src/main/java/com/appspot/
 
 popd # carhub
 popd # /tmp/

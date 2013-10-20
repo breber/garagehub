@@ -1,10 +1,10 @@
 from carhub_keys import carhubkeys
-from google.appengine.ext import endpoints
 from protorpc import remote
 from models import *
 import auth_util
 import datastore
 import datetime
+import endpoints
 import logging
 
 # TODO: this probably isn't the best solution, but it should work for now

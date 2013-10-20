@@ -57,6 +57,8 @@ libraries:
   version: latest
 - name: pycrypto
   version: latest
+- name: endpoints
+  version: latest
 
 builtins:
 - deferred: on

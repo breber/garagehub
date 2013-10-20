@@ -12,13 +12,12 @@ to eliminate network overhead.
 https://github.com/GoogleCloudPlatform/appengine-picturesque-python/blob/master/auth_util.py
 """
 
-
+import endpoints
 import json
 
 from google.appengine.api import urlfetch
-from google.appengine.ext import endpoints
-from google.appengine.ext.endpoints import users_id_token
-from google.appengine.ext.endpoints.users_id_token import _TOKENINFO_URL
+from endpoints import users_id_token
+from endpoints.users_id_token import _TOKENINFO_URL
 
 
 _SAVED_TOKEN_DICT = {}

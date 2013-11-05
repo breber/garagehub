@@ -3,7 +3,7 @@ CARHUB_IOS=$(pwd)/../carhub-ios
 LIB_VERSION=1.17.0-rc
 
 # Generate the Java client library
-endpointscfg.py get_client_lib java -o . -f rest api.CarHubApi
+endpointscfg.py get_client_lib java -o . api.CarHubApi
 
 # Unzip the generated zip
 mv carhub-v1.zip /tmp/CarHubApi.zip

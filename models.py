@@ -1,10 +1,11 @@
 from datetime import datetime
-from google.appengine.ext import endpoints, ndb
+from google.appengine.ext import ndb
 from google.appengine.ext.ndb import polymodel
 
 from protorpc import remote, messages
 from endpoints_proto_datastore.ndb import EndpointsModel, EndpointsAliasProperty, EndpointsVariantIntegerProperty
 
+import endpoints
 import utils
 
 class User(ndb.Model):

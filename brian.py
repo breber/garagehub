@@ -87,6 +87,28 @@ class FetchCarsBrian(webapp2.RequestHandler):
 
         self.redirect("/")
 
+class BackupDataBrian(webapp2.RequestHandler):
+    def get(self):
+        context = utils.get_context()
+        self.response.headerlist = [('Content-type', 'application/json')]
+
+        user_id = context['user']['userId']
+
+        toRet = {}
+        toRet["vehicles"] = []
+        vehicles = datastore.get_all_user_vehicles(user_id)
+        for vehicle in vehicles:
+            vehicle_id = vehicle.key.id()
+            vh = {}
+            vh["fuelRecords"] = datastore.get_fuel_records(user_id, vehicle_id, None)
+            vh["maintenanceRecords"] = datastore.get_maintenance_records(user_id, vehicle_id, None)
+            vh["expenseRecords"] = datastore.get_all_expense_records(user_id, vehicle_id, None, polymorphic=False)
+
+            toRet["vehicles"].append(vh)
+
+        self.response.out.write(json.dumps(toRet, cls=utils.ComplexEncoder))
+
 app = webapp2.WSGIApplication([
-    ('/brian/fetch', FetchCarsBrian)
+    ('/brian/fetch', FetchCarsBrian),
+    ('/brian/backup', BackupDataBrian)
 ], debug=True)

@@ -33,6 +33,27 @@ def get_user_by_auth(uid):
                allowed_client_ids=carhubkeys.ALLOWED_CLIENT_IDS)
 class CarHubApi(remote.Service):
 
+    @endpoints.method(StringRequest,
+                      StringRequest,
+                      path='gcm/register',
+                      name='gcm.register',
+                      http_method='POST')
+    def GcmRegister(self, request):
+        current_user = endpoints.get_current_user()
+        if current_user is None:
+            raise endpoints.UnauthorizedException('Invalid token.')
+
+        auth_user_id = auth_util.get_google_plus_user_id()
+
+        user = get_user_by_auth(auth_user_id)
+        if not request.string in user.mobile_ids:
+            user.mobile_ids.append(request.string)
+            user.put()
+
+        return StringRequest("Success")
+
+
+
     @UserVehicle.query_method(user_required=True,
                               path='vehicle/list',
                               name='vehicle.list',

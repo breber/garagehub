@@ -13,6 +13,7 @@ class User(ndb.Model):
     is_admin = ndb.BooleanProperty(default=False)
     google_openid = ndb.StringProperty()
     google_oauth = ndb.StringProperty()
+    mobile_ids = ndb.StringProperty(repeated=True)  # For Google Cloud Messaging
 
 class ServerResponseString(ndb.Model):
     response = ndb.TextProperty()
@@ -213,6 +214,9 @@ class Notification(ndb.Model):
 # API specific messages
 class UnusedRequest(messages.Message):
     unused = messages.StringField(1, required=False)
+
+class StringRequest(messages.Message):
+    string = messages.StringField(1, required=True)
 
 class VehicleRequest(messages.Message):
     vehicle = messages.IntegerField(1, required=True)

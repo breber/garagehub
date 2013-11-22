@@ -34,7 +34,7 @@ def get_user_by_auth(uid):
 class CarHubApi(remote.Service):
 
     @endpoints.method(StringRequest,
-                      StringRequest,
+                      UnusedRequest,
                       path='gcm/register',
                       name='gcm.register',
                       http_method='POST')
@@ -50,7 +50,7 @@ class CarHubApi(remote.Service):
             user.mobile_ids.append(request.string)
             user.put()
 
-        return StringRequest("Success")
+        return UnusedRequest()
 
 
 

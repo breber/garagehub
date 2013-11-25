@@ -64,6 +64,42 @@ class CarHubApi(remote.Service):
 
     @UserVehicle.method(user_required=True,
                         request_message=UserVehicle.ProtoModel(),
+                        path='vehicle/update',
+                        http_method='POST',
+                        name='vehicle.update')
+    def VehicleUpdate(self, request):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            try:
+                # Check if we have an existing record
+                id_as_long = long(request.server_id)
+                existing = UserVehicle.get_by_id(id_as_long)
+            except AttributeError:
+                logging.warn("AttributeError...")
+                existing = None
+
+            # Build the record we are going to store
+            request.server_id = None
+            to_store = UserVehicle.FromMessage(request)
+
+            # Use the same key if we have one
+            if existing:
+                to_store._key = existing._key
+
+            # Fill in required fields
+            to_store.owner = str(user.key.id())
+            to_store.lastmodified = datetime.datetime.now()
+            to_store.put()
+
+            return to_store
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    # TODO: remove this method
+    @UserVehicle.method(user_required=True,
+                        request_message=UserVehicle.ProtoModel(),
                         path='vehicle/update/{server_id}',
                         http_method='POST',
                         name='vehicle.update')
@@ -166,6 +202,42 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
+    @UserExpenseRecord.method(user_required=True,
+                              request_message=UserExpenseRecord.ProtoModel(),
+                              path='expense/update',
+                              http_method='POST',
+                              name='expense.update')
+    def ExpenseUpdate(self, request):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            try:
+                # Check if we have an existing record
+                id_as_long = long(request.server_id)
+                existing = UserExpenseRecord.get_by_id(id_as_long)
+            except AttributeError:
+                logging.warn("AttributeError...")
+                existing = None
+
+            # Build the record we are going to store
+            request.server_id = None
+            to_store = UserExpenseRecord.FromMessage(request)
+
+            # Use the same key if we have one
+            if existing:
+                to_store._key = existing._key
+
+            # Fill in required fields
+            to_store.owner = str(user.key.id())
+            to_store.lastmodified = datetime.datetime.now()
+            to_store.put()
+
+            return to_store
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    # TODO: remove this method
     @UserExpenseRecord.method(user_required=True,
                               request_message=UserExpenseRecord.ProtoModel(),
                               path='expense/update/{server_id}',
@@ -273,6 +345,42 @@ class CarHubApi(remote.Service):
 
     @MaintenanceRecord.method(user_required=True,
                               request_message=MaintenanceRecord.ProtoModel(),
+                              path='maintenance/update',
+                              http_method='POST',
+                              name='maintenance.update')
+    def MaintenanceUpdate(self, request):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            try:
+                # Check if we have an existing record
+                id_as_long = long(request.server_id)
+                existing = MaintenanceRecord.get_by_id(id_as_long)
+            except AttributeError:
+                logging.warn("AttributeError...")
+                existing = None
+
+            # Build the record we are going to store
+            request.server_id = None
+            to_store = MaintenanceRecord.FromMessage(request)
+
+            # Use the same key if we have one
+            if existing:
+                to_store._key = existing._key
+
+            # Fill in required fields
+            to_store.owner = str(user.key.id())
+            to_store.lastmodified = datetime.datetime.now()
+            to_store.put()
+
+            return to_store
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    # TODO: remove this method
+    @MaintenanceRecord.method(user_required=True,
+                              request_message=MaintenanceRecord.ProtoModel(),
                               path='maintenance/update/{server_id}',
                               http_method='POST',
                               name='maintenance.update')
@@ -378,6 +486,44 @@ class CarHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
+    @FuelRecord.method(user_required=True,
+                       request_message=FuelRecord.ProtoModel(),
+                       path='fuel/update',
+                       http_method='POST',
+                       name='fuel.update')
+    def FuelUpdate(self, request):
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
+
+        if user:
+            try:
+                # Check if we have an existing record
+                id_as_long = long(request.server_id)
+                existing = FuelRecord.get_by_id(id_as_long)
+            except AttributeError:
+                logging.warn("AttributeError...")
+                existing = None
+
+            # Build the record we are going to store
+            request.server_id = None
+            to_store = FuelRecord.FromMessage(request)
+
+            # Use the same key if we have one
+            if existing:
+                to_store._key = existing._key
+
+            # Fill in required fields
+            to_store.categoryid = datastore.get_category_by_name(str(user.key.id()), "Fuel Up").key.id()
+            to_store.description = "Filled up with gas"
+            to_store.owner = str(user.key.id())
+            to_store.lastmodified = datetime.datetime.now()
+            to_store.put()
+
+            return to_store
+        else:
+            raise endpoints.UnauthorizedException('Unknown user.')
+
+    # TODO: remove this method
     @FuelRecord.method(user_required=True,
                        request_message=FuelRecord.ProtoModel(),
                        path='fuel/update/{server_id}',

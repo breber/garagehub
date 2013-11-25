@@ -102,8 +102,8 @@ class CarHubApi(remote.Service):
                         request_message=UserVehicle.ProtoModel(),
                         path='vehicle/update/{server_id}',
                         http_method='POST',
-                        name='vehicle.update')
-    def VehicleUpdate(self, request):
+                        name='vehicle.updateold')
+    def VehicleUpdateOld(self, request):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
 
@@ -242,8 +242,8 @@ class CarHubApi(remote.Service):
                               request_message=UserExpenseRecord.ProtoModel(),
                               path='expense/update/{server_id}',
                               http_method='POST',
-                              name='expense.update')
-    def ExpenseUpdate(self, request):
+                              name='expense.updateold')
+    def ExpenseUpdateOld(self, request):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
 
@@ -383,8 +383,8 @@ class CarHubApi(remote.Service):
                               request_message=MaintenanceRecord.ProtoModel(),
                               path='maintenance/update/{server_id}',
                               http_method='POST',
-                              name='maintenance.update')
-    def MaintenanceUpdate(self, request):
+                              name='maintenance.updateold')
+    def MaintenanceUpdateOld(self, request):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
 
@@ -528,8 +528,8 @@ class CarHubApi(remote.Service):
                        request_message=FuelRecord.ProtoModel(),
                        path='fuel/update/{server_id}',
                        http_method='POST',
-                       name='fuel.update')
-    def FuelUpdate(self, request):
+                       name='fuel.updateold')
+    def FuelUpdateOld(self, request):
         auth_user_id = auth_util.get_google_plus_user_id()
         user = get_user_by_auth(auth_user_id)
 

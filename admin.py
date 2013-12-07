@@ -79,7 +79,29 @@ class CronHandler(webapp2.RequestHandler):
         if method == "fetch":
             fetchbase.performUpdate()
 
+class GcmTestHandler(webapp2.RequestHandler):
+    """The request handler for the /gcm/([^/]+) path """
+
+    def get(self, method):
+        """
+        Sends a test GCM message to the currently logged in user
+        """
+        from gcm import GCMMessage, GCMConnection
+        import logging
+
+        context = utils.get_context()
+        userid = context['user']['userId']
+        user = models.User.get_by_id(long(userid))
+
+        logging.warn("user: %s" % userid)
+        logging.warn("user: %s" % user)
+
+        gcm_message = GCMMessage(user)
+        gcm_conn = GCMConnection()
+        gcm_conn.notify_device(gcm_message)
+
 app = webapp2.WSGIApplication([
     ('/admin/?([^/]+)?', AdminHandler),
-    ('/cron/([^/]+)', CronHandler)
+    ('/cron/([^/]+)', CronHandler),
+    ('/admin/gcm/([^/]+)', GcmTestHandler)
 ])

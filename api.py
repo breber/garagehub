@@ -1,6 +1,7 @@
 from carhub_keys import carhubkeys
 from protorpc import remote
 from models import *
+import auth_util
 import datastore
 import datetime
 import endpoints
@@ -42,7 +43,9 @@ class CarHubApi(remote.Service):
         if current_user is None:
             raise endpoints.UnauthorizedException('Invalid token.')
 
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+
+        user = get_user_by_auth(auth_user_id)
         if not request.string in user.mobile_ids:
             user.mobile_ids.append(request.string)
             user.put()
@@ -56,11 +59,8 @@ class CarHubApi(remote.Service):
                               name='vehicle.list',
                               query_fields=('order', 'pageToken', 'modified_since'))
     def VehicleList(self, query):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             return query.filter(UserVehicle.owner == str(user.key.id()))
@@ -72,11 +72,8 @@ class CarHubApi(remote.Service):
                         http_method='POST',
                         name='vehicle.add')
     def VehicleAdd(self, vehicle):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             vehicle.owner = str(user.key.id())
@@ -92,11 +89,8 @@ class CarHubApi(remote.Service):
                         http_method='POST',
                         name='vehicle.update')
     def VehicleUpdate(self, request):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             try:
@@ -129,11 +123,8 @@ class CarHubApi(remote.Service):
                         http_method='POST',
                         name='vehicle.delete')
     def VehicleDelete(self, vehicle):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             server_vehicle = UserVehicle.get_by_id(vehicle.key.id())
@@ -155,7 +146,9 @@ class CarHubApi(remote.Service):
         if current_user is None:
             raise endpoints.UnauthorizedException('Invalid token.')
 
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+
+        user = get_user_by_auth(auth_user_id)
 
         query = UserVehicle.query(UserVehicle.owner == str(user.key.id()))
 
@@ -170,11 +163,8 @@ class CarHubApi(remote.Service):
                                     http_method='GET',
                                     query_fields=('vehicle', 'order', 'pageToken', 'modified_since'))
     def ExpenseList(self, query):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             return query.filter(UserExpenseRecord.owner == str(user.key.id()))
@@ -186,11 +176,8 @@ class CarHubApi(remote.Service):
                               http_method='POST',
                               name='expense.add')
     def ExpenseAdd(self, expense):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             expense.owner = str(user.key.id())
@@ -206,11 +193,8 @@ class CarHubApi(remote.Service):
                               http_method='POST',
                               name='expense.update')
     def ExpenseUpdate(self, request):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             try:
@@ -243,11 +227,8 @@ class CarHubApi(remote.Service):
                               http_method='POST',
                               name='expense.delete')
     def ExpenseDelete(self, expense):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             server_expense = UserExpenseRecord.get_by_id(expense.key.id())
@@ -269,7 +250,9 @@ class CarHubApi(remote.Service):
         if current_user is None:
             raise endpoints.UnauthorizedException('Invalid token.')
 
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+
+        user = get_user_by_auth(auth_user_id)
 
         query = UserExpenseRecord.query(UserExpenseRecord.owner == str(user.key.id()),
                                         UserExpenseRecord.vehicle == request.vehicle)
@@ -285,11 +268,8 @@ class CarHubApi(remote.Service):
                                     http_method='GET',
                                     query_fields=('vehicle', 'order', 'pageToken', 'modified_since'))
     def MaintenanceList(self, query):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             return query.filter(MaintenanceRecord.owner == str(user.key.id()))
@@ -301,11 +281,8 @@ class CarHubApi(remote.Service):
                               http_method='POST',
                               name='maintenance.add')
     def MaintenanceAdd(self, maintenance):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             maintenance.owner = str(user.key.id())
@@ -321,11 +298,8 @@ class CarHubApi(remote.Service):
                               http_method='POST',
                               name='maintenance.update')
     def MaintenanceUpdate(self, request):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             try:
@@ -358,11 +332,8 @@ class CarHubApi(remote.Service):
                               http_method='POST',
                               name='maintenance.delete')
     def MaintenanceDelete(self, maintenance):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             server_maintenance = MaintenanceRecord.get_by_id(maintenance.key.id())
@@ -384,7 +355,9 @@ class CarHubApi(remote.Service):
         if current_user is None:
             raise endpoints.UnauthorizedException('Invalid token.')
 
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+
+        user = get_user_by_auth(auth_user_id)
 
         query = MaintenanceRecord.query(MaintenanceRecord.owner == str(user.key.id()),
                                         MaintenanceRecord.vehicle == request.vehicle)
@@ -400,11 +373,8 @@ class CarHubApi(remote.Service):
                              http_method='GET',
                              query_fields=('vehicle', 'order', 'pageToken', 'modified_since'))
     def FuelList(self, query):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             return query.filter(FuelRecord.owner == str(user.key.id()))
@@ -416,11 +386,8 @@ class CarHubApi(remote.Service):
                        http_method='POST',
                        name='fuel.add')
     def FuelAdd(self, fuel):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             fuel.categoryid = datastore.get_category_by_name(str(user.key.id()), "Fuel Up").key.id()
@@ -438,11 +405,8 @@ class CarHubApi(remote.Service):
                        http_method='POST',
                        name='fuel.update')
     def FuelUpdate(self, request):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             try:
@@ -477,11 +441,8 @@ class CarHubApi(remote.Service):
                        http_method='POST',
                        name='fuel.delete')
     def FuelDelete(self, fuel):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             server_fuel = FuelRecord.get_by_id(fuel.key.id())
@@ -503,7 +464,9 @@ class CarHubApi(remote.Service):
         if current_user is None:
             raise endpoints.UnauthorizedException('Invalid token.')
 
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+
+        user = get_user_by_auth(auth_user_id)
 
         query = FuelRecord.query(FuelRecord.owner == str(user.key.id()),
                                  FuelRecord.vehicle == request.vehicle)
@@ -519,11 +482,8 @@ class CarHubApi(remote.Service):
                                   http_method='GET',
                                   query_fields=('pageToken',))
     def CategoryList(self, query):
-        current_user = endpoints.get_current_user()
-        if current_user is None:
-            raise endpoints.UnauthorizedException('Invalid token.')
-
-        user = get_user_by_auth(current_user.user_id())
+        auth_user_id = auth_util.get_google_plus_user_id()
+        user = get_user_by_auth(auth_user_id)
 
         if user:
             users = [str(user.key.id()), "defaultCategory", "defaultMaintCategory"]

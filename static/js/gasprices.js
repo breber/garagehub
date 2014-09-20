@@ -199,15 +199,26 @@ function displayGasPrices(JSONGasFeed) {
                 var station = {};
                 station["0"] = item.station;
                 station["1"] = item.address;
-                station["2"] = item.price;
+				if (grade === "Mid") {
+					station["2"] = item.mid_price;
+					station["4"] = item.mid_date;
+				} else if (grade === "Premium") {
+					station["2"] = item.pre_price;
+					station["4"] = item.pre_date;
+				} else if (grade === "Diesel") {
+					station["2"] = item.diesel_price;
+					station["4"] = item.diesel_date;
+				} else {
+					station["2"] = item.reg_price;
+					station["4"] = item.reg_date;
+				}
                 station["3"] = item.distance;
-                station["4"] = item.date;
                 station["5"] = item.lat;
                 station["6"] = item.lng;
                 station["7"] = item.id;
                 station["DT_RowClass"] = "linkable";
 
-                if (item.price !== "N/A") {
+                if (station["2"] !== "N/A") {
                     data.push(station);
                 }
             });

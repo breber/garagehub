@@ -30,11 +30,11 @@ function fetchData(dateRange) {
     }
 
     // TODO: new api method for getting based on date range
-    $.getJSON("/api/expense/fuel/" + vehicleId[1] + "/" + dateRange, function(data) {
+    $.getJSON("/api/expense/fuel/" + vehicleId + "/" + dateRange, function(data) {
         drawFuelChart(data);
     });
 
-    $.getJSON("/api/expense/category/" + vehicleId[1] + "/" + dateRange, function(data) {
+    $.getJSON("/api/expense/category/" + vehicleId + "/" + dateRange, function(data) {
         drawCategoryChart(data);
     });
 }

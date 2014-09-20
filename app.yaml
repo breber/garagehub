@@ -1,5 +1,5 @@
 application: car-hub
-version: v1
+version: v2
 runtime: python27
 api_version: 1
 threadsafe: yes
@@ -34,6 +34,10 @@ handlers:
 - url: /cron/?.*
   script: admin.app
   login: admin
+
+- url: /news/?.*
+  script: news.app
+  login: required
 
 - url: /settings/?.*
   script: settings.app

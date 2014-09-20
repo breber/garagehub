@@ -1,5 +1,5 @@
 function getVehicleId() {
-	return /\/vehicle\/([^\/]+)/.exec(window.location.pathname);
+	return /\/vehicle\/([^\/]+)/.exec(window.location.pathname)[1];
 }
 
 function newAlert(message) {

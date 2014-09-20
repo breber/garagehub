@@ -80,9 +80,6 @@ var Demo = {
         };
 
         Demo.map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-
-        // Show directions onload
-        Demo.getDirections();
     }
 };
 

@@ -35,6 +35,9 @@ handlers:
   script: admin.app
   login: admin
 
+- url: /fuel/?.*
+  script: fuel_api.app
+
 - url: /news/?.*
   script: news.app
   login: required

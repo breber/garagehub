@@ -37,12 +37,12 @@ def get_user_by_auth(uid):
 
         return user_by_email
 
-@endpoints.api(name='garagehub', version='v1',
+@endpoints.api(name='carhub', version='v1',
                description='GarageHub API',
                hostname='car-hub.appspot.com',
                audiences=garagehubkeys.AUDIENCES,
                allowed_client_ids=garagehubkeys.ALLOWED_CLIENT_IDS)
-class GarageHubApi(remote.Service):
+class CarHubApi(remote.Service):
 
     @endpoints.method(StringRequest,
                       UnusedRequest,
@@ -471,6 +471,3 @@ class GarageHubApi(remote.Service):
             return query.filter(ExpenseCategory.owner.IN(users)).order(ExpenseCategory._key)
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
-
-import api_deprecated
-application = endpoints.api_server([GarageHubApi, api_deprecated.CarHubApi], restricted=False)

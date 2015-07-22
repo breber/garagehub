@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from carhub_keys import carhubkeys
+from garagehub_keys import garagehubkeys
 from google.appengine.api import urlfetch, users
 import base64
 import datastore
@@ -26,7 +26,7 @@ class NewsHandler(webapp2.RequestHandler):
             car = datastore.get_user_vehicle(user_id, vehicle_id)
 
             if car:
-                auth_key = base64.b64encode('$acctKey:%s' % carhubkeys.BING_SEARCH_KEY)
+                auth_key = base64.b64encode('$acctKey:%s' % garagehubkeys.BING_SEARCH_KEY)
                 search_str = urllib.quote('%s %s %s' % (car.year, car.make, car.model))
                 api_url = 'https://api.datamarket.azure.com/Bing/Search/v1/News?Query=\'%s\'&$format=json' % search_str
 

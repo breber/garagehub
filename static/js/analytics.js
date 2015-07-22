@@ -1,6 +1,6 @@
 var _gaq = _gaq || [];
 _gaq.push([ '_setAccount', 'UA-36146709-1' ]);
-_gaq.push([ '_setDomainName', 'carhub.us' ]);
+_gaq.push([ '_setDomainName', 'garagehub.us' ]);
 _gaq.push([ '_trackPageview' ]);
 
 (function() {

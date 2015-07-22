@@ -1,43 +1,43 @@
-CARHUB_MOBILE=$(pwd)/../CarHubMobile/CarHubMobile
-CARHUB_IOS=$(pwd)/../carhub-ios
-LIB_VERSION=1.19.0
+GARAGEHUB_MOBILE=$(pwd)/../garagehub-android/GarageHubMobile
+GARAGEHUB_IOS=$(pwd)/../garagehub-ios
+LIB_VERSION=1.20.0
 
 # Generate the Java client library
-endpointscfg.py get_client_lib java -o . api.CarHubApi
+endpointscfg.py get_client_lib java -o . api.GarageHubApi
 
 # Unzip the generated zip
-mv carhub-v1.zip /tmp/CarHubApi.zip
+mv garagehub-v1.zip /tmp/garagehubapi.zip
 pushd /tmp/
-yes | unzip CarHubApi.zip
-pushd carhub
+yes | unzip garagehubapi.zip
+pushd garagehub
 
 # Remove existing Jars from the libs folder of Android app
-rm $CARHUB_MOBILE/CarHub/libs/car_hub_appspot_*
-rm $CARHUB_MOBILE/CarHub/libs/google-*
-rm $CARHUB_MOBILE/CarHub/libs/gson-*
-rm $CARHUB_MOBILE/CarHub/libs/jsr*
+rm $GARAGEHUB_MOBILE/GarageHub/libs/car_hub_appspot_*
+rm $GARAGEHUB_MOBILE/GarageHub/libs/google-*
+rm $GARAGEHUB_MOBILE/GarageHub/libs/gson-*
+rm $GARAGEHUB_MOBILE/GarageHub/libs/jsr*
 
 # Copy new jars to the Android app
-cp *.jar $CARHUB_MOBILE/CarHub/libs/
-cp libs/gson-*.jar $CARHUB_MOBILE/CarHub/libs/
-cp libs/jsr*.jar $CARHUB_MOBILE/CarHub/libs/
-cp libs/google-api-client-$LIB_VERSION.jar $CARHUB_MOBILE/CarHub/libs/
-cp libs/google-api-client-android-$LIB_VERSION.jar $CARHUB_MOBILE/CarHub/libs/
-cp libs/google-http-client-$LIB_VERSION.jar $CARHUB_MOBILE/CarHub/libs/
-cp libs/google-http-client-android-$LIB_VERSION.jar $CARHUB_MOBILE/CarHub/libs/
-cp libs/google-http-client-gson-$LIB_VERSION.jar $CARHUB_MOBILE/CarHub/libs/
-cp libs/google-oauth-client-$LIB_VERSION.jar $CARHUB_MOBILE/CarHub/libs/
+cp *.jar $GARAGEHUB_MOBILE/GarageHub/libs/
+cp libs/gson-*.jar $GARAGEHUB_MOBILE/GarageHub/libs/
+cp libs/jsr*.jar $GARAGEHUB_MOBILE/GarageHub/libs/
+cp libs/google-api-client-$LIB_VERSION.jar $GARAGEHUB_MOBILE/GarageHub/libs/
+cp libs/google-api-client-android-$LIB_VERSION.jar $GARAGEHUB_MOBILE/GarageHub/libs/
+cp libs/google-http-client-$LIB_VERSION.jar $GARAGEHUB_MOBILE/GarageHub/libs/
+cp libs/google-http-client-android-$LIB_VERSION.jar $GARAGEHUB_MOBILE/GarageHub/libs/
+cp libs/google-http-client-gson-$LIB_VERSION.jar $GARAGEHUB_MOBILE/GarageHub/libs/
+cp libs/google-oauth-client-$LIB_VERSION.jar $GARAGEHUB_MOBILE/GarageHub/libs/
 
-popd # /tmp/carhub
+popd # /tmp/garagehub
 popd # /tmp/
 
 # Clean up after ourselves
-rm /tmp/CarHubApi.zip
-rm -rf /tmp/carhub
+rm /tmp/garagehubapi.zip
+rm -rf /tmp/garagehub
 
 # Generate for iOS
-if [ -d $CARHUB_IOS ]; then
-    endpointscfg.py gen_discovery_doc -o . -f rpc api.CarHubApi
+if [ -d $GARAGEHUB_IOS ]; then
+    endpointscfg.py gen_discovery_doc -o . -f rpc api.GarageHubApi
 
     svn checkout \
         http://google-api-objectivec-client.googlecode.com/svn/trunk/ \
@@ -47,7 +47,7 @@ if [ -d $CARHUB_IOS ]; then
     xcodebuild -project ServiceGenerator.xcodeproj
     popd
     ./google-api-objectivec-client-read-only/Source/Tools/ServiceGenerator/build/Release/ServiceGenerator \
-        carhub-v1.discovery --outputDir $CARHUB_IOS/CarHubApi/
+        garagehub-v1.discovery --outputDir $GARAGEHUB_IOS/GarageHubApi/
 
     rm -rf google-api-objectivec-client-read-only
 fi

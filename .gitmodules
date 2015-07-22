@@ -1,6 +1,6 @@
-[submodule "carhub_keys"]
-	path = carhub_keys
-	url = ssh://git@bitbucket.org/breber/carhub-keys.git
 [submodule "endpoints-proto-datastore"]
 	path = endpoints-proto-datastore
 	url = https://github.com/GoogleCloudPlatform/endpoints-proto-datastore.git
+[submodule "garagehub_keys"]
+	path = garagehub_keys
+	url = ssh://git@bitbucket.org/breber/garagehub-keys.git

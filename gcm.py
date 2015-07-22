@@ -1,4 +1,4 @@
-from carhub_keys import carhubkeys
+from garagehub_keys import garagehubkeys
 from datetime import datetime, timedelta
 import logging
 import models
@@ -95,7 +95,7 @@ class GCMConnection:
             return False
 
         # Build request
-        headers = { 'Authorization': 'key=' + carhubkeys.GCM_KEY, 'Content-Type': 'application/json' }
+        headers = { 'Authorization': 'key=' + garagehubkeys.GCM_KEY, 'Content-Type': 'application/json' }
 
         gcm_post_json_str = ''
         try:

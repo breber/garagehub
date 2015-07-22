@@ -32,7 +32,7 @@ We will be using [Google Cloud Endpoints](https://developers.google.com/appengin
 
 We use a custom build of Bootstrap. The only differences are some custom colors.
 
-Copy the `static/css/carhub.less` from our repository into the `less` folder of the Bootstrap repo. Add `@import "carhub.less";` to the `bootstrap.less` file right after the `@import "variables.less";` line. Then build bootstrap, and copy the updated JS and CSS to the corresponding location in the CarHub repo.
+Copy the `static/css/garagehub.less` from our repository into the `less` folder of the Bootstrap repo. Add `@import "garagehub.less";` to the `bootstrap.less` file right after the `@import "variables.less";` line. Then build bootstrap, and copy the updated JS and CSS to the corresponding location in the repo.
 
 ## Helpful Links
 

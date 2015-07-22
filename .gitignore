@@ -4,7 +4,8 @@
 .pydevproject
 .project
 index.yaml
-CarHubApi.zip
+GarageHubApi.zip
 
-carhub-v1.discovery
+garagehub-v1.discovery
 .idea/
+endpoints_proto_datastore/

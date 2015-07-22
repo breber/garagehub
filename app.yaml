@@ -1,5 +1,5 @@
 application: car-hub
-version: v2
+version: v3
 runtime: python27
 api_version: 1
 threadsafe: yes

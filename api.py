@@ -472,5 +472,4 @@ class GarageHubApi(remote.Service):
         else:
             raise endpoints.UnauthorizedException('Unknown user.')
 
-import api_deprecated
-application = endpoints.api_server([GarageHubApi, api_deprecated.CarHubApi], restricted=False)
+application = endpoints.api_server([GarageHubApi], restricted=False)

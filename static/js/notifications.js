@@ -9,9 +9,6 @@ $(document).ready(function() {
 		"bSort" : true,
 		"bInfo" : false,
 		"bAutoWidth" : false,
-		"oTableTools" : {
-			"sRowSelect" : "multi",
-		},
 		"aaSorting" : [ [ 0, 'desc' ] ]
 	});
 

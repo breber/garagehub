@@ -14,7 +14,7 @@ def get_user():
     logging.info("auth_user: %s - %s" % (auth_user, auth_user_id))
     if not auth_user_id:
         auth_user_id = auth_util.get_google_plus_user_id()
-        logging.warn("auth_user_id: %s" % auth_user_id)
+        logging.info("auth_user_id: %s" % auth_user_id)
 
     return get_user_by_auth(auth_user_id)
 

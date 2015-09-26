@@ -17,6 +17,7 @@ class User(ndb.Model):
 
 class ServerResponseString(ndb.Model):
     response = ndb.TextProperty()
+    lastmodified = ndb.DateTimeProperty(auto_now=True)
 
 class BaseVehicle(ndb.Model):
     make = ndb.StringProperty()

@@ -22,23 +22,13 @@ class FetchBaseVehicles:
     def updateVehicles(self):
         """ Perform an update of all the vehicles from Cars.com """
 
-        url = "http://www.cars.com/js/mmyCrp.js"
+        url = "https://www.cars.com/sell/book-value/data"
         result = urlfetch.fetch(url=url, payload=None, method=urlfetch.GET, deadline=30)
 
         if result.status_code == 200:
-            firstIndex = result.content.index("[")
-            lastIndex = result.content.rindex("]") + 1
-            self.serverResponse = result.content[firstIndex:lastIndex]
-
-            # Make the JSON standards compliant (Cars.com should really fix their
-            # JSON so that I don't have to do this crazy stuff)
-
-            # replace all single quotes with double quotes
-            self.serverResponse = self.serverResponse.replace("'", "\"")
-            # Surround all of the first keys with quotes
-            self.serverResponse = re.sub("{(.+?):", "{\"\g<1>\":", self.serverResponse)
-            # Surround all of the remaining keys with quotes
-            self.serverResponse = re.sub(",([^\"}]+?):", ",\"\g<1>\":", self.serverResponse)
+            jsonDecoded = json.loads(result.content)
+            self.serverResponse = json.dumps(jsonDecoded["makes"])
+            logging.info(self.serverResponse)
 
             # Get the records that need updating
             self.getUpdatedRecords()
@@ -76,15 +66,16 @@ class FetchBaseVehicles:
             # For each make in the list from the server
             for obj in jsonDecoded:
                 # Grab relevant data
-                makeObj = obj["mk"]
-                modelsArr = obj["mds"]
-                makeString = makeObj["n"]
+                modelsArr = obj["models"]
+                makeString = obj["name"]
 
                 # For each model in this make
                 for model in modelsArr:
                     # Grab relevant data
-                    modelStr = model["dn"]
-                    yearsStr = model["yrs"]
+                    modelStr = model["name"]
+
+                    # Get the current list of years
+                    yearsStr = self.getYears(jsonDecoded, makeString, modelStr)
 
                     # Get the list of years we currently have in the database
                     prevYears = self.getYears(prevJson, makeString, modelStr)
@@ -125,16 +116,16 @@ class FetchBaseVehicles:
             return None
 
         for obj in json:
-            makeObj = obj["mk"]
-            modelsArr = obj["mds"]
-            makeString = makeObj["n"]
+            if obj['name'] == make:
+                for modelObj in obj['models']:
+                    if modelObj["name"] == model:
+                        years = []
+                        for year in modelObj["calculatorYears"]:
+                            years.append(year['name'])
 
-            if makeString == make:
-                for modelObj in modelsArr:
-                    modelString = modelObj["dn"]
+                        return ','.join(years)
 
-                    if modelString == model:
-                        return modelObj["yrs"]
+                return None
 
         return None
 
@@ -162,4 +153,3 @@ class FetchBaseVehicles:
                 # Otherwise, add the vehicle to the database
                 self.numAdded = self.numAdded + 1
                 vehicle.put()
-

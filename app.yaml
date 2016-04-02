@@ -54,6 +54,9 @@ handlers:
   script: api_old.app
   login: required
 
+- url: /.well-known/.*
+  script: secure.app
+
 - url: .*
   script: main.app
 

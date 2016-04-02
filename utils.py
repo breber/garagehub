@@ -42,7 +42,7 @@ def get_context(list_vehicles=True):
         userobj['userId'] = str(user.key.id())
         userobj['isAdmin'] = user.is_admin
         userobj['username'] = user.email_address # TODO: use name from service provider
-        userobj['profilePic'] = "http://www.gravatar.com/avatar/%s?s=40" % hashlib.md5(user.email_address).hexdigest() # TODO: use image from service provider
+        userobj['profilePic'] = "//www.gravatar.com/avatar/%s?s=40" % hashlib.md5(user.email_address).hexdigest() # TODO: use image from service provider
         context['user'] = userobj
 
         if list_vehicles:

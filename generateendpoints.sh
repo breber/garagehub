@@ -1,6 +1,6 @@
 GARAGEHUB_MOBILE=$(pwd)/../garagehub-android/GarageHubMobile
 GARAGEHUB_IOS=$(pwd)/../garagehub-ios
-LIB_VERSION=1.20.0
+LIB_VERSION=1.22.0
 
 # Generate the Java client library
 endpointscfg.py get_client_lib java -o . api.GarageHubApi
@@ -13,20 +13,11 @@ pushd garagehub
 
 # Remove existing Jars from the libs folder of Android app
 rm $GARAGEHUB_MOBILE/GarageHub/libs/car_hub_appspot_*
-rm $GARAGEHUB_MOBILE/GarageHub/libs/google-*
-rm $GARAGEHUB_MOBILE/GarageHub/libs/gson-*
 rm $GARAGEHUB_MOBILE/GarageHub/libs/jsr*
 
 # Copy new jars to the Android app
 cp *.jar $GARAGEHUB_MOBILE/GarageHub/libs/
-cp libs/gson-*.jar $GARAGEHUB_MOBILE/GarageHub/libs/
 cp libs/jsr*.jar $GARAGEHUB_MOBILE/GarageHub/libs/
-cp libs/google-api-client-$LIB_VERSION.jar $GARAGEHUB_MOBILE/GarageHub/libs/
-cp libs/google-api-client-android-$LIB_VERSION.jar $GARAGEHUB_MOBILE/GarageHub/libs/
-cp libs/google-http-client-$LIB_VERSION.jar $GARAGEHUB_MOBILE/GarageHub/libs/
-cp libs/google-http-client-android-$LIB_VERSION.jar $GARAGEHUB_MOBILE/GarageHub/libs/
-cp libs/google-http-client-gson-$LIB_VERSION.jar $GARAGEHUB_MOBILE/GarageHub/libs/
-cp libs/google-oauth-client-$LIB_VERSION.jar $GARAGEHUB_MOBILE/GarageHub/libs/
 
 popd # /tmp/garagehub
 popd # /tmp/

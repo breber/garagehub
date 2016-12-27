@@ -1,3 +1,9 @@
+# For the generateendpoints.sh script, we need to add the subdirectory
+# into our path
+if 0:
+    import sys
+    sys.path.append('endpoints-proto-datastore')
+
 from datetime import datetime
 from google.appengine.ext import ndb
 from google.appengine.ext.ndb import polymodel

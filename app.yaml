@@ -43,10 +43,6 @@ handlers:
   login: admin
   secure: always
 
-- url: /fuel/?.*
-  script: fuel_api.app
-  secure: always
-
 - url: /news/?.*
   script: news.app
   login: required

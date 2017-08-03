@@ -32,12 +32,12 @@ def build_object(request, obj, expense_type, vehicle_id):
     fileChosen = request.request.get("file", None)
     recieptKey = None
     imageUrl = None
-    if fileChosen:
-        upload_files = request.get_uploads('file')
-        if len(upload_files) > 0:
-            blob_info = upload_files[0]
-            recieptKey = str(blob_info.key())
-            imageUrl = images.get_serving_url(blob_info.key(), 400)
+    # if fileChosen:
+    #     upload_files = request.get_uploads('file')
+    #     if len(upload_files) > 0:
+    #         blob_info = upload_files[0]
+    #         recieptKey = str(blob_info.key())
+    #         imageUrl = images.get_serving_url(blob_info.key(), 400)
 
     dateString = request.request.get("datePurchased", None)
     datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")

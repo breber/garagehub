@@ -1,3 +1,9 @@
+# import endpoints-proto-datastore for generated endpoints
+import os, sys
+ENDPOINTS_PROJECT_DIR = os.path.join(os.path.dirname(__file__),
+                                     'endpoints-proto-datastore')
+sys.path.append(ENDPOINTS_PROJECT_DIR)
+
 from garagehub_keys import garagehubkeys
 from endpoints import users_id_token
 from protorpc import remote

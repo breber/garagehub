@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-from google.appengine.api import images, users
-from google.appengine.ext import blobstore
-from google.appengine.ext.webapp import blobstore_handlers
+from google.appengine.api import users
 from webapp2_extras import jinja2
 import datastore
 import datetime
@@ -29,16 +27,6 @@ def build_object(request, obj, expense_type, vehicle_id):
     context = utils.get_context()
     user_id = context['user']['userId']
 
-    fileChosen = request.request.get("file", None)
-    recieptKey = None
-    imageUrl = None
-    # if fileChosen:
-    #     upload_files = request.get_uploads('file')
-    #     if len(upload_files) > 0:
-    #         blob_info = upload_files[0]
-    #         recieptKey = str(blob_info.key())
-    #         imageUrl = images.get_serving_url(blob_info.key(), 400)
-
     dateString = request.request.get("datePurchased", None)
     datePurchased = datetime.datetime.strptime(dateString, "%Y/%m/%d")
     location = request.request.get("location", "")
@@ -61,15 +49,6 @@ def build_object(request, obj, expense_type, vehicle_id):
                     categoryObj.category = category
                 categoryObj.put()
 
-        # This ensures that editing a record won't delete the picture
-        if recieptKey:
-            oldImage = obj.picture
-            if oldImage:  # delete old picture
-                images.delete_serving_url(oldImage)
-                blobstore.BlobInfo.get(oldImage).delete()
-            obj.picture = recieptKey
-            obj.pictureurl = imageUrl
-
         obj.owner = user_id
         obj.vehicle = long(vehicle_id)
         obj.date = datePurchased
@@ -91,7 +70,7 @@ def build_object(request, obj, expense_type, vehicle_id):
 
     return obj
 
-class VehicleExpenseAddHandler(blobstore_handlers.BlobstoreUploadHandler):
+class VehicleExpenseAddHandler(webapp2.RequestHandler):
     @webapp2.cached_property
     def jinja2(self):
         return jinja2.get_jinja2(app=self.app)
@@ -120,7 +99,6 @@ class VehicleExpenseAddHandler(blobstore_handlers.BlobstoreUploadHandler):
                 context["categories"] = datastore.get_maintenance_categories(user_id)
             else:
                 context["categories"] = datastore.get_expense_categories(user_id)
-            context["upload_url"] = blobstore.create_upload_url(self.request.url)
 
             self.render_template('addexpense.html', context)
 
@@ -147,7 +125,7 @@ class VehicleExpenseAddHandler(blobstore_handlers.BlobstoreUploadHandler):
             self.redirect("/vehicle/%s/expenses" % vehicle_id)
 
 
-class VehicleExpenseEditHandler(blobstore_handlers.BlobstoreUploadHandler):
+class VehicleExpenseEditHandler(webapp2.RequestHandler):
     @webapp2.cached_property
     def jinja2(self):
         return jinja2.get_jinja2(app=self.app)
@@ -164,7 +142,6 @@ class VehicleExpenseEditHandler(blobstore_handlers.BlobstoreUploadHandler):
             self.redirect("/")
         else:
             context["car"] = datastore.get_user_vehicle(user_id, vehicle_id)
-            context["upload_url"] = blobstore.create_upload_url(self.request.url)
             baseExpense = datastore.get_base_expense_record(user_id, vehicle_id, expense_id)
 
             # Perform redirection here if the expense is a specific type

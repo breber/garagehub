@@ -401,8 +401,6 @@ class VehicleHandler(webapp2.RequestHandler):
 
             if page_name == "charts":
                 path = 'charts.html'
-            elif page_name == "news":
-                path = 'news.html'
             else:
                 path = 'car.html'
 

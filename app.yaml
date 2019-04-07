@@ -22,10 +22,6 @@ handlers:
   upload: static/robots.txt
   secure: always
 
-- url: /tools/?.*
-  script: tools.app
-  secure: always
-
 - url: /admin/?.*
   script: admin.app
   login: admin
@@ -34,11 +30,6 @@ handlers:
 - url: /brian/?.*
   script: brian.app
   login: admin
-  secure: always
-
-- url: /news/?.*
-  script: news.app
-  login: required
   secure: always
 
 - url: /settings/?.*

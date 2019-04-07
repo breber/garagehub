@@ -1,1 +1,1 @@
-gcloud app deploy --project car-hub --version v5
+gcloud app deploy --project car-hub --version v6

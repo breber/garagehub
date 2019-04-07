@@ -27,20 +27,6 @@ class MainHandler(webapp2.RequestHandler):
 
         self.render_template(path, context)
 
-class RawVehicleHandler(webapp2.RequestHandler):
-    def get(self, make, model):
-        self.response.headerlist = [('Content-type', 'application/json')]
-
-        if not make:
-            modelList = datastore.get_makes()
-            self.response.out.write(json.dumps(modelList))
-        elif not model:
-            modelList = datastore.get_models(make)
-            self.response.out.write(json.dumps(modelList))
-        else:
-            yearList = datastore.get_years(make, model)
-            self.response.out.write(json.dumps(yearList))
-
 class NotificationHandler(webapp2.RequestHandler):
     @webapp2.cached_property
     def jinja2(self):
@@ -231,6 +217,5 @@ app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/dashboard', DashboardHandler),
     ('/userfavorites/gasstation', UserFavoritesHandler),
-    ('/notifications/?([^/]+)?/?(.+?)?', NotificationHandler),
-    ('/cars/raw/?([^/]+)?/?(.+?)?', RawVehicleHandler)
+    ('/notifications/?([^/]+)?/?(.+?)?', NotificationHandler)
 ], debug=True)

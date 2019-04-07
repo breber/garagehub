@@ -403,68 +403,6 @@ def get_category_by_name(user_id, category_name, maintenance_only=False):
     category = query.get()
     return category
 
-
-def get_makes():
-    """Gets a list of vehicle makes (strings)
-
-    Returns
-        A string list of BaseVehicle makes
-    """
-
-    query = models.BaseVehicle().query()
-    results = ndb.get_multi(query.fetch(keys_only=True))
-
-    toRet = []
-    for v in results:
-        if not v.make in toRet:
-            toRet.append(v.make)
-
-    toRet.sort()
-
-    return toRet
-
-def get_models(make):
-    """Gets a list of vehicle models (strings)
-
-    Args:
-        make - The vehicle make to get models for
-
-    Returns
-        A string list of BaseVehicle models for the given make
-    """
-
-    query = models.BaseVehicle().query(models.BaseVehicle.make == make)
-    results = ndb.get_multi(query.fetch(keys_only=True))
-
-    toRet = []
-    for v in results:
-        if not v.model in toRet:
-            toRet.append(v.model)
-
-    toRet.sort()
-
-    return toRet
-
-def get_years(make, model):
-    """Gets a list of years for a given make and model
-
-    Args:
-        make - The vehicle make
-        model - The vehicle model
-
-    Returns
-        A string list of BaseVehicle years for the given make and model
-    """
-
-    query = models.BaseVehicle().query(models.BaseVehicle.make == make,
-                                       models.BaseVehicle.model == model)
-    result = query.get()
-
-    toRet = result.years.split(",")
-    toRet.sort()
-
-    return toRet
-
 def get_notification(user_id, vehicle_id, category_id, notification_id):
     """Gets the Notification for the given notification_id
 

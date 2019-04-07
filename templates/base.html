@@ -122,21 +122,15 @@
           <form action="/vehicle/add" method="post" id="saveForm">
             <div class="form-group">
               <label for="make">Make:</label>
-              <select id="makes" class="form-control" name="make">
-                <option>Select a make</option>
-              </select>
+              <input id="makes" type="text" class="form-control" name="make" />
             </div>
             <div class="form-group">
               <label for="model">Model:</label>
-              <select id="models" class="form-control" name="model">
-                <option>Select a model</option>
-              </select>
+              <input id="models" type="text" class="form-control" name="model" />
             </div>
             <div class="form-group">
               <label for="year">Year:</label>
-              <select id="years" class="form-control" name="year">
-                <option>Select a year</option>
-              </select>
+              <input id="years" type="text" class="form-control" name="year" />
             </div>
             <div class="form-group">
               <label for="color">Color:</label>
@@ -155,7 +149,6 @@
       </div>
     </div>
   </div>
-  <script type="text/javascript" src="/static/js/addvehicle.js"></script>
   {% endif %}
 
   {% block externaljs %}{% endblock %}

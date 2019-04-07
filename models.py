@@ -21,15 +21,6 @@ class User(ndb.Model):
     google_oauth = ndb.StringProperty()
     mobile_ids = ndb.StringProperty(repeated=True)  # For Google Cloud Messaging
 
-class ServerResponseString(ndb.Model):
-    response = ndb.TextProperty()
-    lastmodified = ndb.DateTimeProperty(auto_now=True)
-
-class BaseVehicle(ndb.Model):
-    make = ndb.StringProperty()
-    model = ndb.StringProperty()
-    years = ndb.StringProperty()
-
 class UserFavorites(ndb.Model):
     owner = ndb.StringProperty()
     gas_station_id = ndb.StringProperty()

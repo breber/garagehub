@@ -83,10 +83,9 @@
               </a>
               <ul class="dropdown-menu">
                 {% if user.isAdmin %}
-                <li><a href="/admin/">Admin</a></li>
-                {% endif %}
-                <li><a href="/settings">Settings</a></li>
+                <li><a href="/admin">Admin</a></li>
                 <li class="divider"></li>
+                {% endif %}
                 <li><a href="{{ logouturl }}">Logout</a></li>
               </ul>
             </li>

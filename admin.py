@@ -1,50 +1,36 @@
 #!/usr/bin/env python
 from google.appengine.api import memcache, users
 from google.appengine.ext import deferred
-from webapp2_extras import jinja2
+from flask import Flask, render_template, redirect
 import utils
-import webapp2
 
-class AdminHandler(webapp2.RequestHandler):
-    """The request handler for the /admin/([^/]+)? path """
+app = Flask(__name__)
 
-    @webapp2.cached_property
-    def jinja2(self):
-        return jinja2.get_jinja2(app=self.app)
+@app.route('/admin')
+def admin():
+    """
+    - If the logged in user is an admin, displays the admin page.
+    - Otherwise, redirects to the root page
+    """
+    if users.is_current_user_admin():
+        context = utils.get_context()
 
-    def render_template(self, filename, template_args):
-          self.response.write(self.jinja2.render_template(filename, **template_args))
+        return render_template('admin.html', **context)
+    else:
+        return redirect("/")
 
-    def get(self, method):
-        """
-        - If the logged in user is an admin, displays the admin page.
-        - Otherwise, redirects to the root page
+@app.route('/admin/<method>', methods=['POST'])
+def admin_action():
+    """Post request handler for the /admin/([^/])? path
 
-        Args:
-            method  (optional) - ignored for get requests
-        """
-        if users.is_current_user_admin():
-            context = utils.get_context()
+    Args:
+        method  (optional) - the operation to perform
+            - clearmemcache - clears the Memcache
+    """
+    if users.is_current_user_admin() and method:
+        if method == "clearmemcache":
+            # Clear memcache
+            memcache.Client().flush_all()
 
-            self.render_template('admin.html', context)
-        else:
-            self.redirect("/")
-
-    def post(self, method):
-        """Post request handler for the /admin/([^/])? path
-
-        Args:
-            method  (optional) - the operation to perform
-                - clearmemcache - clears the Memcache
-        """
-        if users.is_current_user_admin() and method:
-            if method == "clearmemcache":
-                # Clear memcache
-                memcache.Client().flush_all()
-
-        # Always redirect to admin
-        self.redirect("/admin")
-
-app = webapp2.WSGIApplication([
-    ('/admin/?([^/]+)?', AdminHandler)
-])
+    # Always redirect to admin
+    return redirect("/admin")

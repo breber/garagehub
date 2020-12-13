@@ -86,21 +86,3 @@ def format_float(number):
 
 def format_date(timestamp):
     return timestamp.strftime("%Y/%m/%d")
-
-class ComplexEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, datetime.datetime):
-            return time.mktime(obj.timetuple())
-        elif isinstance(obj, datetime.date):
-            toRet = {}
-            toRet["timestamp"] = time.mktime(obj.timetuple())
-            toRet["str"] = obj.strftime("%m/%d/%y")
-            return toRet
-        elif isinstance(obj, ndb.Model):
-            toRet = obj.to_dict()
-            toRet["id"] = obj.key.id()
-            return toRet
-        elif isinstance(obj, ndb.Key):
-            return obj.id()
-
-        return json.JSONEncoder.default(self, obj)

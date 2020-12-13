@@ -143,11 +143,6 @@ html,body {
 	margin: 5px 0px;
 }
 
-/* For settings.html */
-.settings-btn {
-	margin: 5px 0px;
-}
-
 /* For welcome.html */
 .home-logo {
     transform:rotate(180deg);

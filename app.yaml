@@ -22,19 +22,9 @@ handlers:
   upload: static/robots.txt
   secure: always
 
-- url: /admin/?.*
+- url: /admin/?.*?
   script: admin.app
   login: admin
-  secure: always
-
-- url: /brian/?.*
-  script: brian.app
-  login: admin
-  secure: always
-
-- url: /settings/?.*
-  script: settings.app
-  login: required
   secure: always
 
 - url: /vehicle/?.*

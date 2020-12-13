@@ -1,32 +1,17 @@
 #!/usr/bin/env python
 from google.appengine.api import users
-from webapp2_extras import jinja2
-import datetime
-import datastore
-import json
-import models
+from flask import Flask, render_template
 import utils
-import webapp2
-import logging
 
-class MainHandler(webapp2.RequestHandler):
-    @webapp2.cached_property
-    def jinja2(self):
-        return jinja2.get_jinja2(app=self.app)
+app = Flask(__name__)
 
-    def render_template(self, filename, template_args):
-          self.response.write(self.jinja2.render_template(filename, **template_args))
+@app.route('/')
+def main():
+    context = utils.get_context()
 
-    def get(self):
-        context = utils.get_context()
+    if context['user']:
+        path = 'garage.html'
+    else:
+        path = 'welcome.html'
 
-        if context['user']:
-            path = 'garage.html'
-        else:
-            path = 'welcome.html'
-
-        self.render_template(path, context)
-
-app = webapp2.WSGIApplication([
-    ('/', MainHandler),
-], debug=True)
+    return render_template(path, **context)

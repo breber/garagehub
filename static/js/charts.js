@@ -35,7 +35,7 @@ function fetchData(dateRange) {
     });
 
     $.getJSON("/api/expense/category/" + vehicleId + "/" + dateRange, function(data) {
-        drawCategoryChart(data);
+        drawCategoryChart(data['data']);
     });
 }
 

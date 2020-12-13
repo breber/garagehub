@@ -1,0 +1,13 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.154.0/containers/python-3
+{
+	"name": "AppEngine",
+	"image": "google/cloud-sdk:latest",
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"ms-python.python"
+	],
+
+	"postStartCommand": "apt-get update && apt-get -y install python2.7-dev python-pip && pip install -r requirements.txt -t lib"
+}

@@ -284,32 +284,6 @@ class VehicleMaintenanceHandler(webapp2.RequestHandler):
 
         obj.odometer = odometer
 
-        # Notification stuff
-        relevantNotif = datastore.get_notification(user_id, long(obj.vehicle), obj.categoryid, None)
-        if relevantNotif:
-            lastMaintRec = datastore.get_n_maint_records(user_id, long(obj.vehicle), category.categoryid, 1)
-
-            if obj.date == lastMaintRec.date:
-                if relevantNotif.recurring:
-                    if relevantNotif.dateBased:
-                        recurringMonths = lastMaintRec.recurringMonths
-                        lastRecordedDate = lastMaintRec.date
-                        yearDecimalNum = lastRecordedDate.strftime("%Y")
-                        monthDecimalNum = lastRecordedDate.strftime("%m")
-                        notifyYear = int(yearDecimalNum) + recurringMonths / 12
-                        notifyMonth = int(monthDecimalNum) + (recurringMonths % 12)
-                        if notifyMonth > 12:
-                            notifyMonth -= 12
-                            notifyYear += 1
-                        relevantNotif.date = datetime.date(notifyYear, notifyMonth, lastRecordedDate.day)
-                    if relevantNotif.mileBased:
-                        relevantNotif.mileage = lastMaintRec.odometer + relevantNotif.recurringMiles
-                    deltaoneday = datetime.timedelta(days=1)
-                    relevantNotif.dateLastSeen = datetime.date.today() - deltaoneday
-                    relevantNotif.put()
-                else:
-                    relevantNotif.key.delete()
-
 class VehicleGasMileageHandler(webapp2.RequestHandler):
     @webapp2.cached_property
     def jinja2(self):
@@ -359,7 +333,7 @@ class VehicleGasMileageHandler(webapp2.RequestHandler):
         if odometerEnd != -1 and odometerStart != -1:
             mpg = (odometerEnd - odometerStart) / gallons
         else:
-            mpg = -1;
+            mpg = -1
 
         if costPerGallon:
             obj.categoryid = datastore.get_category_by_name(user_id, "Fuel Up").key.id()

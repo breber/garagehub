@@ -21,11 +21,6 @@ class User(ndb.Model):
     google_oauth = ndb.StringProperty()
     mobile_ids = ndb.StringProperty(repeated=True)  # For Google Cloud Messaging
 
-class UserFavorites(ndb.Model):
-    owner = ndb.StringProperty()
-    gas_station_id = ndb.StringProperty()
-    date = ndb.DateTimeProperty()
-
 class UserVehicle(EndpointsModel):
     _message_fields_schema = ('server_id', 'make', 'model', 'year', 'color', 'plates', 'lastmodified')
 
@@ -182,32 +177,6 @@ class FuelRecord(BaseExpense):
     def costPerGallon_formatted(self):
         return utils.format_float(self.costPerGallon)
 
-
-class Notification(ndb.Model):
-    owner = ndb.StringProperty()
-    vehicle = ndb.IntegerProperty()
-    categoryid = ndb.IntegerProperty()
-    recurring = ndb.BooleanProperty()
-    dateBased = ndb.BooleanProperty()
-    mileBased = ndb.BooleanProperty()
-    date = ndb.DateProperty()
-    mileage = ndb.IntegerProperty()
-    notifyDaysBefore = ndb.IntegerProperty()
-    notifyMilesBefore = ndb.IntegerProperty()
-    recurringMiles = ndb.IntegerProperty()
-    recurringMonths = ndb.IntegerProperty()
-    dateLastSeen = ndb.DateProperty()
-
-    def get_vehicle(self):
-        import datastore
-        return datastore.get_user_vehicle(self.owner, self.vehicle)
-
-    def get_category(self):
-        import datastore
-        return datastore.get_category_by_id(self.owner, self.categoryid)
-
-    def name(self):
-        return "%s %s" % (self.get_vehicle().name(), self.get_category().name())
 
 # API specific messages
 class UnusedRequest(messages.Message):

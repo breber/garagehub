@@ -35,21 +35,6 @@ def get_all_user_vehicles(user_id):
     userVehiclesQuery = models.UserVehicle.query(models.UserVehicle.owner == user_id)
     return ndb.get_multi(userVehiclesQuery.fetch(keys_only=True))
 
-def get_user_favorites(user_id, numberToFetch=10, ascending=True):
-    """Gets a list of favorites for the given user
-
-    Args:
-        user_id - The user ID
-
-    Returns
-        The list of user's favorites
-    """
-
-    query = models.UserFavorites.query(models.UserFavorites.owner == user_id)
-    query = query.order(models.UserFavorites.date)
-
-    return ndb.get_multi(query.fetch(numberToFetch, keys_only=True))
-
 def get_all_expense_records(user_id, vehicle_id, day_range=30, ascending=True, polymorphic=True, keys_only=False):
     """Gets the BaseExpense for the given vehicle ID
 
@@ -403,95 +388,6 @@ def get_category_by_name(user_id, category_name, maintenance_only=False):
     category = query.get()
     return category
 
-def get_notification(user_id, vehicle_id, category_id, notification_id):
-    """Gets the Notification for the given notification_id
-
-    Args:
-        user_id - The user ID
-        vehicle_id - The vehicle ID
-        notification_id - The unique notification ID
-
-    Returns
-        The Notification
-    """
-
-    if notification_id:
-        notification = models.Notification.get_by_id(long(notification_id))
-
-        if notification and str(notification.owner) == str(user_id):
-            return notification
-
-    elif vehicle_id and category_id:
-        query = models.Notification().query(models.Notification.owner == user_id,
-                                            models.Notification.vehicle == vehicle_id,
-                                            models.Notification.categoryid == category_id)
-        notification = query.get()
-
-        return notification
-
-def get_notifications(user_id):
-    """Gets a list of user's notifications
-
-    Args:
-        user_id - The user ID
-
-    Returns
-        A list of user's notifications
-    """
-
-    query = models.Notification().query(models.Notification.owner == user_id)
-    results = ndb.get_multi(query.fetch(keys_only=True))
-
-    if results:
-        sorted(results, key=lambda Notification:Notification.name())
-
-    return results
-
-def get_active_date_notifications(user_id):
-    """Gets a list of date notifications to display to user
-
-    Args:
-        user_id - The user's ID
-
-    Returns
-        A list of date notifications to display
-    """
-
-    results = get_notifications(user_id)
-
-    toRet = []
-
-    for r in results:
-        if r.dateBased:
-            daysNotice = datetime.timedelta(days=r.notifyDaysBefore)
-            deltaRemaining = datetime.datetime.combine(r.date, datetime.time()) - datetime.datetime.now()
-            if deltaRemaining <= daysNotice:
-                toRet.append(r)
-
-    return toRet
-
-def get_active_mileage_notifications(user_id):
-    """Gets a list of mileage notifications to display to user
-
-    Args:
-        user_id - The user's ID
-
-    Returns
-        A list of mileage notifications to display
-    """
-
-    results = get_notifications(user_id)
-
-    toRet = []
-
-    for r in results:
-        if r.mileBased:
-            maxmileage = get_current_odometer(user_id, r.vehicle)
-            if (r.mileage - maxmileage) <= r.notifyMilesBefore:
-                toRet.append(r)
-
-    return toRet
-
 def get_current_odometer(user_id, vehicle_id):
     """Gets the user's last recorded mileage for specified vehicle
 
@@ -573,7 +469,5 @@ def delete_user_vehicle(user_id, vehicle_id):
         expenseRecords = get_all_expense_records(user_id, vehicle_id, None)
         for r in expenseRecords:
             delete_base_expense(user_id, r)
-
-        # TODO: delete notifications
 
         vehicle.key.delete()

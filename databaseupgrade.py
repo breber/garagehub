@@ -28,9 +28,3 @@ def update_userid(old, new):
     for cat in exp_cat:
         cat.owner = new
         cat.put()
-
-    # Update notifications
-    notifs = datastore.get_notifications(old)
-    for notif in notifs:
-        notif.owner = new
-        notif.put()

@@ -106,23 +106,6 @@ html,body {
 	table-layout: fixed;
 }
 
-/* For addnotification.html */
-.addnotif-centertext {
-	text-align: center;
-}
-
-.addnotif-smallinput {
-	width: 30px;
-}
-
-.addnotif-textfieldmargins {
-	margin: 0px 5px;
-}
-
-.addnotif-rightmargin {
-	margin-right: 5px;
-}
-
 /* For addexpense.html */
 .btn-addcategory {
 	margin-bottom: 10px;

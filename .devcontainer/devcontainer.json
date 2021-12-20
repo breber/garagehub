@@ -9,5 +9,5 @@
 		"ms-python.python"
 	],
 
-	"postStartCommand": "apt-get update && apt-get -y install python2.7-dev python-pip && pip install -r requirements.txt -t lib"
+	"postStartCommand": "apt-get update && apt-get -y install python2.7-dev python-pip && pip2 install -r requirements.txt -t lib"
 }

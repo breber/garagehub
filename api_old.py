@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from google.appengine.api import users
-from flask import Flask, make_response, render_template
+from flask import Flask, make_response, Response
 import datastore
 import json
 import models
@@ -29,6 +29,57 @@ class ComplexEncoder(json.JSONEncoder):
             return obj.id()
 
         return json.JSONEncoder.default(self, obj)
+
+
+@app.route('/api/vehicle/list')
+def vehicles():
+    context = utils.get_context()
+    user_id = context['user']['userId']
+
+    results = datastore.get_all_user_vehicles(user_id)
+
+    toRet = {}
+    toRet["records"] = results
+
+    return Response(json.dumps(toRet, cls=ComplexEncoder), mimetype='application/json')
+
+
+@app.route('/api/fuel/<vehicle_id>')
+def fuels(vehicle_id):
+    context = utils.get_context()
+    user_id = context['user']['userId']
+
+    fuels = datastore.get_fuel_records(user_id, vehicle_id, day_range=None)
+
+    toRet = {}
+    toRet["records"] = fuels
+
+    return Response(json.dumps(toRet, cls=ComplexEncoder), mimetype='application/json')
+
+
+@app.route('/api/maintenance/<vehicle_id>')
+def maintenances(vehicle_id):
+    context = utils.get_context()
+    user_id = context['user']['userId']
+
+    maints = datastore.get_maintenance_records(user_id, vehicle_id, day_range=None)
+
+    categories = {}
+
+    for record in maints:
+        category = datastore.get_category_by_id(record.owner, record.categoryid)
+        if category:
+            if category.subcategory:
+                categories[record.categoryid] = category.subcategory
+            else:
+                categories[record.categoryid] = category.category
+
+    toRet = {}
+    toRet["records"] = maints
+    toRet["categories"] = categories
+
+    return Response(json.dumps(toRet, cls=ComplexEncoder), mimetype='application/json')
+
 
 @app.route('/api/expense/fuel/<vehicle_id>', defaults={'last_modified': "0"})
 @app.route('/api/expense/fuel/<vehicle_id>/<last_modified>')
